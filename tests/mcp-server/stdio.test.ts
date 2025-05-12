@@ -1,6 +1,7 @@
-import { initStdioServer } from '../../src/mcp-server/stdio';
-import { initMcpServer } from '../../src/mcp-server/shared/init';
+import { initStdioServer } from '../../src/mcp-server/transport/stdio';
+import { initOAPIMcpServer } from '../../src/mcp-server/shared/init';
 import { McpServerOptions } from '../../src/mcp-server/shared/types';
+import { TokenMode } from '../../src/mcp-tool';
 
 // 创建可追踪的模拟函数
 const connectMock = jest.fn().mockResolvedValue(undefined);
@@ -9,7 +10,7 @@ const connectErrorMock = jest.fn().mockRejectedValue(new Error('Connection error
 // 模拟依赖
 jest.mock('../../src/mcp-server/shared/init', () => {
   return {
-    initMcpServer: jest.fn().mockImplementation(() => ({
+    initOAPIMcpServer: jest.fn().mockImplementation(() => ({
       mcpServer: {
         connect: connectMock,
       },
@@ -33,6 +34,15 @@ jest.mock('@modelcontextprotocol/sdk/server/stdio', () => ({
   StdioServerTransport: jest.fn().mockImplementation(() => ({
     connect: jest.fn(),
   })),
+}));
+
+// 模拟mcp-tool，提供TokenMode
+jest.mock('../../src/mcp-tool', () => ({
+  TokenMode: {
+    AUTO: 'auto',
+    USER_ACCESS_TOKEN: 'user_access_token',
+    TENANT_ACCESS_TOKEN: 'tenant_access_token',
+  },
 }));
 
 // 保存原始console
@@ -80,13 +90,13 @@ describe('initStdioServer', () => {
     };
 
     // 首先初始化MCP服务器
-    const { mcpServer } = initMcpServer(options);
+    const { mcpServer } = initOAPIMcpServer(options);
 
     // 然后使用mcpServer调用initStdioServer
-    initStdioServer(mcpServer);
+    initStdioServer(() => mcpServer);
 
     // 验证调用
-    expect(initMcpServer).toHaveBeenCalledWith(options);
+    expect(initOAPIMcpServer).toHaveBeenCalledWith(options);
     expect(connectMock).toHaveBeenCalled();
   });
 
@@ -99,7 +109,7 @@ describe('initStdioServer', () => {
     };
 
     // 修改connect的实现以模拟错误
-    (initMcpServer as jest.Mock).mockImplementationOnce(() => ({
+    (initOAPIMcpServer as jest.Mock).mockImplementationOnce(() => ({
       mcpServer: {
         connect: connectErrorMock,
       },
@@ -107,10 +117,10 @@ describe('initStdioServer', () => {
     }));
 
     // 首先初始化MCP服务器
-    const { mcpServer } = initMcpServer(options);
+    const { mcpServer } = initOAPIMcpServer(options);
 
     // 然后使用mcpServer调用initStdioServer
-    initStdioServer(mcpServer);
+    initStdioServer(() => mcpServer);
 
     // 假设错误处理是异步的，我们需要等待Promise rejecting
     return new Promise<void>(process.nextTick).then(() => {
@@ -119,5 +129,99 @@ describe('initStdioServer', () => {
       expect(console.error).toHaveBeenCalledWith('MCP Connect Error:', expect.any(Error));
       expect(process.exit).toHaveBeenCalledWith(1);
     });
+  });
+
+  it('应该处理StdioServerTransport初始化时的异常', () => {
+    const options: McpServerOptions = {
+      appId: 'test-app-id',
+      appSecret: 'test-app-secret',
+      host: 'localhost',
+      port: 3000,
+    };
+
+    // 修改StdioServerTransport的实现以模拟抛出异常
+    const StdioServerTransportMock = jest.fn().mockImplementation(() => {
+      throw new Error('初始化错误');
+    });
+
+    jest.mock('@modelcontextprotocol/sdk/server/stdio', () => ({
+      StdioServerTransport: StdioServerTransportMock,
+    }));
+
+    // 重新导入以应用模拟
+    jest.resetModules();
+    const { initStdioServer: initStdioServerReimported } = require('../../src/mcp-server/transport/stdio');
+
+    // 首先初始化MCP服务器
+    const { mcpServer } = initOAPIMcpServer(options);
+
+    // 期望抛出异常
+    initStdioServerReimported(() => mcpServer);
+
+    // 验证错误处理
+    expect(console.error).toHaveBeenCalledWith('Error handling MCP request:', expect.any(Error));
+    expect(process.exit).toHaveBeenCalledWith(1);
+  });
+
+  it('应该正确处理和传递用户指定的选项', () => {
+    const { TokenMode } = require('../../src/mcp-tool');
+
+    const options: McpServerOptions = {
+      appId: 'custom-app-id',
+      appSecret: 'custom-app-secret',
+      host: 'localhost',
+      port: 3000,
+      tools: ['tool1', 'tool2'],
+      language: 'zh',
+      toolNameCase: 'camel',
+      tokenMode: TokenMode.AUTO,
+    };
+
+    // 创建一个自定义的getNewServer函数来验证选项传递
+    const getNewServerMock = jest.fn().mockReturnValue({
+      connect: jest.fn().mockResolvedValue(undefined),
+      close: jest.fn(),
+    });
+
+    // 调用initStdioServer
+    initStdioServer(getNewServerMock);
+
+    // 验证getNewServer被调用
+    expect(getNewServerMock).toHaveBeenCalled();
+  });
+
+  it('应该在transport.connect成功后不调用process.exit', async () => {
+    // 设置成功的connect
+    const successConnectMock = jest.fn().mockResolvedValue(undefined);
+
+    // 创建带有成功connect的模拟服务器
+    const mockServer = {
+      connect: successConnectMock,
+      close: jest.fn(),
+    };
+
+    // 使用一个能够访问Promise的自定义实现
+    const StdioServerTransportSuccessMock = jest.fn().mockImplementation(() => {
+      return {
+        // 不进行任何操作，只返回成功的connect
+      };
+    });
+
+    jest.mock('@modelcontextprotocol/sdk/server/stdio', () => ({
+      StdioServerTransport: StdioServerTransportSuccessMock,
+    }));
+
+    // 重新导入以应用模拟
+    jest.resetModules();
+    const { initStdioServer: initStdioServerSuccess } = require('../../src/mcp-server/transport/stdio');
+
+    // 调用initStdioServer
+    initStdioServerSuccess(() => mockServer);
+
+    // 等待潜在的异步操作完成
+    await new Promise(process.nextTick);
+
+    // 验证在成功情况下process.exit不被调用
+    expect(process.exit).not.toHaveBeenCalled();
   });
 });

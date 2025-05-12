@@ -20,7 +20,7 @@ This is the Feishu/Lark official OpenAPI MCP (Model Context Protocol) tool desig
   - Supports User Access Token authentication
 - **Flexible Communication Protocols:**
   - Supports standard input/output stream (stdio) mode, suitable for integration with AI tools like Trae/Cursor/Claude
-  - Supports Server-Sent Events (SSE) mode, providing HTTP-based interfaces
+  - Supports StreamableHttp mode, providing HTTP-based interfaces
 
 - Supports multiple configuration methods, adapting to different usage scenarios
 
@@ -205,9 +205,9 @@ The `lark-mcp mcp` tool provides various command line parameters for flexible MC
 | `--language` | `-l` | Tools language, options are zh or en, default is en | `-l zh` |
 | `--user-access-token` | `-u` | User access token for calling APIs as a user | `-u u-xxxx` |
 | `--token-mode` |  | API token type, options are auto, tenant_access_token, or user_access_token, default is auto | `--token-mode user_access_token` |
-| `--mode` | `-m` | Transport mode, options are stdio or sse, default is stdio | `-m sse` |
-| `--host` |  | Listening host in SSE mode, default is localhost | `--host 0.0.0.0` |
-| `--port` | `-p` | Listening port in SSE mode, default is 3000 | `-p 3000` |
+| `--mode` | `-m` | Transport mode, options are stdio or streamable or sse, default is stdio | `-m streamable` |
+| `--host` |  | Listening host in SSE/Streamable mode, default is localhost | `--host 0.0.0.0` |
+| `--port` | `-p` | Listening port in SSE/Streamable mode, default is 3000 | `-p 3000` |
 | `--config` |  | Configuration file path, supports JSON format | `--config ./config.json` |
 | `--version` | `-V` | Display version number | `-V` |
 | `--help` | `-h` | Display help information | `-h` |

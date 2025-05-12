@@ -91,9 +91,9 @@ The `lark-mcp recall-developer-documents` tool provides a variety of command lin
 
 | Parameter | Short | Description | Example |
 |------|------|------|------|
-| `--mode` | `-m` | Transfer mode, options are stdio or sse, default is stdio | `-m sse` |
-| `--host` |  | Listening host in SSE mode, default is localhost | `--host 0.0.0.0` |
-| `--port` | `-p` | Listening port in SSE mode, default is 3000 | `-p 3000` |
+| `--mode` | `-m` | Transfer mode, options are stdio or streamable or sse, default is stdio | `-m sse` |
+| `--host` |  | Listening host in SSE\Streamable mode, default is localhost | `--host 0.0.0.0` |
+| `--port` | `-p` | Listening port in SSE\Streamable mode, default is 3000 | `-p 3000` |
 | `--version` | `-V` | Show version number | `-V` |
 | `--help` | `-h` | Show help information | `-h` |
 

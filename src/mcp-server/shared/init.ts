@@ -1,18 +1,17 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { initStdioServer, initSSEServer, initStreamableServer } from '../transport';
+import { McpServerCommonOptions, McpServerOptions, McpServerType } from './types';
+import * as larkmcp from '../../mcp-tool';
 import { noop } from '../../utils/noop';
 import { currentVersion } from '../../utils/version';
-import { McpServerOptions } from './types';
-import * as larkmcp from '../../mcp-tool';
 import { oapiHttpInstance } from '../../utils/http-instance';
 
-export function initMcpServer(options: McpServerOptions) {
+export function initOAPIMcpServer(options: McpServerOptions) {
   const { appId, appSecret, userAccessToken } = options;
 
   if (!appId || !appSecret) {
-    console.error(
-      'Error: Missing App Credentials, please provide APP_ID and APP_SECRET or specify them via command line arguments',
-    );
-    process.exit(1);
+    console.error('Error: Missing App Credentials');
+    throw new Error('Missing App Credentials');
   }
 
   let allowTools = Array.isArray(options.tools) ? options.tools : options.tools?.split(',') || [];
@@ -48,4 +47,44 @@ export function initMcpServer(options: McpServerOptions) {
   larkClient.registerMcpServer(mcpServer, { toolNameCase: options.toolNameCase });
 
   return { mcpServer, larkClient };
+}
+
+export function initRecallMcpServer(options: McpServerOptions) {
+  const server = new McpServer({
+    id: 'lark-recall-mcp-server',
+    name: 'Lark Recall MCP Service',
+    version: currentVersion,
+  });
+  server.tool(larkmcp.RecallTool.name, larkmcp.RecallTool.description, larkmcp.RecallTool.schema, (params) =>
+    larkmcp.RecallTool.handler(params, options),
+  );
+  return server;
+}
+
+export function initMcpServerWithTransport(serverType: McpServerType, options: McpServerOptions) {
+  const { mode } = options;
+
+  const getNewServer = (commonOptions?: McpServerCommonOptions) => {
+    if (serverType === 'oapi') {
+      const { mcpServer } = initOAPIMcpServer({ ...options, ...commonOptions });
+      return mcpServer;
+    } else if (serverType === 'recall') {
+      return initRecallMcpServer({ ...options, ...commonOptions });
+    }
+    throw new Error('Invalid server type');
+  };
+
+  switch (mode) {
+    case 'stdio':
+      initStdioServer(getNewServer);
+      break;
+    case 'sse':
+      initSSEServer(getNewServer, options);
+      break;
+    case 'streamable':
+      initStreamableServer(getNewServer, options);
+      break;
+    default:
+      throw new Error('Invalid mode:' + mode);
+  }
 }

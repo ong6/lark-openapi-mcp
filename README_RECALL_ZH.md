@@ -91,9 +91,9 @@ npm install -g @larksuiteoapi/lark-mcp
 
 | 参数 | 简写 | 描述 | 示例 |
 |------|------|------|------|
-| `--mode` | `-m` | 传输模式，可选值为stdio或sse，默认为stdio | `-m sse` |
-| `--host` |  | SSE模式下的监听主机，默认为localhost | `--host 0.0.0.0` |
-| `--port` | `-p` | SSE模式下的监听端口，默认为3000 | `-p 3000` |
+| `--mode` | `-m` | 传输模式，可选值为stdio、streamable或sse，默认为stdio | `-m sse` |
+| `--host` |  | SSE\Streamable模式下的监听主机，默认为localhost | `--host 0.0.0.0` |
+| `--port` | `-p` | SSE\Streamable模式下的监听端口，默认为3000 | `-p 3000` |
 | `--version` | `-V` | 显示版本号 | `-V` |
 | `--help` | `-h` | 显示帮助信息 | `-h` |
 

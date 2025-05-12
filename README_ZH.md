@@ -20,7 +20,7 @@
   - 支持用户访问令牌（User Access Token）身份验证
 - **灵活的通信协议：**
   - 支持标准输入输出流（stdio）模式，适合与 Trae/Cursor/Claude 等 AI 工具集成
-  - 支持服务器发送事件（SSE）模式，提供基于 HTTP 的接口
+  - 支持 StreamableHTTP 模式，提供基于 HTTP 的接口
 
 - 支持多种配置方式，适应不同的使用场景
 
@@ -207,9 +207,9 @@ lark-mcp mcp -a <your_app_id> -s <your_app_secret> -t im.v1.message.create,im.v1
 | `--language` | `-l` | 工具语言，可选值为zh或en，默认为en | `-l zh` |
 | `--user-access-token` | `-u` | 用户访问令牌，用于以用户身份调用API | `-u u-xxxx` |
 | `--token-mode` |  | API令牌类型，可选值为auto、tenant_access_token或user_access_token，默认为auto | `--token-mode user_access_token` |
-| `--mode` | `-m` | 传输模式，可选值为stdio或sse，默认为stdio | `-m sse` |
-| `--host` |  | SSE模式下的监听主机，默认为localhost | `--host 0.0.0.0` |
-| `--port` | `-p` | SSE模式下的监听端口，默认为3000 | `-p 3000` |
+| `--mode` | `-m` | 传输模式，可选值为stdio、streamable或sse，默认为stdio | `-m streamable` |
+| `--host` |  | SSE\Streamable模式下的监听主机，默认为localhost | `--host 0.0.0.0` |
+| `--port` | `-p` | SSE\Streamable模式下的监听端口，默认为3000 | `-p 3000` |
 | `--config` |  | 配置文件路径，支持JSON格式 | `--config ./config.json` |
 | `--version` | `-V` | 显示版本号 | `-V` |
 | `--help` | `-h` | 显示帮助信息 | `-h` |
