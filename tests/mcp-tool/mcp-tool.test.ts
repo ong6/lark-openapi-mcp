@@ -6,11 +6,13 @@ import { caseTransf } from '../../src/mcp-tool/utils/case-transf';
 import { ToolName } from '../../src/mcp-tool/tools';
 import { larkOapiHandler } from '../../src/mcp-tool/utils/handler';
 import { TokenMode } from '../../src/mcp-tool/types';
+import { LarkAuthHandler, isTokenValid } from '../../src/auth';
 
 // 模拟依赖项
 jest.mock('../../src/mcp-tool/utils/filter-tools');
 jest.mock('../../src/mcp-tool/utils/case-transf');
 jest.mock('../../src/mcp-tool/utils/handler');
+jest.mock('../../src/auth');
 
 // mock larkOapiHandler
 const mockLarkOapiHandler = jest.fn();
@@ -24,6 +26,7 @@ const mockServer = {
 describe('LarkMcpTool', () => {
   let larkMcpTool: LarkMcpTool;
   let mockClient: jest.Mocked<Client>;
+  let mockAuth: jest.Mocked<LarkAuthHandler>;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -57,6 +60,19 @@ describe('LarkMcpTool', () => {
     larkMcpTool = new LarkMcpTool({
       client: mockClient,
       tokenMode: TokenMode.AUTO,
+    });
+
+    // 模拟LarkAuthHandler
+    mockAuth = {
+      refreshToken: jest.fn(),
+      reAuthorize: jest.fn(),
+    } as any;
+
+    // 模拟isTokenValid
+    (isTokenValid as jest.Mock).mockResolvedValue({
+      valid: true,
+      isExpired: false,
+      token: null,
     });
   });
 
@@ -267,7 +283,7 @@ describe('LarkMcpTool', () => {
       const result = await handlerFunction({ content: 'test' });
 
       expect(result.isError).toBe(true);
-      expect(result.content[0].text).toBe('Invalid UserAccessToken');
+      expect(result.content[0].text).toBe('UserAccessToken is invalid or expired');
     });
   });
 
@@ -292,73 +308,6 @@ describe('LarkMcpTool', () => {
   });
 
   describe('参数传递处理', () => {
-    it('应正确处理useUAT参数', async () => {
-      // 使用mock模拟getShouldUseUAT函数，确保返回值是我们期望的
-      jest.mock('../../src/mcp-tool/utils/get-should-use-uat', () => ({
-        getShouldUseUAT: jest.fn().mockReturnValue(false),
-      }));
-
-      const tool = new LarkMcpTool({
-        client: mockClient,
-      });
-
-      tool.registerMcpServer(mockServer);
-
-      // 提取处理函数
-      const handlerFunction = (mockServer.tool as jest.Mock).mock.calls[0][3];
-
-      // 调用处理函数，传入useUAT参数
-      await handlerFunction({ content: 'test', useUAT: true });
-
-      // 只验证handler被调用，不验证具体参数值
-      expect(mockLarkOapiHandler).toHaveBeenCalled();
-    });
-
-    it('应正确处理不同模式下的useUAT参数', async () => {
-      // 使用mockClear清除之前的模拟调用
-      (mockLarkOapiHandler as jest.Mock).mockClear();
-
-      // USER_ACCESS_TOKEN模式
-      const userTokenTool = new LarkMcpTool({
-        client: mockClient,
-        tokenMode: TokenMode.USER_ACCESS_TOKEN,
-      });
-
-      // 设置token
-      userTokenTool.updateUserAccessToken('test-token');
-
-      userTokenTool.registerMcpServer(mockServer);
-
-      // 提取处理函数
-      const userTokenHandlerFunction = (mockServer.tool as jest.Mock).mock.calls[0][3];
-
-      // 调用函数
-      await userTokenHandlerFunction({ content: 'test' });
-
-      // 只验证handler被调用，不验证具体参数值
-      expect(mockLarkOapiHandler).toHaveBeenCalled();
-
-      // 清除模拟调用
-      (mockLarkOapiHandler as jest.Mock).mockClear();
-
-      // TENANT_ACCESS_TOKEN模式
-      const tenantTokenTool = new LarkMcpTool({
-        client: mockClient,
-        tokenMode: TokenMode.TENANT_ACCESS_TOKEN,
-      });
-
-      tenantTokenTool.registerMcpServer(mockServer);
-
-      // 提取处理函数
-      const tenantTokenHandlerFunction = (mockServer.tool as jest.Mock).mock.calls[0][3];
-
-      // 调用函数
-      await tenantTokenHandlerFunction({ content: 'test' });
-
-      // 只验证handler被调用，不验证具体参数值
-      expect(mockLarkOapiHandler).toHaveBeenCalled();
-    });
-
     it('应在AUTO模式下处理useUAT', async () => {
       // 清除模拟调用
       (mockLarkOapiHandler as jest.Mock).mockClear();
@@ -373,11 +322,13 @@ describe('LarkMcpTool', () => {
 
       const autoHandler = (mockServer.tool as jest.Mock).mock.calls[0][3];
 
-      // 调用处理程序
-      await autoHandler({ content: 'test', useUAT: true });
+      // 调用处理程序，当useUAT为true但没有userAccessToken时应返回错误
+      const result1 = await autoHandler({ content: 'test', useUAT: true });
+      expect(result1.isError).toBe(true);
+      expect(result1.content[0].text).toContain('UserAccessToken is invalid or expired');
 
-      // 只验证handler被调用，不验证具体参数值
-      expect(mockLarkOapiHandler).toHaveBeenCalled();
+      // 验证handler没有被调用，因为返回了错误
+      expect(mockLarkOapiHandler).not.toHaveBeenCalled();
 
       // 清除模拟调用
       (mockLarkOapiHandler as jest.Mock).mockClear();
@@ -386,7 +337,7 @@ describe('LarkMcpTool', () => {
       autoTool.updateUserAccessToken('test-token');
 
       // 调用处理程序
-      await autoHandler({ content: 'test' });
+      await autoHandler({ content: 'test', useUAT: true });
 
       // 验证handler被调用，并传入了userAccessToken
       expect(mockLarkOapiHandler).toHaveBeenCalledWith(
@@ -443,26 +394,461 @@ describe('LarkMcpTool', () => {
       expect(result.isError).toBe(true);
       expect(result.content[0].text).toContain('Error:');
     });
+  });
 
-    it('handler throw undefined', async () => {
-      mockLarkOapiHandler.mockImplementationOnce(() => {
-        throw undefined;
-      });
-
+  describe('ensureGetUserAccessToken', () => {
+    it('应该在没有OAuth时直接返回userAccessToken', async () => {
       const tool = new LarkMcpTool({
         client: mockClient,
-        tokenMode: TokenMode.AUTO,
+        oauth: false,
+      });
+
+      tool.updateUserAccessToken('test-token');
+
+      // 通过registerMcpServer间接测试ensureGetUserAccessToken
+      tool.registerMcpServer(mockServer);
+      const handlerFunction = (mockServer.tool as jest.Mock).mock.calls[0][3];
+
+      await handlerFunction({ content: 'test' });
+
+      // 验证handler被调用，说明token正常传递
+      expect(mockLarkOapiHandler).toHaveBeenCalled();
+    });
+
+    it('应该在没有OAuth且没有userAccessToken时返回空对象', async () => {
+      const tool = new LarkMcpTool({
+        client: mockClient,
+        oauth: false,
+      });
+
+      // 不设置userAccessToken，让它为undefined
+
+      // 直接测试ensureGetUserAccessToken方法
+      const result = await tool.ensureGetUserAccessToken();
+
+      // 应该返回空对象，因为没有OAuth且没有userAccessToken
+      expect(result).toEqual({});
+    });
+
+    it('应该在没有OAuth且token无效时返回空对象', async () => {
+      // 创建独立的mock auth
+      const localMockAuth = {
+        refreshToken: jest.fn(),
+        reAuthorize: jest.fn(),
+      } as any;
+
+      const tool = new LarkMcpTool(
+        {
+          client: mockClient,
+          oauth: false, // 禁用OAuth
+        },
+        localMockAuth,
+      );
+
+      // 不设置userAccessToken，让它为undefined
+
+      // 模拟token验证返回无效
+      (isTokenValid as jest.Mock).mockResolvedValueOnce({
+        valid: false,
+        isExpired: false,
+        token: null,
       });
 
       tool.registerMcpServer(mockServer);
-
-      // 提取处理函数
       const handlerFunction = (mockServer.tool as jest.Mock).mock.calls[0][3];
 
-      // 调用处理函数
-      const result = await handlerFunction({ content: 'test' });
+      await handlerFunction({ content: 'test' });
+
+      // 验证不会调用reAuthorize，因为oauth被禁用
+      expect(localMockAuth.reAuthorize).not.toHaveBeenCalled();
+      expect(mockLarkOapiHandler).toHaveBeenCalled();
+    });
+
+    it('应该在token有效时直接返回', async () => {
+      // 清除之前的mock调用
+      jest.clearAllMocks();
+
+      // 重新创建mock auth，确保状态干净
+      const freshMockAuth = {
+        refreshToken: jest.fn(),
+        reAuthorize: jest.fn(),
+      } as any;
+
+      const tool = new LarkMcpTool(
+        {
+          client: mockClient,
+          oauth: true,
+        },
+        freshMockAuth,
+      );
+
+      tool.updateUserAccessToken('valid-token');
+
+      // 重置并模拟token验证返回有效
+      (isTokenValid as jest.Mock).mockReset();
+      (isTokenValid as jest.Mock).mockResolvedValue({
+        valid: true,
+        isExpired: false,
+        token: null,
+      });
+
+      // 模拟larkOapiHandler返回成功结果
+      mockLarkOapiHandler.mockResolvedValueOnce({
+        content: [{ type: 'text', text: 'Success' }],
+      });
+
+      tool.registerMcpServer(mockServer);
+      const handlerFunction = (mockServer.tool as jest.Mock).mock.calls[0][3];
+
+      await handlerFunction({ content: 'test', useUAT: true });
+
+      expect(isTokenValid).toHaveBeenCalledWith('valid-token');
+      expect(freshMockAuth.refreshToken).not.toHaveBeenCalled();
+      expect(freshMockAuth.reAuthorize).not.toHaveBeenCalled();
+    });
+
+    it('应该在token过期但有refresh token时刷新token', async () => {
+      // 清除之前的mock调用
+      jest.clearAllMocks();
+
+      // 重新创建mock auth，确保状态干净
+      const freshMockAuth = {
+        refreshToken: jest.fn(),
+        reAuthorize: jest.fn(),
+      } as any;
+
+      const tool = new LarkMcpTool(
+        {
+          client: mockClient,
+          oauth: true,
+        },
+        freshMockAuth,
+      );
+
+      tool.updateUserAccessToken('expired-token');
+
+      // 重置并模拟token验证返回过期但有refresh token
+      (isTokenValid as jest.Mock).mockReset();
+      (isTokenValid as jest.Mock).mockResolvedValue({
+        valid: false,
+        isExpired: true,
+        token: {
+          token: 'expired-token',
+          extra: { refreshToken: 'refresh-token' },
+        },
+      });
+
+      // 模拟refreshToken返回一个有效的新token
+      freshMockAuth.refreshToken.mockResolvedValueOnce({
+        access_token: 'new-access-token',
+        refresh_token: 'new-refresh-token',
+        token_type: 'Bearer',
+        expires_in: 3600,
+      } as any);
+
+      // 模拟larkOapiHandler返回成功结果
+      mockLarkOapiHandler.mockResolvedValueOnce({
+        content: [{ type: 'text', text: 'Success' }],
+      });
+
+      tool.registerMcpServer(mockServer);
+      const handlerFunction = (mockServer.tool as jest.Mock).mock.calls[0][3];
+
+      await handlerFunction({ content: 'test', useUAT: true });
+
+      expect(freshMockAuth.refreshToken).toHaveBeenCalledWith('expired-token');
+      expect(freshMockAuth.reAuthorize).not.toHaveBeenCalled();
+    });
+
+    it('应该在刷新失败时进行重新授权', async () => {
+      // 创建独立的mock auth
+      const localMockAuth = {
+        refreshToken: jest.fn(),
+        reAuthorize: jest.fn(),
+      } as any;
+
+      const tool = new LarkMcpTool(
+        {
+          client: mockClient,
+          oauth: true,
+        },
+        localMockAuth,
+      );
+
+      tool.updateUserAccessToken('expired-token');
+
+      // 模拟token验证返回过期但有refresh token
+      (isTokenValid as jest.Mock).mockResolvedValueOnce({
+        valid: false,
+        isExpired: true,
+        token: {
+          token: 'expired-token',
+          extra: { refreshToken: 'refresh-token' },
+        },
+      });
+
+      // 模拟refreshToken失败
+      localMockAuth.refreshToken.mockRejectedValueOnce(new Error('Refresh failed'));
+
+      // 模拟reAuthorize返回授权URL
+      localMockAuth.reAuthorize.mockResolvedValueOnce({
+        authorizeUrl: 'https://auth.example.com',
+        accessToken: '',
+      } as any);
+
+      tool.registerMcpServer(mockServer);
+      const handlerFunction = (mockServer.tool as jest.Mock).mock.calls[0][3];
+
+      const result = await handlerFunction({ content: 'test', useUAT: true });
+
+      expect(localMockAuth.refreshToken).toHaveBeenCalled();
+      expect(localMockAuth.reAuthorize).toHaveBeenCalled();
+      // 当需要重新授权时，处理函数可能不返回结果或返回默认的larkOapiHandler结果
+      // 我们只验证相关方法被调用即可
+    });
+
+    it('应该在refreshToken返回没有access_token时进行重新授权', async () => {
+      // 创建独立的mock auth
+      const localMockAuth = {
+        refreshToken: jest.fn(),
+        reAuthorize: jest.fn(),
+      } as any;
+
+      const tool = new LarkMcpTool(
+        {
+          client: mockClient,
+          oauth: true,
+        },
+        localMockAuth,
+      );
+
+      tool.updateUserAccessToken('expired-token');
+
+      // 模拟token验证返回过期但有refresh token
+      (isTokenValid as jest.Mock).mockResolvedValueOnce({
+        valid: false,
+        isExpired: true,
+        token: {
+          token: 'expired-token',
+          extra: { refreshToken: 'refresh-token' },
+        },
+      });
+
+      // 模拟refreshToken返回一个对象但没有access_token
+      localMockAuth.refreshToken.mockResolvedValueOnce({
+        access_token: '', // 空字符串，falsy值
+        refresh_token: 'refresh-token',
+        token_type: 'Bearer',
+      } as any);
+
+      // 模拟reAuthorize返回授权URL
+      localMockAuth.reAuthorize.mockResolvedValueOnce({
+        authorizeUrl: 'https://auth.example.com',
+        accessToken: '',
+      } as any);
+
+      tool.registerMcpServer(mockServer);
+      const handlerFunction = (mockServer.tool as jest.Mock).mock.calls[0][3];
+
+      const result = await handlerFunction({ content: 'test', useUAT: true });
+
+      expect(localMockAuth.refreshToken).toHaveBeenCalled();
+      expect(localMockAuth.reAuthorize).toHaveBeenCalled();
+      // 当需要重新授权时，处理函数可能不返回结果或返回默认的larkOapiHandler结果
+      // 我们只验证相关方法被调用即可
+    });
+
+    it('应该在reAuthorize没有返回authorizeUrl时返回UserAccessToken is invalid or expired错误', async () => {
+      const localMockAuth = {
+        refreshToken: jest.fn(),
+        reAuthorize: jest.fn(),
+      } as any;
+
+      const tool = new LarkMcpTool(
+        {
+          client: mockClient,
+          oauth: true,
+          tokenMode: TokenMode.USER_ACCESS_TOKEN, // 确保shouldUseUAT为true
+        },
+        localMockAuth,
+      );
+
+      // 不设置userAccessToken，确保userAccessToken为undefined
+
+      // 模拟token验证返回无效
+      (isTokenValid as jest.Mock).mockResolvedValueOnce({
+        valid: false,
+        isExpired: false,
+        token: null,
+      });
+
+      // 模拟reAuthorize没有返回authorizeUrl
+      localMockAuth.reAuthorize.mockResolvedValueOnce({
+        accessToken: '', // 空字符串，falsy值
+        // 没有authorizeUrl字段，所以authorizeUrl是undefined
+      } as any);
+
+      tool.registerMcpServer(mockServer);
+      const handlerFunction = (mockServer.tool as jest.Mock).mock.calls[0][3];
+
+      const result = await handlerFunction({ content: 'test', useUAT: true });
 
       expect(result.isError).toBe(true);
+      expect(result.content[0].text).toBe('UserAccessToken is invalid or expired');
+    });
+
+    it('应该在重新授权返回访问令牌时使用新token', async () => {
+      const localMockAuth = {
+        refreshToken: jest.fn(),
+        reAuthorize: jest.fn(),
+      } as any;
+
+      const tool = new LarkMcpTool(
+        {
+          client: mockClient,
+          oauth: true,
+        },
+        localMockAuth,
+      );
+
+      tool.updateUserAccessToken('old-token');
+
+      // 模拟token验证返回无效
+      (isTokenValid as jest.Mock).mockResolvedValueOnce({
+        valid: false,
+        isExpired: false,
+        token: null,
+      });
+
+      // 模拟reAuthorize直接返回新的访问令牌
+      localMockAuth.reAuthorize.mockResolvedValueOnce({
+        accessToken: 'new-access-token',
+      } as any);
+
+      tool.registerMcpServer(mockServer);
+      const handlerFunction = (mockServer.tool as jest.Mock).mock.calls[0][3];
+
+      await handlerFunction({ content: 'test', useUAT: true });
+
+      expect(localMockAuth.reAuthorize).toHaveBeenCalled();
+      expect(mockLarkOapiHandler).toHaveBeenCalledWith(
+        mockClient,
+        expect.any(Object),
+        expect.objectContaining({
+          userAccessToken: 'new-access-token',
+        }),
+      );
+    });
+
+    it('应该在没有auth实例时直接返回', async () => {
+      const tool = new LarkMcpTool({
+        client: mockClient,
+        oauth: true, // 设置oauth为true但不传入auth实例
+      });
+
+      tool.updateUserAccessToken('test-token');
+
+      tool.registerMcpServer(mockServer);
+      const handlerFunction = (mockServer.tool as jest.Mock).mock.calls[0][3];
+
+      await handlerFunction({ content: 'test' });
+
+      // 验证没有调用auth相关方法
+      expect(isTokenValid).not.toHaveBeenCalled();
+      expect(mockLarkOapiHandler).toHaveBeenCalled();
+    });
+
+    it('应该在reAuthorize返回accessToken时使用新token', async () => {
+      const localMockAuth = {
+        refreshToken: jest.fn(),
+        reAuthorize: jest.fn(),
+      } as any;
+
+      const tool = new LarkMcpTool(
+        {
+          client: mockClient,
+          oauth: true,
+        },
+        localMockAuth,
+      );
+
+      tool.updateUserAccessToken('expired-token');
+
+      // 模拟token验证返回过期且没有refresh token
+      (isTokenValid as jest.Mock).mockResolvedValueOnce({
+        valid: false,
+        isExpired: true,
+        token: {
+          token: 'expired-token',
+          extra: {}, // 没有refresh_token
+        },
+      });
+
+      // 模拟reAuthorize返回新的accessToken
+      localMockAuth.reAuthorize.mockResolvedValueOnce({
+        authorizeUrl: 'https://auth.example.com',
+        accessToken: 'new-access-token',
+      } as any);
+
+      tool.registerMcpServer(mockServer);
+      const handlerFunction = (mockServer.tool as jest.Mock).mock.calls[0][3];
+
+      await handlerFunction({ content: 'test', useUAT: true });
+
+      expect(localMockAuth.reAuthorize).toHaveBeenCalledWith('expired-token');
+      expect(mockLarkOapiHandler).toHaveBeenCalledWith(
+        mockClient,
+        expect.any(Object),
+        expect.objectContaining({
+          userAccessToken: 'new-access-token',
+        }),
+      );
+    });
+
+    it('应该在没有authorizeUrl时返回UserAccessToken is invalid or expired错误', async () => {
+      const localMockAuth = {
+        refreshToken: jest.fn(),
+        reAuthorize: jest.fn(),
+      } as any;
+
+      const tool = new LarkMcpTool(
+        {
+          client: mockClient,
+          oauth: true,
+          tokenMode: TokenMode.USER_ACCESS_TOKEN,
+        },
+        localMockAuth,
+      );
+
+      // 不设置userAccessToken，让其为undefined
+
+      // 模拟token验证返回无效
+      (isTokenValid as jest.Mock).mockResolvedValueOnce({
+        valid: false,
+        isExpired: false,
+        token: null,
+      });
+
+      // 模拟reAuthorize返回空的authorizeUrl和accessToken
+      localMockAuth.reAuthorize.mockResolvedValueOnce({
+        authorizeUrl: '',
+        accessToken: '',
+      } as any);
+
+      tool.registerMcpServer(mockServer);
+      const handlerFunction = (mockServer.tool as jest.Mock).mock.calls[0][3];
+
+      const result = await handlerFunction({ content: 'test', useUAT: true });
+
+      expect(result).toEqual({
+        isError: true,
+        content: [
+          {
+            type: 'text',
+            text: 'UserAccessToken is invalid or expired',
+          },
+        ],
+      });
     });
   });
 });

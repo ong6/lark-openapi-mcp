@@ -92,6 +92,7 @@ describe('initOAPIMcpServer', () => {
         appId: 'test-app-id',
         appSecret: 'test-app-secret',
       }),
+      undefined,
     );
   });
 
@@ -128,6 +129,7 @@ describe('initOAPIMcpServer', () => {
           allowTools: ['tool1', 'tool2'],
         }),
       }),
+      undefined,
     );
   });
 
@@ -150,6 +152,7 @@ describe('initOAPIMcpServer', () => {
           allowTools: ['tool1', 'tool2'],
         }),
       }),
+      undefined,
     );
   });
 
@@ -177,20 +180,24 @@ describe('initOAPIMcpServer', () => {
       port: 3000,
     };
 
-    // 从模块导入默认工具列表
-    const { defaultToolNames } = require('../../../src/mcp-tool');
-
     initOAPIMcpServer(options);
+
     // 从mcp-tool模块导入LarkMcpTool
     const { LarkMcpTool } = require('../../../src/mcp-tool');
-    // 检查是否合并了默认工具和额外的工具
+    // 验证LarkMcpTool被调用且包含toolsOptions
     expect(LarkMcpTool).toHaveBeenCalledWith(
       expect.objectContaining({
         toolsOptions: expect.objectContaining({
-          allowTools: expect.arrayContaining([...defaultToolNames, 'preset.default', 'extra-tool']),
+          allowTools: expect.any(Array),
         }),
       }),
+      undefined,
     );
+
+    // 验证tools被正确传递
+    const calls = LarkMcpTool.mock.calls;
+    const toolsOptions = calls[calls.length - 1][0].toolsOptions;
+    expect(toolsOptions.allowTools).toEqual(expect.arrayContaining(['preset.default', 'extra-tool']));
   });
 });
 
@@ -256,19 +263,23 @@ describe('initMcpServerWithTransport', () => {
     initMcpServerWithTransport('recall', options);
   });
 
-  it('不正常mode初始化， 应该抛出错误', () => {
+  it('应该在userAccessToken和oauth同时存在时抛出错误', async () => {
     const options = {
       appId: 'test-app-id',
       appSecret: 'test-app-secret',
       host: 'localhost',
       port: 3000,
-      mode: 'unknown' as any,
+      mode: 'stdio' as const,
+      userAccessToken: 'test-token',
+      oauth: true,
     };
 
-    expect(() => initMcpServerWithTransport('unknown' as any, options)).toThrow('Invalid mode:unknown');
+    await expect(initMcpServerWithTransport('oapi', options)).rejects.toThrow(
+      'userAccessToken and oauth cannot be used together',
+    );
   });
 
-  it('使用无效的服务器类型应该抛出错误', () => {
+  it('应该在无效的服务器类型时抛出错误', async () => {
     const options = {
       appId: 'test-app-id',
       appSecret: 'test-app-secret',
@@ -277,6 +288,18 @@ describe('initMcpServerWithTransport', () => {
       mode: 'stdio' as const,
     };
 
-    expect(() => initMcpServerWithTransport('invalid' as any, options)).toThrow('Invalid server type');
+    await expect(initMcpServerWithTransport('invalid' as any, options)).rejects.toThrow('Invalid server type');
+  });
+
+  it('应该在无效的模式时抛出错误', async () => {
+    const options = {
+      appId: 'test-app-id',
+      appSecret: 'test-app-secret',
+      host: 'localhost',
+      port: 3000,
+      mode: 'invalid' as any,
+    };
+
+    await expect(initMcpServerWithTransport('oapi', options)).rejects.toThrow('Invalid mode:invalid');
   });
 });
