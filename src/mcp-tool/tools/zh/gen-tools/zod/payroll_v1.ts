@@ -75,7 +75,7 @@ export const payrollV1CostAllocationReportList = {
       cost_allocation_plan_id: z
         .string()
         .describe(
-          '成本分摊方案ID，通过获取',
+          '成本分摊方案ID，通过[批量查询成本分摊方案]获取',
         ),
       pay_period: z.string().describe('期间，成本分摊数据对应的年月，格式 为yyyy-MM'),
       report_type: z
@@ -93,7 +93,7 @@ export const payrollV1DatasourceRecordQuery = {
   path: '/open-apis/payroll/v1/datasource_records/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Payroll-外部数据源记录-批量查询外部算薪数据记录-1. 支持通过payroll_period（必传）、employment_id（可选）这两个预置字段，批量查询指定数据源下的数据记录列表。2. 数据源配置信息可从或者 「飞书人事后台-设置-算薪数据设置-外部数据源配置」页面 获取',
+    '[Feishu/Lark]-Payroll-外部数据源记录-批量查询外部算薪数据记录-1. 支持通过payroll_period（必传）、employment_id（可选）这两个预置字段，批量查询指定数据源下的数据记录列表。2. 数据源配置信息可从[获取外部数据源配置信息]或者 「飞书人事后台-设置-算薪数据设置-外部数据源配置」页面 获取',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -109,10 +109,16 @@ export const payrollV1DatasourceRecordQuery = {
           z.object({
             field_code: z.string().describe('字段编码'),
             field_values: z.array(z.string()).describe('包含的字段值列表').optional(),
+            operator: z
+              .number()
+              .describe(
+                '查询操作符，不传默认为IsAnyOf 包含查询。 Options:1(is_any_of IsAnyOf 包含查询，被查询记录的字段值被field_values列表包含即可。),2(in_data_range InDateRange 日期范围查询。field_values长度必须为2，类似[startDate,endDate]，前后都是闭区间；其中日期格式为“2024-01-02”，仅occur_day、custom_start、custom_end字段支持此查询方式，且时间范围不超过90天。)',
+              )
+              .optional(),
           }),
         )
         .describe(
-          '查询条件列表，多个条件之间为And关系，只支持「employment_id」、「payroll_period」这两个预置字段的等值查询：1. payroll_period- 必传，最多传入2个。- 字段类型：field_type=4(日期) ， 格式“yyyy-mm”，示例：“2024-01”， 注意并非“yyyy-mm-dd”2. employment_id- 非必传，最多传入100个，field_type=3（文本类型）。- 该id为飞书人事中员工的基本信息id，可通过获取',
+          '查询条件列表，多个条件之间为And关系，支持的查询条件如下：1. employment_id- 非必传，最多传入100个，field_type=3（文本类型）。- 该id为飞书人事中员工的基本信息id，可通过[搜索员工信息]获取.- 查询操作符只支持IsAnyOf（包含）2. 时间范围条件必传，根据数据源的不同数据写入维度，支持的时间范围查询条件如下：- 算薪期间维度。payroll_period字段，格式：2024-01， 查询方式：IsAnyOf操作符枚举需要查的月份，最多可查2个月。- 数据发生日期维度（灰度中）。occur_day字段，格式2024-01-02， 查询方式：通过InDateRange操作符查询（日期范围查询），occur_day的时间范围不允许超过90天，- 自定义数据周期维度（灰度中）。custom_start、custom_end字段，格式：2024-01-02。查询方式：两者都必传，通过InDateRange操作符查询（日期范围查询），时间范围不允许超过90天',
         )
         .optional(),
     }),
@@ -142,7 +148,7 @@ export const payrollV1DatasourceRecordSave = {
       source_code: z
         .string()
         .describe(
-          '数据源code。可从或者 「飞书人事后台-设置-算薪数据设置-外部数据源配置」页面 获取',
+          '数据源code。可从[获取外部数据源配置信息]或者 「飞书人事后台-设置-算薪数据设置-外部数据源配置」页面 获取',
         ),
       records: z
         .array(
@@ -172,7 +178,7 @@ export const payrollV1DatasourceRecordSave = {
                 }),
               )
               .describe(
-                '记录的字段值列表。1. 每条记录必需传入系统预置字段“payroll_period”、“employment_id”。2. 其他自定义字段按照诉求传入，需保证写入的字段在配置中存在且启用。字段code不得重复传入，且字段的值需符合下面类型对应的约束。3. 关于“payroll_period”，“employment_id”两个预置字段值的说明： - payroll_period。代表算薪期间，精确到月，格式为“yyyy-mm” eg: "2024-01" - employment_id。该id为飞书人事中员工的基本信息id，可通过获取',
+                '需创建或者更新记录的具体字段值列表：- 必传字段： 根据记录的数据源的数据写入维度属性，有不同的必传字段：1. 算薪期间维度。“payroll_period”、“employment_id”字段必传，payroll_period格式：“2024-01”。2. 数据发生日期维度（灰度中）。“occur_day”、“employment_id”字段必传。occur_day格式：“2024-01-02”。3. 自定义数据周期维度（灰度中）。“custom_start”、“custom_end”、“employment_id”字段必传。custom_start、custom_end格式：“2024-01-02”。employment_id为飞书人事中员工的基本信息id，可通过[搜索员工信息]获取- 其他自定字段按照诉求可选传入，需保证写入的字段在配置中存在且启用。字段code不得重复传入，且字段的值需符合类型对应的约束',
               ),
           }),
         )
@@ -240,7 +246,7 @@ export const payrollV1PaymentActivityDetailList = {
       activity_id: z
         .string()
         .describe(
-          '发薪活动 ID，调用接口后，可以从返回结果中获取到发薪活动 ID',
+          '发薪活动 ID，调用[查询发薪活动列表]接口后，可以从返回结果中获取到发薪活动 ID',
         ),
       include_segment_data: z
         .boolean()
@@ -251,7 +257,7 @@ export const payrollV1PaymentActivityDetailList = {
       acct_item_ids: z
         .array(z.string())
         .describe(
-          '算薪项 ID 列表，调用接口后，可以从返回结果中获取到算薪项 ID。1. 当前参数传空时，接口会返回发薪明细中所有的算薪项；2. 当前参数不为空时，接口只返回发薪明细中与 acct_item_ids 存在交集的算薪项',
+          '算薪项 ID 列表，调用[批量查询算薪项]接口后，可以从返回结果中获取到算薪项 ID。1. 当前参数传空时，接口会返回发薪明细中所有的算薪项；2. 当前参数不为空时，接口只返回发薪明细中与 acct_item_ids 存在交集的算薪项',
         )
         .optional(),
     }),
@@ -272,7 +278,7 @@ export const payrollV1PaymentActivityArchive = {
       activity_id: z
         .string()
         .describe(
-          '发薪活动ID，可通过获取',
+          '发薪活动ID，可通过[查询发薪活动列表]获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -328,13 +334,13 @@ export const payrollV1PaymentDetailQuery = {
       acct_item_ids: z
         .array(z.string())
         .describe(
-          '算薪项 ID 列表，调用接口后，可以从返回结果中获取到算薪项 ID。1. 当前参数传空时，接口会返回发薪明细中所有的算薪项；2. 当前参数不为空时，接口只返回发薪明细中与 acct_item_ids 存在交集的算薪项',
+          '算薪项 ID 列表，调用[批量查询算薪项]接口后，可以从返回结果中获取到算薪项 ID。1. 当前参数传空时，接口会返回发薪明细中所有的算薪项；2. 当前参数不为空时，接口只返回发薪明细中与 acct_item_ids 存在交集的算薪项',
         )
         .optional(),
       employee_ids: z
         .array(z.string())
         .describe(
-          '员工的飞书人事雇佣 ID 列表，__该参数为必填__，调用接口后，可以从返回结果中获取到飞书人事雇佣 ID。注：调用接口时，查询入参 user_id_type 应为 people_corehr_id',
+          '员工的飞书人事雇佣 ID 列表，__该参数为必填__，调用[搜索员工信息]接口后，可以从返回结果中获取到飞书人事雇佣 ID。注：调用[搜索员工信息]接口时，查询入参 user_id_type 应为 people_corehr_id',
         ),
       pay_period_start_date: z
         .string()
@@ -349,7 +355,7 @@ export const payrollV1PaymentDetailQuery = {
       activity_ids: z
         .array(z.string())
         .describe(
-          '发薪活动 ID 列表，调用接口后，可以从返回结果中获取到发薪活动 ID',
+          '发薪活动 ID 列表，调用[查询发薪活动列表]接口后，可以从返回结果中获取到发薪活动 ID',
         )
         .optional(),
       include_segment_data: z

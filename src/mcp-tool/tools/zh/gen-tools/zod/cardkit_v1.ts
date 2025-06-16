@@ -29,13 +29,13 @@ export const cardkitV1CardBatchUpdate = {
       actions: z
         .string()
         .describe(
-          '操作列表，可选值有：- `partial_update_setting`：更新卡片配置，支持更新卡片的 config 和 card_link 字段。参数结构可参考；- `add_elements`：添加组件，支持 type、 target_element_id、elements 字段。参数结构可参考接口请求体；- `delete_elements`：删除组件，支持 element_ids 字段。参数值为组件 ID 数组。参数结构可参考； - `partial_update_element`：更新组件的属性，支持 element_id 和 partial_element 字段。参数结构可参考接口的路径参数 element_id 和请求体 partial_element 字段 ; - `update_element`：全量更新组件，支持 element_id 和 element 字段。参数结构可参考接口的路径参数 element_id 和请求体 element 字段',
+          '操作列表，可选值有：- `partial_update_setting`：更新卡片配置，支持更新卡片的 config 和 card_link 字段。参数结构可参考[更新卡片配置]；- `add_elements`：添加组件，支持 type、 target_element_id、elements 字段。参数结构可参考[新增组件]接口请求体；- `delete_elements`：删除组件，支持 element_ids 字段。参数值为组件 ID 数组。参数结构可参考[删除组件]； - `partial_update_element`：更新组件的属性，支持 element_id 和 partial_element 字段。参数结构可参考[更新组件属性]接口的路径参数 element_id 和请求体 partial_element 字段 ; - `update_element`：全量更新组件，支持 element_id 和 element 字段。参数结构可参考[全量更新组件]接口的路径参数 element_id 和请求体 element 字段',
         ),
     }),
     path: z.object({
       card_id: z
         .string()
-        .describe('卡片实体 ID。通过获取'),
+        .describe('卡片实体 ID。通过[创建卡片实体]获取'),
     }),
   },
 };
@@ -53,7 +53,7 @@ export const cardkitV1CardCreate = {
       data: z
         .string()
         .describe(
-          '卡片 JSON 数据的内容。仅支持，即你必须声明 schema 为 2.0。以下示例值未转义，使用时请注意将其转为 JSON 序列化后的字符串',
+          '卡片 JSON 数据的内容。仅支持[卡片 JSON 2.0 结构]，即你必须声明 schema 为 2.0。以下示例值未转义，使用时请注意将其转为 JSON 序列化后的字符串',
         ),
     }),
   },
@@ -65,7 +65,7 @@ export const cardkitV1CardElementContent = {
   path: '/open-apis/cardkit/v1/cards/:card_id/elements/:element_id/content',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-飞书卡片-组件-流式更新文本-对卡片中的普通文本元素（tag 为 plain_text 的元素）或富文本组件（tag 为 markdown 的组件）传入全量文本内容，以实现“打字机”式的文字输出效果',
+    '[Feishu/Lark]-飞书卡片-组件-流式更新文本-对卡片中的普通文本元素（tag 为 plain_text 的元素）或富文本组件（tag 为 markdown 的组件）传入全量文本内容，以实现“打字机”式的文字输出效果。参考[流式更新 OpenAPI 调用指南]，了解流式更新文本的完整流程',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -80,7 +80,7 @@ export const cardkitV1CardElementContent = {
     path: z.object({
       card_id: z
         .string()
-        .describe('卡片实体 ID。通过获取'),
+        .describe('卡片实体 ID。通过[创建卡片实体]获取'),
       element_id: z
         .string()
         .describe('普通文本组件或富文本组件的 ID。对应卡片 JSON 中的 `element_id` 属性，由开发者自定义'),
@@ -119,7 +119,7 @@ export const cardkitV1CardElementCreate = {
     path: z.object({
       card_id: z
         .string()
-        .describe('卡片实体 ID。通过获取'),
+        .describe('卡片实体 ID。通过[创建卡片实体]获取'),
     }),
   },
 };
@@ -143,7 +143,7 @@ export const cardkitV1CardElementDelete = {
     path: z.object({
       card_id: z
         .string()
-        .describe('卡片实体 ID。通过获取'),
+        .describe('卡片实体 ID。通过[创建卡片实体]获取'),
       element_id: z.string().describe('要删除的组件 ID。对应卡片 JSON 中的 `element_id` 属性，由开发者自定义'),
     }),
   },
@@ -173,7 +173,7 @@ export const cardkitV1CardElementPatch = {
     path: z.object({
       card_id: z
         .string()
-        .describe('卡片实体 ID。通过获取'),
+        .describe('卡片实体 ID。通过[创建卡片实体]获取'),
       element_id: z.string().describe('要更新的组件的 ID。对应 JSON 代码中的 `element_id` 属性，由开发者自定义'),
     }),
   },
@@ -201,7 +201,7 @@ export const cardkitV1CardElementUpdate = {
     path: z.object({
       card_id: z
         .string()
-        .describe('卡片实体 ID。通过获取'),
+        .describe('卡片实体 ID。通过[创建卡片实体]获取'),
       element_id: z.string().describe('要更新的组件 ID。对应卡片 JSON 中的 `element_id` 属性，由开发者自定义'),
     }),
   },
@@ -213,14 +213,14 @@ export const cardkitV1CardIdConvert = {
   path: '/open-apis/cardkit/v1/cards/id_convert',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-历史版本（不推荐）-转换 ID-将（ `message_id` ）转换为卡片实体 ID（`card_id`）。用于将由等接口返回的消息 ID 转换为卡片实体 ID，以进一步对卡片进行全量更新、局部更新、或文本流式更新操作',
+    '[Feishu/Lark]-历史版本（不推荐）-转换 ID-将[消息 ID]（ `message_id` ）转换为卡片实体 ID（`card_id`）。用于将由[发送消息]等接口返回的消息 ID 转换为卡片实体 ID，以进一步对卡片进行全量更新、局部更新、或文本流式更新操作',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       message_id: z
         .string()
         .describe(
-          '消息 ID。通过等接口获取。其消息类型（msg_type）需为卡片（interactive）',
+          '消息 ID。通过[发送消息]等接口获取。其消息类型（msg_type）需为卡片（interactive）',
         ),
     }),
   },
@@ -238,7 +238,7 @@ export const cardkitV1CardSettings = {
       settings: z
         .string()
         .describe(
-          '卡片配置相关字段，包括 `config` 和 `card_link` 字段。以下示例值未转义，使用时请注意将其转为 JSON 序列化后的字符串。了解字段详细说明，参考',
+          '卡片配置相关字段，包括 `config` 和 `card_link` 字段。以下示例值未转义，使用时请注意将其转为 JSON 序列化后的字符串。了解字段详细说明，参考[卡片 JSON 2.0 结构]',
         ),
       uuid: z.string().describe('幂等 ID，可通过传入唯一的 UUID 以保证相同批次的操作只进行一次').optional(),
       sequence: z
@@ -250,7 +250,7 @@ export const cardkitV1CardSettings = {
     path: z.object({
       card_id: z
         .string()
-        .describe('卡片实体 ID。通过获取'),
+        .describe('卡片实体 ID。通过[创建卡片实体]获取'),
     }),
   },
 };
@@ -284,7 +284,7 @@ export const cardkitV1CardUpdate = {
     path: z.object({
       card_id: z
         .string()
-        .describe('卡片实体 ID。通过获取'),
+        .describe('卡片实体 ID。通过[创建卡片实体]获取'),
     }),
   },
 };

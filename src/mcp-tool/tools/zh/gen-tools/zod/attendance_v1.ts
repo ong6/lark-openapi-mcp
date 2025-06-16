@@ -51,7 +51,7 @@ export const attendanceV1ApprovalInfoProcess = {
       approval_id: z
         .string()
         .describe(
-          '审批实例 ID，获取方式：1） 2） 3）',
+          '审批实例 ID，获取方式：1）[获取审批通过数据] 2）[写入审批结果] 3）[通知补卡审批发起（补卡情况下）]',
         ),
       approval_type: z
         .string()
@@ -79,7 +79,7 @@ export const attendanceV1ArchiveRuleDelReport = {
       archive_rule_id: z
         .string()
         .describe(
-          '归档规则id，可根据获得',
+          '归档规则id，可根据[查询所有归档规则]获得',
         ),
       user_ids: z.array(z.string()).describe('用户id，对应employee_type').optional(),
     }),
@@ -87,7 +87,7 @@ export const attendanceV1ArchiveRuleDelReport = {
       employee_type: z
         .string()
         .describe(
-          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用* `employee_id `：员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID* `employee_no`：员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号',
+          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID]* `employee_id `：员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID* `employee_no`：员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -100,7 +100,7 @@ export const attendanceV1ArchiveRuleList = {
   path: '/open-apis/attendance/v1/archive_rule',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-考勤打卡-归档报表-查询所有归档规则-查询所有归档规则，对应后台假勤管理-考勤统计-报表-功能',
+    '[Feishu/Lark]-考勤打卡-归档报表-查询所有归档规则-查询所有归档规则，对应后台假勤管理-考勤统计-报表-[归档报表]功能',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -122,7 +122,7 @@ export const attendanceV1ArchiveRuleUploadReport = {
   path: '/open-apis/attendance/v1/archive_rule/upload_report',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-考勤打卡-归档报表-写入归档报表结果-写入归档报表结果，对应假勤管理-考勤统计-报表-页签，点击报表名称进入后的导入功能。可以将数据直接写入归档报表',
+    '[Feishu/Lark]-考勤打卡-归档报表-写入归档报表结果-写入归档报表结果，对应假勤管理-考勤统计-报表-[归档报表]页签，点击报表名称进入后的导入功能。可以将数据直接写入归档报表',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -140,7 +140,7 @@ export const attendanceV1ArchiveRuleUploadReport = {
                   code: z
                     .string()
                     .describe(
-                      '字段编码，可根据 获取',
+                      '字段编码，可根据[查询归档报表表头] 获取',
                     ),
                   value: z.string().describe('字段结果值').optional(),
                 }),
@@ -154,14 +154,14 @@ export const attendanceV1ArchiveRuleUploadReport = {
       archive_rule_id: z
         .string()
         .describe(
-          '归档规则id，可根据获得',
+          '归档规则id，可根据[查询所有归档规则]获得',
         ),
     }),
     params: z.object({
       employee_type: z
         .string()
         .describe(
-          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用* `employee_id `：员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID* `employee_no`：员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号',
+          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID]* `employee_id `：员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID* `employee_no`：员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -174,7 +174,7 @@ export const attendanceV1ArchiveRuleUserStatsFieldsQuery = {
   path: '/open-apis/attendance/v1/archive_rule/user_stats_fields_query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-考勤打卡-归档报表-查询归档报表表头-查询归档报表表头，对应后台假勤管理-考勤统计-报表-中一个归档报表的表头信息。归档报表支持引用系统报表，可设置归档时间和数据归档周期，并且支持根据部门/人员、国家/地区、人员类型、工作地点、职级、序列、职务进行人员圈选',
+    '[Feishu/Lark]-考勤打卡-归档报表-查询归档报表表头-查询归档报表表头，对应后台假勤管理-考勤统计-报表-[归档报表]中一个归档报表的表头信息。归档报表支持引用系统报表，可设置归档时间和数据归档周期，并且支持根据部门/人员、国家/地区、人员类型、工作地点、职级、序列、职务进行人员圈选',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -183,7 +183,7 @@ export const attendanceV1ArchiveRuleUserStatsFieldsQuery = {
       archive_rule_id: z
         .string()
         .describe(
-          '归档规则id，可根据获得',
+          '归档规则id，可根据[查询所有归档规则]获得',
         ),
       operator_id: z.string().describe('操作者id，对应employee_type'),
     }),
@@ -191,7 +191,7 @@ export const attendanceV1ArchiveRuleUserStatsFieldsQuery = {
       employee_type: z
         .string()
         .describe(
-          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用* `employee_id `：员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID* `employee_no`：员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号',
+          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID]* `employee_id `：员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID* `employee_no`：员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -204,7 +204,7 @@ export const attendanceV1GroupCreate = {
   path: '/open-apis/attendance/v1/groups',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤组管理-创建或修改考勤组-考勤组，是对部门或者员工在某个特定场所及特定时间段内的出勤情况（包括上下班、迟到、早退、病假、婚假、丧假、公休、工作时间、加班情况等）的一种规则设定。通过设置考勤组，可以从部门、员工两个维度，来设定考勤方式、考勤时间、考勤地点等考勤规则。对应功能同设置-假勤设置-的“新建”功能',
+    '[Feishu/Lark]-考勤打卡-考勤组管理-创建或修改考勤组-考勤组，是对部门或者员工在某个特定场所及特定时间段内的出勤情况（包括上下班、迟到、早退、病假、婚假、丧假、公休、工作时间、加班情况等）的一种规则设定。通过设置考勤组，可以从部门、员工两个维度，来设定考勤方式、考勤时间、考勤地点等考勤规则。对应功能同设置-假勤设置-[考勤组]的“新建”功能',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -213,7 +213,7 @@ export const attendanceV1GroupCreate = {
           group_id: z
             .string()
             .describe(
-              '考勤组 ID（仅修改时提供）， 需要从或接口中获取 groupId。如果不填的话，会创建新的考勤组',
+              '考勤组 ID（仅修改时提供）， 需要从[按名称查询考勤组]或[查询所有考勤组]接口中获取 groupId。如果不填的话，会创建新的考勤组',
             )
             .optional(),
           group_name: z.string().describe('考勤组名称'),
@@ -246,6 +246,10 @@ export const attendanceV1GroupCreate = {
             .boolean()
             .describe('外勤打卡需审批（需要允许外勤打卡才能设置生效），默认为空')
             .optional(),
+          out_punch_need_post_approval: z
+            .boolean()
+            .describe('外勤打卡需审批，先打卡后审批（需要允许外勤打卡才能设置生效）')
+            .optional(),
           out_punch_need_remark: z
             .boolean()
             .describe('外勤打卡需填写备注（需要允许外勤打卡才能设置生效），默认为空')
@@ -258,6 +262,11 @@ export const attendanceV1GroupCreate = {
             .boolean()
             .describe('外勤打卡允许员工隐藏详细地址（需要允许外勤打卡才能设置生效），默认为空')
             .optional(),
+          out_punch_allowed_adjust_addr: z
+            .boolean()
+            .describe('外勤打卡允许微调地址（需要允许外勤打卡才能设置生效）')
+            .optional(),
+          adjust_range: z.number().describe('微调范围，默认为 50 米').optional(),
           allow_pc_punch: z.boolean().describe('是否允许 PC 端打卡，默认为空').optional(),
           allow_remedy: z.boolean().describe('是否限制补卡，默认为空').optional(),
           remedy_limit: z.boolean().describe('是否限制补卡次数，默认为空').optional(),
@@ -277,6 +286,10 @@ export const attendanceV1GroupCreate = {
           show_cumulative_time: z.boolean().describe('是否展示累计时长，默认为空').optional(),
           show_over_time: z.boolean().describe('是否展示加班时长，默认为空').optional(),
           hide_staff_punch_time: z.boolean().describe('是否隐藏员工打卡详情，默认为空').optional(),
+          hide_clock_in_rule: z
+            .boolean()
+            .describe('是否隐藏打卡规则（仅灰度租户有效，如需使用请联系技术支持）')
+            .optional(),
           face_punch: z.boolean().describe('是否开启人脸识别打卡，默认为空').optional(),
           face_punch_cfg: z
             .number()
@@ -292,6 +305,39 @@ export const attendanceV1GroupCreate = {
             .optional(),
           face_downgrade: z.boolean().describe('人脸识别失败时是否允许普通拍照打卡，默认为空').optional(),
           replace_basic_pic: z.boolean().describe('人脸识别失败时是否允许替换基准图片，默认为空').optional(),
+          anti_cheat_punch_config: z
+            .object({
+              intercept_suspected_cheat_punch: z
+                .boolean()
+                .describe('是否拦截疑似作弊打卡，不传入时默认关闭/不更新；关闭时，其余防作弊开关都会关闭'),
+              check_cheat_software_punch: z
+                .boolean()
+                .describe('是否校验疑似作弊软件打卡，不传入时默认关闭/不更新')
+                .optional(),
+              check_buddy_punch: z.boolean().describe('是否校验疑似他人代打卡，不传入时默认关闭/不更新').optional(),
+              check_simulate_wifi_punch: z
+                .boolean()
+                .describe(
+                  '是否校验疑似模拟 WI-FI 打卡，不传入时默认关闭/不更新（仅灰度租户有效，如需使用请联系技术支持）',
+                )
+                .optional(),
+              check_change_device_punch: z
+                .boolean()
+                .describe('是否校验更换设备打卡，不传入时默认关闭/不更新')
+                .optional(),
+              allow_change_device_num: z
+                .number()
+                .describe('同一考勤人员最多可绑定打卡设备数量上限，开启校验更换设备打卡时必填')
+                .optional(),
+              suspected_cheat_handle_method: z
+                .number()
+                .describe(
+                  '疑似作弊打卡时的处理方式，开启拦截疑似作弊打卡时必填 Options:1(use_face_punch 使用人脸识别打卡),2(only_record_cheat_info 仅记录疑似作弊信息)',
+                )
+                .optional(),
+            })
+            .describe('防作弊打卡配置，不传入时默认关闭/不更新（仅灰度租户有效，如需使用请联系技术支持）')
+            .optional(),
           machines: z
             .array(
               z.object({
@@ -324,7 +370,7 @@ export const attendanceV1GroupCreate = {
           punch_day_shift_ids: z
             .array(z.string())
             .describe(
-              '班次 ID 列表。当考勤类型参数（group_type）设置为固定班制时，必须填够 7 个（从周一至周日）。当考勤类型参数（group_type）设置为排班制或自由班制时，请传入空数组。班次 ID 可以通过 和 获取。休息日填0',
+              '班次 ID 列表。当考勤类型参数（group_type）设置为固定班制时，必须填够 7 个（从周一至周日）。当考勤类型参数（group_type）设置为排班制或自由班制时，请传入空数组。班次 ID 可以通过[查询所有班次] 和[按名称查询班次] 获取。休息日填0',
             ),
           free_punch_cfg: z
             .object({
@@ -353,7 +399,7 @@ export const attendanceV1GroupCreate = {
                 shift_id: z
                   .string()
                   .describe(
-                    '班次 ID，可根据 和 获得',
+                    '班次 ID，可根据[查询所有班次] 和[按名称查询班次] 获得',
                   ),
               }),
             )
@@ -366,7 +412,7 @@ export const attendanceV1GroupCreate = {
                 shift_id: z
                   .string()
                   .describe(
-                    '班次 ID，可根据 和 获得',
+                    '班次 ID，可根据[查询所有班次] 和[按名称查询班次] 获得',
                   ),
               }),
             )
@@ -405,26 +451,41 @@ export const attendanceV1GroupCreate = {
               late_minutes_as_lack: z.number().describe('晚到超过多久记为缺卡').optional(),
               early_minutes_as_early: z.number().describe('早走超过多久记为早退').optional(),
               early_minutes_as_lack: z.number().describe('早走超过多久记为缺卡').optional(),
+              not_during_shift: z
+                .boolean()
+                .describe('班次中间请假，无需在离岗前或返岗后打卡（仅灰度租户有效，如需使用请联系技术支持）')
+                .optional(),
             })
             .describe('请假离岗或返岗打卡规则，单位：分钟')
             .optional(),
-          go_out_need_punch: z.number().describe('外出期间是否需打卡，默认为空').optional(),
+          go_out_need_punch: z
+            .number()
+            .describe('外出期间是否需打卡，默认为0。0:无需打卡，1:需在上下班时间打卡，2:需在离岗前或返岗后打卡')
+            .optional(),
           go_out_need_punch_cfg: z
             .object({
               late_minutes_as_late: z.number().describe('晚到超过多久记为迟到').optional(),
               late_minutes_as_lack: z.number().describe('晚到超过多久记为缺卡').optional(),
               early_minutes_as_early: z.number().describe('早走超过多久记为早退').optional(),
               early_minutes_as_lack: z.number().describe('早走超过多久记为缺卡').optional(),
+              not_during_shift: z
+                .boolean()
+                .describe('班次中间外出，无需在离岗前或返岗后打卡（仅灰度租户有效，如需使用请联系技术支持）')
+                .optional(),
             })
             .describe('外出期间打卡规则，单位：分钟')
             .optional(),
-          travel_need_punch: z.number().describe('出差期间是否需打卡，默认为空').optional(),
+          travel_need_punch: z
+            .number()
+            .describe('出差期间是否需打卡，默认为0。0:无需打卡，1:需在上了下班时间打卡，2:需在离岗前或返岗后打卡')
+            .optional(),
           travel_need_punch_cfg: z
             .object({
               late_minutes_as_late: z.number().describe('晚到超过多久记为迟到').optional(),
               late_minutes_as_lack: z.number().describe('晚到超过多久记为缺卡').optional(),
               early_minutes_as_early: z.number().describe('早走超过多久记为早退').optional(),
               early_minutes_as_lack: z.number().describe('早走超过多久记为缺卡').optional(),
+              not_during_shift: z.boolean().describe('无需在出差离岗前或返岗后打卡（出差不生效）').optional(),
             })
             .describe('出差期间打卡规则，单位：分钟')
             .optional(),
@@ -548,12 +609,41 @@ export const attendanceV1GroupCreate = {
               '参与无需打卡的人员 ID 列表（与「no_need_punch_members」同时使用时，以当前字段为准），对应employee_type',
             )
             .optional(),
+          overtime_clock_cfg: z
+            .object({
+              allow_punch_approval: z
+                .boolean()
+                .describe('是否允许在非打卡时段申请打卡（仅灰度租户有效，如需使用请联系技术支持）')
+                .optional(),
+              need_clock_over_time_start_and_end: z
+                .boolean()
+                .describe('加班开始和结束需打卡（仅灰度租户有效，如需使用请联系技术支持）')
+                .optional(),
+            })
+            .describe('加班打卡规则')
+            .optional(),
+          new_calendar_id: z
+            .string()
+            .describe(
+              '节假日id，（如果考勤组使用了自定义节假日，请用此参数传入节假日id，可在假勤设置-节假日模块页面路径获取）',
+            )
+            .optional(),
+          allow_apply_punch: z.boolean().describe('定位不准时是否允许申请打卡').optional(),
+          clock_in_abnormal_settings: z
+            .object({
+              ignore_until_latest_clockout: z
+                .boolean()
+                .describe('在最晚下班打卡之前忽略异常卡（仅灰度租户有效，如需使用请联系技术支持）')
+                .optional(),
+            })
+            .describe('异常卡豁免配置')
+            .optional(),
         })
         .describe('考勤组信息'),
       operator_id: z
         .string()
         .describe(
-          '操作人uid，对应employee_type，如果您未操作，则此字段为必填字段',
+          '操作人uid，对应employee_type，如果您未操作[考勤管理后台“API 接入”流程]，则此字段为必填字段',
         )
         .optional(),
     }),
@@ -561,12 +651,12 @@ export const attendanceV1GroupCreate = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
       dept_type: z
         .literal('open_id')
         .describe(
-          '部门 ID 的类型 Options:open_id(暂时只支持部门的 openid。具体概念请参考中的open_department_id)',
+          '部门 ID 的类型 Options:open_id(暂时只支持部门的 openid。具体概念请参考[部门资源介绍]中的open_department_id)',
         ),
     }),
   },
@@ -578,14 +668,14 @@ export const attendanceV1GroupDelete = {
   path: '/open-apis/attendance/v1/groups/:group_id',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤组管理-删除考勤组-通过考勤组 ID 删除考勤组。对应设置-假勤设置-操作列的删除功能',
+    '[Feishu/Lark]-考勤打卡-考勤组管理-删除考勤组-通过考勤组 ID 删除考勤组。对应设置-假勤设置-[考勤组]操作列的删除功能',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       group_id: z
         .string()
         .describe(
-          '考勤组 ID，获取方式：1） 2） 3）',
+          '考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]',
         ),
     }),
   },
@@ -604,19 +694,19 @@ export const attendanceV1GroupGet = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '请求体和响应体中的 user_id 和 creator_id 的员工id类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '请求体和响应体中的 user_id 和 creator_id 的员工id类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
       dept_type: z
         .literal('open_id')
         .describe(
-          '部门 ID 的类型 Options:open_id(暂时只支持部门的 openid。具体概念请参考中的open_department_id)',
+          '部门 ID 的类型 Options:open_id(暂时只支持部门的 openid。具体概念请参考[部门资源介绍]中的open_department_id)',
         ),
     }),
     path: z.object({
       group_id: z
         .string()
         .describe(
-          '考勤组 ID，获取方式：1） 2） 3）',
+          '考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]',
         ),
     }),
   },
@@ -655,12 +745,12 @@ export const attendanceV1GroupListUser = {
       employee_type: z
         .string()
         .describe(
-          '响应体中 user_id 的员工 ID 类型。如果没有后台管理权限，可使用<b>可选值有</b>：1. employee_id：员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID2. employee_no：员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号',
+          '响应体中 user_id 的员工 ID 类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID]<b>可选值有</b>：1. employee_id：员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID2. employee_no：员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号',
         ),
       dept_type: z
         .string()
         .describe(
-          '响应体中 department_ids 的部门 ID 的类型<b>可选值有</b>：1. open_id：暂时只支持部门的 openid。具体概念请参考中的open_department_id',
+          '响应体中 department_ids 的部门 ID 的类型<b>可选值有</b>：1. open_id：暂时只支持部门的 openid。具体概念请参考[部门资源介绍]中的open_department_id',
         ),
       page_size: z.number().describe('分页大小').optional(),
       page_token: z
@@ -679,7 +769,7 @@ export const attendanceV1GroupListUser = {
       group_id: z
         .string()
         .describe(
-          '考勤组 ID，获取方式：1） 2） 3）',
+          '考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -692,7 +782,7 @@ export const attendanceV1GroupSearch = {
   path: '/open-apis/attendance/v1/groups/search',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤组管理-按名称查询考勤组-按考勤组名称查询考勤组摘要信息。查询条件支持名称精确匹配和模糊匹配两种方式。查询结果按考勤组修改时间 desc 排序，且最大记录数为 10 条。对应页面设置-假勤设置-的名称搜索功能',
+    '[Feishu/Lark]-考勤打卡-考勤组管理-按名称查询考勤组-按考勤组名称查询考勤组摘要信息。查询条件支持名称精确匹配和模糊匹配两种方式。查询结果按考勤组修改时间 desc 排序，且最大记录数为 10 条。对应页面设置-假勤设置-[考勤组]的名称搜索功能',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ group_name: z.string().describe('考勤组名称') }),
@@ -705,20 +795,20 @@ export const attendanceV1LeaveAccrualRecordPatch = {
   path: '/open-apis/attendance/v1/leave_accrual_record/:leave_id',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-考勤打卡-休假发放记录-修改发放记录-更新发放记录的发放数量和失效日期，对应假勤管理-休假管理-',
+    '[Feishu/Lark]-考勤打卡-休假发放记录-修改发放记录-更新发放记录的发放数量和失效日期，对应假勤管理-休假管理-[发放记录]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       leave_granting_record_id: z
         .string()
         .describe(
-          '发放记录的唯一ID，可通过',
+          '发放记录的唯一ID，可通过[创建假期发放记录]',
         ),
       employment_id: z.string().describe('员工ID，类型对应user_id_type'),
       leave_type_id: z
         .string()
         .describe(
-          '假期类型ID，可通过获取',
+          '假期类型ID，可通过[获取假期类型列表]获取',
         ),
       reason: z
         .array(z.object({ lang: z.string().describe('语言码'), value: z.string().describe('语言码对应的文本') }))
@@ -734,7 +824,7 @@ export const attendanceV1LeaveAccrualRecordPatch = {
       leave_id: z
         .string()
         .describe(
-          '假期类型ID，可通过获取',
+          '假期类型ID，可通过[获取假期类型列表]获取',
         )
         .optional(),
     }),
@@ -755,7 +845,7 @@ export const attendanceV1LeaveEmployExpireRecordGet = {
       leave_type_id: z
         .string()
         .describe(
-          '假期类型ID，可通过获取',
+          '假期类型ID，可通过[获取假期类型列表]获取',
         ),
       start_expiration_date: z.string().describe('失效最早日期，格式为yyyy-MM-dd'),
       end_expiration_date: z.string().describe('失效最晚日期，格式为yyyy-MM-dd'),
@@ -768,7 +858,7 @@ export const attendanceV1LeaveEmployExpireRecordGet = {
       leave_id: z
         .string()
         .describe(
-          '假期类型ID，可通过获取',
+          '假期类型ID，可通过[获取假期类型列表]获取',
         )
         .optional(),
     }),
@@ -781,7 +871,7 @@ export const attendanceV1ShiftCreate = {
   path: '/open-apis/attendance/v1/shifts',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤班次-创建班次-班次是描述一次考勤任务时间规则的统称，比如一天打多少次卡，每次卡的上下班时间，晚到多长时间算迟到，晚到多长时间算缺卡等。在假勤设置-中点击班次名称可以进行班次详情查看。如果入参中传入了班次id，那么支持编辑班次的能力',
+    '[Feishu/Lark]-考勤打卡-考勤班次-创建班次-班次是描述一次考勤任务时间规则的统称，比如一天打多少次卡，每次卡的上下班时间，晚到多长时间算迟到，晚到多长时间算缺卡等。在假勤设置-[班次设置]中点击班次名称可以进行班次详情查看。如果入参中传入了班次id，那么支持编辑班次的能力',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -918,7 +1008,7 @@ export const attendanceV1ShiftCreate = {
       id: z
         .string()
         .describe(
-          '班次id(更新班次时需要传递)，获取方式：1） 2）',
+          '班次id(更新班次时需要传递)，获取方式：1）[按名称查询班次] 2）[创建班次]',
         )
         .optional(),
     }),
@@ -926,7 +1016,7 @@ export const attendanceV1ShiftCreate = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID，或者获取的userid。),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID，或者[通过手机号或邮箱获取用户 ID]获取的userid。),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         )
         .optional(),
     }),
@@ -939,14 +1029,14 @@ export const attendanceV1ShiftDelete = {
   path: '/open-apis/attendance/v1/shifts/:shift_id',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤班次-删除班次-通过班次 ID 删除班次。对应功能为假勤设置-班次列表中操作栏的删除按钮',
+    '[Feishu/Lark]-考勤打卡-考勤班次-删除班次-通过班次 ID 删除班次。对应功能为假勤设置-[班次设置]班次列表中操作栏的删除按钮',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       shift_id: z
         .string()
         .describe(
-          '班次 ID，获取方式：1） 2）',
+          '班次 ID，获取方式：1）[按名称查询班次] 2）[创建班次]',
         ),
     }),
   },
@@ -958,14 +1048,14 @@ export const attendanceV1ShiftGet = {
   path: '/open-apis/attendance/v1/shifts/:shift_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤班次-按 ID 查询班次-通过班次 ID 获取班次详情。对应功能为假勤设置-班次列表中的具体班次，班次信息可以点击班次名称查看',
+    '[Feishu/Lark]-考勤打卡-考勤班次-按 ID 查询班次-通过班次 ID 获取班次详情。对应功能为假勤设置-[班次设置]班次列表中的具体班次，班次信息可以点击班次名称查看',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       shift_id: z
         .string()
         .describe(
-          '班次 ID，获取方式：1） 2）',
+          '班次 ID，获取方式：1）[按名称查询班次] 2）[创建班次]',
         ),
     }),
   },
@@ -977,7 +1067,7 @@ export const attendanceV1ShiftList = {
   path: '/open-apis/attendance/v1/shifts',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤班次-查询所有班次-飞书人事管理后台中假勤设置-中的翻页查询所有班次功能，展示班次名称、打卡规则、弹性班次规则、休息规则等',
+    '[Feishu/Lark]-考勤打卡-考勤班次-查询所有班次-飞书人事管理后台中假勤设置-[班次配置]中的翻页查询所有班次功能，展示班次名称、打卡规则、弹性班次规则、休息规则等',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -998,7 +1088,7 @@ export const attendanceV1ShiftQuery = {
   path: '/open-apis/attendance/v1/shifts/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤班次-按名称查询班次-飞书人事管理后台中假勤设置-中的搜索班次名称功能，展示班次名称、打卡规则、弹性班次规则、休息规则等',
+    '[Feishu/Lark]-考勤打卡-考勤班次-按名称查询班次-飞书人事管理后台中假勤设置-[班次配置]中的搜索班次名称功能，展示班次名称、打卡规则、弹性班次规则、休息规则等',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({ shift_name: z.string().describe('班次名称，支持模糊匹配') }),
@@ -1107,7 +1197,7 @@ export const attendanceV1UserApprovalCreate = {
                 duration: z
                   .number()
                   .describe(
-                    '加班时长，如需使用此字段进行加班时长计算，请联系开通。默认采用start_time和end_time计算',
+                    '加班时长，如需使用此字段进行加班时长计算，请联系[技术支持]开通。默认采用start_time和end_time计算',
                   ),
                 unit: z
                   .number()
@@ -1171,12 +1261,12 @@ export const attendanceV1UserApprovalCreate = {
                   .object({
                     region_level: z
                       .string()
-                      .describe('地理等级（国家｜省｜市｜区）l1：国家级；l2：省级；l3：市级l4：区/县级')
+                      .describe('地理等级（国家｜省｜市｜区）l1：国家级；l2：省级；l3：市级；l4：区/县级')
                       .optional(),
                     region_id: z
                       .string()
                       .describe(
-                        '地理id可以通过或获取（仅支持飞书人事企业版使用）',
+                        '地理id可以通过[查询区/县信息]或[查询城市信息]获取（仅支持飞书人事企业版使用）',
                       )
                       .optional(),
                   })
@@ -1187,12 +1277,12 @@ export const attendanceV1UserApprovalCreate = {
                     z.object({
                       region_level: z
                         .string()
-                        .describe('地理等级（国家｜省｜市｜区）l1：国家级；l2：省级；l3：市级l4：区/县级')
+                        .describe('地理等级（国家｜省｜市｜区）l1：国家级；l2：省级；l3：市级；l4：区/县级')
                         .optional(),
                       region_id: z
                         .string()
                         .describe(
-                          '地理id可以通过或获取（仅支持飞书人事企业版使用）',
+                          '地理id可以通过[查询区/县信息]或[查询城市信息]获取（仅支持飞书人事企业版使用）',
                         )
                         .optional(),
                     }),
@@ -1208,7 +1298,7 @@ export const attendanceV1UserApprovalCreate = {
               }),
             )
             .describe(
-              '出差信息。目前仅支持全天出差（未满全天则按全天计入）。如果你需要支持半天出差，请咨询',
+              '出差信息。目前仅支持全天出差（未满全天则按全天计入）。如果你需要支持半天出差，请咨询[技术支持]',
             )
             .optional(),
           time_zone: z.string().describe('此字段不再使用，以用户匹配的考勤组时区为准').optional(),
@@ -1220,7 +1310,7 @@ export const attendanceV1UserApprovalCreate = {
       employee_type: z
         .enum(['employee_id', 'employee_no', 'open_id'])
         .describe(
-          '请求体和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号),open_id(用户在某个应用中的身份，可以参考)',
+          '请求体和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号),open_id(用户在某个应用中的身份，可以参考[如何获取不同的用户 ID])',
         ),
     }),
   },
@@ -1261,9 +1351,9 @@ export const attendanceV1UserApprovalQuery = {
     }),
     params: z.object({
       employee_type: z
-        .enum(['employee_id', 'employee_no'])
+        .enum(['employee_id', 'employee_no', 'open_id'])
         .describe(
-          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号),open_id(用户在某个应用中的身份[查询Open ID])',
         ),
     }),
   },
@@ -1285,12 +1375,12 @@ export const attendanceV1UserDailyShiftBatchCreate = {
             group_id: z
               .string()
               .describe(
-                '考勤组 ID，获取方式：1） 2） 3）',
+                '考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]',
               ),
             shift_id: z
               .string()
               .describe(
-                '班次 ID，获取方式：1） 2）。传入0代表休息',
+                '班次 ID，获取方式：1）[按名称查询班次] 2）[创建班次]。传入0代表休息',
               ),
             month: z.number().describe('月份，格式yyyyMM'),
             user_id: z.string().describe('用户 ID，与employee_type对应'),
@@ -1305,7 +1395,7 @@ export const attendanceV1UserDailyShiftBatchCreate = {
       operator_id: z
         .string()
         .describe(
-          '操作人uid，与employee_type对应。如果您未操作，则此字段为必填字段',
+          '操作人uid，与employee_type对应。如果您未操作[考勤管理后台“API 接入”流程]，则此字段为必填字段',
         )
         .optional(),
     }),
@@ -1313,7 +1403,7 @@ export const attendanceV1UserDailyShiftBatchCreate = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '请求体和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID，或者获取的userid。),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '请求体和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID，或者[通过手机号或邮箱获取用户 ID]获取的userid。),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
   },
@@ -1335,7 +1425,7 @@ export const attendanceV1UserDailyShiftBatchCreateTemp = {
             group_id: z
               .string()
               .describe(
-                '考勤组 ID，获取方式：1） 2） 3）',
+                '考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]',
               ),
             user_id: z.string().describe('用户 ID，与employee_type对应'),
             date: z.number().describe('日期，格式：yyyymmdd，如20240120'),
@@ -1357,7 +1447,7 @@ export const attendanceV1UserDailyShiftBatchCreateTemp = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '请求体和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(EmployeeID 员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID，或者获取的userid。),employee_no(EmployeeNo 员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '请求体和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(EmployeeID 员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID，或者[通过手机号或邮箱获取用户 ID]获取的userid。),employee_no(EmployeeNo 员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1370,7 +1460,7 @@ export const attendanceV1UserDailyShiftQuery = {
   path: '/open-apis/attendance/v1/user_daily_shifts/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤排班-查询排班表-支持查询多个用户的排班情况，注意此接口返回的是用户维度的排班结果，与页面功能并不对应。可以通过返回结果中的group_id查询考勤组 ，shift_id查询班次 。查询的时间跨度不能超过 30 天',
+    '[Feishu/Lark]-考勤打卡-考勤排班-查询排班表-支持查询多个用户的排班情况，注意此接口返回的是用户维度的排班结果，与页面功能并不对应。可以通过返回结果中的group_id查询考勤组[按 ID 查询考勤组] ，shift_id查询班次[按 ID 查询班次] 。查询的时间跨度不能超过 30 天',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1382,7 +1472,7 @@ export const attendanceV1UserDailyShiftQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID，或者获取的userid。),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID，或者[通过手机号或邮箱获取用户 ID]获取的userid。),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
   },
@@ -1394,7 +1484,7 @@ export const attendanceV1UserFlowBatchCreate = {
   path: '/open-apis/attendance/v1/user_flows/batch_create',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-考勤打卡-打卡信息管理-导入打卡流水-导入员工的打卡流水记录。导入后，会根据员工所在的考勤组班次规则，计算最终的打卡状态与结果。可在打卡管理-中查询',
+    '[Feishu/Lark]-考勤打卡-打卡信息管理-导入打卡流水-导入员工的打卡流水记录。导入后，会根据员工所在的考勤组班次规则，计算最终的打卡状态与结果。可在打卡管理-[打卡记录]中查询',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1449,7 +1539,7 @@ export const attendanceV1UserFlowBatchCreate = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '请求体和响应体中的 user_id 和 creator_id 的员工id类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID，或者获取的userid。),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '请求体和响应体中的 user_id 和 creator_id 的员工id类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID，或者[通过手机号或邮箱获取用户 ID]获取的userid。),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
   },
@@ -1468,7 +1558,7 @@ export const attendanceV1UserFlowBatchDel = {
       record_ids: z
         .array(z.string().describe('待删除的流水记录ID'))
         .describe(
-          '打卡流水记录 ID，获取方式：1） 2） 3）',
+          '打卡流水记录 ID，获取方式：1）[批量查询打卡流水记录] 2）[获取打卡结果] 3）[导入打卡流水记录]',
         ),
     }),
   },
@@ -1480,21 +1570,21 @@ export const attendanceV1UserFlowGet = {
   path: '/open-apis/attendance/v1/user_flows/:user_flow_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-考勤打卡-打卡信息管理-查询打卡流水-通过打卡记录 ID 获取用户的打卡流水记录。返回信息主要包含：* 用户id和创建者id* 记录信息* 打卡位置信息、时间信息* 打卡方式信息 * GPS 打卡：location_name（定位地址信息） * Wi-Fi 打卡：ssid（wifi名称）、bssid（mac地址） * 考勤机打卡：device_id（考勤机设备id）对应页面功能打卡管理-',
+    '[Feishu/Lark]-考勤打卡-打卡信息管理-查询打卡流水-通过打卡记录 ID 获取用户的打卡流水记录。返回信息主要包含：* 用户id和创建者id* 记录信息* 打卡位置信息、时间信息* 打卡方式信息 * GPS 打卡：location_name（定位地址信息） * Wi-Fi 打卡：ssid（wifi名称）、bssid（mac地址） * 考勤机打卡：device_id（考勤机设备id）对应页面功能打卡管理-[打卡记录]',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '响应体中的 user_id 和 creator_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '响应体中的 user_id 和 creator_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
     path: z.object({
       user_flow_id: z
         .string()
         .describe(
-          '打卡流水记录 ID，获取方式：1） 2） 3）',
+          '打卡流水记录 ID，获取方式：1）[批量查询打卡流水记录] 2）[获取打卡结果] 3）[导入打卡流水记录]',
         ),
     }),
   },
@@ -1506,7 +1596,7 @@ export const attendanceV1UserFlowQuery = {
   path: '/open-apis/attendance/v1/user_flows/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-考勤打卡-打卡信息管理-批量查询打卡流水-通过用户 ID 获取用户的打卡流水记录。返回信息主要包含：* 用户id和创建者id* 记录信息* 打卡位置信息、时间信息* 打卡方式信息 * GPS 打卡：location_name（定位地址信息） * Wi-Fi 打卡：ssid（wifi名称）、bssid（mac地址） * 考勤机打卡：device_id（考勤机设备id）对应页面功能打卡管理-',
+    '[Feishu/Lark]-考勤打卡-打卡信息管理-批量查询打卡流水-通过用户 ID 获取用户的打卡流水记录。返回信息主要包含：* 用户id和创建者id* 记录信息* 打卡位置信息、时间信息* 打卡方式信息 * GPS 打卡：location_name（定位地址信息） * Wi-Fi 打卡：ssid（wifi名称）、bssid（mac地址） * 考勤机打卡：device_id（考勤机设备id）对应页面功能打卡管理-[打卡记录]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1518,7 +1608,7 @@ export const attendanceV1UserFlowQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
       include_terminated_user: z
         .boolean()
@@ -1546,7 +1636,7 @@ export const attendanceV1UserSettingModify = {
           face_key: z
             .string()
             .describe(
-              '人脸照片文件 ID，获取方式：',
+              '人脸照片文件 ID，获取方式：[上传用户人脸识别照片]',
             ),
           face_key_update_time: z.string().describe('人脸照片更新时间，精确到秒的时间戳').optional(),
         })
@@ -1557,7 +1647,7 @@ export const attendanceV1UserSettingModify = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
   },
@@ -1569,7 +1659,7 @@ export const attendanceV1UserSettingQuery = {
   path: '/open-apis/attendance/v1/user_settings/query',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤用户管理-批量查询用户人脸识别信息-批量查询授权内员工的用户设置信息，包括人脸照片文件 ID、人脸照片更新时间。对应页面假勤设置-。根据返回的face_key可以下载人脸信息',
+    '[Feishu/Lark]-考勤打卡-考勤用户管理-批量查询用户人脸识别信息-批量查询授权内员工的用户设置信息，包括人脸照片文件 ID、人脸照片更新时间。对应页面假勤设置-[人脸识别]。根据返回的face_key可以下载人脸信息[下载用户人脸识别照片]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ user_ids: z.array(z.string()).describe('employee_no 或 employee_id 列表，对应employee_type') }),
@@ -1577,7 +1667,7 @@ export const attendanceV1UserSettingQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(EmployeeId 员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(EmployeeNo 员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(EmployeeId 员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(EmployeeNo 员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
   },
@@ -1589,7 +1679,7 @@ export const attendanceV1UserStatsDataQuery = {
   path: '/open-apis/attendance/v1/user_stats_datas/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤统计-查询统计数据-查询日度统计或月度统计的统计数据。字段包含基本信息、考勤组信息、出勤统计、异常统计、请假统计、加班统计、打卡时间、考勤结果和自定义字段。具体报表可在考勤统计-中找到',
+    '[Feishu/Lark]-考勤打卡-考勤统计-查询统计数据-查询日度统计或月度统计的统计数据。字段包含基本信息、考勤组信息、出勤统计、异常统计、请假统计、加班统计、打卡时间、考勤结果和自定义字段。具体报表可在考勤统计-[报表]中找到',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1619,7 +1709,7 @@ export const attendanceV1UserStatsDataQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
   },
@@ -1631,7 +1721,7 @@ export const attendanceV1UserStatsFieldQuery = {
   path: '/open-apis/attendance/v1/user_stats_fields/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤统计-查询统计表头-查询考勤统计支持的日度统计或月度统计的统计表头。报表的表头信息可以在考勤统计-中查询到具体的报表信息，此接口专门用于查询表头数据',
+    '[Feishu/Lark]-考勤打卡-考勤统计-查询统计表头-查询考勤统计支持的日度统计或月度统计的统计表头。报表的表头信息可以在考勤统计-[报表]中查询到具体的报表信息，此接口专门用于查询表头数据',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1644,7 +1734,7 @@ export const attendanceV1UserStatsFieldQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
   },
@@ -1656,7 +1746,7 @@ export const attendanceV1UserStatsViewQuery = {
   path: '/open-apis/attendance/v1/user_stats_views/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤统计-查询统计设置-查询考勤统计支持的日度统计或月度统计的统计表头。报表的表头信息可以在考勤统计-中查询到具体的报表信息，此接口专门用于查询表头数据。注意此接口和基本相同，区别点在于在兼容历史统计视图模型（历史统计数据模型可以按用户ID设置，后续统计升级为仅支持租户维度）',
+    '[Feishu/Lark]-考勤打卡-考勤统计-查询统计设置-查询考勤统计支持的日度统计或月度统计的统计表头。报表的表头信息可以在考勤统计-[报表]中查询到具体的报表信息，此接口专门用于查询表头数据。注意此接口和[查询统计表头]基本相同，区别点在于在兼容历史统计视图模型（历史统计数据模型可以按用户ID设置，后续统计升级为仅支持租户维度）',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1671,7 +1761,7 @@ export const attendanceV1UserStatsViewQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
   },
@@ -1683,7 +1773,7 @@ export const attendanceV1UserStatsViewUpdate = {
   path: '/open-apis/attendance/v1/user_stats_views/:user_stats_view_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤统计-更新统计设置-更新开发者定制的日度统计或月度统计的统计报表表头设置信息。报表的表头信息可以在考勤统计-中查询到具体的报表信息，此接口专门用于更新表头信息',
+    '[Feishu/Lark]-考勤打卡-考勤统计-更新统计设置-更新开发者定制的日度统计或月度统计的统计报表表头设置信息。报表的表头信息可以在考勤统计-[报表]中查询到具体的报表信息，此接口专门用于更新表头信息',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1692,7 +1782,7 @@ export const attendanceV1UserStatsViewUpdate = {
           view_id: z
             .string()
             .describe(
-              '视图 ID，可通过获取',
+              '视图 ID，可通过[查询统计设置]获取',
             ),
           stats_type: z.enum(['daily', 'month']).describe('视图类型 Options:daily(日度统计),month(月度统计)'),
           user_id: z.string().describe('操作者的用户id，对应employee_type'),
@@ -1720,14 +1810,14 @@ export const attendanceV1UserStatsViewUpdate = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
     path: z.object({
       user_stats_view_id: z
         .string()
         .describe(
-          '用户视图 ID，获取方式：1）',
+          '用户视图 ID，获取方式：1）[查询统计设置]',
         ),
     }),
   },
@@ -1739,7 +1829,7 @@ export const attendanceV1UserTaskRemedyCreate = {
   path: '/open-apis/attendance/v1/user_task_remedys',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-考勤打卡-考勤补卡-通知补卡审批发起-对于只使用飞书考勤系统而未使用飞书审批系统的企业，可以通过该接口，将在三方审批系统中发起的补卡审批数据，写入到飞书考勤系统中，状态为审批中。写入后可以由 进行状态更新',
+    '[Feishu/Lark]-考勤打卡-考勤补卡-通知补卡审批发起-对于只使用飞书考勤系统而未使用飞书审批系统的企业，可以通过该接口，将在三方审批系统中发起的补卡审批数据，写入到飞书考勤系统中，状态为审批中。写入后可以由[通知审批状态更新] 进行状态更新',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1755,7 +1845,7 @@ export const attendanceV1UserTaskRemedyCreate = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
   },
@@ -1793,7 +1883,7 @@ export const attendanceV1UserTaskRemedyQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
   },
@@ -1815,7 +1905,7 @@ export const attendanceV1UserTaskRemedyQueryUserAllowedRemedys = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
   },
@@ -1845,7 +1935,7 @@ export const attendanceV1UserTaskQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          '员工ID类型。如果没有后台管理权限，可使用 Options:employee_id(员工 employee ID，即 > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即 > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          '员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
       ignore_invalid_users: z
         .boolean()

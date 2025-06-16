@@ -143,7 +143,7 @@ export const baikeV1DraftCreate = {
       rich_text: z
         .string()
         .describe(
-          '富文本格式（当填写富文本内容时，description字段将会失效可不填写），支持的格式参考中的释义部分',
+          '富文本格式（当填写富文本内容时，description字段将会失效可不填写），支持的格式参考[飞书词典指南]中的释义部分',
         )
         .optional(),
     }),
@@ -254,7 +254,7 @@ export const baikeV1DraftUpdate = {
       rich_text: z
         .string()
         .describe(
-          '富文本格式（当填写富文本内容时，description字段将会失效可不填写），支持的格式参考中的释义部分',
+          '富文本格式（当填写富文本内容时，description字段将会失效可不填写），支持的格式参考[飞书词典指南]中的释义部分',
         )
         .optional(),
     }),
@@ -372,7 +372,7 @@ export const baikeV1EntityCreate = {
       rich_text: z
         .string()
         .describe(
-          '富文本格式（当填写富文本内容时，description字段将会失效可不填写），支持的格式参考中的释义部分**注意**：富文本格式至少需要包含一个 `<p>` 标签，否则请求会报错',
+          '富文本格式（当填写富文本内容时，description字段将会失效可不填写），支持的格式参考[飞书词典指南]中的释义部分**注意**：富文本格式至少需要包含一个 `<p>` 标签，否则请求会报错',
         )
         .optional(),
     }),
@@ -611,7 +611,7 @@ export const baikeV1EntityUpdate = {
       rich_text: z
         .string()
         .describe(
-          '富文本格式（当填写富文本内容时，description字段将会失效可不填写），支持的格式参考中的释义部分',
+          '富文本格式（当填写富文本内容时，description字段将会失效可不填写），支持的格式参考[飞书词典指南]中的释义部分',
         )
         .optional(),
     }),

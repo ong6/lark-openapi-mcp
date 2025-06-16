@@ -30,7 +30,7 @@ export const performanceV2ActivityQuery = {
       semester_ids: z
         .array(z.string())
         .describe(
-          'List of evaluation period IDs, get the project ID of the specified evaluation period, semester_id can be obtained by [. If "activity_ids" is passed at the same time, it is preferentially queried with "activity_ids". When "semester_ids" and "activity_ids" are not passed, empty data is returned',
+          'List of evaluation period IDs, get the project ID of the specified evaluation period, semester_id can be obtained by [[Get Period]. If "activity_ids" is passed at the same time, it is preferentially queried with "activity_ids". When "semester_ids" and "activity_ids" are not passed, empty data is returned',
         )
         .optional(),
       activity_ids: z
@@ -57,7 +57,7 @@ export const performanceV2AdditionalInformationImport = {
       semester_id: z
         .string()
         .describe(
-          'The evaluation period ID can be obtained through the [Get Period List] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/performance-v1/semester/list) interface',
+          'The evaluation period ID can be obtained through the [Get Period List] interface',
         ),
       additional_informations: z
         .array(
@@ -77,7 +77,7 @@ export const performanceV2AdditionalInformationImport = {
             reviewee_user_id: z
               .string()
               .describe(
-                "The list of evaluee IDs, consistent with the type of imported parameter user_id_type, can be obtained through the [Get evaluee information] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/performance-v2/reviewee/query) interface< br >** Note **: If the parameter combination of reviewee_user_id ',' item ',' time ',' detailed_description 'already has a supplementary message with the same content in the system, the corresponding supplementary message data will be updated",
+                "The list of evaluee IDs, consistent with the type of imported parameter user_id_type, can be obtained through the [Get evaluee information] interface< br >** Note **: If the parameter combination of reviewee_user_id ',' item ',' time ',' detailed_description 'already has a supplementary message with the same content in the system, the corresponding supplementary message data will be updated",
               ),
             item: z
               .string()
@@ -174,12 +174,12 @@ export const performanceV2AdditionalInformationsBatchDelete = {
       semester_id: z
         .string()
         .describe(
-          'The evaluation period ID can be obtained through the  interface',
+          'The evaluation period ID can be obtained through the [Get Period List] interface',
         ),
       additional_informations: z
         .array(z.string())
         .describe(
-          'The list of supplementary information IDs can be obtained through the  interface',
+          'The list of supplementary information IDs can be obtained through the [Batch Query Supplementary Information] interface',
         ),
     }),
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
@@ -226,7 +226,7 @@ export const performanceV2MetricDetailImport = {
       semester_id: z
         .string()
         .describe(
-          'Period ID, which can be obtained through the  interface',
+          'Period ID, which can be obtained through the [Get Period] interface',
         ),
       import_record_name: z
         .string()
@@ -239,7 +239,7 @@ export const performanceV2MetricDetailImport = {
             metric_id: z
               .string()
               .describe(
-                'The indicator ID can be obtained through the  interface',
+                'The indicator ID can be obtained through the [Get indicator library information] interface',
               ),
             fields: z
               .array(
@@ -247,7 +247,7 @@ export const performanceV2MetricDetailImport = {
                   field_id: z
                     .string()
                     .describe(
-                      'The indicator field ID can be obtained through the  interface',
+                      'The indicator field ID can be obtained through the [Get indicator field list] interface',
                     ),
                   field_value: z.string().describe('field value').optional(),
                   field_value_person: z
@@ -283,7 +283,7 @@ export const performanceV2MetricDetailQuery = {
       semester_id: z
         .string()
         .describe(
-          'Cycle ID, only 1 cycle is allowed to be queried at a time, semester_id can be obtained through the [] interface',
+          'Cycle ID, only 1 cycle is allowed to be queried at a time, semester_id can be obtained through the [[Get Cycle]] interface',
         ),
       reviewee_user_ids: z
         .array(z.string())
@@ -331,7 +331,7 @@ export const performanceV2MetricLibQuery = {
       tag_ids: z
         .array(z.string())
         .describe(
-          'The label ID to which the indicator belongs can be obtained through the [[Get indicator label information](/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/performance-v2/metric_tag/list) ] interface, and all labels are not specified',
+          'The label ID to which the indicator belongs can be obtained through the [[Get indicator label information] ] interface, and all labels are not specified',
         )
         .optional(),
       type_ids: z
@@ -467,7 +467,7 @@ export const performanceV2ReviewDataQuery = {
       semester_ids: z
         .array(z.string())
         .describe(
-          'Evaluation period ID list, semester_id can be obtained through ',
+          'Evaluation period ID list, semester_id can be obtained through [Acquisition Period]',
         ),
       reviewee_user_ids: z.array(z.string()).describe('List of assessee IDs'),
       stage_types: z
@@ -581,7 +581,7 @@ export const performanceV2RevieweeQuery = {
       semester_id: z
         .string()
         .describe(
-          'Cycle ID, only 1 cycle is allowed to be queried at a time, semester_id can be obtained through the [] interface',
+          'Cycle ID, only 1 cycle is allowed to be queried at a time, semester_id can be obtained through the [[Get Cycle]] interface',
         ),
       user_ids: z
         .array(z.string())
@@ -592,7 +592,7 @@ export const performanceV2RevieweeQuery = {
       activity_ids: z
         .array(z.string())
         .describe(
-          'The project ID list can be obtained through Interface to obtain and query the information of the evaluated person under the specified project',
+          'The project ID list can be obtained through [get the project list]Interface to obtain and query the information of the evaluated person under the specified project',
         )
         .optional(),
     }),

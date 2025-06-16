@@ -19,11 +19,11 @@ export const baseV2AppRoleCreate = {
               .describe(
                 '数据表权限。**提示**：**协作者可编辑自己的记录** 和 **可编辑指定字段** 是 **可编辑记录** 的特殊情况，可通过指定 `rec_rule` 或 `field_perm` 参数实现相同的效果。 Options:0(NoPerm 无权限),1(Read 仅可阅读),2(Edit 可编辑),4(Admin 可管理)',
               ),
-            table_name: z.string().describe('数据表名称').optional(),
+            table_name: z.string().describe('数据表名称（与下方 table_id 至少填写一项）').optional(),
             table_id: z
               .string()
               .describe(
-                '多维表格数据表的唯一标识。获取方式：- 你可通过多维表格 URL 获取 `table_id`，下图高亮部分即为当前数据表的 `table_id`- 也可通过接口获取 `table_id` ',
+                '多维表格数据表的唯一标识。（与上方 table_name 至少填写一项）。获取方式：- 你可通过多维表格 URL 获取 `table_id`，下图高亮部分即为当前数据表的 `table_id`- 也可通过[列出数据表]接口获取 `table_id` ',
               )
               .optional(),
             rec_rule: z
@@ -40,10 +40,10 @@ export const baseV2AppRoleCreate = {
                           '条件运算符 Options:is(等于),isNot(不等于),contains(包含),doesNotContain(不包含),isEmpty(为空),isNotEmpty(不为空)',
                         )
                         .optional(),
-                      values: z
+                      value: z
                         .array(z.string())
                         .describe(
-                          '条件的值，可以是单个值或多个值的数组。详情参考',
+                          '条件的值，可以是单个值或多个值的数组。详情参考[字段目标值（value）填写说明]',
                         )
                         .optional(),
                     }),
@@ -74,10 +74,10 @@ export const baseV2AppRoleCreate = {
                           '条件运算符 Options:is(等于),isNot(不等于),contains(包含),doesNotContain(不包含),isEmpty(为空),isNotEmpty(不为空)',
                         )
                         .optional(),
-                      values: z
+                      value: z
                         .array(z.string())
                         .describe(
-                          '条件的值，可以是单个值或多个值的数组。详情参考',
+                          '条件的值，可以是单个值或多个值的数组。详情参考[字段目标值（value）填写说明]',
                         )
                         .optional(),
                     }),
@@ -87,7 +87,7 @@ export const baseV2AppRoleCreate = {
                 conjunction: z.enum(['and', 'or']).describe('多个筛选条件的关系 Options:and(与),or(或)').optional(),
               })
               .describe(
-                '记录筛选条件，在 `rec_rule.other_perm` 为 0 时生效。对于未命中 `rec_rule` 的记录，通过 `other_rec_rule` 指定可阅读记录范围；此时，既未命中 `rec_rule`、也未命中 `other_rec_rule` 的记录会被禁止阅读。**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用查看',
+                '记录筛选条件，在 `rec_rule.other_perm` 为 0 时生效。对于未命中 `rec_rule` 的记录，通过 `other_rec_rule` 指定可阅读记录范围；此时，既未命中 `rec_rule`、也未命中 `other_rec_rule` 的记录会被禁止阅读。**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用[获取多维表格元数据]查看',
               )
               .optional(),
             field_perm: z
@@ -110,14 +110,14 @@ export const baseV2AppRoleCreate = {
               .object({})
               .catchall(z.any())
               .describe(
-                '可读的视图集合，仅在 view_perm 为 1 （视图为可阅读）时生效。- 未设置时，表示所有视图可读。- 设置后，表示设置的视图可读，未设置的视图无权限。该参数类型为 map，其中 key 是，value 是视图对应的权限。value 枚举值有：- `0`：无权限- `1`：可阅读**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用查看',
+                '可读的视图集合，仅在 view_perm 为 1 （视图为可阅读）时生效。- 未设置时，表示所有视图可读。- 设置后，表示设置的视图可读，未设置的视图无权限。该参数类型为 map，其中 key 是[视图 ID]，value 是视图对应的权限。value 枚举值有：- `0`：无权限- `1`：可阅读**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用[获取多维表格元数据]查看',
               )
               .optional(),
             field_action_rules: z
               .object({})
               .catchall(z.any())
               .describe(
-                '设置字段的权限，仅可配置单多选字段、附件字段。可选的点位有：- `select_option_edit` : 选项配置点位，配置是否可增删改单、多选选项，未设置表示无权限。- `attachment_export`: 附件操作权限点位，配置是否可导出附件，未设置表示可导出。该参数类型为两层 map 结构，其中 key 是字段点位权限，value 是字段权限集合。字段权限集合也是一个 map 结构，其中 key 是字段名称，value 是字段点位权限：- `0`：无权限- `1`：有权限**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用查看',
+                '设置字段的权限，仅可配置单多选字段、附件字段。可选的点位有：- `select_option_edit` : 选项配置点位，配置是否可增删改单、多选选项，未设置表示无权限。- `attachment_export`: 附件操作权限点位，配置是否可导出附件，未设置表示可导出。该参数类型为两层 map 结构，其中 key 是字段点位权限，value 是字段权限集合。字段权限集合也是一个 map 结构，其中 key 是字段名称，value 是字段点位权限：- `0`：无权限- `1`：有权限**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用[获取多维表格元数据]查看',
               )
               .optional(),
           }),
@@ -129,7 +129,7 @@ export const baseV2AppRoleCreate = {
             block_id: z
               .string()
               .describe(
-                '多维表格仪表盘的唯一标识，以 blk 开头。获取方式：- 在多维表格的 URL 地址栏中，`block_id` 是下图中高亮部分：  - 通过接口获取',
+                '多维表格仪表盘的唯一标识，以 blk 开头。获取方式：- 在多维表格的 URL 地址栏中，`block_id` 是下图中高亮部分：  - 通过[列出仪表盘]接口获取',
               ),
             block_perm: z.number().describe('设置仪表盘的权限 Options:0(NoPerm 无权限),1(Read 可阅读)'),
           }),
@@ -140,7 +140,7 @@ export const baseV2AppRoleCreate = {
         .object({})
         .catchall(z.any())
         .describe(
-          '多维表格点位的权限。- 未设置时，表示自定义角色拥有所有点位权限。- 设置时，可设置以下两种权限： - `base_complex_edit` : 设置是否可以创建副本、下载、打印多维表格 - `copy`: 设置是否可以复制多维表格内容该参数类型为 map，其中 key 是权限点位名称，value 是权限开关。value 枚举值有：- `0`：无权限- `1`：有权限**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用查看',
+          '多维表格点位的权限。- 未设置时，表示自定义角色拥有所有点位权限。- 设置时，可设置以下两种权限： - `base_complex_edit` : 设置是否可以创建副本、下载、打印多维表格 - `copy`: 设置是否可以复制多维表格内容该参数类型为 map，其中 key 是权限点位名称，value 是权限开关。value 枚举值有：- `0`：无权限- `1`：有权限**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用[获取多维表格元数据]查看',
         )
         .optional(),
     }),
@@ -148,7 +148,7 @@ export const baseV2AppRoleCreate = {
       app_token: z
         .string()
         .describe(
-          '多维表格 App 的唯一标识。不同形态的多维表格，其 `app_token` 的获取方式不同：- 如果多维表格的 URL 以 ==**feishu.cn/base**== 开头，该多维表格的 `app_token` 是下图高亮部分： - 如果多维表格的 URL 以 ==**feishu.cn/wiki**== 开头，你需调用知识库相关接口获取多维表格的 app_token。当 `obj_type` 的值为 `bitable` 时，`obj_token` 字段的值才是多维表格的 `app_token`。了解更多，参考',
+          '多维表格 App 的唯一标识。不同形态的多维表格，其 `app_token` 的获取方式不同：- 如果多维表格的 URL 以 ==**feishu.cn/base**== 开头，该多维表格的 `app_token` 是下图高亮部分： - 如果多维表格的 URL 以 ==**feishu.cn/wiki**== 开头，你需调用知识库相关[获取知识空间节点信息]接口获取多维表格的 app_token。当 `obj_type` 的值为 `bitable` 时，`obj_token` 字段的值才是多维表格的 `app_token`。了解更多，参考[多维表格 app_token 获取方式]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -176,7 +176,7 @@ export const baseV2AppRoleList = {
       app_token: z
         .string()
         .describe(
-          '多维表格 App 的唯一标识。不同形态的多维表格，其 `app_token` 的获取方式不同：- 如果多维表格的 URL 以 ==**feishu.cn/base**== 开头，该多维表格的 `app_token` 是下图高亮部分： - 如果多维表格的 URL 以 ==**feishu.cn/wiki**== 开头，你需调用知识库相关接口获取多维表格的 app_token。当 `obj_type` 的值为 `bitable` 时，`obj_token` 字段的值才是多维表格的 `app_token`。了解更多，参考',
+          '多维表格 App 的唯一标识。不同形态的多维表格，其 `app_token` 的获取方式不同：- 如果多维表格的 URL 以 ==**feishu.cn/base**== 开头，该多维表格的 `app_token` 是下图高亮部分： - 如果多维表格的 URL 以 ==**feishu.cn/wiki**== 开头，你需调用知识库相关[获取知识空间节点信息]接口获取多维表格的 app_token。当 `obj_type` 的值为 `bitable` 时，`obj_token` 字段的值才是多维表格的 `app_token`。了解更多，参考[多维表格 app_token 获取方式]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -205,7 +205,7 @@ export const baseV2AppRoleUpdate = {
             table_id: z
               .string()
               .describe(
-                '多维表格数据表的唯一标识。获取方式：- 你可通过多维表格 URL 获取 `table_id`，下图高亮部分即为当前数据表的 `table_id`- 也可通过接口获取 `table_id` ',
+                '多维表格数据表的唯一标识。获取方式：- 你可通过多维表格 URL 获取 `table_id`，下图高亮部分即为当前数据表的 `table_id`- 也可通过[列出数据表]接口获取 `table_id` ',
               )
               .optional(),
             rec_rule: z
@@ -222,10 +222,10 @@ export const baseV2AppRoleUpdate = {
                           '条件运算符 Options:is(等于),isNot(不等于),contains(包含),doesNotContain(不包含),isEmpty(为空),isNotEmpty(不为空)',
                         )
                         .optional(),
-                      values: z
+                      value: z
                         .array(z.string())
                         .describe(
-                          '条件的值，可以是单个值或多个值的数组。详情参考',
+                          '条件的值，可以是单个值或多个值的数组。详情参考[字段目标值（value）填写说明]',
                         )
                         .optional(),
                     }),
@@ -258,10 +258,10 @@ export const baseV2AppRoleUpdate = {
                           '条件运算符 Options:is(等于),isNot(不等于),contains(包含),doesNotContain(不包含),isEmpty(为空),isNotEmpty(不为空)',
                         )
                         .optional(),
-                      values: z
+                      value: z
                         .array(z.string())
                         .describe(
-                          '条件的值，可以是单个值或多个值的数组。详情参考',
+                          '条件的值，可以是单个值或多个值的数组。详情参考[字段目标值（value）填写说明]',
                         )
                         .optional(),
                     }),
@@ -271,7 +271,7 @@ export const baseV2AppRoleUpdate = {
                 conjunction: z.enum(['and', 'or']).describe('多个筛选条件的关系 Options:and(与),or(或)').optional(),
               })
               .describe(
-                '记录筛选条件，在 `table_perm` 为 2 且`rec_rule.other_perm` 为 0 时生效。- 对于未命中 `rec_rule` 的记录，通过 `other_rec_rule` 指定可阅读记录范围；此时，既未命中 `rec_rule`、也未命中 `other_rec_rule` 的记录会被禁止阅读。- `other_rec_rule` 字段未设置、且 `table_perm` 与 `rec_rule` 不变的情况下，将会保持旧值不变。- `other_rec_rule` 字段设置为 {} 时，且 `table_perm` 与`rec_rule` 不变的情况下，表示设置为默认值，即非`rec_rule` 记录全部可阅读。**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用查看',
+                '记录筛选条件，在 `table_perm` 为 2 且`rec_rule.other_perm` 为 0 时生效。- 对于未命中 `rec_rule` 的记录，通过 `other_rec_rule` 指定可阅读记录范围；此时，既未命中 `rec_rule`、也未命中 `other_rec_rule` 的记录会被禁止阅读。- `other_rec_rule` 字段未设置、且 `table_perm` 与 `rec_rule` 不变的情况下，将会保持旧值不变。- `other_rec_rule` 字段设置为 {} 时，且 `table_perm` 与`rec_rule` 不变的情况下，表示设置为默认值，即非`rec_rule` 记录全部可阅读。**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用[获取多维表格元数据]查看',
               )
               .optional(),
             field_perm: z
@@ -294,14 +294,14 @@ export const baseV2AppRoleUpdate = {
               .object({})
               .catchall(z.any())
               .describe(
-                '可读的视图集合，仅在 `view_perm` 为 1 （视图为可阅读）时生效。更新时，未设置该字段`view_rules `，且 `view_perm` 未变化的情况下，将保留旧值。设置该字段`view_rules `为{}，且 `view_perm` 为1的情况下，会将所有视图置为可读。该参数类型为 map，其中 key 是，value 是视图对应的权限。value 枚举值有：- `0`：无权限- `1`：可阅读**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用查看',
+                '可读的视图集合，仅在 `view_perm` 为 1 （视图为可阅读）时生效。更新时，未设置该字段`view_rules `，且 `view_perm` 未变化的情况下，将保留旧值。设置该字段`view_rules `为{}，且 `view_perm` 为1的情况下，会将所有视图置为可读。该参数类型为 map，其中 key 是[视图 ID]，value 是视图对应的权限。value 枚举值有：- `0`：无权限- `1`：可阅读**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用[获取多维表格元数据]查看',
               )
               .optional(),
             field_action_rules: z
               .object({})
               .catchall(z.any())
               .describe(
-                '更新字段的权限，仅可配置单多选字段、附件字段。可选的点位有：- `select_option_edit` : 选项配置点位，配置是否可增删改单、多选选项，未设置表示无权限。- `attachment_export`: 附件操作权限点位，配置是否可导出附件，未设置表示可导出。该参数类型为两层 map 结构，其中 key 是字段点位权限，value 是字段权限集合。字段权限集合也是一个 map 结构，其中 key 是字段名称，value 是字段点位权限：- `0`：无权限- `1`：有权限**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用查看',
+                '更新字段的权限，仅可配置单多选字段、附件字段。可选的点位有：- `select_option_edit` : 选项配置点位，配置是否可增删改单、多选选项，未设置表示无权限。- `attachment_export`: 附件操作权限点位，配置是否可导出附件，未设置表示可导出。该参数类型为两层 map 结构，其中 key 是字段点位权限，value 是字段权限集合。字段权限集合也是一个 map 结构，其中 key 是字段名称，value 是字段点位权限：- `0`：无权限- `1`：有权限**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用[获取多维表格元数据]查看',
               )
               .optional(),
           }),
@@ -313,7 +313,7 @@ export const baseV2AppRoleUpdate = {
             block_id: z
               .string()
               .describe(
-                '多维表格仪表盘的唯一标识，以 blk 开头。获取方式：- 在多维表格的 URL 地址栏中，`block_id` 是下图中高亮部分：  - 通过接口获取',
+                '多维表格仪表盘的唯一标识，以 blk 开头。获取方式：- 在多维表格的 URL 地址栏中，`block_id` 是下图中高亮部分：  - 通过[列出仪表盘]接口获取',
               ),
             block_perm: z.number().describe('仪表盘的权限 Options:0(NoPerm 无权限),1(Read 可阅读)'),
           }),
@@ -326,7 +326,7 @@ export const baseV2AppRoleUpdate = {
         .object({})
         .catchall(z.any())
         .describe(
-          '多维表格点位的权限。更新时，未设置`base_rule`字段时，所有点位保持旧值。设置`base_rule`字段为{}时，会将所有点位设置为默认值，即所有点位有权限。可设置以下两种权限：- `base_complex_edit` : 设置是否可以创建副本、下载、打印多维表格- `copy`: 设置是否可以复制多维表格内容该参数类型为 map，其中 key 是权限点位名称，value 是权限开关。value 枚举值有：- `0`：无权限- `1`：有权限**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用查看',
+          '多维表格点位的权限。更新时，未设置`base_rule`字段时，所有点位保持旧值。设置`base_rule`字段为{}时，会将所有点位设置为默认值，即所有点位有权限。可设置以下两种权限：- `base_complex_edit` : 设置是否可以创建副本、下载、打印多维表格- `copy`: 设置是否可以复制多维表格内容该参数类型为 map，其中 key 是权限点位名称，value 是权限开关。value 枚举值有：- `0`：无权限- `1`：有权限**注意**：仅高级权限为 v2 版本的多维表格支持该参数。是否是 v2 版本可调用[获取多维表格元数据]查看',
         )
         .optional(),
     }),
@@ -334,12 +334,12 @@ export const baseV2AppRoleUpdate = {
       app_token: z
         .string()
         .describe(
-          '多维表格 App 的唯一标识。不同形态的多维表格，其 `app_token` 的获取方式不同：- 如果多维表格的 URL 以 ==**feishu.cn/base**== 开头，该多维表格的 `app_token` 是下图高亮部分： - 如果多维表格的 URL 以 ==**feishu.cn/wiki**== 开头，你需调用知识库相关接口获取多维表格的 app_token。当 `obj_type` 的值为 `bitable` 时，`obj_token` 字段的值才是多维表格的 `app_token`。了解更多，参考',
+          '多维表格 App 的唯一标识。不同形态的多维表格，其 `app_token` 的获取方式不同：- 如果多维表格的 URL 以 ==**feishu.cn/base**== 开头，该多维表格的 `app_token` 是下图高亮部分： - 如果多维表格的 URL 以 ==**feishu.cn/wiki**== 开头，你需调用知识库相关[获取知识空间节点信息]接口获取多维表格的 app_token。当 `obj_type` 的值为 `bitable` 时，`obj_token` 字段的值才是多维表格的 `app_token`。了解更多，参考[多维表格 app_token 获取方式]',
         ),
       role_id: z
         .string()
         .describe(
-          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过接口获取',
+          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过[列出自定义角色]接口获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),

@@ -42,7 +42,7 @@ export const sheetsV3SpreadsheetCreate = {
       folder_token: z
         .string()
         .describe(
-          'Folder token. You can get the folder token in two ways:- URL of the folder: https://sample.feishu.cn/drive/folder/==fldbcO1UuPz8VwnpPx5a92abcef==- Call the open platform interface to get it: - Call the  interface to get the root directory (i.e. root folder) token. - Continue to call the  interface to get the token for the folder in the root directory',
+          'Folder token. You can get the folder token in two ways:- URL of the folder: https://sample.feishu.cn/drive/folder/==fldbcO1UuPz8VwnpPx5a92abcef==- Call the open platform interface to get it: - Call the [get my space (root folder) metadata] interface to get the root directory (i.e. root folder) token. - Continue to call the [get list of files in folder] interface to get the token for the folder in the root directory.**Note**: To create a spreadsheet in the knowledge base, you need to call the [Create knowledge space node] API and select the table (sheet) type',
         )
         .optional(),
     }),
@@ -64,7 +64,7 @@ export const sheetsV3SpreadsheetGet = {
       spreadsheet_token: z
         .string()
         .describe(
-          'Table token. Refer to the  to obtain the token',
+          'Table token. Refer to the [Spreadsheet Overview] to obtain the token',
         )
         .optional(),
     }),
@@ -93,7 +93,7 @@ export const sheetsV3SpreadsheetPatch = {
       spreadsheet_token: z
         .string()
         .describe(
-          'Table token. Refer to the  to obtain the token',
+          'Table token. Refer to the [Spreadsheet Overview] to obtain the token',
         )
         .optional(),
     }),
@@ -107,7 +107,7 @@ export const sheetsV3SpreadsheetSheetFilterViewConditionCreate = {
   path: '/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/filter_views/:filter_view_id/conditions',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Sheets-Filter view-filter view-Create Filter Condition-::: noteFor filter conditions, see :::This API is used to create filter conditions for a column in the range of a filter view',
+    '[Feishu/Lark]-Sheets-Filter view-filter view-Create Filter Condition-::: noteFor filter conditions, see [User guide for using filter conditions in the filter view]:::This API is used to create filter conditions for a column in the range of a filter view',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -150,7 +150,7 @@ export const sheetsV3SpreadsheetSheetFilterViewConditionGet = {
   path: '/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/filter_views/:filter_view_id/conditions/:condition_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Sheets-Filter view-filter view-Obtain Filter Condition-::: noteFor filter condition explanations, see :::This API is used to obtain the filter conditions of a specified column in the filter view',
+    '[Feishu/Lark]-Sheets-Filter view-filter view-Obtain Filter Condition-::: noteFor filter condition explanations, see [User guide for using filter conditions in the filter view]:::This API is used to obtain the filter conditions of a specified column in the filter view',
   accessTokens: ['tenant', 'user'],
   schema: {
     path: z.object({
@@ -169,7 +169,7 @@ export const sheetsV3SpreadsheetSheetFilterViewConditionQuery = {
   path: '/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/filter_views/:filter_view_id/conditions/query',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Sheets-Filter view-filter view-Query Filter Condition-::: noteFor filter condition explanations, see :::This API is used to query all filter conditions of a filter view. All filter conditions in the range of the filter view are returned',
+    '[Feishu/Lark]-Sheets-Filter view-filter view-Query Filter Condition-::: noteFor filter condition explanations, see [User guide for using filter conditions in the filter view]:::This API is used to query all filter conditions of a filter view. All filter conditions in the range of the filter view are returned',
   accessTokens: ['tenant', 'user'],
   schema: {
     path: z.object({
@@ -187,7 +187,7 @@ export const sheetsV3SpreadsheetSheetFilterViewConditionUpdate = {
   path: '/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/filter_views/:filter_view_id/conditions/:condition_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-Sheets-Filter view-filter view-Update Filter Condition-::: noteFor filter condition parameters, see :::This API is used to update filter conditions for a column in the range of a filter view. The condition ID is the letter designation of the column',
+    '[Feishu/Lark]-Sheets-Filter view-filter view-Update Filter Condition-::: noteFor filter condition parameters, see [User guide for using filter conditions in the filter view]:::This API is used to update filter conditions for a column in the range of a filter view. The condition ID is the letter designation of the column',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -211,7 +211,7 @@ export const sheetsV3SpreadsheetSheetFilterViewCreate = {
   path: '/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/filter_views',
   httpMethod: 'POST',
   description:
-    "[Feishu/Lark]-Docs-Sheets-Filter view-Create Filter View-::: noteFor range settings, see: :::This API is used to create a filter view based on passed in parameters. The ID and name fields are optional and default values are generated if none are provided. The range field is required. IDs are 10 characters long and composed of numbers and upper and lowercase English letters. Names can't exceed 100 characters. A single sheet can have up to 150 filter views",
+    "[Feishu/Lark]-Docs-Sheets-Filter view-Create Filter View-::: noteFor range settings, see: [User guide for using filter conditions in the filter view]:::This API is used to create a filter view based on passed in parameters. The ID and name fields are optional and default values are generated if none are provided. The range field is required. IDs are 10 characters long and composed of numbers and upper and lowercase English letters. Names can't exceed 100 characters. A single sheet can have up to 150 filter views",
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -269,7 +269,7 @@ export const sheetsV3SpreadsheetSheetFilterViewPatch = {
   path: '/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/filter_views/:filter_view_id',
   httpMethod: 'PATCH',
   description:
-    "[Feishu/Lark]-Docs-Sheets-Filter view-Update Filter View-::: noteFor range settings, see: :::This API is used to update the filter view name or range. The name can't exceed 100 characters and must be unique within the sheet. The range can't exceed the maximum range of the sheet",
+    "[Feishu/Lark]-Docs-Sheets-Filter view-Update Filter View-::: noteFor range settings, see: [User guide for using filter conditions in the filter view]:::This API is used to update the filter view name or range. The name can't exceed 100 characters and must be unique within the sheet. The range can't exceed the maximum range of the sheet",
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -308,7 +308,7 @@ export const sheetsV3SpreadsheetSheetFilterCreate = {
   path: '/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/filter',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Docs-Sheets-Filter-Create Filter-::: noteFor parameter values, see :::This API is used to create a filter in a sheet',
+    '[Feishu/Lark]-Docs-Sheets-Filter-Create Filter-::: noteFor parameter values, see [Filter guide]:::This API is used to create a filter in a sheet',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -369,7 +369,7 @@ export const sheetsV3SpreadsheetSheetFilterUpdate = {
   path: '/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/filter',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-Docs-Sheets-Filter-Update Filter-::: noteFor parameter values, see :::This API is used to update column filter conditions in the sheet range',
+    '[Feishu/Lark]-Docs-Sheets-Filter-Update Filter-::: noteFor parameter values, see [Filter guide]:::This API is used to update column filter conditions in the sheet range',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -404,7 +404,7 @@ export const sheetsV3SpreadsheetSheetFind = {
         .object({
           range: z
             .string()
-            .describe('Search range, '),
+            .describe('Search range, [glossary range]'),
           match_case: z
             .boolean()
             .describe(
@@ -439,7 +439,7 @@ export const sheetsV3SpreadsheetSheetFind = {
       sheet_id: z
         .string()
         .describe(
-          'Sheet ID, ',
+          'Sheet ID, [how to get worksheet id]',
         )
         .optional(),
     }),
@@ -453,7 +453,7 @@ export const sheetsV3SpreadsheetSheetFloatImageCreate = {
   path: '/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/float_images',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Docs-Sheets-Floating image-Create Floating Image-::: noteFor information about the settings of a floating image, see .:::This API is used to create a floating image based on the parameters passed in. Float_image_token () and range (only one cell) are required parameters. Float_image_id is optional, and a default ID is generated if this field is not specified. IDs are 10 characters long and composed of numbers (0-9) and upper and lowercase English letters. A spreadsheet cannot have duplicate images, and the total of floating images and cell images cannot exceed 4,000. The width and height specify the display width and height of an image, which are optional. If not specified, the image is displayed according to its actual width and height. offset_x and offset_y specify the offset of the image from the top-left corner of the cell where it is located. These two parameters are optional and default to 0',
+    '[Feishu/Lark]-Docs-Sheets-Floating image-Create Floating Image-::: noteFor information about the settings of a floating image, see [Floating image guide].:::This API is used to create a floating image based on the parameters passed in. Float_image_token ([obtained after uploading an image to a spreadsheet]) and range (only one cell) are required parameters. Float_image_id is optional, and a default ID is generated if this field is not specified. IDs are 10 characters long and composed of numbers (0-9) and upper and lowercase English letters. A spreadsheet cannot have duplicate images, and the total of floating images and cell images cannot exceed 4,000. The width and height specify the display width and height of an image, which are optional. If not specified, the image is displayed according to its actual width and height. offset_x and offset_y specify the offset of the image from the top-left corner of the cell where it is located. These two parameters are optional and default to 0',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -517,7 +517,7 @@ export const sheetsV3SpreadsheetSheetFloatImageGet = {
   path: '/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/float_images/:float_image_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Docs-Sheets-Floating image-Obtain Floating Image-::: noteFor information about floating images, see :::This API is used to obtain floating image information based on a float_image_id',
+    '[Feishu/Lark]-Docs-Sheets-Floating image-Obtain Floating Image-::: noteFor information about floating images, see [Floating image guide]:::This API is used to obtain floating image information based on a float_image_id',
   accessTokens: ['tenant', 'user'],
   schema: {
     path: z.object({
@@ -535,7 +535,7 @@ export const sheetsV3SpreadsheetSheetFloatImagePatch = {
   path: '/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/float_images/:float_image_id',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Docs-Sheets-Floating image-Update Floating Image-::: noteFor information about how to update a floating image, see .:::This API is used to update the position and size parameters of an existing floating image, including range, width, height, offset_x, and offset_y. This operation cannot update float_image_id or float_image_token',
+    '[Feishu/Lark]-Docs-Sheets-Floating image-Update Floating Image-::: noteFor information about how to update a floating image, see [Floating image guide].:::This API is used to update the position and size parameters of an existing floating image, including range, width, height, offset_x, and offset_y. This operation cannot update float_image_id or float_image_token',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -581,7 +581,7 @@ export const sheetsV3SpreadsheetSheetFloatImageQuery = {
   path: '/open-apis/sheets/v3/spreadsheets/:spreadsheet_token/sheets/:sheet_id/float_images/query',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Docs-Sheets-Floating image-Query Floating Image-::: noteFor information about floating images, see :::This API returns information on all floating images in a sheet',
+    '[Feishu/Lark]-Docs-Sheets-Floating image-Query Floating Image-::: noteFor information about floating images, see [Floating image guide]:::This API returns information on all floating images in a sheet',
   accessTokens: ['tenant', 'user'],
   schema: {
     path: z.object({
@@ -647,7 +647,7 @@ export const sheetsV3SpreadsheetSheetMoveDimension = {
       spreadsheet_token: z
         .string()
         .describe(
-          'Sheet token, For details, see ',
+          'Sheet token, For details, see [Spreadsheet overview]',
         )
         .optional(),
       sheet_id: z.string().describe('Sheet ID').optional(),
@@ -669,7 +669,7 @@ export const sheetsV3SpreadsheetSheetQuery = {
       spreadsheet_token: z
         .string()
         .describe(
-          'Spreadsheet token. Ways to get: - Through the URL of the sheet: https://sample.feishu.cn/sheets/==shtcnmBAyGehy8abcef==- Through the ',
+          'Spreadsheet token. Ways to get: - Through the URL of the sheet: https://sample.feishu.cn/sheets/==shtcnmBAyGehy8abcef==- Through the [List items in folder]',
         )
         .optional(),
     }),
@@ -691,7 +691,7 @@ export const sheetsV3SpreadsheetSheetReplace = {
         .object({
           range: z
             .string()
-            .describe('Search range, '),
+            .describe('Search range, [glossary range]'),
           match_case: z
             .boolean()
             .describe(

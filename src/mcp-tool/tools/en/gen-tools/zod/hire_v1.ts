@@ -271,7 +271,7 @@ export const hireV1AgencyGetAgencyAccount = {
       supplier_id: z
         .string()
         .describe(
-          'The headhunting supplier ID can be obtained through the [Search headhunting supplier list] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/agency/batch_query) interface',
+          'The headhunting supplier ID can be obtained through the [Search headhunting supplier list] interface',
         ),
       status: z
         .number()
@@ -308,7 +308,7 @@ export const hireV1AgencyOperateAgencyAccount = {
       id: z
         .string()
         .describe(
-          'The headhunting ID can be obtained through the [Query the headhunting list under the headhunting supplier] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/agency/get_agency_account) interface',
+          'The headhunting ID can be obtained through the [Query the headhunting list under the headhunting supplier] interface',
         ),
       reason: z.string().describe("Disable reason, required only if'option 'is'disabled'").optional(),
     }),
@@ -352,7 +352,7 @@ export const hireV1AgencyProtectSearch = {
       talent_id: z
         .string()
         .describe(
-          'Talent ID, ',
+          'Talent ID, [「Get talent ID by mobile or email」]',
         ),
     }),
   },
@@ -391,7 +391,7 @@ export const hireV1ApplicationCancelOnboard = {
       termination_reason_id_list: z
         .array(z.string())
         .describe(
-          'The id list of the specific reason for termination, please refer to ',
+          'The id list of the specific reason for termination, please refer to [Get the reason for termination of application]',
         )
         .optional(),
       termination_reason_notes: z.string().describe('Remarks').optional(),
@@ -429,6 +429,10 @@ export const hireV1ApplicationCreate = {
         .describe(
           'The list of intended delivery cities can be obtained from the list of work locations returned by "Get Job Information"',
         )
+        .optional(),
+      delivery_type: z
+        .number()
+        .describe('Application method Options:1(HR_visit Sourced by HR),2(candidate_delivery Talent applied)')
         .optional(),
     }),
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
@@ -477,25 +481,25 @@ export const hireV1ApplicationGetDetail = {
       department_id_type: z
         .enum(['open_department_id', 'department_id'])
         .describe(
-          'The department ID type used in this call Options:open_department_id(Identify the department by open_department_id, and get it through the  interface),department_id(Identify the department by department_id, and get it through the  interface)',
+          'The department ID type used in this call Options:open_department_id(Identify the department by open_department_id, and get it through the [batch acquisition department information] interface),department_id(Identify the department by department_id, and get it through the [batch acquisition department information] interface)',
         )
         .optional(),
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "rank ID" used in this call Options:people_admin_job_level_id("HR system management background" applicable rank ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),job_level_id(The rank ID applicable to "Feishu Management Background" is obtained through the  interface)',
+          'The type of "rank ID" used in this call Options:people_admin_job_level_id("HR system management background" applicable rank ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),job_level_id(The rank ID applicable to "Feishu Management Background" is obtained through the [Get Tenant Rank List] interface)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "sequence ID" used in this call Options:people_admin_job_category_id("HR system management background" applicable serial ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),job_family_id(The sequence ID applicable to "Feishu Management Background" is obtained through the  interface)',
+          'The type of "sequence ID" used in this call Options:people_admin_job_category_id("HR system management background" applicable serial ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),job_family_id(The sequence ID applicable to "Feishu Management Background" is obtained through the [Get Tenant Sequence List] interface)',
         )
         .optional(),
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
         .describe(
-          'The type of "person type ID" used in this call Options:people_admin_employee_type_id("HR system management background" applicable personnel type ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),employee_type_enum_id(The person type ID applicable to "Feishu Management Background" is obtained through the  interface)',
+          'The type of "person type ID" used in this call Options:people_admin_employee_type_id("HR system management background" applicable personnel type ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),employee_type_enum_id(The person type ID applicable to "Feishu Management Background" is obtained through the [Query Person Type] interface)',
         )
         .optional(),
       options: z
@@ -525,7 +529,7 @@ export const hireV1ApplicationGetDetail = {
       application_id: z
         .string()
         .describe(
-          'Delivery ID, which can be obtained through the  interface',
+          'Delivery ID, which can be obtained through the [Get Delivery List] interface',
         )
         .optional(),
     }),
@@ -615,19 +619,19 @@ export const hireV1ApplicationOffer = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "rank ID" used in this call Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "rank ID" used in this call Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
         .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
         )
         .optional(),
     }),
@@ -635,7 +639,7 @@ export const hireV1ApplicationOffer = {
       application_id: z
         .string()
         .describe(
-          'Application ID,please refer to: ',
+          'Application ID,please refer to: [Get application list]',
         ),
     }),
   },
@@ -654,7 +658,7 @@ export const hireV1ApplicationRecover = {
       application_id: z
         .string()
         .describe(
-          'Application ID, please refer to: ',
+          'Application ID, please refer to: [Get application list]',
         ),
     }),
   },
@@ -678,7 +682,7 @@ export const hireV1ApplicationTerminate = {
       termination_reason_list: z
         .array(z.string())
         .describe(
-          'The id list of the specific reason for termination, please refer to ',
+          'The id list of the specific reason for termination, please refer to [Get the termination reason for application]',
         )
         .optional(),
       termination_reason_note: z.string().describe('Termination remarks').optional(),
@@ -687,7 +691,7 @@ export const hireV1ApplicationTerminate = {
       application_id: z
         .string()
         .describe(
-          'Application ID, please refer to ',
+          'Application ID, please refer to [Get Application List]',
         ),
     }),
   },
@@ -708,7 +712,7 @@ export const hireV1ApplicationTransferOnboard = {
       job_requirement_id: z
         .string()
         .describe(
-          'Job requirement ID. It can be obtained through the interface . Whether it must be entered depends on the configuration of "Recruitment request association settings" by the admin in the system backend. After onboarding is completed, the "Onboarded" number for the recruitment request will increase by 1',
+          'Job requirement ID. It can be obtained through the interface [Get job requirement list]. Whether it must be entered depends on the configuration of "Recruitment request association settings" by the admin in the system backend. After onboarding is completed, the "Onboarded" number for the recruitment request will increase by 1',
         )
         .optional(),
       operator_id: z
@@ -738,19 +742,19 @@ export const hireV1ApplicationTransferOnboard = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
         .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
         )
         .optional(),
     }),
@@ -784,7 +788,7 @@ export const hireV1AttachmentGet = {
   path: '/open-apis/hire/v1/attachments/:attachment_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Hire-Attachment-Get attachment information-Obtain the meta-information of the attachment in the recruitment system according to the ID of the talent resume attachment, such as file name, creation time, file URL, etc., The resume attachment of the talent can be obtained through the  Interface',
+    '[Feishu/Lark]-Hire-Attachment-Get attachment information-Obtain the meta-information of the attachment in the recruitment system according to the ID of the talent resume attachment, such as file name, creation time, file URL, etc., The resume attachment of the talent can be obtained through the [Access Talent Information] Interface',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -805,14 +809,14 @@ export const hireV1AttachmentPreview = {
   path: '/open-apis/hire/v1/attachments/:attachment_id/preview',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Hire-Attachment-Get attachment PDF download link-Obtain the attachment preview information according to the ID of the talent resume attachment, and obtain the resume attachment of the talent through the  api',
+    '[Feishu/Lark]-Hire-Attachment-Get attachment PDF download link-Obtain the attachment preview information according to the ID of the talent resume attachment, and obtain the resume attachment of the talent through the [Get talent] api',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       attachment_id: z
         .string()
         .describe(
-          'Attachment id, please refer to ',
+          'Attachment id, please refer to [Get talent]',
         ),
     }),
   },
@@ -856,13 +860,13 @@ export const hireV1DiversityInclusionSearch = {
       talent_ids: z
         .array(z.string())
         .describe(
-          'List of talent IDs that need to query DI data, please refer to  to get talent IDs',
+          'List of talent IDs that need to query DI data, please refer to [Get talent list] to get talent IDs',
         )
         .optional(),
       application_ids: z
         .array(z.string())
         .describe(
-          'List of application IDs that need to query DI data, please refer to to get application IDs',
+          'List of application IDs that need to query DI data, please refer to[Get application list] to get application IDs',
         )
         .optional(),
     }),
@@ -978,7 +982,7 @@ export const hireV1EcoBackgroundCheckCustomFieldBatchDelete = {
       account_id: z
         .string()
         .describe(
-          'The account ID can be obtained through the [account binding](/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hide-v1/eco_account/events/created) event',
+          'The account ID can be obtained through the [account binding] event',
         ),
     }),
   },
@@ -997,7 +1001,7 @@ export const hireV1EcoBackgroundCheckCustomFieldBatchUpdate = {
       account_id: z
         .string()
         .describe(
-          'The account ID can be obtained through the  event',
+          'The account ID can be obtained through the [account binding] event',
         ),
       custom_field_list: z
         .array(
@@ -1039,7 +1043,7 @@ export const hireV1EcoBackgroundCheckCustomFieldBatchUpdate = {
           }),
         )
         .describe(
-          'Custom field list. **Note**: The list length must be the same as the one passed in when ',
+          'Custom field list. **Note**: The list length must be the same as the one passed in when [Create Backtone Custom Field]',
         ),
     }),
   },
@@ -1113,7 +1117,7 @@ export const hireV1EcoBackgroundCheckPackageBatchDelete = {
       account_id: z
         .string()
         .describe(
-          'The account ID can be obtained through the [account binding](/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hide-v1/eco_account/events/created) event',
+          'The account ID can be obtained through the [account binding] event',
         ),
       package_id_list: z
         .array(z.string())
@@ -1135,7 +1139,7 @@ export const hireV1EcoBackgroundCheckPackageBatchUpdate = {
   path: '/open-apis/hire/v1/eco_background_check_packages/batch_update',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Hire-Ecological docking-background check-Update background check package-Update the background adjustment package and additional survey item information under the specified background adjustment account. If you need to add a background adjustment package and additional survey items, please use  to add',
+    '[Feishu/Lark]-Hire-Ecological docking-background check-Update background check package-Update the background adjustment package and additional survey item information under the specified background adjustment account. If you need to add a background adjustment package and additional survey items, please use [Create a background adjustment package and additional survey items] to add',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1176,7 +1180,7 @@ export const hireV1EcoBackgroundCheckPackageCreate = {
       account_id: z
         .string()
         .describe(
-          'The account ID can be obtained through the [account binding](/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hide-v1/eco_account/events/created) event',
+          'The account ID can be obtained through the [account binding] event',
         ),
       package_list: z
         .array(
@@ -1207,14 +1211,14 @@ export const hireV1EcoBackgroundCheckCancel = {
   path: '/open-apis/hire/v1/eco_background_checks/cancel',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Hire-Ecological docking-background check-Cancel background check order-Calling this interface will change the status of the back-up order to terminated, and the terminated order will not be able to update the order progress to "terminated" through the  and . Before calling this interface, it is recommended to call the  interface to update the order progress to" terminated "',
+    '[Feishu/Lark]-Hire-Ecological docking-background check-Cancel background check order-Calling this interface will change the status of the back-up order to terminated, and the terminated order will not be able to update the order progress to "terminated" through the [Update Back-up Order Progress] and [Return the final result of the back-up order]. Before calling this interface, it is recommended to call the [Update Back-up Order Progress] interface to update the order progress to" terminated "',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       background_check_id: z
         .string()
         .describe(
-          'Backtone ID. Can be obtained by the  event',
+          'Backtone ID. Can be obtained by the [Create Backtone] event',
         ),
     }),
   },
@@ -1233,7 +1237,7 @@ export const hireV1EcoBackgroundCheckUpdateProgress = {
       background_check_id: z
         .string()
         .describe(
-          'Backtone ID. Can be obtained by the  event',
+          'Backtone ID. Can be obtained by the [Create Backtone] event',
         ),
       stage_id: z
         .string()
@@ -1287,7 +1291,7 @@ export const hireV1EcoBackgroundCheckUpdateResult = {
       background_check_id: z
         .string()
         .describe(
-          'Backtone ID. Can be obtained by the  event',
+          'Backtone ID. Can be obtained by the [Create Backtone] event',
         ),
       result: z.string().describe('Result'),
       result_time: z.string().describe('Result Time. Millisecond timestamp'),
@@ -1327,12 +1331,12 @@ export const hireV1EcoExamPaperBatchDelete = {
       account_id: z
         .string()
         .describe(
-          'The account ID of the written test can be obtained through the  event',
+          'The account ID of the written test can be obtained through the [account binding] event',
         ),
       paper_id_list: z
         .array(z.string())
         .describe(
-          'List of paper IDs. The ID passed in by ',
+          'List of paper IDs. The ID passed in by [Create Paper List]',
         ),
     }),
   },
@@ -1351,7 +1355,7 @@ export const hireV1EcoExamPaperBatchUpdate = {
       account_id: z
         .string()
         .describe(
-          'The account ID of the written test can be obtained through the  event',
+          'The account ID of the written test can be obtained through the [account binding] event',
         ),
       paper_list: z
         .array(
@@ -1359,7 +1363,7 @@ export const hireV1EcoExamPaperBatchUpdate = {
             id: z
               .string()
               .describe(
-                'Paper ID, which is the ID passed in through ',
+                'Paper ID, which is the ID passed in through [Create Paper List]',
               ),
             name: z
               .string()
@@ -1393,14 +1397,14 @@ export const hireV1EcoExamPaperCreate = {
   path: '/open-apis/hire/v1/eco_exam_papers',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Hire-Ecological docking-exam-Create exam paper-Feishu Hire\'s written test service provider can create a list of test papers under the customer\'s written test account through this interface after completing . If the customer\'s written test account is "not activated" or "disabled", after the test paper is created successfully, the customer\'s account will become "normal" and the written test can be arranged normally',
+    '[Feishu/Lark]-Hire-Ecological docking-exam-Create exam paper-Feishu Hire\'s written test service provider can create a list of test papers under the customer\'s written test account through this interface after completing [Account Binding]. If the customer\'s written test account is "not activated" or "disabled", after the test paper is created successfully, the customer\'s account will become "normal" and the written test can be arranged normally',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       account_id: z
         .string()
         .describe(
-          'The account ID of the written test can be obtained through the  event',
+          'The account ID of the written test can be obtained through the [account binding] event',
         ),
       paper_list: z
         .array(
@@ -1442,7 +1446,7 @@ export const hireV1EcoExamLoginInfo = {
   path: '/open-apis/hire/v1/eco_exams/:exam_id/login_info',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Hire-Ecological docking-exam-Post exam login info-The written test service provider of Feishu Hire, after receiving the  event and arranging the written test, should go through this interfaceReturn the result of the written test arrangement. If the arrangement is successful, the written test link must be returned; if the written test link requires login authentication, the login certificate(`username`, `password`) must be returned',
+    '[Feishu/Lark]-Hire-Ecological docking-exam-Post exam login info-The written test service provider of Feishu Hire, after receiving the [Create Written Test] event and arranging the written test, should go through this interfaceReturn the result of the written test arrangement. If the arrangement is successful, the written test link must be returned; if the written test link requires login authentication, the login certificate(`username`, `password`) must be returned',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1477,7 +1481,7 @@ export const hireV1EcoExamLoginInfo = {
       exam_id: z
         .string()
         .describe(
-          'Written test ID. Can be obtained by the  event',
+          'Written test ID. Can be obtained by the [Create Written Test] event',
         ),
     }),
   },
@@ -1528,7 +1532,7 @@ export const hireV1EcoExamUpdateResult = {
       exam_id: z
         .string()
         .describe(
-          'Written test ID, which can be obtained by the  event',
+          'Written test ID, which can be obtained by the [Create Written Test] event',
         ),
     }),
   },
@@ -1557,7 +1561,7 @@ export const hireV1EhrImportTaskPatch = {
       ehr_import_task_id: z
         .string()
         .describe(
-          'Import the task ID, the task ID comes from the task_id in the import e-HR event, refer to ',
+          'Import the task ID, the task ID comes from the task_id in the import e-HR event, refer to [Import e-HR]',
         ),
     }),
   },
@@ -1583,19 +1587,19 @@ export const hireV1EmployeeGet = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
         .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
         )
         .optional(),
     }),
@@ -1603,7 +1607,7 @@ export const hireV1EmployeeGet = {
       employee_id: z
         .string()
         .describe(
-          'Employee ID,please refer to:',
+          'Employee ID,please refer to:[Get onboard information by application ID]',
         ),
     }),
   },
@@ -1622,7 +1626,7 @@ export const hireV1EmployeeGetByApplication = {
       application_id: z
         .string()
         .describe(
-          'Application ID, please refer to: ',
+          'Application ID, please refer to: [Get application list]',
         ),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
       department_id_type: z
@@ -1634,19 +1638,19 @@ export const hireV1EmployeeGetByApplication = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
         .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
         )
         .optional(),
     }),
@@ -1691,19 +1695,19 @@ export const hireV1EmployeePatch = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
         .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
         )
         .optional(),
     }),
@@ -1803,7 +1807,7 @@ export const hireV1ExamCreate = {
       uuid: z
         .string()
         .describe(
-          'Report attachment, use [Create attachment] (/ssl: ttdoc/ukTMukTMukTM/uIDN1YjLyQTN24iM0UjN/create_attachment) upload, get attachment ID, supported file formats: JPG, JPEG, PNG, PDF, not more than 100MB',
+          'Report attachment, use [Create attachment] upload, get attachment ID, supported file formats: JPG, JPEG, PNG, PDF, not more than 100MB',
         )
         .optional(),
       operator_id: z.string().describe('Add person ID'),
@@ -1936,7 +1940,7 @@ export const hireV1ExternalBackgroundCheckBatchQuery = {
       external_application_id: z
         .string()
         .describe(
-          'External delivery ID, which can be obtained through the [Get External Delivery Information] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hide-v1/external_application/list) interface',
+          'External delivery ID, which can be obtained through the [Get External Delivery Information] interface',
         )
         .optional(),
       page_size: z.number().describe('paging size').optional(),
@@ -1983,7 +1987,7 @@ export const hireV1ExternalBackgroundCheckDelete = {
       external_background_check_id: z
         .string()
         .describe(
-          'External backtone ID, which can be obtained through the [Query External Backtone] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/external_background_check/batch_query) interface',
+          'External backtone ID, which can be obtained through the [Query External Backtone] interface',
         ),
     }),
   },
@@ -2002,7 +2006,7 @@ export const hireV1ExternalBackgroundCheckUpdate = {
       external_application_id: z
         .string()
         .describe(
-          'External delivery ID, which can be obtained through the [Get External Delivery Information] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hide-v1/external_application/list) interface',
+          'External delivery ID, which can be obtained through the [Get External Delivery Information] interface',
         ),
       date: z.number().describe('Back date, millisecond timestamp').optional(),
       name: z.string().describe('backtone name').optional(),
@@ -2010,7 +2014,7 @@ export const hireV1ExternalBackgroundCheckUpdate = {
       attachment_id_list: z
         .array(z.string())
         .describe(
-          'The list of attachment IDs can be returned through the [Create Attachment] (/ssl: ttdoc/ukTMukTMukTM/uIDN1YjLyQTN24iM0UjN/create_attachment) interface',
+          'The list of attachment IDs can be returned through the [Create Attachment] interface',
         )
         .optional(),
     }),
@@ -2018,7 +2022,7 @@ export const hireV1ExternalBackgroundCheckUpdate = {
       external_background_check_id: z
         .string()
         .describe(
-          'External backtone ID, which can be obtained through the [Query External Backtone] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/external_background_check/batch_query) interface',
+          'External backtone ID, which can be obtained through the [Query External Backtone] interface',
         ),
     }),
   },
@@ -2145,7 +2149,7 @@ export const hireV1ExternalInterviewBatchQuery = {
       external_application_id: z
         .string()
         .describe(
-          'External delivery ID, which can be obtained through the [Get External Delivery Information] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hide-v1/external_application/list) interface',
+          'External delivery ID, which can be obtained through the [Get External Delivery Information] interface',
         )
         .optional(),
       page_size: z.number().describe('paging size').optional(),
@@ -2237,7 +2241,7 @@ export const hireV1ExternalInterviewDelete = {
       external_interview_id: z
         .string()
         .describe(
-          'The external interview ID can be obtained through the [query external interview] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/external_interview/batch_query) interface',
+          'The external interview ID can be obtained through the [query external interview] interface',
         ),
     }),
   },
@@ -2256,7 +2260,7 @@ export const hireV1ExternalInterviewUpdate = {
       external_application_id: z
         .string()
         .describe(
-          'External delivery ID, which can be obtained through the [Get External Delivery Information] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hide-v1/external_application/list) interface',
+          'External delivery ID, which can be obtained through the [Get External Delivery Information] interface',
         ),
       participate_status: z
         .number()
@@ -2312,7 +2316,7 @@ export const hireV1ExternalInterviewUpdate = {
       external_interview_id: z
         .string()
         .describe(
-          'The external interview ID can be obtained through the [query external interview] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/external_interview/batch_query) interface',
+          'The external interview ID can be obtained through the [query external interview] interface',
         ),
     }),
   },
@@ -2337,7 +2341,7 @@ export const hireV1ExternalOfferBatchQuery = {
       external_application_id: z
         .string()
         .describe(
-          'External delivery ID, which can be obtained through the [Get External Delivery Information] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hide-v1/external_application/list) interface',
+          'External delivery ID, which can be obtained through the [Get External Delivery Information] interface',
         )
         .optional(),
       page_size: z.number().describe('paging size').optional(),
@@ -2365,7 +2369,7 @@ export const hireV1ExternalOfferCreate = {
       external_application_id: z
         .string()
         .describe(
-          'External delivery ID, which can be obtained through the [Get External Delivery Information] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hide-v1/external_application/list) interface',
+          'External delivery ID, which can be obtained through the [Get External Delivery Information] interface',
         ),
       biz_create_time: z.string().describe('Offer creation time, millisecond timestamp').optional(),
       owner: z.string().describe('Offer Manager').optional(),
@@ -2373,7 +2377,7 @@ export const hireV1ExternalOfferCreate = {
       attachment_id_list: z
         .array(z.string())
         .describe(
-          'Offer details A list of attachment IDs, which can be created by [Create Attachment] (/ssl: ttdoc/ukTMukTMukTM/uIDN1YjLyQTN24iM0UjN/create_attachment)interface back',
+          'Offer details A list of attachment IDs, which can be created by [Create Attachment]interface back',
         )
         .optional(),
     }),
@@ -2393,7 +2397,7 @@ export const hireV1ExternalOfferDelete = {
       external_offer_id: z
         .string()
         .describe(
-          'External Offer ID, which can be obtained through the [Query External Offer] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/external_offer/batch_query) interface',
+          'External Offer ID, which can be obtained through the [Query External Offer] interface',
         )
         .optional(),
     }),
@@ -2413,7 +2417,7 @@ export const hireV1ExternalOfferUpdate = {
       external_application_id: z
         .string()
         .describe(
-          'External delivery ID, which can be obtained through the [Get External Delivery Information] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hide-v1/external_application/list) interface',
+          'External delivery ID, which can be obtained through the [Get External Delivery Information] interface',
         ),
       biz_create_time: z.string().describe('Offer creation time, millisecond timestamp').optional(),
       owner: z.string().describe('Offer Manager').optional(),
@@ -2421,7 +2425,7 @@ export const hireV1ExternalOfferUpdate = {
       attachment_id_list: z
         .array(z.string())
         .describe(
-          'Offer details A list of attachment IDs, which can be returned by the [Create Attachment] (/ssl: ttdoc/ukTMukTMukTM/uIDN1YjLyQTN24iM0UjN/create_attachment) interface',
+          'Offer details A list of attachment IDs, which can be returned by the [Create Attachment] interface',
         )
         .optional(),
     }),
@@ -2429,7 +2433,7 @@ export const hireV1ExternalOfferUpdate = {
       external_offer_id: z
         .string()
         .describe(
-          'External Offer ID, which can be obtained through the [Query External Offer] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/external_offer/batch_query) interface',
+          'External Offer ID, which can be obtained through the [Query External Offer] interface',
         )
         .optional(),
     }),
@@ -2449,7 +2453,7 @@ export const hireV1ExternalReferralRewardCreate = {
       referral_user_id: z
         .string()
         .describe(
-          "Referrer's IDThe unique identifier of the referrer, obtained from ",
+          "Referrer's IDThe unique identifier of the referrer, obtained from [Get User Information]",
         ),
       create_user_id: z
         .string()
@@ -2473,7 +2477,7 @@ export const hireV1ExternalReferralRewardCreate = {
       application_id: z
         .string()
         .describe(
-          'Referred candidate\'s application IDIt is recommended to input the application ID in Feishu Hire.If there is no application ID, you can input the "Referred candidate\'s talent ID". If the "Referred candidate\'s talent ID" is provided, this parameter is optional<md-alert type="warn"> If the application ID is not provided, the current referral reward can\'t be associated with the application,The system will not display the corresponding "Job", "Recruiter" "Offer manager". These fields will be shown as "--".The referrer can see the reward record, but the recruiter and offer manager cannot</md-alert>The methods to query the application ID:1. 2. ',
+          'Referred candidate\'s application IDIt is recommended to input the application ID in Feishu Hire.If there is no application ID, you can input the "Referred candidate\'s talent ID". If the "Referred candidate\'s talent ID" is provided, this parameter is optional<md-alert type="warn"> If the application ID is not provided, the current referral reward can\'t be associated with the application,The system will not display the corresponding "Job", "Recruiter" "Offer manager". These fields will be shown as "--".The referrer can see the reward record, but the recruiter and offer manager cannot</md-alert>The methods to query the application ID:1. [Obtain the talent ID via phone number or email]2. [Query the referral application ID via the talent ID]',
         )
         .optional(),
       talent_id: z
@@ -2511,7 +2515,7 @@ export const hireV1ExternalReferralRewardCreate = {
               currency_type: z
                 .string()
                 .describe(
-                  'Import the cash currency, required if the reward issuance form is cash. The currency parameters can be queried in ',
+                  'Import the cash currency, required if the reward issuance form is cash. The currency parameters can be queried in [Introduction to Enumeration Constants]',
                 ),
               amount: z
                 .number()
@@ -2749,7 +2753,7 @@ export const hireV1InterviewGetByTalent = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
     }),
@@ -2776,13 +2780,13 @@ export const hireV1InterviewList = {
       application_id: z
         .string()
         .describe(
-          "Application ID, which can be obtained through the  (application_id, interview_id, start_time, and end_time can't all be empty at the same time)",
+          "Application ID, which can be obtained through the [Obtain Application Information API] (application_id, interview_id, start_time, and end_time can't all be empty at the same time)",
         )
         .optional(),
       interview_id: z
         .string()
         .describe(
-          "Interview ID, which can be obtained through the  (application_id, interview_id, start_time, and end_time can't all be empty at the same time)",
+          "Interview ID, which can be obtained through the [Obtain Application Information API] (application_id, interview_id, start_time, and end_time can't all be empty at the same time)",
         )
         .optional(),
       start_time: z
@@ -2800,7 +2804,7 @@ export const hireV1InterviewList = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
@@ -2931,13 +2935,13 @@ export const hireV1JobPublishRecordSearch = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
     }),
@@ -3053,7 +3057,7 @@ export const hireV1JobRequirementCreate = {
       position_id: z
         .string()
         .describe(
-          'Position ID, which can be obtained through [Query Position Information] (https://open.feishu.com/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/position/query) (only for Feishu personnel tenants)',
+          'Position ID, which can be obtained through [Query Position Information] (only for Feishu personnel tenants)',
         )
         .optional(),
     }),
@@ -3068,19 +3072,19 @@ export const hireV1JobRequirementCreate = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
         .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
         )
         .optional(),
     }),
@@ -3120,7 +3124,7 @@ export const hireV1JobRequirementList = {
       job_id: z
         .string()
         .describe(
-          'Job ID,please refer to:',
+          'Job ID,please refer to:[Get job list]',
         )
         .optional(),
       create_time_begin: z.string().describe('Start creation time, pass in millisecond timestamp').optional(),
@@ -3140,19 +3144,19 @@ export const hireV1JobRequirementList = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
         .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
         )
         .optional(),
     }),
@@ -3172,7 +3176,7 @@ export const hireV1JobRequirementListById = {
       id_list: z
         .array(z.string())
         .describe(
-          'Recruitment Requirements ID List,please refer to:,and limit to 100 entries at a time. If not passed, empty will be returned',
+          'Recruitment Requirements ID List,please refer to:[Get job requirement list],and limit to 100 entries at a time. If not passed, empty will be returned',
         )
         .optional(),
     }),
@@ -3187,19 +3191,19 @@ export const hireV1JobRequirementListById = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
         .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
         )
         .optional(),
     }),
@@ -3296,7 +3300,7 @@ export const hireV1JobRequirementUpdate = {
       position_id: z
         .string()
         .describe(
-          'Position ID, which can be obtained through  (only for Feishu personnel tenants)',
+          'Position ID, which can be obtained through [Query Position Information] (only for Feishu personnel tenants)',
         )
         .optional(),
       update_option: z
@@ -3317,19 +3321,19 @@ export const hireV1JobRequirementUpdate = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
         .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
         )
         .optional(),
     }),
@@ -3371,7 +3375,7 @@ export const hireV1JobTypeList = {
   path: '/open-apis/hire/v1/job_types',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Hire-Recruitment related configuration-Job-List job type-Obtain a list of job categories preset by the recruitment system, which can be used to operate positions (such as ), and backfill job category fields when operating recruitment requirements (such as . The return list is sorted in ascending order by creation time by default, and contains the hierarchical relationship of nodes (the parent node ID of the node). You can build their own job category tree after obtaining the full amount of data',
+    '[Feishu/Lark]-Hire-Recruitment related configuration-Job-List job type-Obtain a list of job categories preset by the recruitment system, which can be used to operate positions (such as [New Job]), and backfill job category fields when operating recruitment requirements (such as [Create Job Requirement]. The return list is sorted in ascending order by creation time by default, and contains the hierarchical relationship of nodes (the parent node ID of the node). You can build their own job category tree after obtaining the full amount of data',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -3464,13 +3468,13 @@ export const hireV1JobCombinedCreate = {
       highlight_list: z
         .array(z.string())
         .describe(
-          'Job HighlightsPlease refer to of recruitment',
+          'Job HighlightsPlease refer to [Enum constant]of recruitment',
         )
         .optional(),
       job_type_id: z
         .string()
         .describe(
-          'Job category.The enumeration is available form ',
+          'Job category.The enumeration is available form [「List job type」]',
         ),
       max_level_id: z.string().describe('Highest rank').optional(),
       recruitment_type_id: z.string().describe('Type of employment'),
@@ -3504,13 +3508,13 @@ export const hireV1JobCombinedCreate = {
       target_major_id_list: z
         .array(z.string())
         .describe(
-          'Target major ID. The enumeration value is obtained via the  API and matches the "mdm_code" in the returned value. "0" indicates unlimited major',
+          'Target major ID. The enumeration value is obtained via the ["get major by page"] API and matches the "mdm_code" in the returned value. "0" indicates unlimited major',
         )
         .optional(),
       portal_website_apply_form_schema_id: z
         .string()
         .describe(
-          'The official website application form ID can be obtained through the  interface',
+          'The official website application form ID can be obtained through the [Get the recruitment official website application form template list] interface',
         )
         .optional(),
     }),
@@ -3525,13 +3529,13 @@ export const hireV1JobCombinedCreate = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
     }),
@@ -3551,7 +3555,7 @@ export const hireV1JobCombinedUpdate = {
       id: z
         .string()
         .describe(
-          'Job ID , which can be queried through the  interface',
+          'Job ID , which can be queried through the [Get job list] interface',
         )
         .optional(),
       experience: z
@@ -3570,7 +3574,7 @@ export const hireV1JobCombinedUpdate = {
             object_id: z
               .string()
               .describe(
-                'Structure ID, which can be queried through the  interface',
+                'Structure ID, which can be queried through the [Get job info] interface',
               )
               .optional(),
             value: z.string().describe('Structure value').optional(),
@@ -3586,23 +3590,23 @@ export const hireV1JobCombinedUpdate = {
           id: z
             .string()
             .describe(
-              'Job ID, which can be queried through the  interface',
+              'Job ID, which can be queried through the [Get job list] interface',
             )
             .optional(),
           recruiter_id: z
             .string()
             .describe(
-              'Recruitment Manager ID, which can be queried through the  interface',
+              'Recruitment Manager ID, which can be queried through the [Search users] interface',
             ),
           hiring_manager_id_list: z
             .array(z.string())
             .describe(
-              'List of Employer Manager IDs, which can be queried through the  interface',
+              'List of Employer Manager IDs, which can be queried through the [Search users] interface',
             ),
           assistant_id_list: z
             .array(z.string())
             .describe(
-              'Assistant ID List, which can be queried through the  interface',
+              'Assistant ID List, which can be queried through the [Search users] interface',
             )
             .optional(),
         })
@@ -3610,7 +3614,7 @@ export const hireV1JobCombinedUpdate = {
       job_process_id: z
         .string()
         .describe(
-          'Recruitment Process, which can be queried through the  interface',
+          'Recruitment Process, which can be queried through the [Get recruitment process information] interface',
         )
         .optional(),
       subject_id: z.string().describe('Project').optional(),
@@ -3633,7 +3637,7 @@ export const hireV1JobCombinedUpdate = {
       job_type_id: z
         .string()
         .describe(
-          'Job category.The enumeration is available form ',
+          'Job category.The enumeration is available form [「List job type」]',
         ),
       max_level_id: z.string().describe('Highest rank').optional(),
       required_degree: z
@@ -3654,7 +3658,7 @@ export const hireV1JobCombinedUpdate = {
       target_major_id_list: z
         .array(z.string())
         .describe(
-          'Target major ID. The enumeration value is obtained via the  API and matches the "mdm_code" in the returned value. "0" indicates unlimited major',
+          'Target major ID. The enumeration value is obtained via the ["get major by page"] API and matches the "mdm_code" in the returned value. "0" indicates unlimited major',
         )
         .optional(),
     }),
@@ -3669,13 +3673,13 @@ export const hireV1JobCombinedUpdate = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
     }),
@@ -3683,7 +3687,7 @@ export const hireV1JobCombinedUpdate = {
       job_id: z
         .string()
         .describe(
-          'Job ID , which can be queried through the  interface',
+          'Job ID , which can be queried through the [Get job list] interface',
         ),
     }),
   },
@@ -3721,13 +3725,13 @@ export const hireV1JobGet = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
     }),
@@ -3769,7 +3773,7 @@ export const hireV1JobGetDetail = {
       job_id: z
         .string()
         .describe(
-          'Job ID, for details, please refer to: [Get job list] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/job/list) interface',
+          'Job ID, for details, please refer to: [Get job list] interface',
         ),
     }),
   },
@@ -3803,13 +3807,13 @@ export const hireV1JobList = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
     }),
@@ -3892,7 +3896,7 @@ export const hireV1JobOpen = {
       job_id: z
         .string()
         .describe(
-          'Job ID, available via ',
+          'Job ID, available via [Get Job List]',
         ),
     }),
   },
@@ -3945,7 +3949,7 @@ export const hireV1JobUpdateConfig = {
       assessment_template_biz_id: z
         .string()
         .describe(
-          'Interview feedback form, enumeration is obtained through the interface ',
+          'Interview feedback form, enumeration is obtained through the interface [Get interview feedback form list]',
         )
         .optional(),
       interview_round_conf_list: z
@@ -4029,7 +4033,7 @@ export const hireV1JobUpdateConfig = {
       portal_website_apply_form_schema_id: z
         .string()
         .describe(
-          'The official website application form ID can be obtained through the  interface',
+          'The official website application form ID can be obtained through the [Get the recruitment official website application form template list] interface',
         )
         .optional(),
     }),
@@ -4106,7 +4110,7 @@ export const hireV1MinutesGet = {
       interview_id: z
         .string()
         .describe(
-          'Interview ID, which can be obtained according to the  and  API',
+          'Interview ID, which can be obtained according to the [Get Interview Information] and [Get Talent Interview Information] API',
         ),
       page_token: z
         .string()
@@ -4343,12 +4347,12 @@ export const hireV1OfferCreate = {
       application_id: z
         .string()
         .describe(
-          'Application ID,please refer to: ',
+          'Application ID,please refer to: [Get application list]',
         ),
       schema_id: z
         .string()
         .describe(
-          'Offer application form template ID, used to describe the metadata definition of the application form structure, that is, a description of the application form content. Every time the user changes the offer application form template information, a new schema_id will be generated. When creating an offer, the latest schema_id should be passed in. You can first get the offer application form ID from the , and then use the interface Get the latest template ID in.If not filled in, the latest template ID will be automatically filled in',
+          'Offer application form template ID, used to describe the metadata definition of the application form structure, that is, a description of the application form content. Every time the user changes the offer application form template information, a new schema_id will be generated. When creating an offer, the latest schema_id should be passed in. You can first get the offer application form ID from the [Get job config info], and then use the [Get offer application form template infomation]interface Get the latest template ID in.If not filled in, the latest template ID will be automatically filled in',
         )
         .optional(),
       offer_type: z
@@ -4390,7 +4394,7 @@ export const hireV1OfferCreate = {
           common_attachment_id_list: z
             .array(z.string())
             .describe(
-              'List of common attachment IDs, you can use the  api to create common attachments',
+              'List of common attachment IDs, you can use the [Create Attachment] api to create common attachments',
             )
             .optional(),
           attachment_description: z.string().describe('Attachment description').optional(),
@@ -4400,14 +4404,14 @@ export const hireV1OfferCreate = {
           position_id: z
             .string()
             .describe(
-              'Position ID, which can be obtained through  (only for Feishu personnel tenants, if the link cannot be opened, it means that Feishu personnel has not enabled the job, please contact  to open)',
+              'Position ID, which can be obtained through [Query Position Information] (only for Feishu personnel tenants, if the link cannot be opened, it means that Feishu personnel has not enabled the job, please contact [Technical Support] to open)',
             )
             .optional(),
           job_offered: z.string().describe('entry position').optional(),
           job_grade_id: z
             .string()
             .describe(
-              'Job Grade ID, available through [Check Grade] (https://open.feishu.com/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_grade/query) (for Feishu personnel tenants only)',
+              'Job Grade ID, available through [Check Grade] (for Feishu personnel tenants only)',
             )
             .optional(),
         })
@@ -4455,19 +4459,19 @@ export const hireV1OfferCreate = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
         .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
         )
         .optional(),
     }),
@@ -4494,19 +4498,19 @@ export const hireV1OfferGet = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
         .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
         )
         .optional(),
     }),
@@ -4514,7 +4518,7 @@ export const hireV1OfferGet = {
       offer_id: z
         .string()
         .describe(
-          'Offer ID,please refer to: ',
+          'Offer ID,please refer to: [Get offer list]',
         )
         .optional(),
     }),
@@ -4576,7 +4580,7 @@ export const hireV1OfferList = {
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
         .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
         )
         .optional(),
     }),
@@ -4658,7 +4662,7 @@ export const hireV1OfferUpdate = {
           common_attachment_id_list: z
             .array(z.string())
             .describe(
-              'List of common attachment IDs, you can use the  api to create common attachments',
+              'List of common attachment IDs, you can use the [Create Attachment] api to create common attachments',
             )
             .optional(),
           attachment_description: z.string().describe('Attachment description').optional(),
@@ -4666,14 +4670,14 @@ export const hireV1OfferUpdate = {
           position_id: z
             .string()
             .describe(
-              'Position ID, which can be obtained through  (only for Feishu personnel tenants, if the link cannot be opened, it means that Feishu personnel has not enabled the job, please contact  to open)',
+              'Position ID, which can be obtained through [Query Position Information] (only for Feishu personnel tenants, if the link cannot be opened, it means that Feishu personnel has not enabled the job, please contact [Technical Support] to open)',
             )
             .optional(),
           job_offered: z.string().describe('entry position').optional(),
           job_grade_id: z
             .string()
             .describe(
-              'Job Grade ID, available through [Check Grade] (https://open.feishu.com/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_grade/query) (for Feishu personnel tenants only)',
+              'Job Grade ID, available through [Check Grade] (for Feishu personnel tenants only)',
             )
             .optional(),
         })
@@ -4721,19 +4725,19 @@ export const hireV1OfferUpdate = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       job_family_id_type: z
         .enum(['people_admin_job_category_id', 'job_family_id'])
         .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
         )
         .optional(),
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
         .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
         )
         .optional(),
     }),
@@ -4782,7 +4786,7 @@ export const hireV1ReferralAccountCreate = {
   path: '/open-apis/hire/v1/referral_account',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Hire-referral account-Register Referral Account for External System-You can register a "Referral reward account" with the referrer\'s phone number or email address to obtain the corresponding referrer\'s account ID and query and perform actions on the referrer\'s account balance (credits/rewards) by using  and  interfaces. If you need to disable this account, call the  interface',
+    '[Feishu/Lark]-Hire-referral account-Register Referral Account for External System-You can register a "Referral reward account" with the referrer\'s phone number or email address to obtain the corresponding referrer\'s account ID and query and perform actions on the referrer\'s account balance (credits/rewards) by using ["Referral account balance change"] and ["Withdraw referral account balance"] interfaces. If you need to disable this account, call the ["Disable referral account"] interface',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -4804,7 +4808,7 @@ export const hireV1ReferralAccountDeactivate = {
   path: '/open-apis/hire/v1/referral_account/:referral_account_id/deactivate',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Hire-referral account-Disable Referral Account for External System-Once you disable this referral account, its information won\'t be able to be obtained or modified via the  or  interface',
+    '[Feishu/Lark]-Hire-referral account-Disable Referral Account for External System-Once you disable this referral account, its information won\'t be able to be obtained or modified via the ["Referral account balance change"] or ["Withdraw referral account balance"] interface',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({ referral_account_id: z.string().describe('Account ID').optional() }),
@@ -4817,14 +4821,14 @@ export const hireV1ReferralAccountEnable = {
   path: '/open-apis/hire/v1/referral_account/enable',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Hire-referral account-Activate referral account-Enable the account according to the account ID. After activation, you can obtain and modify it through the interface ["referral account balance change event"] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/referral_account/events/assets_update), ["withdrawal of referral account balance"] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/referral_account/withdraw)',
+    '[Feishu/Lark]-Hire-referral account-Activate referral account-Enable the account according to the account ID. After activation, you can obtain and modify it through the interface ["referral account balance change event"], ["withdrawal of referral account balance"]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       referral_account_id: z
         .string()
         .describe(
-          'Account ID, obtained after registering an account: [Register a referral account] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hide-v1/referral_account/create)',
+          'Account ID, obtained after registering an account: [Register a referral account]',
         )
         .optional(),
     }),
@@ -4844,7 +4848,7 @@ export const hireV1ReferralAccountGetAccountAssets = {
       referral_account_id: z
         .string()
         .describe(
-          'Account ID, obtained after registering an account: [Register a referral account] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hide-v1/referral_account/create)',
+          'Account ID, obtained after registering an account: [Register a referral account]',
         ),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
     }),
@@ -4889,7 +4893,7 @@ export const hireV1ReferralAccountWithdraw = {
   path: '/open-apis/hire/v1/referral_account/:referral_account_id/withdraw',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Hire-referral account-Withdraw Balance from Referral Account in Full Amount-You can withdraw rewards (credits or cash) from the referral account in full with the account ID. Before you call the interface, make sure you\'ve completed the  step and obtained the account ID. After the withdrawal, the referrer\'s account balance (credits or cash) will be zeroed, and the reward amount deducted will be marked as "Issued" in the recruitment system',
+    '[Feishu/Lark]-Hire-referral account-Withdraw Balance from Referral Account in Full Amount-You can withdraw rewards (credits or cash) from the referral account in full with the account ID. Before you call the interface, make sure you\'ve completed the ["Register referral account for external system"] step and obtained the account ID. After the withdrawal, the referrer\'s account balance (credits or cash) will be zeroed, and the reward amount deducted will be marked as "Issued" in the recruitment system',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -4926,7 +4930,7 @@ export const hireV1ReferralWebsiteJobPostGet = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
     }),
@@ -4967,7 +4971,7 @@ export const hireV1ReferralWebsiteJobPostList = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
     }),
@@ -5002,7 +5006,7 @@ export const hireV1ReferralSearch = {
       talent_id: z
         .string()
         .describe(
-          'Talent ID，',
+          'Talent ID，[「Get talent ID by mobile or email」]',
         ),
       start_time: z
         .string()
@@ -5081,7 +5085,7 @@ export const hireV1RoleGet = {
       role_id: z
         .string()
         .describe(
-          'Role ID. Call  to obtain',
+          'Role ID. Call [Obtain List of Roles] to obtain',
         )
         .optional(),
     }),
@@ -5142,7 +5146,7 @@ export const hireV1TalentBlocklistChangeTalentBlock = {
       talent_id: z
         .string()
         .describe(
-          'Talent ID, which can be obtained through the [Get Talent List] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent/list) interface',
+          'Talent ID, which can be obtained through the [Get Talent List] interface',
         ),
       option: z
         .number()
@@ -5224,7 +5228,7 @@ export const hireV1TalentPoolBatchChangeTalentPool = {
       talent_id_list: z
         .array(z.string())
         .describe(
-          'Talent ID list, please check: [Get Talent List] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent/list)',
+          'Talent ID list, please check: [Get Talent List]',
         ),
       option_type: z
         .number()
@@ -5236,7 +5240,7 @@ export const hireV1TalentPoolBatchChangeTalentPool = {
       talent_pool_id: z
         .string()
         .describe(
-          'Talent pool ID, please check: [Get talent pool list] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent_pool/search)',
+          'Talent pool ID, please check: [Get talent pool list]',
         ),
     }),
   },
@@ -5323,12 +5327,12 @@ export const hireV1TalentAddToFolder = {
       talent_id_list: z
         .array(z.string())
         .describe(
-          'Talent ID List, which can be queried through the  interface',
+          'Talent ID List, which can be queried through the [Get talent list] interface',
         ),
       folder_id: z
         .string()
         .describe(
-          'Folder ID, which can be queried through the  interface',
+          'Folder ID, which can be queried through the [Get talent folder information] interface',
         ),
     }),
   },
@@ -5372,7 +5376,7 @@ export const hireV1TalentCombinedCreate = {
       init_source_id: z
         .string()
         .describe(
-          'Resume source ID, which can be queried through the  interface',
+          'Resume source ID, which can be queried through the [Get Resume Source List] interface',
         )
         .optional(),
       folder_id_list: z.array(z.string()).describe('List of folder IDs').optional(),
@@ -5725,7 +5729,7 @@ export const hireV1TalentCombinedUpdate = {
       init_source_id: z
         .string()
         .describe(
-          'Resume source ID, which can be queried through the  interface',
+          'Resume source ID, which can be queried through the [Get Resume Source List] interface',
         )
         .optional(),
       folder_id_list: z.array(z.string()).describe('List of folder IDs').optional(),
@@ -6107,7 +6111,7 @@ export const hireV1TalentGet = {
       talent_id: z
         .string()
         .describe(
-          'Talent ID , which can be queried through the  interface',
+          'Talent ID , which can be queried through the [Get talent list] interface',
         ),
     }),
   },
@@ -6163,14 +6167,20 @@ export const hireV1TalentOnboardStatus = {
       operation: z
         .number()
         .describe('Operation Type 1: Onboarding 2: Resignation Options:1(onboard Onboarding),2(overboard Resign)'),
-      onboard_time: z.string().describe('Millisecond Timestamp').optional(),
-      overboard_time: z.string().describe('Millisecond Timestamp').optional(),
+      onboard_time: z
+        .string()
+        .describe('Millisecond timestamp, required when the operation type is Onboarding')
+        .optional(),
+      overboard_time: z
+        .string()
+        .describe('Millisecond timestamp, required when the operation type is Resignation')
+        .optional(),
     }),
     path: z.object({
       talent_id: z
         .string()
         .describe(
-          'Talent ID , which can be queried through the  interface',
+          'Talent ID , which can be queried through the [Get talent list] interface',
         )
         .optional(),
     }),
@@ -6190,12 +6200,12 @@ export const hireV1TalentRemoveToFolder = {
       talent_id_list: z
         .array(z.string())
         .describe(
-          'Talent ID list, which can be obtained through the [Get Talent List] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent/list) interface',
+          'Talent ID list, which can be obtained through the [Get Talent List] interface',
         ),
       folder_id: z
         .string()
         .describe(
-          'Folder ID, which can be obtained through the [Get Talent Folder List] (/ssl: ttdoc/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/talent_folder/list) interface',
+          'Folder ID, which can be obtained through the [Get Talent Folder List] interface',
         ),
     }),
   },
@@ -6940,7 +6950,7 @@ export const hireV1WebsiteJobPostGet = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
     }),
@@ -6981,7 +6991,7 @@ export const hireV1WebsiteJobPostList = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
       update_start_time: z.string().describe('Earliest update time, millisecond timestamp').optional(),
@@ -7006,7 +7016,7 @@ export const hireV1WebsiteJobPostSearch = {
       job_type_id_list: z
         .array(z.string())
         .describe(
-          'Job Type List, For details, please refer to:',
+          'Job Type List, For details, please refer to:[Get a list of job type]',
         )
         .optional(),
       city_code_list: z.array(z.string()).describe('Job City List').optional(),
@@ -7039,7 +7049,7 @@ export const hireV1WebsiteJobPostSearch = {
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
         .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the  interface.)',
+          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
         )
         .optional(),
     }),

@@ -48,7 +48,7 @@ export const approvalV4ApprovalCreate = {
       approval_code: z
         .string()
         .describe(
-          'Approval Definition Code. Usage instructions:- When this parameter is not provided, it indicates a new approval definition will be created, and the final response will return an auto-generated Approval Definition Code from the system.- When this parameter is provided with a specified Approval Definition Code, it indicates that the interface is being called to update the contents of the specified approval definition, with the update method being a full update that overwrites the original definition content.Approval Definition Code. Retrieval methods:- After calling the  interface, obtain the `approval_code` from the response parameters.- Log in to the approval management backend and retrieve it from the URL of the specified approval definition. For detailed instructions, see ',
+          'Approval Definition Code. Usage instructions:- When this parameter is not provided, it indicates a new approval definition will be created, and the final response will return an auto-generated Approval Definition Code from the system.- When this parameter is provided with a specified Approval Definition Code, it indicates that the interface is being called to update the contents of the specified approval definition, with the update method being a full update that overwrites the original definition content.Approval Definition Code. Retrieval methods:- After calling the [Create Approval Definition] interface, obtain the `approval_code` from the response parameters.- Log in to the approval management backend and retrieve it from the URL of the specified approval definition. For detailed instructions, see [What is Approval Code]',
         )
         .optional(),
       description: z
@@ -84,7 +84,7 @@ export const approvalV4ApprovalCreate = {
           form_content: z
             .string()
             .describe(
-              'Approval Definition Form. The form format is a JSON array. When actually passing the value, the JSON needs to be compressed and escaped into a String type. For descriptions of the JSON fields for each control within the form, refer to .**Note**: The example values below are not escaped. You can refer to the example code in the **Request Example** section below',
+              'Approval Definition Form. The form format is a JSON array. When actually passing the value, the JSON needs to be compressed and escaped into a String type. For descriptions of the JSON fields for each control within the form, refer to [Approval Definition Form Control Parameters].**Note**: The example values below are not escaped. You can refer to the example code in the **Request Example** section below',
             ),
         })
         .describe('Approval definition form'),
@@ -201,7 +201,7 @@ export const approvalV4ApprovalCreate = {
                   id_list: z
                     .array(z.string())
                     .describe(
-                      'ID list.- When type is set to ALL, no value needs to be provided.- When type is set to PERSONAL, provide the user ID, and the ID type must be consistent with the value of user_id_type.- When type is set to ROLE, provide the role ID. Obtaining method: After successfully , you can obtain the role ID from the return result',
+                      'ID list.- When type is set to ALL, no value needs to be provided.- When type is set to PERSONAL, provide the user ID, and the ID type must be consistent with the value of user_id_type.- When type is set to ROLE, provide the role ID. Obtaining method: After successfully [creating a role], you can obtain the role ID from the return result',
                     )
                     .optional(),
                 }),
@@ -217,7 +217,7 @@ export const approvalV4ApprovalCreate = {
           }),
         )
         .describe(
-          'Approval Definition Node List, used to set the various nodes required for the approval process. The start and end of the approval process are fixed as the start node and end node, respectively. Therefore, when passing values, the start node should be the first element of the list, and the end node should be the last element of the list',
+          'Approval Definition Node List, used to set the various nodes required for the approval process. The start and end of the approval process are fixed as the start node and end node, respectively. Therefore, when passing values, the start node should be the first element of the list, and the end node should be the last element of the list.**Note**: The API method does not support setting conditional branches. If you need to set conditional branches, please go to [Approval Admin] to create the approval definition',
         ),
       settings: z
         .object({
@@ -262,7 +262,7 @@ export const approvalV4ApprovalCreate = {
             .optional(),
         })
         .describe(
-          'Approval definition configuration item, used to configure whether the corresponding approval definition can be modified by the user in the ',
+          'Approval definition configuration item, used to configure whether the corresponding approval definition can be modified by the user in the [Approval Admin]',
         )
         .optional(),
       icon: z
@@ -308,7 +308,7 @@ export const approvalV4ApprovalCreate = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          'The type of Department ID used in this call. For a detailed description of Department ID, see . Options:department_id(DepartmentId Supports user-defined configuration of Department ID. When custom configuring, a deleted `department_id` can be reused, therefore the `department_id` is unique within the scope of non-deleted departments.),open_department_id(OpenDepartmentId The Department ID automatically generated by the system has a fixed prefix of `od-` and is globally unique within the tenant.)',
+          'The type of Department ID used in this call. For a detailed description of Department ID, see [Department ID Introduction]. Options:department_id(DepartmentId Supports user-defined configuration of Department ID. When custom configuring, a deleted `department_id` can be reused, therefore the `department_id` is unique within the scope of non-deleted departments.),open_department_id(OpenDepartmentId The Department ID automatically generated by the system has a fixed prefix of `od-` and is globally unique within the tenant.)',
         )
         .optional(),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
@@ -322,7 +322,7 @@ export const approvalV4ApprovalGet = {
   path: '/open-apis/approval/v4/approvals/:approval_code',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Approval-Approval definition-View approval definitions-Retrieve information about a specific approval definition based on filters such as approval definition code, language, user ID, etc. The information includes approval definition name, status, form controls, and nodes. After obtaining the approval definition information, you can construct a request to  based on the information',
+    '[Feishu/Lark]-Approval-Approval definition-View approval definitions-Retrieve information about a specific approval definition based on filters such as approval definition code, language, user ID, etc. The information includes approval definition name, status, form controls, and nodes. After obtaining the approval definition information, you can construct a request to [create an approval instance] based on the information',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -344,7 +344,7 @@ export const approvalV4ApprovalGet = {
       approval_code: z
         .string()
         .describe(
-          'Approval definition Code. Acquisition methods:- Call the  API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to ',
+          'Approval definition Code. Acquisition methods:- Call the [Create approval definition] API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to [What is Approval Code]',
         ),
     }),
   },
@@ -356,7 +356,7 @@ export const approvalV4ApprovalSubscribe = {
   path: '/open-apis/approval/v4/approvals/:approval_code/subscribe',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Approval-Approval Events-Event interface-Subscribe to approval events-When the application , it needs to call this interface to specify the approval definition Code (approval_code) to enable the subscription. Only after enabling it will the application be able to receive the events corresponding to that approval definition',
+    '[Feishu/Lark]-Approval-Approval Events-Event interface-Subscribe to approval events-When the application [subscribes to approval events], it needs to call this interface to specify the approval definition Code (approval_code) to enable the subscription. Only after enabling it will the application be able to receive the events corresponding to that approval definition',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({ approval_code: z.string().describe('Review Definition Unique Identifier') }),
@@ -467,7 +467,7 @@ export const approvalV4ExternalApprovalCreate = {
           action_callback_url: z
             .string()
             .describe(
-              'The operation callback URL of the third-party system. After the task approver of the **pending approval** instance clicks to agree or reject the operation, the approval center calls this URL to notify the third-party system. For information about the callback address, see ',
+              'The operation callback URL of the third-party system. After the task approver of the **pending approval** instance clicks to agree or reject the operation, the approval center calls this URL to notify the third-party system. For information about the callback address, see [Quick Approval Callback for Third-Party Approval]',
             )
             .optional(),
           action_callback_token: z
@@ -479,7 +479,7 @@ export const approvalV4ExternalApprovalCreate = {
           action_callback_key: z
             .string()
             .describe(
-              'Request parameter encryption key. If this parameter is configured, the request parameters will be encrypted and the request needs to be decrypted after receiving the request. For the encryption and decryption algorithm, refer to ',
+              'Request parameter encryption key. If this parameter is configured, the request parameters will be encrypted and the request needs to be decrypted after receiving the request. For the encryption and decryption algorithm, refer to [Related External Option Description]',
             )
             .optional(),
           allow_batch_operate: z
@@ -551,7 +551,7 @@ export const approvalV4ExternalApprovalCreate = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          'The department ID type in this call. For a detailed description of department IDs, see . Options:department_id(DepartmentId Supports user-defined department ID. When customizing the configuration, the deleted department_id can be reused, so the department_id is unique within the scope of the non-deleted department.),open_department_id(OpenDepartmentId The department ID is automatically generated by the system. The ID prefix is ​​fixed to `od-` and is globally unique within the tenant.)',
+          'The department ID type in this call. For a detailed description of department IDs, see [Department ID Description]. Options:department_id(DepartmentId Supports user-defined department ID. When customizing the configuration, the deleted department_id can be reused, so the department_id is unique within the scope of the non-deleted department.),open_department_id(OpenDepartmentId The department ID is automatically generated by the system. The ID prefix is ​​fixed to `od-` and is globally unique within the tenant.)',
         )
         .optional(),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
@@ -573,7 +573,7 @@ export const approvalV4ExternalApprovalGet = {
       approval_code: z
         .string()
         .describe(
-          'Third-party approval definition code can be obtained by:- Calling , which will return the approval definition code.- Logging into the approval management backend and obtaining it from the URL of the specified approval definition. For detailed instructions, see ',
+          'Third-party approval definition code can be obtained by:- Calling [Create Third-Party Approval Definition], which will return the approval definition code.- Logging into the approval management backend and obtaining it from the URL of the specified approval definition. For detailed instructions, see [What is Approval Code]',
         ),
     }),
   },
@@ -585,7 +585,7 @@ export const approvalV4ExternalInstanceCheck = {
   path: '/open-apis/approval/v4/external_instances/check',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Approval-Third-party approval instances-Verify instances-Call this interface to verify third-party approval instance data, used to determine whether server-side data is up to date. Submit the latest update time of the instance when making the request. If the server does not have the instance or the instance update time on the server is not the latest, the corresponding instance ID will be returned.For example, set a timed task every 5 minutes to compare the instances generated in the past 5 minutes using this interface. If the data does not exist on the server or is not the latest, you can go to  based on the instance ID and task ID returned by this interface',
+    '[Feishu/Lark]-Approval-Third-party approval instances-Verify instances-Call this interface to verify third-party approval instance data, used to determine whether server-side data is up to date. Submit the latest update time of the instance when making the request. If the server does not have the instance or the instance update time on the server is not the latest, the corresponding instance ID will be returned.For example, set a timed task every 5 minutes to compare the instances generated in the past 5 minutes using this interface. If the data does not exist on the server or is not the latest, you can go to [synchronize third-party approval instance] based on the instance ID and task ID returned by this interface',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -595,7 +595,7 @@ export const approvalV4ExternalInstanceCheck = {
             instance_id: z
               .string()
               .describe(
-                'Approval instance ID. Custom configuration needs to ensure uniqueness within the current enterprise and application.**Note**: When calling this interface and the  interface for the same third-party approval instance, it is necessary to ensure that the instance ID used is consistent',
+                'Approval instance ID. Custom configuration needs to ensure uniqueness within the current enterprise and application.**Note**: When calling this interface and the [synchronize third-party approval instance] interface for the same third-party approval instance, it is necessary to ensure that the instance ID used is consistent',
               ),
             update_time: z.string().describe('Latest update time of the approval instance, Unix millisecond timestamp'),
             tasks: z
@@ -604,7 +604,7 @@ export const approvalV4ExternalInstanceCheck = {
                   task_id: z
                     .string()
                     .describe(
-                      'Approval task ID within the approval instance. Custom configuration needs to ensure uniqueness within the current enterprise and application.**Note**: When calling this interface and the  interface for tasks within the same third-party approval instance, it is necessary to ensure that the task ID used is consistent',
+                      'Approval task ID within the approval instance. Custom configuration needs to ensure uniqueness within the current enterprise and application.**Note**: When calling this interface and the [synchronize third-party approval instance] interface for tasks within the same third-party approval instance, it is necessary to ensure that the task ID used is consistent',
                     ),
                   update_time: z.string().describe('Latest update time of the task, Unix millisecond timestamp'),
                 }),
@@ -630,7 +630,7 @@ export const approvalV4ExternalInstanceCreate = {
       approval_code: z
         .string()
         .describe(
-          'Approval Definition Code. The return value from  is used to specify the approval definition to which the current instance belongs.**Note**: If the `title` parameter is set in the current interface, the approval instance name is displayed according to the `title`. If `title` is not set, the title of the approval instance is taken from the `name` parameter of the corresponding approval definition (`approval_code`)',
+          'Approval Definition Code. The return value from [creating a third-party approval definition] is used to specify the approval definition to which the current instance belongs.**Note**: If the `title` parameter is set in the current interface, the approval instance name is displayed according to the `title`. If `title` is not set, the title of the approval instance is taken from the `name` parameter of the corresponding approval definition (`approval_code`)',
         ),
       status: z
         .enum(['PENDING', 'APPROVED', 'REJECTED', 'CANCELED', 'DELETED', 'HIDDEN', 'TERMINATED'])
@@ -695,7 +695,7 @@ export const approvalV4ExternalInstanceCreate = {
       user_id: z
         .string()
         .describe(
-          'Approval Initiator user_id. The initiator can see all initiated approvals in the "Initiated" list in the Approval Center. In the "Pending", "Completed", and "CC" lists, this field is used to display the initiator of the approval. For the method to obtain the user ID, see .**Note**: At least one of the initiator\'s `open_id` or `user_id` must be provided',
+          'Approval Initiator user_id. The initiator can see all initiated approvals in the "Initiated" list in the Approval Center. In the "Pending", "Completed", and "CC" lists, this field is used to display the initiator of the approval. For the method to obtain the user ID, see [How to Obtain User ID].**Note**: At least one of the initiator\'s `open_id` or `user_id` must be provided',
         )
         .optional(),
       user_name: z
@@ -707,13 +707,13 @@ export const approvalV4ExternalInstanceCreate = {
       open_id: z
         .string()
         .describe(
-          'Approval Initiator open_id. The initiator can see all initiated approvals in the "Initiated" list in the Approval Center. In the "Pending", "Completed", and "CC" lists, this field is used to display the initiator of the approval. For the method to obtain the open ID, see .**Note**: At least one of the initiator\'s `open_id` or `user_id` must be provided',
+          'Approval Initiator open_id. The initiator can see all initiated approvals in the "Initiated" list in the Approval Center. In the "Pending", "Completed", and "CC" lists, this field is used to display the initiator of the approval. For the method to obtain the open ID, see [How to Obtain Open ID].**Note**: At least one of the initiator\'s `open_id` or `user_id` must be provided',
         )
         .optional(),
       department_id: z
         .string()
         .describe(
-          'Department ID of the initiator, which is used to display the department of the initiator in the Approval Center list. If the value is not provided, it will not be displayed. For the method to obtain the department ID, see .**Note**: If the user has not joined any department, pass an empty string `""`, and it will default to displaying the company name. If the `department_name` parameter is provided, the corresponding department name will be displayed',
+          'Department ID of the initiator, which is used to display the department of the initiator in the Approval Center list. If the value is not provided, it will not be displayed. For the method to obtain the department ID, see [Department ID].**Note**: If the user has not joined any department, pass an empty string `""`, and it will default to displaying the company name. If the `department_name` parameter is provided, the corresponding department name will be displayed',
         )
         .optional(),
       department_name: z
@@ -754,13 +754,13 @@ export const approvalV4ExternalInstanceCreate = {
             user_id: z
               .string()
               .describe(
-                "Approver's user_id, the method to obtain it can be found in .**Notes**:- This task will appear in the **Pending** or **Completed** list in the approver's Feishu Approval Center.- At least one of `user_id` or `open_id` must be provided",
+                "Approver's user_id, the method to obtain it can be found in [How to Obtain User ID].**Notes**:- This task will appear in the **Pending** or **Completed** list in the approver's Feishu Approval Center.- At least one of `user_id` or `open_id` must be provided",
               )
               .optional(),
             open_id: z
               .string()
               .describe(
-                "Approver's open_id, the method to obtain it can be found in .**Notes**:- This task will appear in the **Pending** or **Completed** list in the approver's Feishu Approval Center.- At least one of `user_id` or `open_id` must be provided",
+                "Approver's open_id, the method to obtain it can be found in [How to Obtain Open ID].**Notes**:- This task will appear in the **Pending** or **Completed** list in the approver's Feishu Approval Center.- At least one of `user_id` or `open_id` must be provided",
               )
               .optional(),
             title: z
@@ -879,13 +879,13 @@ export const approvalV4ExternalInstanceCreate = {
             user_id: z
               .string()
               .describe(
-                "CC recipient's `user_id`. For the method of obtaining, please refer to .**Note**: At least one of the CC recipient's `open_id` and `user_id` must be provided",
+                "CC recipient's `user_id`. For the method of obtaining, please refer to [How to get a user's User ID].**Note**: At least one of the CC recipient's `open_id` and `user_id` must be provided",
               )
               .optional(),
             open_id: z
               .string()
               .describe(
-                "CC recipient's `open_id`. For the method of obtaining, please refer to .**Note**: At least one of the CC recipient's `open_id` and `user_id` must be provided",
+                "CC recipient's `open_id`. For the method of obtaining, please refer to [How to get a user's Open ID].**Note**: At least one of the CC recipient's `open_id` and `user_id` must be provided",
               )
               .optional(),
             links: z
@@ -905,11 +905,7 @@ export const approvalV4ExternalInstanceCreate = {
               .describe(
                 "Approval CC redirection link. The configured link is used to redirect when clicking within the **CC'd** list in the approval center, taking you back to the third-party approval system to view approval CC details",
               ),
-            read_status: z
-              .enum(['READ', 'UNREAD'])
-              .describe(
-                'Read status, null value means read unread is not supported. Options:READ(read),UNREAD(unread)',
-              ),
+            read_status: z.enum(['READ', 'UNREAD']).describe('Read status Options:READ(read),UNREAD(unread)'),
             extra: z
               .string()
               .describe(
@@ -1093,12 +1089,12 @@ export const approvalV4InstanceCancel = {
       approval_code: z
         .string()
         .describe(
-          'Approval definition Code. Acquisition methods:- Call the  API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to ',
+          'Approval definition Code. Acquisition methods:- Call the [Create approval definition] API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to [What is Approval Code]',
         ),
       instance_code: z
         .string()
         .describe(
-          'Approval instance Code. Acquisition methods:- After , obtain the approval instance code from the returned results.- Call  to get the approval instance code within the specified approval definition.- Call  and set filtering criteria to query the specified approval instance code',
+          'Approval instance Code. Acquisition methods:- After [Creating approval instance], obtain the approval instance code from the returned results.- Call [Batch acquire approval instance ID] to get the approval instance code within the specified approval definition.- Call [Query instance list] and set filtering criteria to query the specified approval instance code',
         ),
       user_id: z
         .string()
@@ -1123,12 +1119,12 @@ export const approvalV4InstanceCc = {
       approval_code: z
         .string()
         .describe(
-          'Approval definition Code. Acquisition methods:- Call the  API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to ',
+          'Approval definition Code. Acquisition methods:- Call the [Create approval definition] API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to [What is Approval Code]',
         ),
       instance_code: z
         .string()
         .describe(
-          'Approval instance Code. Acquisition methods:- After , obtain the approval instance code from the returned results.- Call  to get the approval instance code within the specified approval definition.- Call  and set filtering criteria to query the specified approval instance code',
+          'Approval instance Code. Acquisition methods:- After [Creating approval instance], obtain the approval instance code from the returned results.- Call [Batch acquire approval instance ID] to get the approval instance code within the specified approval definition.- Call [Query instance list] and set filtering criteria to query the specified approval instance code',
         ),
       user_id: z
         .string()
@@ -1179,13 +1175,13 @@ export const approvalV4InstanceCommentCreate = {
       parent_comment_id: z
         .string()
         .describe(
-          'Parent comment ID, if it is a reply comment, this value needs to be passed in. The method to obtain it:- Successfully calling the current interface will return the ID of this comment, you can save it for next use.- Call the  interface to get the comment ID',
+          'Parent comment ID, if it is a reply comment, this value needs to be passed in. The method to obtain it:- Successfully calling the current interface will return the ID of this comment, you can save it for next use.- Call the [Get Comment] interface to get the comment ID',
         )
         .optional(),
       comment_id: z
         .string()
         .describe(
-          'Comment ID. If you need to edit or delete a comment, you need to pass the ID of that comment to the current parameter. The method to obtain it:- Successfully calling the current interface will return the ID of this comment, you can save it for next use.- Call the  interface to get the comment ID',
+          'Comment ID. If you need to edit or delete a comment, you need to pass the ID of that comment to the current parameter. The method to obtain it:- Successfully calling the current interface will return the ID of this comment, you can save it for next use.- Call the [Get Comment] interface to get the comment ID',
         )
         .optional(),
       disable_bot: z
@@ -1207,7 +1203,7 @@ export const approvalV4InstanceCommentCreate = {
       instance_id: z
         .string()
         .describe(
-          'Approval instance Code. Acquisition methods:- After , obtain the approval instance code from the returned results.- Call  to get the approval instance code within the specified approval definition.- Call  and set filtering criteria to query the specified approval instance code.**Note**: Custom approval instance ID is supported',
+          'Approval instance Code. Acquisition methods:- After [Creating approval instance], obtain the approval instance code from the returned results.- Call [Batch acquire approval instance ID] to get the approval instance code within the specified approval definition.- Call [Query instance list] and set filtering criteria to query the specified approval instance code.**Note**: Custom approval instance ID is supported',
         ),
     }),
   },
@@ -1230,12 +1226,12 @@ export const approvalV4InstanceCommentDelete = {
       instance_id: z
         .string()
         .describe(
-          'Approval instance Code. The methods to obtain it are as follows:-  and retrieve the approval instance Code from the returned result.- Call  to obtain the approval instance Code within the specified approval definition.- Call  and set filter conditions to query the specified approval instance Code.**Note**: Custom approval instance IDs are supported',
+          'Approval instance Code. The methods to obtain it are as follows:- [Create an approval instance] and retrieve the approval instance Code from the returned result.- Call [Batch get approval instance IDs] to obtain the approval instance Code within the specified approval definition.- Call [Query instance list] and set filter conditions to query the specified approval instance Code.**Note**: Custom approval instance IDs are supported',
         ),
       comment_id: z
         .string()
         .describe(
-          'Comment ID. The methods to obtain it are as follows:- Call , and the comment ID will be returned upon successful creation.- Call  to obtain the comment ID',
+          'Comment ID. The methods to obtain it are as follows:- Call [Create a comment], and the comment ID will be returned upon successful creation.- Call [Get comments] to obtain the comment ID',
         ),
     }),
   },
@@ -1265,7 +1261,7 @@ export const approvalV4InstanceCommentList = {
       instance_id: z
         .string()
         .describe(
-          'Approval instance Code. The methods to obtain it are as follows:-  and retrieve the approval instance Code from the returned result.- Call  to obtain the approval instance Code within the specified approval definition.- Call  and set filter conditions to query the specified approval instance Code.**Note**: Custom approval instance IDs are supported',
+          'Approval instance Code. The methods to obtain it are as follows:- [Create an approval instance] and retrieve the approval instance Code from the returned result.- Call [Batch get approval instance IDs] to obtain the approval instance Code within the specified approval definition.- Call [Query instance list] and set filter conditions to query the specified approval instance Code.**Note**: Custom approval instance IDs are supported',
         ),
     }),
   },
@@ -1288,7 +1284,7 @@ export const approvalV4InstanceCommentRemove = {
       instance_id: z
         .string()
         .describe(
-          'Approval instance Code. The methods to obtain it are as follows:-  and retrieve the approval instance Code from the returned result.- Call  to obtain the approval instance Code within the specified approval definition.- Call  and set filter conditions to query the specified approval instance Code.**Note**: Custom approval instance IDs are supported',
+          'Approval instance Code. The methods to obtain it are as follows:- [Create an approval instance] and retrieve the approval instance Code from the returned result.- Call [Batch get approval instance IDs] to obtain the approval instance Code within the specified approval definition.- Call [Query instance list] and set filter conditions to query the specified approval instance Code.**Note**: Custom approval instance IDs are supported',
         ),
     }),
   },
@@ -1307,30 +1303,30 @@ export const approvalV4InstanceCreate = {
       approval_code: z
         .string()
         .describe(
-          'Approval definition Code. Acquisition methods:- Call the  API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to ',
+          'Approval definition Code. Acquisition methods:- Call the [Create approval definition] API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to [What is Approval Code]',
         ),
       user_id: z
         .string()
         .describe(
-          "The initiator's user_id or open_id must be passed in, with priority given to user_id if both are provided. For the way to get it, refer to ",
+          "The initiator's user_id or open_id must be passed in, with priority given to user_id if both are provided. For the way to get it, refer to [How to Obtain User ID]",
         )
         .optional(),
       open_id: z
         .string()
         .describe(
-          "The initiator's open_id or user_id must be passed in, with priority given to user_id if both are provided. For the way to get it, refer to ",
+          "The initiator's open_id or user_id must be passed in, with priority given to user_id if both are provided. For the way to get it, refer to [How to Obtain Open ID]",
         )
         .optional(),
       department_id: z
         .string()
         .describe(
-          "The initiator's department ID. If the user belongs to only one department, this field can be left empty. If the user belongs to multiple departments and no value is provided, the first department in the list will be selected by default. For the way to get it, refer to .**Notes**:- Filling in the root department is not supported.- The department ID should be of open_department_id type",
+          "The initiator's department ID. If the user belongs to only one department, this field can be left empty. If the user belongs to multiple departments and no value is provided, the first department in the list will be selected by default. For the way to get it, refer to [Department ID].**Notes**:- Filling in the root department is not supported.- The department ID should be of department_id type",
         )
         .optional(),
       form: z
         .string()
         .describe(
-          'Values of filled approval form controls must be provided as a JSON array, which needs to be compressed and escaped into a string when passed. Parameter descriptions for each control value can be found in ',
+          'Values of filled approval form controls must be provided as a JSON array, which needs to be compressed and escaped into a string when passed. Parameter descriptions for each control value can be found in [Approval Instance Form Control Parameters]',
         ),
       node_approver_user_id_list: z
         .array(
@@ -1338,13 +1334,13 @@ export const approvalV4InstanceCreate = {
             key: z
               .string()
               .describe(
-                "The node_id or custom_node_id of the node can be obtained by calling the  API and retrieving it from the node_list parameter in the interface's response",
+                "The node_id or custom_node_id of the node can be obtained by calling the [View Specified Approval Definition] API and retrieving it from the node_list parameter in the interface's response",
               )
               .optional(),
             value: z
               .array(z.string())
               .describe(
-                'The approver list requires the user_id of users. Refer to  for the method to acquire user_ids',
+                'The approver list requires the user_id of users. Refer to [How to Obtain User ID] for the method to acquire user_ids',
               )
               .optional(),
           }),
@@ -1359,13 +1355,13 @@ export const approvalV4InstanceCreate = {
             key: z
               .string()
               .describe(
-                "The node_id or custom_node_id of the node can be obtained by calling the  API and retrieving it from the node_list parameter in the interface's response",
+                "The node_id or custom_node_id of the node can be obtained by calling the [View Specified Approval Definition] API and retrieving it from the node_list parameter in the interface's response",
               )
               .optional(),
             value: z
               .array(z.string())
               .describe(
-                "The approver list requires the user open_id. Refer to  for the method to acquire open_ids",
+                "The approver list requires the user open_id. Refer to [How to Obtain User's Open ID] for the method to acquire open_ids",
               )
               .optional(),
           }),
@@ -1380,13 +1376,13 @@ export const approvalV4InstanceCreate = {
             key: z
               .string()
               .describe(
-                "The node_id for a node can be obtained by calling the  API and retrieving it from the node_list parameter in the interface's response",
+                "The node_id for a node can be obtained by calling the [View Specified Approval Definition] API and retrieving it from the node_list parameter in the interface's response",
               )
               .optional(),
             value: z
               .array(z.string())
               .describe(
-                "The CC recipient list requires the user_id. Refer to  for the method to acquire user_ids",
+                "The CC recipient list requires the user_id. Refer to [How to Obtain User's User ID] for the method to acquire user_ids",
               )
               .optional(),
           }),
@@ -1401,13 +1397,13 @@ export const approvalV4InstanceCreate = {
             key: z
               .string()
               .describe(
-                'The node_id of a node can be obtained by calling the  API and retrieving it from the node_list parameter in the response of the API',
+                'The node_id of a node can be obtained by calling the [View Specified Approval Definition] API and retrieving it from the node_list parameter in the response of the API',
               )
               .optional(),
             value: z
               .array(z.string())
               .describe(
-                "The CC recipient list requires the user's open_id. Refer to  for the method to acquire open_ids",
+                "The CC recipient list requires the user's open_id. Refer to [How to Obtain User's Open ID] for the method to acquire open_ids",
               )
               .optional(),
           }),
@@ -1488,7 +1484,7 @@ export const approvalV4InstanceCreate = {
             node_id: z
               .string()
               .describe(
-                'The value of the node ID can be obtained by calling the  API. The node ID can be found in the node_list parameter of the API response',
+                'The value of the node ID can be obtained by calling the [Get Specified Approval Definition] API. The node ID can be found in the node_list parameter of the API response',
               )
               .optional(),
           }),
@@ -1512,7 +1508,7 @@ export const approvalV4InstanceGet = {
       locale: z
         .enum(['zh-CN', 'en-US', 'ja-JP'])
         .describe(
-          'Language. The default value is the language configured with the value `true` for `is_default` in the `i18n_resources` parameter when . Options:zh-CN(Zhcn Chinese),en-US(Enus English),ja-JP(Jajp Japanese)',
+          'Language. The default value is the language configured with the value `true` for `is_default` in the `i18n_resources` parameter when [creating the approval definition]. Options:zh-CN(Zhcn Chinese),en-US(Enus English),ja-JP(Jajp Japanese)',
         )
         .optional(),
       user_id: z
@@ -1527,7 +1523,7 @@ export const approvalV4InstanceGet = {
       instance_id: z
         .string()
         .describe(
-          'Approval instance Code. Acquisition methods:- After , obtain the approval instance code from the returned results.- Call  to get the approval instance code within the specified approval definition.- Call  and set filtering criteria to query the specified approval instance code',
+          'Approval instance Code. Acquisition methods:- After [Creating approval instance], obtain the approval instance code from the returned results.- Call [Batch acquire approval instance ID] to get the approval instance code within the specified approval definition.- Call [Query instance list] and set filtering criteria to query the specified approval instance code',
         ),
     }),
   },
@@ -1553,7 +1549,7 @@ export const approvalV4InstanceList = {
       approval_code: z
         .string()
         .describe(
-          'Approval definition Code. Acquisition methods:- Call the  API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to ',
+          'Approval definition Code. Acquisition methods:- Call the [Create approval definition] API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to [What is Approval Code]',
         ),
       start_time: z
         .string()
@@ -1604,13 +1600,13 @@ export const approvalV4InstanceQuery = {
       approval_code: z
         .string()
         .describe(
-          'Approval Instance Code. Obtaining method:- Call the  API and obtain the instance_code from the response parameters.- Call the  API to get the required approval instance code. **Note**:- user_id, approval_code, instance_code, instance_external_id, group_external_id cannot all be empty simultaneously.- Query results for instance_code and instance_external_id are a union set',
+          'Approval Instance Code. Obtaining method:- Call the [Create Approval Instance] API and obtain the instance_code from the response parameters.- Call the [Batch Get Approval Instance ID] API to get the required approval instance code. **Note**:- user_id, approval_code, instance_code, instance_external_id, group_external_id cannot all be empty simultaneously.- Query results for instance_code and instance_external_id are a union set',
         )
         .optional(),
       instance_code: z
         .string()
         .describe(
-          'Approval Instance Code. Obtaining method:- Call the  API and obtain the instance_code from the response parameters.- Call the  API to get the required approval instance code.**Note**:- user_id, approval_code, instance_code, instance_external_id, and group_external_id cannot all be empty simultaneously.- Query results for instance_code and instance_external_id are a union set',
+          'Approval Instance Code. Obtaining method:- Call the [Create Approval Instance] API and obtain the instance_code from the response parameters.- Call the [Batch Get Approval Instance ID] API to get the required approval instance code.**Note**:- user_id, approval_code, instance_code, instance_external_id, and group_external_id cannot all be empty simultaneously.- Query results for instance_code and instance_external_id are a union set',
         )
         .optional(),
       instance_external_id: z
@@ -1684,13 +1680,13 @@ export const approvalV4InstanceSearchCc = {
       approval_code: z
         .string()
         .describe(
-          'Approval Definition Code. The retrieval methods are as follows:- Call the  interface and obtain the `approval_code` from the response parameters.- Log in to the approval management backend and get it from the URL of the specified approval definition. For detailed operations, please refer to .**Note**:- `user_id`, `approval_code`, `instance_code`, `instance_external_id`, and `group_external_id` cannot all be empty simultaneously.- Query results for `approval_code` and `group_external_id` are obtained through union',
+          'Approval Definition Code. The retrieval methods are as follows:- Call the [Create Approval Definition] interface and obtain the `approval_code` from the response parameters.- Log in to the approval management backend and get it from the URL of the specified approval definition. For detailed operations, please refer to [What is Approval Code].**Note**:- `user_id`, `approval_code`, `instance_code`, `instance_external_id`, and `group_external_id` cannot all be empty simultaneously.- Query results for `approval_code` and `group_external_id` are obtained through union',
         )
         .optional(),
       instance_code: z
         .string()
         .describe(
-          'Approval Instance Code. The retrieval methods are as follows:- Call the  interface and obtain the `instance_code` from the response parameters.- Call the  interface to get the required approval instance code.**Note**:- `user_id`, `approval_code`, `instance_code`, `instance_external_id`, and `group_external_id` cannot all be empty simultaneously.- Query results for `instance_code` and `instance_external_id` are obtained through union',
+          'Approval Instance Code. The retrieval methods are as follows:- Call the [Create Approval Instance] interface and obtain the `instance_code` from the response parameters.- Call the [Batch Get Approval Instance ID] interface to get the required approval instance code.**Note**:- `user_id`, `approval_code`, `instance_code`, `instance_external_id`, and `group_external_id` cannot all be empty simultaneously.- Query results for `instance_code` and `instance_external_id` are obtained through union',
         )
         .optional(),
       instance_external_id: z
@@ -1755,19 +1751,19 @@ export const approvalV4InstanceSpecifiedRollback = {
       user_id: z
         .string()
         .describe(
-          'The user ID of the approver for the current approval task must match the ID type with the query parameter user_id_type. You can call  to retrieve the user ID from the task_list parameter in the returned result, where the task status must be PENDING',
+          'The user ID of the approver for the current approval task must match the ID type with the query parameter user_id_type. You can call [Get Single Approval Instance Details] to retrieve the user ID from the task_list parameter in the returned result, where the task status must be PENDING',
         ),
       task_id: z
         .string()
         .describe(
-          'The approval task ID that needs to be reverted. You can call  to retrieve the task ID from the task_list parameter in the returned result, where the task status must be PENDING',
+          'The approval task ID that needs to be reverted. You can call [Get Single Approval Instance Details] to retrieve the task ID from the task_list parameter in the returned result, where the task status must be PENDING',
         ),
       reason: z.string().describe('Reason for rollback').optional(),
       extra: z.string().describe('extra info').optional(),
       task_def_key_list: z
         .array(z.string())
         .describe(
-          'The node_key of the task that needs to be reverted to. You can call  to retrieve the node_key from the timeline parameter in the returned result, where the dynamic type must be PASS',
+          'The node_key of the task that needs to be reverted to. You can call [Get Single Approval Instance Details] to retrieve the node_key from the timeline parameter in the returned result, where the dynamic type must be PASS',
         ),
     }),
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
@@ -1787,19 +1783,19 @@ export const approvalV4TaskApprove = {
       approval_code: z
         .string()
         .describe(
-          'Approval definition Code. Acquisition methods:- Call the  API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to ',
+          'Approval definition Code. Acquisition methods:- Call the [Create approval definition] API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to [What is Approval Code]',
         ),
       instance_code: z
         .string()
         .describe(
-          'pproval instance Code. Acquisition methods:- After , obtain the approval instance code from the returned results.- Call  to get the approval instance code within the specified approval definition.- Call  and set filtering criteria to query the specified approval instance code',
+          'pproval instance Code. Acquisition methods:- After [Creating approval instance], obtain the approval instance code from the returned results.- Call [Batch acquire approval instance ID] to get the approval instance code within the specified approval definition.- Call [Query instance list] and set filtering criteria to query the specified approval instance code',
         ),
       user_id: z.string().describe('Fill in the operation user id according to the user_id_type'),
       comment: z.string().describe('Opinion').optional(),
       task_id: z
         .string()
         .describe(
-          'Approval task ID, call  and retrieve the required ID from the `task_list` in the returned result',
+          'Approval task ID, call [Get Single Approval Instance Details] and retrieve the required ID from the `task_list` in the returned result',
         ),
       form: z
         .string()
@@ -1848,19 +1844,19 @@ export const approvalV4TaskReject = {
       approval_code: z
         .string()
         .describe(
-          'Approval definition Code. Acquisition methods:- Call the  API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to ',
+          'Approval definition Code. Acquisition methods:- Call the [Create approval definition] API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to [What is Approval Code]',
         ),
       instance_code: z
         .string()
         .describe(
-          'Approval instance Code. Acquisition methods:- After , obtain the approval instance code from the returned results.- Call  to get the approval instance code within the specified approval definition.- Call  and set filtering criteria to query the specified approval instance code',
+          'Approval instance Code. Acquisition methods:- After [Creating approval instance], obtain the approval instance code from the returned results.- Call [Batch acquire approval instance ID] to get the approval instance code within the specified approval definition.- Call [Query instance list] and set filtering criteria to query the specified approval instance code',
         ),
       user_id: z.string().describe('Fill in the operation user id according to the user_id_type'),
       comment: z.string().describe('Opinion').optional(),
       task_id: z
         .string()
         .describe(
-          'Approval task ID, call  and retrieve the required ID from the task_list in the returned result',
+          'Approval task ID, call [Get single approval instance details] and retrieve the required ID from the task_list in the returned result',
         ),
       form: z
         .string()
@@ -1886,24 +1882,24 @@ export const approvalV4TaskResubmit = {
       approval_code: z
         .string()
         .describe(
-          'Approval definition Code. Acquisition methods:- Call the  API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to ',
+          'Approval definition Code. Acquisition methods:- Call the [Create approval definition] API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to [What is Approval Code]',
         ),
       instance_code: z
         .string()
         .describe(
-          'Approval instance Code. Acquisition methods:- After , obtain the approval instance code from the returned results.- Call  to get the approval instance code within the specified approval definition.- Call  and set filtering criteria to query the specified approval instance code',
+          'Approval instance Code. Acquisition methods:- After [Creating approval instance], obtain the approval instance code from the returned results.- Call [Batch acquire approval instance ID] to get the approval instance code within the specified approval definition.- Call [Query instance list] and set filtering criteria to query the specified approval instance code',
         ),
       user_id: z.string().describe('Fill in the operation user id according to the user_id_type'),
       comment: z.string().describe('Opinion').optional(),
       task_id: z
         .string()
         .describe(
-          'Approval task ID, call  and retrieve the required ID from the task_list in the returned result',
+          'Approval task ID, call [Get single approval instance details] and retrieve the required ID from the task_list in the returned result',
         ),
       form: z
         .string()
         .describe(
-          'Approval form control values in a JSON array, which need to be compressed and escaped into a string when passed. This parameter is used in the same way as the form parameter in ',
+          'Approval form control values in a JSON array, which need to be compressed and escaped into a string when passed. This parameter is used in the same way as the form parameter in [Create Approval Instance]',
         ),
     }),
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
@@ -1924,13 +1920,13 @@ export const approvalV4TaskSearch = {
       approval_code: z
         .string()
         .describe(
-          'Approval Definition Code. Methods to obtain:- After calling the  interface, retrieve from the response parameter `approval_code`.- Log into the approval management backend and obtain from the URL of the specified approval definition. Detailed steps can be found in .**Note**:- `user_id`, `approval_code`, `instance_code`, `instance_external_id`, and `group_external_id` cannot all be empty simultaneously.- The query results for `approval_code` and `group_external_id` are the union of their results',
+          'Approval Definition Code. Methods to obtain:- After calling the [Create Approval Definition] interface, retrieve from the response parameter `approval_code`.- Log into the approval management backend and obtain from the URL of the specified approval definition. Detailed steps can be found in [What is Approval Code].**Note**:- `user_id`, `approval_code`, `instance_code`, `instance_external_id`, and `group_external_id` cannot all be empty simultaneously.- The query results for `approval_code` and `group_external_id` are the union of their results',
         )
         .optional(),
       instance_code: z
         .string()
         .describe(
-          'Approval Instance Code. Methods to obtain:- After calling the  interface, retrieve from the response parameter `instance_code`.- Call the  interface to obtain the required approval instance Code.**Note**:- `user_id`, `approval_code`, `instance_code`, `instance_external_id`, and `group_external_id` cannot all be empty simultaneously.- The query results for `instance_code` and `instance_external_id` are the union of their results',
+          'Approval Instance Code. Methods to obtain:- After calling the [Create Approval Instance] interface, retrieve from the response parameter `instance_code`.- Call the [Batch Retrieve Approval Instance ID] interface to obtain the required approval instance Code.**Note**:- `user_id`, `approval_code`, `instance_code`, `instance_external_id`, and `group_external_id` cannot all be empty simultaneously.- The query results for `instance_code` and `instance_external_id` are the union of their results',
         )
         .optional(),
       instance_external_id: z
@@ -2012,12 +2008,12 @@ export const approvalV4TaskTransfer = {
       approval_code: z
         .string()
         .describe(
-          'Approval definition Code. Acquisition methods:- Call the  API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to ',
+          'Approval definition Code. Acquisition methods:- Call the [Create approval definition] API, and get the approval_code from the response parameters.- Log in to the approval management backend, and retrieve it from the URL of the specified approval definition. For specific operations, refer to [What is Approval Code]',
         ),
       instance_code: z
         .string()
         .describe(
-          'Approval instance Code. Acquisition methods:- After , obtain the approval instance code from the returned results.- Call  to get the approval instance code within the specified approval definition.- Call  and set filtering criteria to query the specified approval instance code',
+          'Approval instance Code. Acquisition methods:- After [Creating approval instance], obtain the approval instance code from the returned results.- Call [Batch acquire approval instance ID] to get the approval instance code within the specified approval definition.- Call [Query instance list] and set filtering criteria to query the specified approval instance code',
         ),
       user_id: z.string().describe('Fill in the operation user id according to the user_id_type'),
       comment: z.string().describe('Opinion').optional(),
@@ -2027,7 +2023,7 @@ export const approvalV4TaskTransfer = {
       task_id: z
         .string()
         .describe(
-          'Approval task ID, call  and retrieve the required ID from the task_list in the returned result',
+          'Approval task ID, call [Get single approval instance details] and retrieve the required ID from the task_list in the returned result',
         ),
     }),
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),

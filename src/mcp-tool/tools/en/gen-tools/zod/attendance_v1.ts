@@ -51,7 +51,7 @@ export const attendanceV1ApprovalInfoProcess = {
       approval_id: z
         .string()
         .describe(
-          'Approval sample ID. How to access: 1)  2)  3) ',
+          'Approval sample ID. How to access: 1) [Get Granted Approval Data] 2) [Write Approval Result] 3) [Notify of Correction Request Submission (in the case of correction)]',
         ),
       approval_type: z
         .string()
@@ -82,7 +82,7 @@ export const attendanceV1ArchiveRuleDelReport = {
       archive_rule_id: z
         .string()
         .describe(
-          'Archive rule id, which can be obtained according to ',
+          'Archive rule id, which can be obtained according to [Query all archive rules]',
         ),
       user_ids: z.array(z.string()).describe('User ID, corresponding to employee_type').optional(),
     }),
@@ -90,7 +90,7 @@ export const attendanceV1ArchiveRuleDelReport = {
       employee_type: z
         .string()
         .describe(
-          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use * employee_id: employee ID, which is the user ID in  > organizational structure > members and departments > member details* employee_no: employee job number, that is, job number in  > organizational structure > members and departments > member details",
+          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email]* employee_id: employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details* employee_no: employee job number, that is, job number in [Feishu management background] > organizational structure > members and departments > member details",
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -103,7 +103,7 @@ export const attendanceV1ArchiveRuleList = {
   path: '/open-apis/attendance/v1/archive_rule',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Attendance-archive_report-Query all archived reports-Query all archiving rules, corresponding to the background fake attendance management - attendance statistics - reports -  function',
+    '[Feishu/Lark]-Attendance-archive_report-Query all archived reports-Query all archiving rules, corresponding to the background fake attendance management - attendance statistics - reports - [archived reports] function',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -125,7 +125,7 @@ export const attendanceV1ArchiveRuleUploadReport = {
   path: '/open-apis/attendance/v1/archive_rule/upload_report',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Attendance-archive_report-Write archived report results-Write the results of the archived report, corresponding to the fake attendance management - attendance statistics - report - , click the import function after the report name is entered. You can directly write the data to the archived report',
+    '[Feishu/Lark]-Attendance-archive_report-Write archived report results-Write the results of the archived report, corresponding to the fake attendance management - attendance statistics - report - [archived report tab], click the import function after the report name is entered. You can directly write the data to the archived report',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -143,7 +143,7 @@ export const attendanceV1ArchiveRuleUploadReport = {
                   code: z
                     .string()
                     .describe(
-                      'Field code, which can be obtained according to ',
+                      'Field code, which can be obtained according to [Query Archive Report Header]',
                     ),
                   value: z.string().describe('field result value').optional(),
                 }),
@@ -157,14 +157,14 @@ export const attendanceV1ArchiveRuleUploadReport = {
       archive_rule_id: z
         .string()
         .describe(
-          'Archive rule id, which can be obtained according to ',
+          'Archive rule id, which can be obtained according to [Query all archive rules]',
         ),
     }),
     params: z.object({
       employee_type: z
         .string()
         .describe(
-          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use * `employee_id`: employee ID, which is the user ID in  > organizational structure > members and departments > member details* `employee_no`: employee job number, that is, job number in  > organizational structure > members and departments > member details",
+          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email]* `employee_id`: employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details* `employee_no`: employee job number, that is, job number in [Feishu management background] > organizational structure > members and departments > member details",
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -177,7 +177,7 @@ export const attendanceV1ArchiveRuleUserStatsFieldsQuery = {
   path: '/open-apis/attendance/v1/archive_rule/user_stats_fields_query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Attendance-archive_report-Query archived report header-Query the header of the archived report, corresponding to the background fake attendance management - attendance statistics - report - . The archived report supports the reference system report, which can set the archived time and data archiving period, and supports the selection of personnel according to the department/personnel, country/region, personnel type, work location, rank, sequence, and position',
+    '[Feishu/Lark]-Attendance-archive_report-Query archived report header-Query the header of the archived report, corresponding to the background fake attendance management - attendance statistics - report - [archived report]. The archived report supports the reference system report, which can set the archived time and data archiving period, and supports the selection of personnel according to the department/personnel, country/region, personnel type, work location, rank, sequence, and position',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -189,7 +189,7 @@ export const attendanceV1ArchiveRuleUserStatsFieldsQuery = {
       archive_rule_id: z
         .string()
         .describe(
-          'Archive rule id, which can be obtained according to [Query all archive rules] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/attachment-v1/archive_rule/list)',
+          'Archive rule id, which can be obtained according to [Query all archive rules]',
         ),
       operator_id: z.string().describe('Operator id, corresponding to employee_type'),
     }),
@@ -197,7 +197,7 @@ export const attendanceV1ArchiveRuleUserStatsFieldsQuery = {
       employee_type: z
         .string()
         .describe(
-          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use * `employee_id`: employee ID, which is the user ID in  > organizational structure > members and departments > member details* `employee_no`: employee job number, that is, job number in  > organizational structure > members and departments > member details",
+          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email]* `employee_id`: employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details* `employee_no`: employee job number, that is, job number in [Feishu management background] > organizational structure > members and departments > member details",
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -210,7 +210,7 @@ export const attendanceV1GroupCreate = {
   path: '/open-apis/attendance/v1/groups',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Attendance-Attendance group-Create or modify attendance groups-The attendance team is a rule setting for the attendance of departments or employees in a specific place and within a specific time period (including commuting, arriving late, leaving early, sick leave, marriage leave, bereavement leave, public holidays, working hours, overtime, etc.).By setting the attendance group, you can set attendance methods, attendance time, attendance location and other attendance rules from the two dimensions of departments and employees.The corresponding function is the same as the settings - fake attendance settings - "new" function of ',
+    '[Feishu/Lark]-Attendance-Attendance group-Create or modify attendance groups-The attendance team is a rule setting for the attendance of departments or employees in a specific place and within a specific time period (including commuting, arriving late, leaving early, sick leave, marriage leave, bereavement leave, public holidays, working hours, overtime, etc.).By setting the attendance group, you can set attendance methods, attendance time, attendance location and other attendance rules from the two dimensions of departments and employees.The corresponding function is the same as the settings - fake attendance settings - "new" function of [attendance group]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -219,7 +219,7 @@ export const attendanceV1GroupCreate = {
           group_id: z
             .string()
             .describe(
-              'Attendance group ID (only provided when modifying), you need to query the attendance group by name from  or  Get groupId in the interface. If not, a new attendance group will be created',
+              'Attendance group ID (only provided when modifying), you need to query the attendance group by name from [query attendance groups by name] or [query all attendance groups] Get groupId in the interface. If not, a new attendance group will be created',
             )
             .optional(),
           group_name: z.string().describe('attendance team name'),
@@ -257,6 +257,12 @@ export const attendanceV1GroupCreate = {
               'The clock in the field needs to be approved (you need to allow the clock in the field to be set to take effect), the default is empty',
             )
             .optional(),
+          out_punch_need_post_approval: z
+            .boolean()
+            .describe(
+              'The clock in the field needs to be approved, and the clock in is approved first (you need to allow the clock in the field to be set to take effect)',
+            )
+            .optional(),
           out_punch_need_remark: z
             .boolean()
             .describe(
@@ -275,6 +281,13 @@ export const attendanceV1GroupCreate = {
               'Field clock in allows employees to hide detailed addresses (you need to allow field clock in to set it to take effect), the default is empty',
             )
             .optional(),
+          out_punch_allowed_adjust_addr: z
+            .boolean()
+            .describe(
+              'The field clock in allows fine-tuning of the address (you need to allow the field clock in order to set it to take effect)',
+            )
+            .optional(),
+          adjust_range: z.number().describe('Fine-tuning range, default is 50 meters').optional(),
           allow_pc_punch: z.boolean().describe('Whether to allow the clock in the PC, the default is empty').optional(),
           allow_remedy: z.boolean().describe('Whether to limit replenishment cards, the default is empty').optional(),
           remedy_limit: z
@@ -321,6 +334,7 @@ export const attendanceV1GroupCreate = {
             .boolean()
             .describe('Whether to hide employee clock in detail, default to empty')
             .optional(),
+          hide_clock_in_rule: z.boolean().describe('Hide the clock in action').optional(),
           face_punch: z
             .boolean()
             .describe('Whether to turn on the facial recognition clock in, the default is empty')
@@ -345,6 +359,54 @@ export const attendanceV1GroupCreate = {
             .boolean()
             .describe(
               'Whether to allow replacement of the base picture when facial recognition fails, the default is empty',
+            )
+            .optional(),
+          anti_cheat_punch_config: z
+            .object({
+              intercept_suspected_cheat_punch: z
+                .boolean()
+                .describe(
+                  'Whether to intercept the suspected cheating clock in, turn it off/not update by default when not passing in; when it is closed, the rest of the anti-cheating switches will be turned off',
+                ),
+              check_cheat_software_punch: z
+                .boolean()
+                .describe(
+                  'Whether to check the clock in the suspected cheating software, and close/not update by default when not passing in',
+                )
+                .optional(),
+              check_buddy_punch: z
+                .boolean()
+                .describe(
+                  'Whether to check whether it is suspected that someone else clocked in on behalf of others, it will be closed/not updated by default when not passing in',
+                )
+                .optional(),
+              check_simulate_wifi_punch: z
+                .boolean()
+                .describe(
+                  'Whether to check the suspected simulated WI-FI clock in, turn off/not update by default when not passing in (only valid for grey release tenants, please contact technical support if you need to use it.)',
+                )
+                .optional(),
+              check_change_device_punch: z
+                .boolean()
+                .describe(
+                  'Whether to check the replacement device clock in, turn off/not update by default when not passing in',
+                )
+                .optional(),
+              allow_change_device_num: z
+                .number()
+                .describe(
+                  'The same member of the attendance team can bind up to the upper limit of the number of clocks in the device, and it is required to fill in the replacement device clock in the verification',
+                )
+                .optional(),
+              suspected_cheat_handle_method: z
+                .number()
+                .describe(
+                  'The processing method when the clock in suspected cheating is turned on. Required when the clock in suspected cheating is turned on Options:1(use_face_punch The clock in facial recognition),2(only_record_cheat_info Only record suspected cheating information)',
+                )
+                .optional(),
+            })
+            .describe(
+              'Anti-cheat clock in configuration, off/not updated by default when not passing in (only valid for grey release tenants, please contact technical support if you need to use it.)',
             )
             .optional(),
           machines: z
@@ -381,7 +443,7 @@ export const attendanceV1GroupCreate = {
           punch_day_shift_ids: z
             .array(z.string())
             .describe(
-              'The fixed shift schedule must be filled in, and 7 must be filled in (from Monday to Sunday). Shift IDs can be obtained by  and ',
+              'The fixed shift schedule must be filled in, and 7 must be filled in (from Monday to Sunday). Shift IDs can be obtained by [Query all shifts] and [Query shifts by name]',
             ),
           free_punch_cfg: z
             .object({
@@ -428,7 +490,7 @@ export const attendanceV1GroupCreate = {
                 shift_id: z
                   .string()
                   .describe(
-                    'Shift ID, you can check all shifts according to And  get',
+                    'Shift ID, you can check all shifts according to [query]And [query shift by name] get',
                   ),
               }),
             )
@@ -441,7 +503,7 @@ export const attendanceV1GroupCreate = {
                 shift_id: z
                   .string()
                   .describe(
-                    'Shift ID, you can check all shifts according to And  get',
+                    'Shift ID, you can check all shifts according to [query]And [query shift by name] get',
                   ),
               }),
             )
@@ -517,6 +579,12 @@ export const attendanceV1GroupCreate = {
                 .number()
                 .describe('If you leave early for more than a long time, it will be recorded as a missing card')
                 .optional(),
+              not_during_shift: z
+                .boolean()
+                .describe(
+                  'Leave in the middle of the shift, no need to clock in before leaving or after returning (only valid for grey release tenants, please contact technical support if you need to use it)',
+                )
+                .optional(),
             })
             .describe('Leave or return clock in minutes')
             .optional(),
@@ -542,13 +610,16 @@ export const attendanceV1GroupCreate = {
                 .number()
                 .describe('If you leave early for more than a long time, it will be recorded as a missing card')
                 .optional(),
+              not_during_shift: z
+                .boolean()
+                .describe(
+                  'Out in the middle of the shift, no need to clock in before leaving or after returning (only valid for grey release tenants, please contact technical support if you need to use it)',
+                )
+                .optional(),
             })
-            .describe('The clock in minutes')
-            .optional(),
-          travel_need_punch: z
-            .number()
             .describe('Whether the clock is required during the business trip, the default is empty')
             .optional(),
+          travel_need_punch: z.number().describe('Rules of the clock in minutes during business trips').optional(),
           travel_need_punch_cfg: z
             .object({
               late_minutes_as_late: z
@@ -567,6 +638,12 @@ export const attendanceV1GroupCreate = {
                 .number()
                 .describe(
                   'If you leave early for more than a long time, it will be recorded as a missing card, in minutes',
+                )
+                .optional(),
+              not_during_shift: z
+                .boolean()
+                .describe(
+                  'There is no need to clock in before leaving or after returning from business trips (business trips are not valid)',
                 )
                 .optional(),
             })
@@ -700,12 +777,50 @@ export const attendanceV1GroupCreate = {
               'Participate in the list of person IDs without clock in (when used with "no_need_punch_members", the current field shall prevail), corresponding to employee_type',
             )
             .optional(),
+          overtime_clock_cfg: z
+            .object({
+              allow_punch_approval: z
+                .boolean()
+                .describe(
+                  'Whether to allow applications to clock in non-clocking hours (only valid for grey release tenants, please contact technical support if you need to use it.)',
+                )
+                .optional(),
+              need_clock_over_time_start_and_end: z
+                .boolean()
+                .describe(
+                  'Overtime starts and ends clocked in (only valid for grey release tenants, please contact technical support if you need to use it.)',
+                )
+                .optional(),
+            })
+            .describe('The clock in overtime')
+            .optional(),
+          new_calendar_id: z
+            .string()
+            .describe(
+              'Holiday id, (if the attendance group uses a custom holiday, use this parameter to pass in the holiday id, you can get it from the Settings-Holiday Module page path)',
+            )
+            .optional(),
+          allow_apply_punch: z
+            .boolean()
+            .describe('The positioning is not on time, is the application clock in allowed?')
+            .optional(),
+          clock_in_abnormal_settings: z
+            .object({
+              ignore_until_latest_clockout: z
+                .boolean()
+                .describe(
+                  'Ignore exception cards before the latest clock in time (only valid for grey release tenants, please contact technical support if you need to use it.)',
+                )
+                .optional(),
+            })
+            .describe('Abnormal card exemption configuration')
+            .optional(),
         })
         .describe('Attendance Team Information'),
       operator_id: z
         .string()
         .describe(
-          'Operator uid, corresponding to employee_type, if you do not operate , this field is required field',
+          'Operator uid, corresponding to employee_type, if you do not operate [backstage for attendance management "API access" process], this field is required field',
         )
         .optional(),
     }),
@@ -713,12 +828,12 @@ export const attendanceV1GroupCreate = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, that is the user ID in  > Organization > Member and Department > Member Details),employee_no(Employee number, that is the employee ID in  > Organization > Member and Department > Member Details)",
+          "The employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, that is the user ID in [Feishu Admin] > Organization > Member and Department > Member Details),employee_no(Employee number, that is the employee ID in [Feishu Admin] > Organization > Member and Department > Member Details)",
         ),
       dept_type: z
         .literal('open_id')
         .describe(
-          'Type of department ID Options:open_id(For the time being, only the openid of the department is supported. For specific concepts, please refer to the open_department_id in )',
+          'Type of department ID Options:open_id(For the time being, only the openid of the department is supported. For specific concepts, please refer to the open_department_id in [Department Resource Introduction])',
         ),
     }),
   },
@@ -730,14 +845,14 @@ export const attendanceV1GroupDelete = {
   path: '/open-apis/attendance/v1/groups/:group_id',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-Attendance-Attendance group-Delete attendance group-Delete the attendance group through the attendance group ID. Corresponding Settings - False Attendance Settings - Delete Function of  Operation Columns',
+    '[Feishu/Lark]-Attendance-Attendance group-Delete attendance group-Delete the attendance group through the attendance group ID. Corresponding Settings - False Attendance Settings - Delete Function of [Attendance Group] Operation Columns',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       group_id: z
         .string()
         .describe(
-          'Attendance group ID is obtained as follows: 1)  2)  3) ',
+          'Attendance group ID is obtained as follows: 1) [Create or modify attendance groups] 2) [Query attendance group by name] 3) [Obtain attendance results]',
         ),
     }),
   },
@@ -756,19 +871,19 @@ export const attendanceV1GroupGet = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "user_id and creator_id employee id types in the request body and response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, which is the user ID in  > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in  > organizational structure > members and departments > member details)",
+          "user_id and creator_id employee id types in the request body and response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
         ),
       dept_type: z
         .literal('open_id')
         .describe(
-          'Department ID type Options:open_id(For the time being, only the openid of the department is supported. For specific concepts, please refer to the open_department_id in )',
+          'Department ID type Options:open_id(For the time being, only the openid of the department is supported. For specific concepts, please refer to the open_department_id in [Department Resource Introduction])',
         ),
     }),
     path: z.object({
       group_id: z
         .string()
         .describe(
-          'Attendance group ID is obtained as follows: 1)  2)  3) ',
+          'Attendance group ID is obtained as follows: 1) [Create or modify attendance groups] 2) [Query attendance group by name] 3) [Obtain attendance results]',
         ),
     }),
   },
@@ -808,12 +923,12 @@ export const attendanceV1GroupListUser = {
       employee_type: z
         .string()
         .describe(
-          'Response body user_id employee ID type. If you do not have backend management permissions, you can use <b>Optional values are</b>:1. employee_id: Employee ID, which is the user ID in  > organizational structure > members and departments > member detailsDetails2. employee_no: Employee job number, that is, the job number in  > organizational structure > members and departments > member details',
+          'Response body user_id employee ID type. If you do not have backend management permissions, you can use [Get user ID by mobile phone number or email]<b>Optional values are</b>:1. employee_id: Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member detailsDetails2. employee_no: Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details',
         ),
       dept_type: z
         .string()
         .describe(
-          'Response body department_ids type of department ID.<b>Optional values are</b>:1. open_id: For the time being, only the openid of the department is supported. For specific concepts, please refer to the open_department_id in ',
+          'Response body department_ids type of department ID.<b>Optional values are</b>:1. open_id: For the time being, only the openid of the department is supported. For specific concepts, please refer to the open_department_id in [Department Resource Introduction]',
         ),
       page_size: z.number().describe('Page size').optional(),
       page_token: z
@@ -832,7 +947,7 @@ export const attendanceV1GroupListUser = {
       group_id: z
         .string()
         .describe(
-          'Attendance group ID is obtained as follows: 1)  2)  3) ',
+          'Attendance group ID is obtained as follows: 1) [Create or modify attendance groups] 2) [Query attendance group by name] 3) [Obtain attendance results]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -845,7 +960,7 @@ export const attendanceV1GroupSearch = {
   path: '/open-apis/attendance/v1/groups/search',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Attendance-Attendance group-Query attendance group by name-Query the summary information of the attendance group by the name of the attendance group. The query conditions support two methods: exact matching and fuzzy matching of the name. The query results are sorted by the modification time of the attendance group desc, and the maximum number of records is 10. Corresponding page settings - fake attendance settings -  name search function',
+    '[Feishu/Lark]-Attendance-Attendance group-Query attendance group by name-Query the summary information of the attendance group by the name of the attendance group. The query conditions support two methods: exact matching and fuzzy matching of the name. The query results are sorted by the modification time of the attendance group desc, and the maximum number of records is 10. Corresponding page settings - fake attendance settings - [attendance group] name search function',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ group_name: z.string().describe('Attendance group name') }),
@@ -858,20 +973,20 @@ export const attendanceV1LeaveAccrualRecordPatch = {
   path: '/open-apis/attendance/v1/leave_accrual_record/:leave_id',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Attendance-Leave Grant Records-Modify Grant Record-Update the number and expiration date of issuance records, corresponding to leave management - leave management - ',
+    '[Feishu/Lark]-Attendance-Leave Grant Records-Modify Grant Record-Update the number and expiration date of issuance records, corresponding to leave management - leave management - [issuance records]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       leave_granting_record_id: z
         .string()
         .describe(
-          'The unique ID of the issuance record, which can be created by ',
+          'The unique ID of the issuance record, which can be created by [Create a holiday issuance record]',
         ),
       employment_id: z.string().describe('Employee ID, type corresponding user_id_type'),
       leave_type_id: z
         .string()
         .describe(
-          'The holiday type ID can be obtained by ',
+          'The holiday type ID can be obtained by [Get a list of holiday types]',
         ),
       reason: z
         .array(
@@ -892,7 +1007,7 @@ export const attendanceV1LeaveAccrualRecordPatch = {
       leave_id: z
         .string()
         .describe(
-          'The holiday type ID can be obtained by ',
+          'The holiday type ID can be obtained by [Get a list of holiday types]',
         )
         .optional(),
     }),
@@ -913,7 +1028,7 @@ export const attendanceV1LeaveEmployExpireRecordGet = {
       leave_type_id: z
         .string()
         .describe(
-          'The holiday type ID can be obtained by ',
+          'The holiday type ID can be obtained by [Get a list of holiday types]',
         ),
       start_expiration_date: z.string().describe('The earliest expiration date in the format yyyy-MM-dd'),
       end_expiration_date: z.string().describe('The latest expiration date in the format yyyy-MM-dd'),
@@ -931,7 +1046,7 @@ export const attendanceV1LeaveEmployExpireRecordGet = {
       leave_id: z
         .string()
         .describe(
-          'The holiday type ID can be obtained by ',
+          'The holiday type ID can be obtained by [Get a list of holiday types]',
         )
         .optional(),
     }),
@@ -944,7 +1059,7 @@ export const attendanceV1ShiftCreate = {
   path: '/open-apis/attendance/v1/shifts',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Attendance-Attendance shift-Create Attendance Shift-Shift is a general term that describes the time rules of an attendance task, such as how many times a day to play the card, the commute time of each card, how long is late, how long is late, and how long is missing the card. Click on the shift name in the fake work settings -  to view the shift details. If the shift id is passed into the imported parameter, then the ability to edit the shift is supported',
+    '[Feishu/Lark]-Attendance-Attendance shift-Create Attendance Shift-Shift is a general term that describes the time rules of an attendance task, such as how many times a day to play the card, the commute time of each card, how long is late, how long is late, and how long is missing the card. Click on the shift name in the fake work settings - [shift settings] to view the shift details. If the shift id is passed into the imported parameter, then the ability to edit the shift is supported',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1115,7 +1230,7 @@ export const attendanceV1ShiftCreate = {
       id: z
         .string()
         .describe(
-          'Shift id (need to pass when updating shift), get method: 1)  2) ',
+          'Shift id (need to pass when updating shift), get method: 1) [query shift by name] 2) [create shift]',
         )
         .optional(),
     }),
@@ -1123,7 +1238,7 @@ export const attendanceV1ShiftCreate = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, which is the user ID in  > organizational structure > members and departments > member details,you can also get from ),employee_no(Employee job number, that is, the job number in  > organizational structure > members and departments > member details)",
+          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details,you can also get from [Get user ID by mobile phone number or email]),employee_no(Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
         )
         .optional(),
     }),
@@ -1136,14 +1251,14 @@ export const attendanceV1ShiftDelete = {
   path: '/open-apis/attendance/v1/shifts/:shift_id',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-Attendance-Attendance shift-Delete Attendance Shift-Delete the shift by the shift ID. The corresponding function is the Delete button in the operation bar in the shift list of false attendance settings - [shift settings] (https://example.feishu.cn/people/workforce-management/setting/group/shifts)',
+    '[Feishu/Lark]-Attendance-Attendance shift-Delete Attendance Shift-Delete the shift by the shift ID. The corresponding function is the Delete button in the operation bar in the shift list of false attendance settings - [shift settings]',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       shift_id: z
         .string()
         .describe(
-          'Shift ID, which can be obtained as follows: 1)  2) ',
+          'Shift ID, which can be obtained as follows: 1) [Search shift by name] 2) [Create a shift]',
         ),
     }),
   },
@@ -1155,14 +1270,14 @@ export const attendanceV1ShiftGet = {
   path: '/open-apis/attendance/v1/shifts/:shift_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Attendance-Attendance shift-Query shifts by ID-Get the shift details through the shift ID. The corresponding function is fake duty settings -  The specific shift in the shift list, the shift information can be viewed by clicking the shift name',
+    '[Feishu/Lark]-Attendance-Attendance shift-Query shifts by ID-Get the shift details through the shift ID. The corresponding function is fake duty settings - [shift settings] The specific shift in the shift list, the shift information can be viewed by clicking the shift name',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       shift_id: z
         .string()
         .describe(
-          'Shift ID, which can be obtained as follows: 1)  2) ',
+          'Shift ID, which can be obtained as follows: 1) [Search shift by name] 2) [Create a shift]',
         ),
     }),
   },
@@ -1174,7 +1289,7 @@ export const attendanceV1ShiftList = {
   path: '/open-apis/attendance/v1/shifts',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Attendance-Attendance shift-Query all shifts-Fake duty settings in Feishu personnel management background -  page turn query all shift functions, showing shift name, clock in rules, flexible shift rules, rest rules, etc',
+    '[Feishu/Lark]-Attendance-Attendance shift-Query all shifts-Fake duty settings in Feishu personnel management background - [Shift configuration] page turn query all shift functions, showing shift name, clock in rules, flexible shift rules, rest rules, etc',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -1195,7 +1310,7 @@ export const attendanceV1ShiftQuery = {
   path: '/open-apis/attendance/v1/shifts/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Attendance-Attendance shift-Query Attendance Shift by Name-Feishu personnel management background fake work settings -  in the search shift name function, showing shift name, clock in rules, flexible shift rules, rest rules, etc',
+    '[Feishu/Lark]-Attendance-Attendance shift-Query Attendance Shift by Name-Feishu personnel management background fake work settings - [shift configuration] in the search shift name function, showing shift name, clock in rules, flexible shift rules, rest rules, etc',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({ shift_name: z.string().describe('Shift name, support fuzzy matching') }),
@@ -1285,7 +1400,7 @@ export const attendanceV1UserApprovalCreate = {
                 uniq_id: z
                   .string()
                   .describe(
-                    'Vacation type unique ID, representing a vacation type, less than 14 in length* This ID corresponds to the holiday type (ie: i18n_names), so it needs to be guaranteed to be unique. You can get ',
+                    'Vacation type unique ID, representing a vacation type, less than 14 in length* This ID corresponds to the holiday type (ie: i18n_names), so it needs to be guaranteed to be unique. You can get [Get Holiday Type]',
                   )
                   .optional(),
                 unit: z
@@ -1329,7 +1444,7 @@ export const attendanceV1UserApprovalCreate = {
                 duration: z
                   .number()
                   .describe(
-                    'If you need to use this field to calculate overtime hours, please contact  to open. start_time and end_time calculation are used by default',
+                    'If you need to use this field to calculate overtime hours, please contact [Technical Support] to open. start_time and end_time calculation are used by default',
                   ),
                 unit: z
                   .number()
@@ -1416,7 +1531,7 @@ export const attendanceV1UserApprovalCreate = {
                     region_id: z
                       .string()
                       .describe(
-                        'Geographic ID, it can be obtained by  or  (only supported by Feishu People Enterprise)',
+                        'Geographic ID, it can be obtained by [querying district/county information] or [querying city information] (only supported by Feishu People Enterprise)',
                       )
                       .optional(),
                   })
@@ -1434,7 +1549,7 @@ export const attendanceV1UserApprovalCreate = {
                       region_id: z
                         .string()
                         .describe(
-                          'Geographic ID, it can be obtained by  or  (only supported by Feishu People Enterprise)',
+                          'Geographic ID, it can be obtained by [querying district/county information] or [querying city information] (only supported by Feishu People Enterprise)',
                         )
                         .optional(),
                     }),
@@ -1450,7 +1565,7 @@ export const attendanceV1UserApprovalCreate = {
               }),
             )
             .describe(
-              'Travel information.Currently only full-day travel is supported (less than full days are counted as full days). If you need to support half-day travel, please consult ',
+              'Travel information.Currently only full-day travel is supported (less than full days are counted as full days). If you need to support half-day travel, please consult [Technical Support]',
             )
             .optional(),
           time_zone: z
@@ -1467,7 +1582,7 @@ export const attendanceV1UserApprovalCreate = {
       employee_type: z
         .enum(['employee_id', 'employee_no', 'open_id'])
         .describe(
-          "The employee ID type of the user_id in the request body and the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, which is the user ID in  > Organization > Member and Department > Member Details),employee_no(Employee No., which is the Employee ID in  > Organization > Member and Department > Member Details),open_id(For the identity of the user in an application, you can refer to )",
+          "The employee ID type of the user_id in the request body and the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu Admin] > Organization > Member and Department > Member Details),employee_no(Employee No., which is the Employee ID in [Feishu Admin] > Organization > Member and Department > Member Details),open_id(For the identity of the user in an application, you can refer to [How to get different user IDs])",
         ),
     }),
   },
@@ -1519,9 +1634,9 @@ export const attendanceV1UserApprovalQuery = {
     }),
     params: z.object({
       employee_type: z
-        .enum(['employee_id', 'employee_no'])
+        .enum(['employee_id', 'employee_no', 'open_id'])
         .describe(
-          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, which is the user ID in  > Organization > Member and Department > Member Details),employee_no(Employee No., which is the Employee ID in  > Organization > Member and Department > Member Details)",
+          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu Admin] > Organization > Member and Department > Member Details),employee_no(Employee No., which is the Employee ID in [Feishu Admin] > Organization > Member and Department > Member Details),open_id(Open ID., which is the Open ID in [Feishu Admin])",
         ),
     }),
   },
@@ -1543,12 +1658,12 @@ export const attendanceV1UserDailyShiftBatchCreate = {
             group_id: z
               .string()
               .describe(
-                'Attendance group ID is obtained as follows: 1)  2)  3) ',
+                'Attendance group ID is obtained as follows: 1) [Create or modify attendance groups] 2) [Query attendance group by name] 3) [Obtain attendance results]',
               ),
             shift_id: z
               .string()
               .describe(
-                'Shift ID, which can be obtained as follows: 1)  2) .Passing in 0 represents rest',
+                'Shift ID, which can be obtained as follows: 1) [Search shift by name] 2) [Create a shift].Passing in 0 represents rest',
               ),
             month: z.number().describe('Month, format yyyyMM'),
             user_id: z.string().describe('User ID, corresponding to employee_type'),
@@ -1565,7 +1680,7 @@ export const attendanceV1UserDailyShiftBatchCreate = {
       operator_id: z
         .string()
         .describe(
-          'Operator uid, corresponding to employee_type. If you do not operate [backstage for attendance management "API access" process] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/attachment-v1/attendance-development-guidelines), this field is required',
+          'Operator uid, corresponding to employee_type. If you do not operate [backstage for attendance management "API access" process], this field is required',
         )
         .optional(),
     }),
@@ -1573,7 +1688,7 @@ export const attendanceV1UserDailyShiftBatchCreate = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The employee ID type of the user_id in the request body and the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee's employee ID, that is the user ID in  > Organization > Member and Department > Member Details,you can also get from ),employee_no(Employee ID, that is the employee ID in  > Organization > Member and Department > Member Details)",
+          "The employee ID type of the user_id in the request body and the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee's employee ID, that is the user ID in [Feishu Admin] > Organization > Member and Department > Member Details,you can also get from [Get user ID by mobile phone number or email]),employee_no(Employee ID, that is the employee ID in [Feishu Admin] > Organization > Member and Department > Member Details)",
         ),
     }),
   },
@@ -1595,7 +1710,7 @@ export const attendanceV1UserDailyShiftBatchCreateTemp = {
             group_id: z
               .string()
               .describe(
-                'Attendance group ID is obtained as follows: 1)  2)  3) ',
+                'Attendance group ID is obtained as follows: 1) [Create or modify attendance groups] 2) [Query attendance group by name] 3) [Obtain attendance results]',
               ),
             user_id: z.string().describe('User ID, corresponding to employee_type'),
             date: z.number().describe('date'),
@@ -1624,7 +1739,7 @@ export const attendanceV1UserDailyShiftBatchCreateTemp = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The employee ID type of the user_id in the request body and the response body. If you don't have background administrative privileges, you can use  Options:employee_id(EmployeeID Employee's employee ID, that is the user ID in  > Organization > Member and Department > Member Details,you can also get from ),employee_no(EmployeeNo Employee ID, that is the employee ID in  > Organization > Member and Department > Member Details)",
+          "The employee ID type of the user_id in the request body and the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(EmployeeID Employee's employee ID, that is the user ID in [Feishu Admin] > Organization > Member and Department > Member Details,you can also get from [Get user ID by mobile phone number or email]),employee_no(EmployeeNo Employee ID, that is the employee ID in [Feishu Admin] > Organization > Member and Department > Member Details)",
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1637,7 +1752,7 @@ export const attendanceV1UserDailyShiftQuery = {
   path: '/open-apis/attendance/v1/user_daily_shifts/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Attendance-Attendance schedule-Query schedule information-Support querying the scheduling of multiple users. Note that this interface returns the scheduling results of the user dimension, which does not correspond to the page function. You can query the attendance group [query the attendance group by ID] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/attachment-v1/group/get) through the group_id in the return result, shift_id query the shift [query the shift by ID] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/attachment-v1/shift/get). The time span of the query cannot exceed 30 days',
+    '[Feishu/Lark]-Attendance-Attendance schedule-Query schedule information-Support querying the scheduling of multiple users. Note that this interface returns the scheduling results of the user dimension, which does not correspond to the page function. You can query the attendance group [query the attendance group by ID] through the group_id in the return result, shift_id query the shift [query the shift by ID]. The time span of the query cannot exceed 30 days',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1651,7 +1766,7 @@ export const attendanceV1UserDailyShiftQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, which is the user ID in  > organizational structure > members and departments > member details,you can also get from ),employee_no(Employee job number, that is, the job number in  > organizational structure > members and departments > member details)",
+          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details,you can also get from [Get user ID by mobile phone number or email]),employee_no(Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
         ),
     }),
   },
@@ -1663,7 +1778,7 @@ export const attendanceV1UserFlowBatchCreate = {
   path: '/open-apis/attendance/v1/user_flows/batch_create',
   httpMethod: 'POST',
   description:
-    "[Feishu/Lark]-Attendance-Attendance records-Import attendance record-Import the employee's attendance details. After importing, the final clock in status and result will be calculated according to the shift rules of the employee's attendance team. You can check in clock in management - [clock in records] (https://example.feishu.cn/people/workforce-management/manage/statistics/flow)",
+    "[Feishu/Lark]-Attendance-Attendance records-Import attendance record-Import the employee's attendance details. After importing, the final clock in status and result will be calculated according to the shift rules of the employee's attendance team. You can check in clock in management - [clock in records]",
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1739,7 +1854,7 @@ export const attendanceV1UserFlowBatchCreate = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "user_id and creator_id employee id types in the request body and response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, which is the user ID in  > organizational structure > members and departments > member details,you can also get from ),employee_no(Employee job number, that is, the job number in  > organizational structure > members and departments > member details)",
+          "user_id and creator_id employee id types in the request body and response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details,you can also get from [Get user ID by mobile phone number or email]),employee_no(Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
         ),
     }),
   },
@@ -1758,7 +1873,7 @@ export const attendanceV1UserFlowBatchDel = {
       record_ids: z
         .array(z.string())
         .describe(
-          'Attendance flow record ID, which is obtained as follows: 1)  2)  3) ',
+          'Attendance flow record ID, which is obtained as follows: 1) [Batch query of attendance flow record] 2) [Obtain attendance results] 3) [Import attendance flow record]',
         ),
     }),
   },
@@ -1770,21 +1885,21 @@ export const attendanceV1UserFlowGet = {
   path: '/open-apis/attendance/v1/user_flows/:user_flow_id',
   httpMethod: 'GET',
   description:
-    "[Feishu/Lark]-Attendance-Attendance records-Obtain attendance record-Obtain the user's attendance details record through the record ID of the clock. The return information mainly includes:* User ID and creator ID* Record information* clock in position information, time information* Information in clock mode* GPS clock in: location_name (location address information)* Wi-Fi clock in: ssid (wifi name), bssid (mac address)* Attendance machine clock in: device_id (attendance machine device id)Corresponding page function clock in management - [clock in record] (https://example.feishu.cn/people/workforce-management/manage/statistics/flow)",
+    "[Feishu/Lark]-Attendance-Attendance records-Obtain attendance record-Obtain the user's attendance details record through the record ID of the clock. The return information mainly includes:* User ID and creator ID* Record information* clock in position information, time information* Information in clock mode* GPS clock in: location_name (location address information)* Wi-Fi clock in: ssid (wifi name), bssid (mac address)* Attendance machine clock in: device_id (attendance machine device id)Corresponding page function clock in management - [clock in record]",
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
       employee_type: z
         .enum(['open_id', 'employee_id', 'employee_no'])
         .describe(
-          "The user_id and creator_id employee ID type in the response body. If you don't have background administrative privileges, you can use  Options:open_id(-),employee_id(Employee ID, which is the user ID in  > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in  > organizational structure > members and departments > member details)",
+          "The user_id and creator_id employee ID type in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:open_id(-),employee_id(Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
         ),
     }),
     path: z.object({
       user_flow_id: z
         .string()
         .describe(
-          'Attendance flow record ID, which is obtained as follows: 1)  2)  3) ',
+          'Attendance flow record ID, which is obtained as follows: 1) [Batch query of attendance flow record] 2) [Obtain attendance results] 3) [Import attendance flow record]',
         ),
     }),
   },
@@ -1796,7 +1911,7 @@ export const attendanceV1UserFlowQuery = {
   path: '/open-apis/attendance/v1/user_flows/query',
   httpMethod: 'POST',
   description:
-    "[Feishu/Lark]-Attendance-Attendance records-Batch query attendance record-Get the user's attendance details through the user ID. The return information mainly includes:* User ID and creator ID* Record information* clock in position information, time information* Information in clock mode* GPS clock in: location_name (location address information)* Wi-Fi clock in: ssid (wifi name), bssid (mac address)* Attendance machine clock in: device_id (attendance machine device id)Corresponding page function clock in management - ",
+    "[Feishu/Lark]-Attendance-Attendance records-Batch query attendance record-Get the user's attendance details through the user ID. The return information mainly includes:* User ID and creator ID* Record information* clock in position information, time information* Information in clock mode* GPS clock in: location_name (location address information)* Wi-Fi clock in: ssid (wifi name), bssid (mac address)* Attendance machine clock in: device_id (attendance machine device id)Corresponding page function clock in management - [clock in record]",
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1808,7 +1923,7 @@ export const attendanceV1UserFlowQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, which is the user ID in  > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in  > organizational structure > members and departments > member details)",
+          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
         ),
       include_terminated_user: z
         .boolean()
@@ -1836,7 +1951,7 @@ export const attendanceV1UserSettingModify = {
           face_key: z
             .string()
             .describe(
-              'Face photo file ID, get method: ',
+              'Face photo file ID, get method: [Upload user facial recognition photo]',
             ),
           face_key_update_time: z
             .string()
@@ -1850,7 +1965,7 @@ export const attendanceV1UserSettingModify = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, which is the user ID in  > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in  > organizational structure > members and departments > member details)",
+          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
         ),
     }),
   },
@@ -1862,7 +1977,7 @@ export const attendanceV1UserSettingQuery = {
   path: '/open-apis/attendance/v1/user_settings/query',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Attendance-Attendance user management-Query user face recognition information in batches-Batch query the user setting information of employees within the authorization, including face photo file ID and face photo update time. Corresponding page fake attendance settings - . According to the returned face_key, you can download face information ',
+    '[Feishu/Lark]-Attendance-Attendance user management-Query user face recognition information in batches-Batch query the user setting information of employees within the authorization, including face photo file ID and face photo update time. Corresponding page fake attendance settings - [facial recognition]. According to the returned face_key, you can download face information [Download user facial recognition photos]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1872,7 +1987,7 @@ export const attendanceV1UserSettingQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use  Options:employee_id(EmployeeId Employee ID, which is the user ID in  > organizational structure > members and departments > member details),employee_no(EmployeeNo Employee job number, that is, the job number in  > organizational structure > members and departments > member details)",
+          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(EmployeeId Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details),employee_no(EmployeeNo Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
         ),
     }),
   },
@@ -1884,7 +1999,7 @@ export const attendanceV1UserStatsDataQuery = {
   path: '/open-apis/attendance/v1/user_stats_datas/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Attendance-Attendance statistics-Query statistical data-Query statistics for daily or monthly statistics. Fields contain basic information, attendance group information, attendance statistics, exception statistics, leave statistics, overtime statistics, clock in time, attendance results, and custom fields. Specific reports can be found in Attendance Statistics - ',
+    '[Feishu/Lark]-Attendance-Attendance statistics-Query statistical data-Query statistics for daily or monthly statistics. Fields contain basic information, attendance group information, attendance statistics, exception statistics, leave statistics, overtime statistics, clock in time, attendance results, and custom fields. Specific reports can be found in Attendance Statistics - [Reports]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1923,7 +2038,7 @@ export const attendanceV1UserStatsDataQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, that is the user ID in  > Organization > Member and Department > Member Details),employee_no(Employee number, that is the employee ID in  > Organization > Member and Department > Member Details)",
+          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, that is the user ID in [Feishu Admin] > Organization > Member and Department > Member Details),employee_no(Employee number, that is the employee ID in [Feishu Admin] > Organization > Member and Department > Member Details)",
         ),
     }),
   },
@@ -1935,7 +2050,7 @@ export const attendanceV1UserStatsFieldQuery = {
   path: '/open-apis/attendance/v1/user_stats_fields/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Attendance-Attendance statistics-Query statistics headers-Query the statistical header of the daily statistics or monthly statistics supported by the attendance statistics. The header information of the report can be queried in the attendance statistics -  to find the specific report information. This interface is specially used to query the header data',
+    '[Feishu/Lark]-Attendance-Attendance statistics-Query statistics headers-Query the statistical header of the daily statistics or monthly statistics supported by the attendance statistics. The header information of the report can be queried in the attendance statistics - [report] to find the specific report information. This interface is specially used to query the header data',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1950,7 +2065,7 @@ export const attendanceV1UserStatsFieldQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, which is the user ID in  > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in  > organizational structure > members and departments > member details)",
+          "The employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
         ),
     }),
   },
@@ -1962,7 +2077,7 @@ export const attendanceV1UserStatsViewQuery = {
   path: '/open-apis/attendance/v1/user_stats_views/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Attendance-Attendance statistics-Query statistics settings-Query the statistical header of the daily statistics or monthly statistics supported by the attendance statistics. The header information of the report can be queried in the attendance statistics - . This interface is specially used to query the header data. Note that this interface is basically the same as the . The difference is that it is compatible with the historical statistics view model (the historical statistics model can be set by user ID, and the subsequent statistics are upgraded to support only the tenant dimension)',
+    '[Feishu/Lark]-Attendance-Attendance statistics-Query statistics settings-Query the statistical header of the daily statistics or monthly statistics supported by the attendance statistics. The header information of the report can be queried in the attendance statistics - [report]. This interface is specially used to query the header data. Note that this interface is basically the same as the [Query statistics headers]. The difference is that it is compatible with the historical statistics view model (the historical statistics model can be set by user ID, and the subsequent statistics are upgraded to support only the tenant dimension)',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1981,7 +2096,7 @@ export const attendanceV1UserStatsViewQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, which is the user ID in  > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in  > organizational structure > members and departments > member details)",
+          "The employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
         ),
     }),
   },
@@ -1993,7 +2108,7 @@ export const attendanceV1UserStatsViewUpdate = {
   path: '/open-apis/attendance/v1/user_stats_views/:user_stats_view_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-Attendance-Attendance statistics-Update statistics settings-Update the statistical report header setting information customized by the developer for daily statistics or monthly statistics. The header information of the report can be found in the attendance statistics - . This interface is specially used to update the header information',
+    '[Feishu/Lark]-Attendance-Attendance statistics-Update statistics settings-Update the statistical report header setting information customized by the developer for daily statistics or monthly statistics. The header information of the report can be found in the attendance statistics - [report]. This interface is specially used to update the header information',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2028,14 +2143,14 @@ export const attendanceV1UserStatsViewUpdate = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, which is the user ID in  > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in  > organizational structure > members and departments > member details)",
+          "The employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
         ),
     }),
     path: z.object({
       user_stats_view_id: z
         .string()
         .describe(
-          'User view ID is obtained as follows: 1) ',
+          'User view ID is obtained as follows: 1) [Query statistics settings]',
         ),
     }),
   },
@@ -2047,7 +2162,7 @@ export const attendanceV1UserTaskRemedyCreate = {
   path: '/open-apis/attendance/v1/user_task_remedys',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Attendance-Attendance correction-Notify correction approval initiation-For enterprises that only use Fishu attendance system but not Fishu approval system, you can use this interface to write the replacement card approval data initiated in the three-party approval system to Fishu attendance system with the status of approval in progress. The status can be updated by  after writing in',
+    '[Feishu/Lark]-Attendance-Attendance correction-Notify correction approval initiation-For enterprises that only use Fishu attendance system but not Fishu approval system, you can use this interface to write the replacement card approval data initiated in the three-party approval system to Fishu attendance system with the status of approval in progress. The status can be updated by [notify approval status update] after writing in',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2067,7 +2182,7 @@ export const attendanceV1UserTaskRemedyCreate = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, which is the user ID in  > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in  > organizational structure > members and departments > member details)",
+          "The employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
         ),
     }),
   },
@@ -2107,7 +2222,7 @@ export const attendanceV1UserTaskRemedyQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee's employee ID, that is the user ID in Feishu Admin > Organization > Member and Department > Member Details),employee_no(Employee ID, that is the employee ID in Feishu Admin > Organization > Member and Department > Member Details)",
+          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee's employee ID, that is the user ID in Feishu Admin > Organization > Member and Department > Member Details),employee_no(Employee ID, that is the employee ID in Feishu Admin > Organization > Member and Department > Member Details)",
         ),
     }),
   },
@@ -2130,7 +2245,7 @@ export const attendanceV1UserTaskRemedyQueryUserAllowedRemedys = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "The employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use  Options:employee_id(Employee ID, which is the user ID in  > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in  > organizational structure > members and departments > member details)",
+          "The employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details),employee_no(Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
         ),
     }),
   },
@@ -2162,7 +2277,7 @@ export const attendanceV1UserTaskQuery = {
       employee_type: z
         .enum(['employee_id', 'employee_no'])
         .describe(
-          "Employee ID type. If you don't have background administrative privileges, you can use  Options:employee_id(Employee's employee ID, that is the user ID in  > Organization > Member and Department > Member Details),employee_no(Employee ID, that is the employee ID in  > Organization > Member and Department > Member Details)",
+          "Employee ID type. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee's employee ID, that is the user ID in [Feishu Admin] > Organization > Member and Department > Member Details),employee_no(Employee ID, that is the employee ID in [Feishu Admin] > Organization > Member and Department > Member Details)",
         ),
       ignore_invalid_users: z
         .boolean()

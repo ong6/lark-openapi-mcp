@@ -19,7 +19,7 @@ export const humanAuthenticationV1IdentityCreate = {
       user_id: z
         .string()
         .describe(
-          '用户的唯一标识（使用的ID类型见下一参数描述，不同ID类型的区别和获取，参考文档：）',
+          '用户的唯一标识（使用的ID类型见下一参数描述，不同ID类型的区别和获取，参考文档：[如何获得 User ID、Open ID 和 Union ID？]）',
         ),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
     }),

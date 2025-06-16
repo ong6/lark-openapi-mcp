@@ -47,7 +47,7 @@ export const performanceV1ReviewDataQuery = {
       semester_id_list: z
         .array(z.string())
         .describe(
-          '评估周期 ID 列表，可通过接口获取',
+          '评估周期 ID 列表，可通过[获取周期]接口获取',
         )
         .optional(),
       reviewee_user_id_list: z.array(z.string()).describe('被评估人 ID 列表，与入参 `user_id_type` 类型一致'),
@@ -132,7 +132,7 @@ export const performanceV1StageTaskFindByPage = {
     data: z.object({
       semester_id: z
         .string()
-        .describe('周期 ID，可通过接口获取'),
+        .describe('周期 ID，可通过[获取周期]接口获取'),
       task_option_lists: z
         .array(z.number())
         .describe(
@@ -167,7 +167,7 @@ export const performanceV1StageTaskFindByUserList = {
     data: z.object({
       semester_id: z
         .string()
-        .describe('周期 ID，可通过接口获取'),
+        .describe('周期 ID，可通过[获取周期]接口获取'),
       user_id_lists: z
         .array(z.string())
         .describe(

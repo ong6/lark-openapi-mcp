@@ -67,7 +67,7 @@ export const calendarV4CalendarAclCreate = {
           user_id: z
             .string()
             .describe(
-              'User ID, for more information, you can refer to the ',
+              'User ID, for more information, you can refer to the [Concept of User-Related ID]',
             )
             .optional(),
         })
@@ -78,7 +78,7 @@ export const calendarV4CalendarAclCreate = {
       calendar_id: z
         .string()
         .describe(
-          'The calendar ID for which access control needs to be added.The calendar ID is returned when a shared calendar is created. You can also call the following interfaces to obtain the ID of a calendar.- - - ',
+          'The calendar ID for which access control needs to be added.The calendar ID is returned when a shared calendar is created. You can also call the following interfaces to obtain the ID of a calendar.- [Query primary calendar information]- [Query calendar list]- [Search calendars]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -98,12 +98,12 @@ export const calendarV4CalendarAclDelete = {
       calendar_id: z
         .string()
         .describe(
-          'The ID of the calendar for which access control needs to be deleted is required.The calendar ID is returned when a shared calendar is created. You can also call the following interfaces to obtain the ID of a calendar.- - - ',
+          'The ID of the calendar for which access control needs to be deleted is required.The calendar ID is returned when a shared calendar is created. You can also call the following interfaces to obtain the ID of a calendar.- [Query primary calendar information]- [Query calendar list]- [Search calendars]',
         ),
       acl_id: z
         .string()
         .describe(
-          'Access control ID.The access control ID is returned when access control is created for the calendar. You can also call the  interface to get the access control information within the specified calendar',
+          'Access control ID.The access control ID is returned when access control is created for the calendar. You can also call the [get access control list] interface to get the access control information within the specified calendar',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -138,7 +138,7 @@ export const calendarV4CalendarAclList = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID.The calendar ID is returned when creating a shared calendar. You can also call the following interfaces to obtain the ID of a calendar.- - - ',
+          'Calendar ID.The calendar ID is returned when creating a shared calendar. You can also call the following interfaces to obtain the ID of a calendar.- [Query Primary Calendar Information]- [Query Calendar List]- [Search Calendar]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -158,7 +158,7 @@ export const calendarV4CalendarAclSubscription = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. The calendar ID is returned when a shared calendar is created. You can also call the following interfaces to obtain the ID of a calendar.- - - ',
+          'Calendar ID. The calendar ID is returned when a shared calendar is created. You can also call the following interfaces to obtain the ID of a calendar.- [Query primary calendar information]- [Query calendar list]- [Search calendars]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -178,7 +178,7 @@ export const calendarV4CalendarAclUnsubscription = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. The calendar ID is returned when a shared calendar is created. You can also call the following interfaces to obtain the ID of a calendar.- - - ',
+          'Calendar ID. The calendar ID is returned when a shared calendar is created. You can also call the following interfaces to obtain the ID of a calendar.- [Query primary calendar information]- [Query calendar list]- [Search calendars]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -233,7 +233,7 @@ export const calendarV4CalendarDelete = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID.When creating a shared calendar, the calendar ID will be returned. You can also call the following interfaces to get the ID of a calendar.- - - ',
+          'Calendar ID.When creating a shared calendar, the calendar ID will be returned. You can also call the following interfaces to get the ID of a calendar.- [Query Primary Calendar Information]- [Query Calendar List]- [Search Calendars]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -253,7 +253,7 @@ export const calendarV4CalendarEventAttendeeBatchDelete = {
       attendee_ids: z
         .array(z.string())
         .describe(
-          'List of invitee IDs that need to be deleted.When adding a event invitee, the invitee ID (attendee_id) will be returned. You can also call  Interface to query the invitee ID of the specified event.- Up to 500 attendees can be deleted at a time (counted together with delete_ids)',
+          'List of invitee IDs that need to be deleted.When adding a event invitee, the invitee ID (attendee_id) will be returned. You can also call [Get event invitee list] Interface to query the invitee ID of the specified event.- Up to 500 attendees can be deleted at a time (counted together with delete_ids)',
         )
         .optional(),
       delete_ids: z
@@ -266,13 +266,13 @@ export const calendarV4CalendarEventAttendeeBatchDelete = {
             user_id: z
               .string()
               .describe(
-                "Event invitee's user ID, which depends on the returned user_id_type parameter. When is_external is true, this field returns the open_id or union_id. For more information, see ",
+                "Event invitee's user ID, which depends on the returned user_id_type parameter. When is_external is true, this field returns the open_id or union_id. For more information, see [User-related IDs]",
               )
               .optional(),
             chat_id: z
               .string()
               .describe(
-                'The group chat_id of a chat-type event invitee. For details, see ',
+                'The group chat_id of a chat-type event invitee. For details, see [Group ID description]',
               )
               .optional(),
             room_id: z.string().describe('The room_id of a resource-type event invitee').optional(),
@@ -307,12 +307,12 @@ export const calendarV4CalendarEventAttendeeBatchDelete = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. For details, see ',
+          'Calendar ID. For details, see [Calendar-related IDs]',
         ),
       event_id: z
         .string()
         .describe(
-          'Event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- - ',
+          'Event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- [Get event list]- [Search event]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -342,17 +342,17 @@ export const calendarV4CalendarEventAttendeeChatMemberList = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. For details, see ',
+          'Calendar ID. For details, see [Calendar-related IDs]',
         ),
       event_id: z
         .string()
         .describe(
-          'Event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- - ',
+          'Event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- [Get event list]- [Search event]',
         ),
       attendee_id: z
         .string()
         .describe(
-          'Group type invitee ID.When adding a event invitee, the invitee ID (attendee_id) will be returned. You can also call  Interface to query the invitee ID of the specified event',
+          'Group type invitee ID.When adding a event invitee, the invitee ID (attendee_id) will be returned. You can also call [Get event invitee list] Interface to query the invitee ID of the specified event',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -381,25 +381,25 @@ export const calendarV4CalendarEventAttendeeCreate = {
             is_optional: z
               .boolean()
               .describe(
-                'Whether the invitee is optional.**Optional values are**:- true- false**Note**: This field cannot be edited for group invitees',
+                'Whether the invitee is optional.**Optional values are**:- true- false**Note**: This field cannot be edited for room type invitees',
               )
               .optional(),
             user_id: z
               .string()
               .describe(
-                'User ID. When selecting a user type invitee (the value of type is user), this parameter needs to be passed in. The user ID type passed in needs to be consistent with the value of user_id_type. For information about user IDs, see ',
+                'User ID. When selecting a user type invitee (the value of type is user), this parameter needs to be passed in. The user ID type passed in needs to be consistent with the value of user_id_type. For information about user IDs, see [User-related ID concepts]',
               )
               .optional(),
             chat_id: z
               .string()
               .describe(
-                'Group ID. When selecting group type invitees (type value is chat), this parameter needs to be passed in. For details about group ID, please refer to ',
+                'Group ID. When selecting group type invitees (type value is chat), this parameter needs to be passed in. For details about group ID, please refer to [Group ID Description]',
               )
               .optional(),
             room_id: z
               .string()
               .describe(
-                'Meeting room ID. When selecting meeting room type invitees (type value is resource), this parameter needs to be passed in.You can obtain the specified meeting room ID through the following interface:- - ',
+                'Meeting room ID. When selecting meeting room type invitees (type value is resource), this parameter needs to be passed in.You can obtain the specified meeting room ID through the following interface:- [Query meeting room list]- [Search meeting room]',
               )
               .optional(),
             third_party_email: z
@@ -411,7 +411,7 @@ export const calendarV4CalendarEventAttendeeCreate = {
             operate_id: z
               .string()
               .describe(
-                'Meeting room contact ID. The user ID type passed in needs to be consistent with the value of user_id_type. For information about user IDs, see .**Note**: If the current schedule is created based on the application identity, when adding a meeting room type invitee, you need to specify the contact person of the meeting room through this parameter, and the contact will be displayed in the schedule meeting room information.**Default**: empty',
+                'Meeting room contact ID. The user ID type passed in needs to be consistent with the value of user_id_type. For information about user IDs, see [User-related ID concepts].**Note**: If the current schedule is created based on the application identity, when adding a meeting room type invitee, you need to specify the contact person of the meeting room through this parameter, and the contact will be displayed in the schedule meeting room information.**Default**: empty',
               )
               .optional(),
             resource_customization: z
@@ -461,7 +461,7 @@ export const calendarV4CalendarEventAttendeeCreate = {
       instance_start_time_admin: z
         .string()
         .describe(
-          'The instance to be modified when accessing as an administrator.**Note**:- This parameter is only used to modify a event instance in a repeating event. This field does not need to be filled in for non-repeating events.- You can call the  interface to obtain the event_id of a event instance in the repeating event. The value of this parameter is the timestamp suffix of event_id. For example, the queried event instance ID is `2cf525f0-1e67-4b04-ad4d-30b7f003903c_1713168000`, then the current `instance_start_time_admin` value is `1713168000`.**Default**: empty',
+          'The instance to be modified when accessing as an administrator.**Note**:- This parameter is only used to modify a event instance in a repeating event. This field does not need to be filled in for non-repeating events.- You can call the [Get repeating event instance] interface to obtain the event_id of a event instance in the repeating event. The value of this parameter is the timestamp suffix of event_id. For example, the queried event instance ID is `2cf525f0-1e67-4b04-ad4d-30b7f003903c_1713168000`, then the current `instance_start_time_admin` value is `1713168000`.**Default**: empty',
         )
         .optional(),
       is_enable_admin: z
@@ -482,12 +482,12 @@ export const calendarV4CalendarEventAttendeeCreate = {
       calendar_id: z
         .string()
         .describe(
-          'The calendar ID corresponding to the event. To learn more, see ',
+          'The calendar ID corresponding to the event. To learn more, see [Calendar ID Introduction]',
         ),
       event_id: z
         .string()
         .describe(
-          'Event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- - ',
+          'Event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- [Get event list]- [Search event]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -508,7 +508,7 @@ export const calendarV4CalendarEventAttendeeList = {
       need_resource_customization: z
         .boolean()
         .describe(
-          'Whether meeting room form information is required.**Optional values are**:- true: required- false (default): not required**Note**: The current identity needs to have the editing rights of the event to return the meeting room form information, that is, the current identity needs to be the organizer of the event, or a invitee of the event and the event is set to **Invitees can edit the event** permissions. You can call the  interface to obtain the invitee permissions (attendee_ability) of the event',
+          'Whether meeting room form information is required.**Optional values are**:- true: required- false (default): not required**Note**: The current identity needs to have the editing rights of the event to return the meeting room form information, that is, the current identity needs to be the organizer of the event, or a invitee of the event and the event is set to **Invitees can edit the event** permissions. You can call the [Get event] interface to obtain the invitee permissions (attendee_ability) of the event',
         )
         .optional(),
       page_token: z
@@ -528,12 +528,12 @@ export const calendarV4CalendarEventAttendeeList = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. For details, see ',
+          'Calendar ID. For details, see [Calendar-related IDs]',
         ),
       event_id: z
         .string()
         .describe(
-          'Evnet ID.The evnet ID is returned when creating a evnet. You can also call the following interface to obtain the ID of a certain calendar.- - ',
+          'Evnet ID.The evnet ID is returned when creating a evnet. You can also call the following interface to obtain the ID of a certain calendar.- [Get evnet list]- [Search evnet]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -568,7 +568,7 @@ export const calendarV4CalendarEventCreate = {
           date: z
             .string()
             .describe(
-              'Start time, only use this field for all-day events,  format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
+              'Start time, only use this field for all-day events, [RFC 3339] format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
             )
             .optional(),
           timestamp: z
@@ -590,7 +590,7 @@ export const calendarV4CalendarEventCreate = {
           date: z
             .string()
             .describe(
-              'End time, only use this field for all-day events,  format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
+              'End time, only use this field for all-day events, [RFC 3339] format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
             )
             .optional(),
           timestamp: z
@@ -733,7 +733,7 @@ export const calendarV4CalendarEventCreate = {
       recurrence: z
         .string()
         .describe(
-          'Recurrence rule for recurring events. For details, see .**Default value**: empty, indicating that the current event is not a repeating event.**Note**:- COUNT and UNTIL cannot coexist;- The length of a scheduled recurring event in a room cannot exceed two years',
+          'Recurrence rule for recurring events. For details, see [RFC 5545].**Default value**: empty, indicating that the current event is not a repeating event.**Note**:- COUNT and UNTIL cannot coexist;- The length of a scheduled recurring event in a room cannot exceed two years',
         )
         .optional(),
       schemas: z
@@ -767,7 +767,7 @@ export const calendarV4CalendarEventCreate = {
             file_token: z
               .string()
               .describe(
-                'Attachment token. Call the  interface to obtain the file_token of the attachment. When calling the upload material interface, please note:- `parent_type` needs to pass in a fixed value `calendar`.- `parent_node` needs to pass in a calendar ID that is consistent with the current interface.**Attachment verification rule**: The total size of the attachment does not exceed 25 MB',
+                'Attachment token. Call the [Upload Material] interface to obtain the file_token of the attachment. When calling the upload material interface, please note:- `parent_type` needs to pass in a fixed value `calendar`.- `parent_node` needs to pass in a calendar ID that is consistent with the current interface.**Attachment verification rule**: The total size of the attachment does not exceed 25 MB',
               )
               .optional(),
           }),
@@ -834,7 +834,7 @@ export const calendarV4CalendarEventCreate = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID.The calendar ID is returned when creating a shared calendar. You can also call the following interface to obtain the ID of a certain calendar.- - - ',
+          'Calendar ID.The calendar ID is returned when creating a shared calendar. You can also call the following interface to obtain the ID of a certain calendar.- [Query primary calendar information]- [Query calendar list]- [Search calendar]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -862,12 +862,12 @@ export const calendarV4CalendarEventDelete = {
       calendar_id: z
         .string()
         .describe(
-          'The calendar ID where the event is located. See ',
+          'The calendar ID where the event is located. See [Calendar ID Description]',
         ),
       event_id: z
         .string()
         .describe(
-          'Event ID. How to get it:-  will return the event ID- - ',
+          'Event ID. How to get it:- [Create a event] will return the event ID- [Get a event list]- [Search for a event]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -897,7 +897,7 @@ export const calendarV4CalendarEventGet = {
       max_attendee_num: z
         .number()
         .describe(
-          'The maximum number of invitees returned. Call  to get complete invitee information of the event',
+          'The maximum number of invitees returned. Call [Get event invitee list] to get complete invitee information of the event',
         )
         .optional(),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
@@ -906,12 +906,12 @@ export const calendarV4CalendarEventGet = {
       calendar_id: z
         .string()
         .describe(
-          'The calendar ID where the event is located. For information about calendar ID, please refer to ',
+          'The calendar ID where the event is located. For information about calendar ID, please refer to [Calendar ID Description]',
         ),
       event_id: z
         .string()
         .describe(
-          'Event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- - ',
+          'Event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- [Get event list]- [Search event]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -924,7 +924,7 @@ export const calendarV4CalendarEventInstanceView = {
   path: '/open-apis/calendar/v4/calendars/:calendar_id/events/instance_view',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Calendar-Event management-Query event view-Call this interface with user identity to query the event view under a specified calendar. Unlike , the current interface will expand into multiple event instances according to the repetitiveness rules of the recurring event, and return the corresponding event instance information according to the queried time interval',
+    '[Feishu/Lark]-Calendar-Event management-Query event view-Call this interface with user identity to query the event view under a specified calendar. Unlike [Getting event list], the current interface will expand into multiple event instances according to the repetitiveness rules of the recurring event, and return the corresponding event instance information according to the queried time interval',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -944,7 +944,7 @@ export const calendarV4CalendarEventInstanceView = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. For information about calendar ID, please refer to ',
+          'Calendar ID. For information about calendar ID, please refer to [Calendar ID Description]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -983,12 +983,12 @@ export const calendarV4CalendarEventInstances = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. For information about calendar ID, please refer to ',
+          'Calendar ID. For information about calendar ID, please refer to [Calendar ID Description]',
         ),
       event_id: z
         .string()
         .describe(
-          'Event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- - ',
+          'Event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- [Get event list]- [Search event]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1047,7 +1047,7 @@ export const calendarV4CalendarEventList = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. For details, see ',
+          'Calendar ID. For details, see [Calendar-related IDs]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1067,12 +1067,12 @@ export const calendarV4CalendarEventMeetingChatCreate = {
       calendar_id: z
         .string()
         .describe(
-          'The calendar ID where the event is located. To learn more, see ',
+          'The calendar ID where the event is located. To learn more, see [Calendar ID Introduction]',
         ),
       event_id: z
         .string()
         .describe(
-          'event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- - ',
+          'event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- [Get event list]- [Search event]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1112,12 +1112,12 @@ export const calendarV4CalendarEventMeetingMinuteCreate = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. Call the  interface to obtain the primary calendar ID of the current identity',
+          'Calendar ID. Call the [query primary calendar information] interface to obtain the primary calendar ID of the current identity',
         ),
       event_id: z
         .string()
         .describe(
-          'Event ID. Call the  interface to search for event in the specified calendar and obtain the event ID',
+          'Event ID. Call the [Search event] interface to search for event in the specified calendar and obtain the event ID',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1155,7 +1155,7 @@ export const calendarV4CalendarEventPatch = {
           date: z
             .string()
             .describe(
-              'Start time, only use this field for all-day events,  format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
+              'Start time, only use this field for all-day events, [RFC 3339] format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
             )
             .optional(),
           timestamp: z
@@ -1178,7 +1178,7 @@ export const calendarV4CalendarEventPatch = {
           date: z
             .string()
             .describe(
-              'End time, only use this field for all-day events,  format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
+              'End time, only use this field for all-day events, [RFC 3339] format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
             )
             .optional(),
           timestamp: z
@@ -1325,7 +1325,7 @@ export const calendarV4CalendarEventPatch = {
       recurrence: z
         .string()
         .describe(
-          'Recurrence rule for recurring events. For details, see .**Note**:- COUNT and UNTIL cannot coexist;- The length of a scheduled recurring event in a room cannot exceed two years.**Default value**: empty, indicating that the field will not be updated',
+          'Recurrence rule for recurring events. For details, see [RFC 5545].**Note**:- COUNT and UNTIL cannot coexist;- The length of a scheduled recurring event in a room cannot exceed two years.**Default value**: empty, indicating that the field will not be updated',
         )
         .optional(),
       schemas: z
@@ -1361,7 +1361,7 @@ export const calendarV4CalendarEventPatch = {
             file_token: z
               .string()
               .describe(
-                'Attachment token. Call the  interface to obtain the file_token of the attachment. When calling the upload material interface, please note:- `parent_type` needs to pass in a fixed value `calender`.- `parent_node` needs to pass in a calendar ID that is consistent with the current interface.**Attachment verification rule**: The total size of the attachment does not exceed 25 MB',
+                'Attachment token. Call the [Upload Material] interface to obtain the file_token of the attachment. When calling the upload material interface, please note:- `parent_type` needs to pass in a fixed value `calender`.- `parent_node` needs to pass in a calendar ID that is consistent with the current interface.**Attachment verification rule**: The total size of the attachment does not exceed 25 MB',
               )
               .optional(),
             is_deleted: z
@@ -1424,12 +1424,12 @@ export const calendarV4CalendarEventPatch = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. For details, see ',
+          'Calendar ID. For details, see [Calendar-related IDs]',
         ),
       event_id: z
         .string()
         .describe(
-          'Event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- - ',
+          'Event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- [Get event list]- [Search event]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1456,12 +1456,12 @@ export const calendarV4CalendarEventReply = {
       calendar_id: z
         .string()
         .describe(
-          'The calendar ID where the event is located. To learn more, see ',
+          'The calendar ID where the event is located. To learn more, see [Calendar ID Introduction]',
         ),
       event_id: z
         .string()
         .describe(
-          'Event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- - ',
+          'Event ID.The event ID is returned when creating a event. You can also call the following interface to obtain the ID of a certain calendar.- [Get event list]- [Search event]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1490,7 +1490,7 @@ export const calendarV4CalendarEventSearch = {
               date: z
                 .string()
                 .describe(
-                  'Specify the start time in days, in  format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
+                  'Specify the start time in days, in [RFC 3339] format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
                 )
                 .optional(),
               timestamp: z
@@ -1515,7 +1515,7 @@ export const calendarV4CalendarEventSearch = {
               date: z
                 .string()
                 .describe(
-                  'Specify the end time in days, in  format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
+                  'Specify the end time in days, in [RFC 3339] format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
                 )
                 .optional(),
               timestamp: z
@@ -1538,7 +1538,7 @@ export const calendarV4CalendarEventSearch = {
           user_ids: z
             .array(z.string())
             .describe(
-              'Search filter item, list of user IDs of event invitees. After setting this field, the searched event contains at least one of the invitees.**Note**: The user ID type is consistent with the value of user_id_type. For user ID, please refer to .**Default value**: empty, indicating that the filter item is not set',
+              'Search filter item, list of user IDs of event invitees. After setting this field, the searched event contains at least one of the invitees.**Note**: The user ID type is consistent with the value of user_id_type. For user ID, please refer to [User-related ID concepts].**Default value**: empty, indicating that the filter item is not set',
             )
             .optional(),
           room_ids: z
@@ -1550,7 +1550,7 @@ export const calendarV4CalendarEventSearch = {
           chat_ids: z
             .array(z.string())
             .describe(
-              'Search filter items, group ID list. After setting this field, the searched event contains at least one of these groups. For details about group ID, please refer to .**Default value**: empty, indicating that the filter item is not set',
+              'Search filter items, group ID list. After setting this field, the searched event contains at least one of these groups. For details about group ID, please refer to [Group ID Description].**Default value**: empty, indicating that the filter item is not set',
             )
             .optional(),
         })
@@ -1576,7 +1576,7 @@ export const calendarV4CalendarEventSearch = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. For details, see ',
+          'Calendar ID. For details, see [Calendar-related IDs]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1596,7 +1596,7 @@ export const calendarV4CalendarEventSubscription = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. For details, see ',
+          'Calendar ID. For details, see [Calendar-related IDs]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1616,7 +1616,7 @@ export const calendarV4CalendarEventUnsubscription = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. For details, see ',
+          'Calendar ID. For details, see [Calendar-related IDs]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1636,7 +1636,7 @@ export const calendarV4CalendarGet = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. When creating a shared calendar, the calendar ID will be returned. You can also call the following interfaces to get the ID of a calendar.- - - ',
+          'Calendar ID. When creating a shared calendar, the calendar ID will be returned. You can also call the following interfaces to get the ID of a calendar.- [Query Primary Calendar Information]- [Query Calendar List]- [Search Calendars]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1714,7 +1714,7 @@ export const calendarV4CalendarPatch = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID. When creating a shared calendar, the calendar ID will be returned. You can also call the following interfaces to get the ID of a calendar.- - - ',
+          'Calendar ID. When creating a shared calendar, the calendar ID will be returned. You can also call the following interfaces to get the ID of a calendar.- [Query Primary Calendar Information]- [Query Calendar List]- [Search Calendars]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1777,7 +1777,7 @@ export const calendarV4CalendarSubscribe = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID.The calendar ID will be returned when creating a shared calendar. You also can call the following interfaces to get the ID of a certain calendar.- - - ',
+          'Calendar ID.The calendar ID will be returned when creating a shared calendar. You also can call the following interfaces to get the ID of a certain calendar.- [Query Primary Calendar Information]- [Query Calendar List]- [Search Calendar]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1790,7 +1790,7 @@ export const calendarV4CalendarSubscription = {
   path: '/open-apis/calendar/v4/calendars/subscription',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Calendar-Calendar management-Subscribe Calendar Changes -Call this interface to subscribe the current user identity to the ',
+    '[Feishu/Lark]-Calendar-Calendar management-Subscribe Calendar Changes -Call this interface to subscribe the current user identity to the [Calendar Change Event]',
   accessTokens: ['user'],
   schema: {
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1810,7 +1810,7 @@ export const calendarV4CalendarUnsubscribe = {
       calendar_id: z
         .string()
         .describe(
-          'Calendar ID.You can call the following interfaces to get the ID of a calendar.- - - ',
+          'Calendar ID.You can call the following interfaces to get the ID of a calendar.- [Query primary calendar information]- [Query calendar list]- [Search calendar]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1823,7 +1823,7 @@ export const calendarV4CalendarUnsubscription = {
   path: '/open-apis/calendar/v4/calendars/unsubscription',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Calendar-Calendar management-Unsubscribe Calendar Changes-Call this interface to unsubscribe the current user identity from the ',
+    '[Feishu/Lark]-Calendar-Calendar management-Unsubscribe Calendar Changes-Call this interface to unsubscribe the current user identity from the [Calendar Change Event]',
   accessTokens: ['user'],
   schema: {
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1845,7 +1845,7 @@ export const calendarV4ExchangeBindingCreate = {
       user_id: z
         .string()
         .describe(
-          'User ID, that is, the Feishu account ID bound to the Exchange account. For more information, see ',
+          'User ID, that is, the Feishu account ID bound to the Exchange account. For more information, see [User-related IDs]',
         )
         .optional(),
     }),
@@ -1867,7 +1867,7 @@ export const calendarV4ExchangeBindingDelete = {
       exchange_binding_id: z
         .string()
         .describe(
-          'The unique identification ID bound to Exchange. When calling , the exchange_binding_id can be obtained from the returned result',
+          'The unique identification ID bound to Exchange. When calling [Bind Exchange Account to Feishu Account], the exchange_binding_id can be obtained from the returned result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1888,7 +1888,7 @@ export const calendarV4ExchangeBindingGet = {
       exchange_binding_id: z
         .string()
         .describe(
-          'The unique identification ID bound to Exchange. When calling , the exchange_binding_id can be obtained from the returned result',
+          'The unique identification ID bound to Exchange. When calling [Bind Exchange Account to Feishu Account], the exchange_binding_id can be obtained from the returned result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1908,23 +1908,23 @@ export const calendarV4FreebusyList = {
       time_min: z
         .string()
         .describe(
-          'The start time of the query period, in  date_time format.**Note**: The time interval between time_min and time_max cannot be more than 90 days',
+          'The start time of the query period, in [RFC 3339] date_time format.**Note**: The time interval between time_min and time_max cannot be more than 90 days',
         ),
       time_max: z
         .string()
         .describe(
-          'The end time of the query period, in  date_time format.**Note**: The time interval between time_min and time_max cannot be more than 90 days',
+          'The end time of the query period, in [RFC 3339] date_time format.**Note**: The time interval between time_min and time_max cannot be more than 90 days',
         ),
       user_id: z
         .string()
         .describe(
-          "User ID, you need to input an id that matches the query parameter user_id_type. For example, when user_id_type=open_id, you need to input the user's open_id. Refer to  for understanding user IDs.**Note**: Either user_id or room_id needs to be entered. If both are entered at the same time, only user_id will take effect",
+          "User ID, you need to input an id that matches the query parameter user_id_type. For example, when user_id_type=open_id, you need to input the user's open_id. Refer to [User-related ID concepts] for understanding user IDs.**Note**: Either user_id or room_id needs to be entered. If both are entered at the same time, only user_id will take effect",
         )
         .optional(),
       room_id: z
         .string()
         .describe(
-          "Meeting room room_id. You can call the  interface or the  interface to get the corresponding meeting room's room_id.**Note**: Either user_id or room_id needs to be entered. If both are entered at the same time, only user_id will take effect",
+          "Meeting room room_id. You can call the [Query Meeting Room List] interface or the [Search for Meeting Room] interface to get the corresponding meeting room's room_id.**Note**: Either user_id or room_id needs to be entered. If both are entered at the same time, only user_id will take effect",
         )
         .optional(),
       include_external_calendar: z
@@ -1979,7 +1979,7 @@ export const calendarV4TimeoffEventCreate = {
       user_id: z
         .string()
         .describe(
-          'User ID. The ID type needs to be consistent with the value of user_id_type. For information about user IDs, see ',
+          'User ID. The ID type needs to be consistent with the value of user_id_type. For information about user IDs, see [User-related ID concepts]',
         ),
       timezone: z.string().describe('Time zone'),
       start_time: z

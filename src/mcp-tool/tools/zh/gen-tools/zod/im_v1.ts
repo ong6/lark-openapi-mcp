@@ -61,14 +61,14 @@ export const imV1BatchMessageDelete = {
   path: '/open-apis/im/v1/batch_messages/:batch_message_id',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-消息-批量消息-批量撤回消息-该接口用于撤回通过接口发送的消息',
+    '[Feishu/Lark]-消息-批量消息-批量撤回消息-该接口用于撤回通过[批量发送消息]接口发送的消息',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       batch_message_id: z
         .string()
         .describe(
-          '待撤回的批量消息任务 ID，该 ID 为接口返回值中的`message_id`字段，用于标识一次批量发送消息请求',
+          '待撤回的批量消息任务 ID，该 ID 为[批量发送消息]接口返回值中的`message_id`字段，用于标识一次批量发送消息请求',
         ),
     }),
   },
@@ -80,14 +80,14 @@ export const imV1BatchMessageGetProgress = {
   path: '/open-apis/im/v1/batch_messages/:batch_message_id/get_progress',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-消息-批量消息-查询批量消息整体进度-或者后，可通过该接口查询消息的发送进度和撤回进度',
+    '[Feishu/Lark]-消息-批量消息-查询批量消息整体进度-[批量发送消息]或者[批量撤回消息]后，可通过该接口查询消息的发送进度和撤回进度',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       batch_message_id: z
         .string()
         .describe(
-          '待查询的批量消息任务 ID，该 ID 为[批量发送消息]( https://open.feishu.cn/document/ukTMukTMukTM/ucDO1EjL3gTNx4yN4UTM)接口返回值中的 `message_id` 字段，用于标识一次批量发送消息请求',
+          '待查询的批量消息任务 ID，该 ID 为[批量发送消息]接口返回值中的 `message_id` 字段，用于标识一次批量发送消息请求',
         ),
     }),
   },
@@ -99,14 +99,14 @@ export const imV1BatchMessageReadUser = {
   path: '/open-apis/im/v1/batch_messages/:batch_message_id/read_user',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-消息-批量消息-查询批量消息推送和阅读人数-后，可通过该接口查询消息推送的总人数以及消息已读人数',
+    '[Feishu/Lark]-消息-批量消息-查询批量消息推送和阅读人数-[批量发送消息]后，可通过该接口查询消息推送的总人数以及消息已读人数',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       batch_message_id: z
         .string()
         .describe(
-          '待查询的批量消息任务 ID，该 ID 为[批量发送消息]( https://open.feishu.cn/document/ukTMukTMukTM/ucDO1EjL3gTNx4yN4UTM)接口返回值中的 `message_id` 字段，用于标识一次批量发送消息请求',
+          '待查询的批量消息任务 ID，该 ID 为[批量发送消息]接口返回值中的 `message_id` 字段，用于标识一次批量发送消息请求',
         ),
     }),
   },
@@ -118,7 +118,7 @@ export const imV1ChatAnnouncementGet = {
   path: '/open-apis/im/v1/chats/:chat_id/announcement',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-群组-群公告-获取群公告信息-获取指定群组中的群公告信息，公告信息格式与格式相同',
+    '[Feishu/Lark]-群组-群公告-获取群公告信息-获取指定群组中的群公告信息，公告信息格式与[旧版云文档]格式相同',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
@@ -126,7 +126,7 @@ export const imV1ChatAnnouncementGet = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：单聊（群类型为 `p2p`）不支持获取群公告',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：单聊（群类型为 `p2p`）不支持获取群公告',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -139,19 +139,19 @@ export const imV1ChatAnnouncementPatch = {
   path: '/open-apis/im/v1/chats/:chat_id/announcement',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-群组-群公告-更新群公告信息-更新指定群组中的群公告信息。更新的公告内容格式和更新的格式相同，不支持新版云文档格式',
+    '[Feishu/Lark]-群组-群公告-更新群公告信息-更新指定群组中的群公告信息。更新的公告内容格式和更新[旧版云文档]的格式相同，不支持新版云文档格式',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       revision: z
         .string()
         .describe(
-          '文档当前版本号 int64 类型，可调用接口，从返回结果中获取。**注意**：传入的版本号和最新版本号的差距不能超过 100',
+          '文档当前版本号 int64 类型，可调用[获取群公告信息]接口，从返回结果中获取。**注意**：传入的版本号和最新版本号的差距不能超过 100',
         ),
       requests: z
         .array(z.string())
         .describe(
-          '公告内容，调用接口时该参数必须传入值。公告内容的格式与更新旧版文档内容的格式相同，具体数据结构参考',
+          '公告内容，调用接口时该参数必须传入值。公告内容的格式与更新旧版文档内容的格式相同，具体数据结构参考[编辑旧版文档内容]',
         )
         .optional(),
     }),
@@ -159,7 +159,7 @@ export const imV1ChatAnnouncementPatch = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：单聊（群类型为 `p2p`）不支持更新群公告',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：单聊（群类型为 `p2p`）不支持更新群公告',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -179,7 +179,7 @@ export const imV1ChatCreate = {
       avatar: z
         .string()
         .describe(
-          '群头像对应的 Image Key- 可通过获取（注意：上传图片的 ==image_type== 需要指定为 ==avatar==）- 不传值则使用系统默认头像',
+          '群头像对应的 Image Key- 可通过[上传图片]获取（注意：上传图片的 ==image_type== 需要指定为 ==avatar==）- 不传值则使用系统默认头像',
         )
         .optional(),
       name: z
@@ -200,19 +200,19 @@ export const imV1ChatCreate = {
       owner_id: z
         .string()
         .describe(
-          '创建群时指定的群主，不填时指定建群的机器人为群主。群主 ID 类型在查询参数 ==user_id_type== 中指定；推荐使用 OpenID，获取方式可参考文档**注意**：开启对外共享能力的机器人在创建外部群时，机器人不能为群主，必须指定某一用户作为群主。此外，添加外部用户进群时，外部用户必须和群主已成为飞书好友',
+          '创建群时指定的群主，不填时指定建群的机器人为群主。群主 ID 类型在查询参数 ==user_id_type== 中指定；推荐使用 OpenID，获取方式可参考文档[如何获取 Open ID？]**注意**：开启对外共享能力的机器人在创建外部群时，机器人不能为群主，必须指定某一用户作为群主。此外，添加外部用户进群时，外部用户必须和群主已成为飞书好友',
         )
         .optional(),
       user_id_list: z
         .array(z.string().describe('user_id'))
         .describe(
-          '创建群时邀请的群成员，不填则不邀请成员。ID 类型在查询参数 ==user_id_type== 中指定；推荐使用 OpenID，获取方式可参考文档**注意**：- 最多同时邀请 50 个用户- 为便于在客户端查看效果，建议调试接口时加入开发者自身 ID- 如果需要邀请外部用户，则外部用户必须和群主已成为飞书好友- 如何获取外部用户的 open_id，参考',
+          '创建群时邀请的群成员，不填则不邀请成员。ID 类型在查询参数 ==user_id_type== 中指定；推荐使用 OpenID，获取方式可参考文档[如何获取 Open ID？]**注意**：- 最多同时邀请 50 个用户- 为便于在客户端查看效果，建议调试接口时加入开发者自身 ID- 如果需要邀请外部用户，则外部用户必须和群主已成为飞书好友- 如何获取外部用户的 open_id，参考[获取外部用户的 open_id]',
         )
         .optional(),
       bot_id_list: z
         .array(z.string().describe('app_id'))
         .describe(
-          '创建群时邀请的群机器人，不填则不邀请机器人。可参考来获取应用的 App ID **注意：**- 操作此接口的机器人会自动入群，无需重复填写- 拉机器人入群请使用 `app_id`- 最多同时邀请 5 个机器人，且邀请后群组中机器人数量不能超过 15 个',
+          '创建群时邀请的群机器人，不填则不邀请机器人。可参考[如何获取应用的 App ID？]来获取应用的 App ID **注意：**- 操作此接口的机器人会自动入群，无需重复填写- 拉机器人入群请使用 `app_id`- 最多同时邀请 5 个机器人，且邀请后群组中机器人数量不能超过 15 个',
         )
         .optional(),
       group_message_type: z
@@ -265,7 +265,7 @@ export const imV1ChatCreate = {
             .optional(),
         })
         .describe(
-          '保密模式设置**注意**：保密模式适用于企业旗舰版。适用版本与功能介绍参见',
+          '保密模式设置**注意**：保密模式适用于企业旗舰版。适用版本与功能介绍参见[会话保密模式]',
         )
         .optional(),
       urgent_setting: z
@@ -318,7 +318,7 @@ export const imV1ChatDelete = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 `group` 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 `group` 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -339,7 +339,7 @@ export const imV1ChatGet = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -366,7 +366,7 @@ export const imV1ChatLink = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：单聊、密聊、团队群不支持分享群链接',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：单聊、密聊、团队群不支持分享群链接',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -379,7 +379,7 @@ export const imV1ChatList = {
   path: '/open-apis/im/v1/chats',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-群组-群组管理-获取用户或机器人所在的群列表-获取  所代表的用户或者机器人所在的群列表',
+    '[Feishu/Lark]-群组-群组管理-获取用户或机器人所在的群列表-获取 [access_token] 所代表的用户或者机器人所在的群列表',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -414,7 +414,7 @@ export const imV1ChatManagersAddManagers = {
       manager_ids: z
         .array(z.string())
         .describe(
-          '要设置为管理员的 ID，ID 类型与查询参数 member_id_type 取值一致。- 如果是用户（member_id_type 取值为 user_id/open_id/union_id），推荐使用用户的 open_id，获取方式可参考文档。- 如果是机器人（member_id_type 取值为 app_id），请参考**注意**：- 对于普通群，最多可指定 10 个管理员。- 对于超大群，最多可指定 20 个管理员。- 单次请求指定机器人时，最多可指定 5 个机器人。超大群和普通群的区别，参见',
+          '要设置为管理员的 ID，ID 类型与查询参数 member_id_type 取值一致。- 如果是用户（member_id_type 取值为 user_id/open_id/union_id），推荐使用用户的 open_id，获取方式可参考文档[如何获取 Open ID]。- 如果是机器人（member_id_type 取值为 app_id），请参考[如何获取应用的 App ID]**注意**：- 对于普通群，最多可指定 10 个管理员。- 对于超大群，最多可指定 20 个管理员。- 单次请求指定机器人时，最多可指定 5 个机器人。超大群和普通群的区别，参见[超大群与普通群有什么区别]',
         )
         .optional(),
     }),
@@ -422,7 +422,7 @@ export const imV1ChatManagersAddManagers = {
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'app_id'])
         .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。),app_id(飞书开放平台应用的唯一标识。在创建应用时，由系统自动生成，用户不能自行修改。)',
+          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID？]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。[了解更多：如何获取 User ID？]),app_id(飞书开放平台应用的唯一标识。在创建应用时，由系统自动生成，用户不能自行修改。[了解更多：如何获取应用的 App ID？])',
         )
         .optional(),
     }),
@@ -430,7 +430,7 @@ export const imV1ChatManagersAddManagers = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**话题（topic）** 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`topic`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**话题（topic）** 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`topic`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -450,7 +450,7 @@ export const imV1ChatManagersDeleteManagers = {
       manager_ids: z
         .array(z.string())
         .describe(
-          '要删除的管理员 ID，ID 类型与查询参数 member_id_type 取值一致。- 如果是用户（member_id_type 取值为 user_id/open_id/union_id），推荐使用用户的 open_id，获取方式可参考文档。- 如果是机器人（member_id_type 取值为 app_id），请参考**注意**：每次请求最多指定 50 个用户或者 5 个机器人',
+          '要删除的管理员 ID，ID 类型与查询参数 member_id_type 取值一致。- 如果是用户（member_id_type 取值为 user_id/open_id/union_id），推荐使用用户的 open_id，获取方式可参考文档[如何获取 Open ID]。- 如果是机器人（member_id_type 取值为 app_id），请参考[如何获取应用的 App ID]**注意**：每次请求最多指定 50 个用户或者 5 个机器人',
         )
         .optional(),
     }),
@@ -458,7 +458,7 @@ export const imV1ChatManagersDeleteManagers = {
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'app_id'])
         .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。),app_id(飞书开放平台应用的唯一标识。在创建应用时，由系统自动生成，用户不能自行修改。)',
+          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID？]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。[了解更多：如何获取 User ID？]),app_id(飞书开放平台应用的唯一标识。在创建应用时，由系统自动生成，用户不能自行修改。[了解更多：如何获取应用的 App ID？])',
         )
         .optional(),
     }),
@@ -466,7 +466,7 @@ export const imV1ChatManagersDeleteManagers = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**话题（topic）** 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`topic`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**话题（topic）** 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`topic`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -485,7 +485,7 @@ export const imV1ChatMembersCreate = {
       id_list: z
         .array(z.string().describe('user_id 或者 app_id'))
         .describe(
-          '成员 ID 列表。- 邀请用户进群时推荐使用 OpenID，获取方式可参考文档- 邀请机器人进群时需填写应用的 App ID，请参考**注意**：- 成员列表不可为空- 列表中填写的成员 ID 类型应与 ==member_id_type== 参数中选择的类型相对应- 每次请求最多拉 50 个用户且不超过群人数上限。对于已认证企业的飞书的群人数默认上限：普通群 5000 人，会议群 3000 人，话题群 5000 人。若租户管理员配置了群人数上限，则群人数上限为该人数上限- 最多同时邀请 5 个机器人，且邀请后群组中机器人数量不能超过 15 个',
+          '成员 ID 列表。- 邀请用户进群时推荐使用 OpenID，获取方式可参考文档[如何获取 Open ID？]- 邀请机器人进群时需填写应用的 App ID，请参考[如何获取应用的 App ID？]**注意**：- 成员列表不可为空- 列表中填写的成员 ID 类型应与 ==member_id_type== 参数中选择的类型相对应- 每次请求最多拉 50 个用户且不超过群人数上限。对于已认证企业的飞书的群人数默认上限：普通群 5000 人，会议群 3000 人，话题群 5000 人。若租户管理员配置了群人数上限，则群人数上限为该人数上限- 最多同时邀请 5 个机器人，且邀请后群组中机器人数量不能超过 15 个',
         )
         .optional(),
     }),
@@ -493,7 +493,7 @@ export const imV1ChatMembersCreate = {
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'app_id'])
         .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。),app_id(飞书开放平台应用的唯一标识。在创建应用时，由系统自动生成，用户不能自行修改。)',
+          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID？]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。[了解更多：如何获取 User ID？]),app_id(飞书开放平台应用的唯一标识。在创建应用时，由系统自动生成，用户不能自行修改。[了解更多：如何获取应用的 App ID？])',
         )
         .optional(),
       succeed_type: z
@@ -507,7 +507,7 @@ export const imV1ChatMembersCreate = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**话题（topic）** 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`topic`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**话题（topic）** 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`topic`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -526,7 +526,7 @@ export const imV1ChatMembersDelete = {
       id_list: z
         .array(z.string().describe('user_id或者app_id'))
         .describe(
-          '成员 ID 列表。ID 类型与查询参数 member_id_type 的取值一致。- 移除群内的用户时推荐使用 OpenID，获取方式可参考文档。- 移除群内的机器人时需填写应用的 App ID，请参考。**注意**：- 成员列表不可为空。- 每次请求，最多移除 50 个用户或者 5 个机器人',
+          '成员 ID 列表。ID 类型与查询参数 member_id_type 的取值一致。- 移除群内的用户时推荐使用 OpenID，获取方式可参考文档[如何获取 Open ID？]。- 移除群内的机器人时需填写应用的 App ID，请参考[如何获取应用的 App ID？]。**注意**：- 成员列表不可为空。- 每次请求，最多移除 50 个用户或者 5 个机器人',
         )
         .optional(),
     }),
@@ -534,7 +534,7 @@ export const imV1ChatMembersDelete = {
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'app_id'])
         .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。),app_id(飞书开放平台应用的唯一标识。在创建应用时，由系统自动生成，用户不能自行修改。)',
+          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID？]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。[了解更多：如何获取 User ID？]),app_id(飞书开放平台应用的唯一标识。在创建应用时，由系统自动生成，用户不能自行修改。[了解更多：如何获取应用的 App ID？])',
         )
         .optional(),
     }),
@@ -542,7 +542,7 @@ export const imV1ChatMembersDelete = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**话题（topic）** 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`topic`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**话题（topic）** 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`topic`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -561,7 +561,7 @@ export const imV1ChatMembersGet = {
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id'])
         .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。)',
+          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID？]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。[了解更多：如何获取 User ID？])',
         )
         .optional(),
       page_size: z
@@ -581,7 +581,7 @@ export const imV1ChatMembersGet = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -601,7 +601,7 @@ export const imV1ChatMembersIsInChat = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -620,7 +620,7 @@ export const imV1ChatMembersMeJoin = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：- 仅支持公开群（public），你可以调用接口，在返回结果中查看 `chat_type ` 参数取值是否为 `public`。- 群成员数量达到上限时无法进群。对于已认证企业的飞书的群人数默认上限：普通群 5000 人，会议群 3000 人，话题群 5000 人',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：- 仅支持公开群（public），你可以调用[获取群信息]接口，在返回结果中查看 `chat_type ` 参数取值是否为 `public`。- 群成员数量达到上限时无法进群。对于已认证企业的飞书的群人数默认上限：普通群 5000 人，会议群 3000 人，话题群 5000 人',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -681,7 +681,7 @@ export const imV1ChatMenuItemPatch = {
           image_key: z
             .string()
             .describe(
-              '图标的 key 值。通过  接口上传 message 类型图片获取 image_key，并传入该值。**注意**：如果一级菜单有二级菜单，则此一级菜单不能设置图标',
+              '图标的 key 值。通过 [上传图片] 接口上传 message 类型图片获取 image_key，并传入该值。**注意**：如果一级菜单有二级菜单，则此一级菜单不能设置图标',
             )
             .optional(),
           name: z.string().describe('菜单名称**注意**：一级、二级菜单名称字符数要在 1 ~ 120 范围内').optional(),
@@ -700,13 +700,13 @@ export const imV1ChatMenuItemPatch = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）** 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）** 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`',
         )
         .optional(),
       menu_item_id: z
         .string()
         .describe(
-          '一级菜单或者二级菜单的 ID，ID 可通过  接口获取',
+          '一级菜单或者二级菜单的 ID，ID 可通过 [获取群菜单] 接口获取',
         )
         .optional(),
     }),
@@ -768,7 +768,7 @@ export const imV1ChatMenuTreeCreate = {
                     image_key: z
                       .string()
                       .describe(
-                        '一级菜单图标的 key 值。通过  接口上传 message 类型图片获取 image_key，并传入该值。**注意**：如果一级菜单有二级菜单，则此一级菜单不能设置图标',
+                        '一级菜单图标的 key 值。通过 [上传图片] 接口上传 message 类型图片获取 image_key，并传入该值。**注意**：如果一级菜单有二级菜单，则此一级菜单不能设置图标',
                       )
                       .optional(),
                     name: z.string().describe('菜单名称**注意**：一级、二级菜单名称字符数要在 1 ~ 120 范围内'),
@@ -826,7 +826,7 @@ export const imV1ChatMenuTreeCreate = {
                           image_key: z
                             .string()
                             .describe(
-                              '二级菜单图标的 key 值。通过  接口上传 message 类型图片获取 image_key，并传入该值',
+                              '二级菜单图标的 key 值。通过 [上传图片] 接口上传 message 类型图片获取 image_key，并传入该值',
                             )
                             .optional(),
                           name: z
@@ -858,7 +858,7 @@ export const imV1ChatMenuTreeCreate = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）** 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）** 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`',
         )
         .optional(),
     }),
@@ -878,14 +878,14 @@ export const imV1ChatMenuTreeDelete = {
       chat_menu_top_level_ids: z
         .array(z.string().describe('要删除的一级菜单ID'))
         .describe(
-          '一级菜单 ID。ID 可通过  接口获取',
+          '一级菜单 ID。ID 可通过 [获取群菜单] 接口获取',
         ),
     }),
     path: z.object({
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）** 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）** 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`',
         )
         .optional(),
     }),
@@ -905,7 +905,7 @@ export const imV1ChatMenuTreeGet = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）** 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）** 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`',
         )
         .optional(),
     }),
@@ -925,14 +925,14 @@ export const imV1ChatMenuTreeSort = {
       chat_menu_top_level_ids: z
         .array(z.string().describe('一级菜单'))
         .describe(
-          '通过一级菜单的 ID 进行排序。数组内的元素排序对应群组内一级菜单从左往右的排序。ID 可通过  接口获取。**说明**：进行排序的 ID 列表需要跟群内存在的一级菜单 ID 列表对齐',
+          '通过一级菜单的 ID 进行排序。数组内的元素排序对应群组内一级菜单从左往右的排序。ID 可通过 [获取群菜单] 接口获取。**说明**：进行排序的 ID 列表需要跟群内存在的一级菜单 ID 列表对齐',
         ),
     }),
     path: z.object({
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）** 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）** 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`',
         )
         .optional(),
     }),
@@ -961,7 +961,7 @@ export const imV1ChatModerationGet = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -987,13 +987,13 @@ export const imV1ChatModerationUpdate = {
       moderator_added_list: z
         .array(z.string().describe('用户id'))
         .describe(
-          '当 `moderation_setting ` 取值为 `moderator_list` 时，以 ID 列表形式添加可发言的用户。**注意**：- ID 类型与查询参数 user_id_type 取值一致，推荐使用 OpenID，获取方式可参考文档。- 列表内的用户如果不在群组内，则会被自动过滤掉。- 请求时，请确保 `moderator_added_list` 和 `moderator_removed_list` 两个参数内的 ID 不重复',
+          '当 `moderation_setting ` 取值为 `moderator_list` 时，以 ID 列表形式添加可发言的用户。**注意**：- ID 类型与查询参数 user_id_type 取值一致，推荐使用 OpenID，获取方式可参考文档[如何获取 Open ID]。- 列表内的用户如果不在群组内，则会被自动过滤掉。- 请求时，请确保 `moderator_added_list` 和 `moderator_removed_list` 两个参数内的 ID 不重复',
         )
         .optional(),
       moderator_removed_list: z
         .array(z.string().describe('用户id'))
         .describe(
-          '当 `moderation_setting ` 取值为 `moderator_list` 时，以 ID 列表形式移除可发言的用户。**注意**：- ID 类型与查询参数 user_id_type 取值一致，推荐使用 OpenID，获取方式可参考文档。- 列表内的用户如果不在群组内，则会被自动过滤掉。- 请求时，请确保 `moderator_added_list` 和 `moderator_removed_list` 两个参数内的 ID 不重复',
+          '当 `moderation_setting ` 取值为 `moderator_list` 时，以 ID 列表形式移除可发言的用户。**注意**：- ID 类型与查询参数 user_id_type 取值一致，推荐使用 OpenID，获取方式可参考文档[如何获取 Open ID]。- 列表内的用户如果不在群组内，则会被自动过滤掉。- 请求时，请确保 `moderator_added_list` 和 `moderator_removed_list` 两个参数内的 ID 不重复',
         )
         .optional(),
     }),
@@ -1002,7 +1002,7 @@ export const imV1ChatModerationUpdate = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1067,9 +1067,10 @@ export const imV1ChatTabCreate = {
                 'file',
                 'files_resources',
                 'images_videos',
+                'task',
               ])
               .describe(
-                '会话标签页类型**注意**：只支持添加 doc、url 类型的标签页，其他字段为只读字段 Options:message(消息类型),doc_list(DocList 云文档列表),doc(文档),pin(Pin),meeting_minute(MeetingMinute 会议纪要),chat_announcement(ChatAnnouncement 群公告),url(URL),file(文件),files_resources(合并类型，包含文件、Doc 文档、URL 链接),images_videos(合并类型，包含图片、视频)',
+                '会话标签页类型**注意**：只支持添加 doc、url 类型的标签页，其他字段为只读字段 Options:message(消息类型),doc_list(DocList 云文档列表),doc(文档),pin(Pin),meeting_minute(MeetingMinute 会议纪要),chat_announcement(ChatAnnouncement 群公告),url(URL),file(文件),files_resources(合并类型，包含文件、Doc 文档、URL 链接),images_videos(合并类型，包含图片、视频),task(任务)',
               ),
             tab_content: z
               .object({
@@ -1087,6 +1088,10 @@ export const imV1ChatTabCreate = {
                   .string()
                   .describe('会议纪要，因不支持添加 meeting_minute 类型的会话标签页，该字段为只读字段，无需传值')
                   .optional(),
+                task: z
+                  .string()
+                  .describe('任务，因不支持添加 task 类型的会话标签页，该字段为只读字段，无需传值')
+                  .optional(),
               })
               .describe('会话标签页的内容')
               .optional(),
@@ -1095,7 +1100,7 @@ export const imV1ChatTabCreate = {
                 icon_key: z
                   .string()
                   .describe(
-                    '会话标签页的图标。需要先调用 接口，图片类型设置为 message 上传图片，然后获取 `image_key` 后传入当前参数',
+                    '会话标签页的图标。需要先调用[上传图片] 接口，图片类型设置为 message 上传图片，然后获取 `image_key` 后传入当前参数',
                   )
                   .optional(),
                 is_built_in: z.boolean().describe('会话标签页是否在 App 内嵌打开').optional(),
@@ -1110,7 +1115,7 @@ export const imV1ChatTabCreate = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**单聊（p2p）** 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`p2p`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**单聊（p2p）** 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`p2p`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1129,14 +1134,14 @@ export const imV1ChatTabDeleteTabs = {
       tab_ids: z
         .array(z.string().describe('群标签id'))
         .describe(
-          '会话标签页 ID 列表，ID 可以在或者接口返回值中获取',
+          '会话标签页 ID 列表，ID 可以在[添加会话标签页]或者[拉取会话标签页]接口返回值中获取',
         ),
     }),
     path: z.object({
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**单聊（p2p）** 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`p2p`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**单聊（p2p）** 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`p2p`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1156,7 +1161,7 @@ export const imV1ChatTabListTabs = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**单聊（p2p）** 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`p2p`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**单聊（p2p）** 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`p2p`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1175,7 +1180,7 @@ export const imV1ChatTabSortTabs = {
       tab_ids: z
         .array(z.string().describe('群标签id'))
         .describe(
-          '会话标签页 ID 列表，ID 可以在或者接口返回值中获取。**注意**：- 必须包含会话内全部标签页的 ID。- 当前参数的排序，对应会话内从左往右的排序。- 会话内消息类型的标签页固定在第一顺位',
+          '会话标签页 ID 列表，ID 可以在[添加会话标签页]或者[拉取会话标签页]接口返回值中获取。**注意**：- 必须包含会话内全部标签页的 ID。- 当前参数的排序，对应会话内从左往右的排序。- 会话内消息类型的标签页固定在第一顺位',
         )
         .optional(),
     }),
@@ -1183,7 +1188,7 @@ export const imV1ChatTabSortTabs = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**单聊（p2p）** 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`p2p`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**单聊（p2p）** 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`p2p`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1206,7 +1211,7 @@ export const imV1ChatTabUpdateTabs = {
             tab_id: z
               .string()
               .describe(
-                '会话标签页 ID，ID 可以在或者接口返回值中获取',
+                '会话标签页 ID，ID 可以在[添加会话标签页]或者[拉取会话标签页]接口返回值中获取',
               )
               .optional(),
             tab_name: z
@@ -1225,9 +1230,10 @@ export const imV1ChatTabUpdateTabs = {
                 'file',
                 'files_resources',
                 'images_videos',
+                'task',
               ])
               .describe(
-                '会话标签页类型**注意**：只支持更新 doc、url 类型的标签页，其他字段为只读字段 Options:message(消息类型),doc_list(DocList 云文档列表),doc(文档),pin(Pin),meeting_minute(MeetingMinute 会议纪要),chat_announcement(ChatAnnouncement 群公告),url(URL),file(文件),files_resources(合并类型，包含文件、Doc文档、URL链接),images_videos(合并类型，包含图片、视频)',
+                '会话标签页类型**注意**：只支持更新 doc、url 类型的标签页，其他字段为只读字段 Options:message(消息类型),doc_list(DocList 云文档列表),doc(文档),pin(Pin),meeting_minute(MeetingMinute 会议纪要),chat_announcement(ChatAnnouncement 群公告),url(URL),file(文件),files_resources(合并类型，包含文件、Doc文档、URL链接),images_videos(合并类型，包含图片、视频),task(任务)',
               ),
             tab_content: z
               .object({
@@ -1245,6 +1251,10 @@ export const imV1ChatTabUpdateTabs = {
                   .string()
                   .describe('会议纪要，因不支持更新 meeting_minute 类型的会话标签页，该字段为只读字段，无需传值')
                   .optional(),
+                task: z
+                  .string()
+                  .describe('任务，因不支持更新 task 类型的会话标签页，该字段为只读字段，无需传值')
+                  .optional(),
               })
               .describe('会话标签页内容')
               .optional(),
@@ -1253,7 +1263,7 @@ export const imV1ChatTabUpdateTabs = {
                 icon_key: z
                   .string()
                   .describe(
-                    '会话标签页的图标。需要先调用 接口，图片类型设置为 message 上传图片，然后获取 `image_key` 后传入当前参数',
+                    '会话标签页的图标。需要先调用[上传图片] 接口，图片类型设置为 message 上传图片，然后获取 `image_key` 后传入当前参数',
                   )
                   .optional(),
                 is_built_in: z.boolean().describe('会话标签页是否在 App 内嵌打开').optional(),
@@ -1269,7 +1279,7 @@ export const imV1ChatTabUpdateTabs = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**单聊（p2p）** 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`p2p`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 **群组（group）**、**单聊（p2p）** 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`、`p2p`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1288,7 +1298,7 @@ export const imV1ChatTopNoticeDeleteTopNotice = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1317,7 +1327,7 @@ export const imV1ChatTopNoticePutTopNotice = {
             message_id: z
               .string()
               .describe(
-                '消息 ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+                '消息 ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
               )
               .optional(),
           }),
@@ -1328,7 +1338,7 @@ export const imV1ChatTopNoticePutTopNotice = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1347,7 +1357,7 @@ export const imV1ChatUpdate = {
       avatar: z
         .string()
         .describe(
-          '群头像对应的 Image Key，可通过获取（注意：上传图片的 ==image_type== 需要指定为 ==avatar==）',
+          '群头像对应的 Image Key，可通过[上传图片]获取（注意：上传图片的 ==image_type== 需要指定为 ==avatar==）',
         )
         .optional(),
       name: z
@@ -1386,7 +1396,7 @@ export const imV1ChatUpdate = {
       owner_id: z
         .string()
         .describe(
-          '新群主的用户 ID，不转让群主时无需填写。ID 类型与查询参数 user_id_type 取值一致，ID 类型推荐使用 OpenID，获取方式可参考文档',
+          '新群主的用户 ID，不转让群主时无需填写。ID 类型与查询参数 user_id_type 取值一致，ID 类型推荐使用 OpenID，获取方式可参考文档[如何获取 Open ID？]',
         )
         .optional(),
       join_message_visibility: z
@@ -1433,7 +1443,7 @@ export const imV1ChatUpdate = {
             .optional(),
         })
         .describe(
-          '保密模式设置**注意**：保密模式适用于企业旗舰版。适用版本与功能介绍参见',
+          '保密模式设置**注意**：保密模式适用于企业旗舰版。适用版本与功能介绍参见[会话保密模式]',
         )
         .optional(),
       chat_type: z.string().describe('群类型**可选值有**：- `private`：私有群- `public`：公开群').optional(),
@@ -1459,7 +1469,7 @@ export const imV1ChatUpdate = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 `group` 的群组 ID。你可以调用接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：仅支持群模式为 `group` 的群组 ID。你可以调用[获取群信息]接口，在返回结果中查看 `chat_mode` 参数取值是否为 `group`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1479,17 +1489,17 @@ export const imV1MessageCreate = {
       receive_id: z
         .string()
         .describe(
-          '消息接收者的 ID，ID 类型与查询参数 `receive_id_type` 的取值一致。**注意事项**：- 给用户发送消息时，用户需要在机器人的内。例如，你需要给企业全员发送消息，则需要将应用的可用范围设置为全体员工。- 给群组发送消息时，机器人需要在该群组中，且在群组内拥有发言权限。- 如果消息接收者为用户，推荐使用用户的 `open_id`',
+          '消息接收者的 ID，ID 类型与查询参数 `receive_id_type` 的取值一致。**注意事项**：- 给用户发送消息时，用户需要在机器人的[可用范围]内。例如，你需要给企业全员发送消息，则需要将应用的可用范围设置为全体员工。- 给群组发送消息时，机器人需要在该群组中，且在群组内拥有发言权限。- 如果消息接收者为用户，推荐使用用户的 `open_id`',
         ),
       msg_type: z
         .string()
         .describe(
-          '消息类型。**可选值有**：- text：文本- post：富文本- image：图片- file：文件- audio：语音- media：视频- sticker：表情包- interactive：卡片- share_chat：分享群名片- share_user：分享个人名片- system：系统消息。该类型仅支持在机器人单聊内推送系统消息，不支持在群聊内使用，例如下图所示突出新会话。 不同消息类型的详细介绍，参见',
+          '消息类型。**可选值有**：- text：文本- post：富文本- image：图片- file：文件- audio：语音- media：视频- sticker：表情包- interactive：卡片- share_chat：分享群名片- share_user：分享个人名片- system：系统消息。该类型仅支持在机器人单聊内推送系统消息，不支持在群聊内使用，例如下图所示突出新会话。 不同消息类型的详细介绍，参见[发送消息内容]',
         ),
       content: z
         .string()
         .describe(
-          '消息内容，JSON 结构序列化后的字符串。该参数的取值与 `msg_type` 对应，例如 `msg_type` 取值为 `text`，则该参数需要传入文本类型的内容。**注意：**- JSON 字符串需进行转义。例如，换行符 `` 转义后为 `\\`。- 文本消息请求体最大不能超过 150 KB。- 卡片消息、富文本消息请求体最大不能超过 30 KB。- 如果使用卡片模板（template_id）发送消息，实际大小也包含模板对应的卡片数据大小。- 如果消息中包含样式标签，会使实际消息体长度大于您输入的请求体长度。- 图片需要先，然后使用图片的 Key 发消息。- 音频、视频、文件需要先，然后使用文件的 Key 发消息。注意不能使用云文档接口返回的 file_token。了解不同类型的消息内容格式、使用限制，可参见',
+          '消息内容，JSON 结构序列化后的字符串。该参数的取值与 `msg_type` 对应，例如 `msg_type` 取值为 `text`，则该参数需要传入文本类型的内容。**注意：**- JSON 字符串需进行转义。例如，换行符 `` 转义后为 `\\`。- 文本消息请求体最大不能超过 150 KB。- 卡片消息、富文本消息请求体最大不能超过 30 KB。 - 如果使用卡片模板（template_id）发送消息，实际大小也包含模板对应的卡片数据大小。 - 如果消息中包含样式标签，会使实际消息体长度大于您输入的请求体长度。- 图片需要先[上传图片]，然后使用图片的 Key 发消息。- 音频、视频、文件需要先[上传文件]，然后使用文件的 Key 发消息。注意不能使用云文档[上传素材]接口返回的 file_token。了解不同类型的消息内容格式、使用限制，可参见[发送消息内容]',
         ),
       uuid: z
         .string()
@@ -1502,7 +1512,7 @@ export const imV1MessageCreate = {
       receive_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'email', 'chat_id'])
         .describe(
-          '消息接收者 ID 类型。支持 open_id/union_id/user_id/email/chat_id Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。。),email(以用户的真实邮箱来标识用户。),chat_id(以群 ID 来标识群聊。</md-enum-item>)',
+          '消息接收者 ID 类型。支持 open_id/union_id/user_id/email/chat_id Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。[了解更多：如何获取 User ID？]。),email(以用户的真实邮箱来标识用户。),chat_id(以群 ID 来标识群聊。[了解更多：如何获取群 ID ]</md-enum-item>)',
         ),
     }),
   },
@@ -1521,7 +1531,7 @@ export const imV1MessageDelete = {
       message_id: z
         .string()
         .describe(
-          '待撤回的消息 ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+          '待撤回的消息 ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1541,7 +1551,7 @@ export const imV1MessageForward = {
       receive_id_type: z
         .enum(['open_id', 'user_id', 'union_id', 'email', 'chat_id', 'thread_id'])
         .describe(
-          '消息接收者 ID 类型。 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。),email(以用户的真实邮箱来标识用户。),chat_id(以群 ID 来标识群聊。),thread_id(以话题 ID 来标识话题。了解更多：</md-enum-item>**当值为 `user_id`，字段权限要求**：<md-perm name="contact:user.employee_id:readonly" desc="获取用户 user ID" support_app_types="custom" tags="">获取用户 user ID</md-perm>)',
+          '消息接收者 ID 类型。 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。[了解更多：如何获取 User ID？]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),email(以用户的真实邮箱来标识用户。),chat_id(以群 ID 来标识群聊。[了解更多：如何获取群 ID ]),thread_id(以话题 ID 来标识话题。了解更多：[话题介绍]</md-enum-item>**当值为 `user_id`，字段权限要求**：<md-perm name="contact:user.employee_id:readonly" desc="获取用户 user ID" support_app_types="custom" tags="">获取用户 user ID</md-perm>)',
         ),
       uuid: z
         .string()
@@ -1554,7 +1564,7 @@ export const imV1MessageForward = {
       message_id: z
         .string()
         .describe(
-          '待转发的消息 ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+          '待转发的消息 ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
         ),
     }),
   },
@@ -1573,7 +1583,7 @@ export const imV1MessageGet = {
       message_id: z
         .string()
         .describe(
-          '消息 ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+          '消息 ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
         ),
     }),
   },
@@ -1596,7 +1606,7 @@ export const imV1MessageList = {
       container_id: z
         .string()
         .describe(
-          '容器 ID。ID 类型与 container_id_type 取值一致。- 群聊或单聊的 ID 获取方式参见。- 话题 ID 获取参见的 **如何获取 thread_id** 章节',
+          '容器 ID。ID 类型与 container_id_type 取值一致。- 群聊或单聊的 ID 获取方式参见[群 ID 说明]。- 话题 ID 获取参见[话题概述]的 **如何获取 thread_id** 章节',
         ),
       start_time: z
         .string()
@@ -1637,14 +1647,14 @@ export const imV1MessageMergeForward = {
       message_id_list: z
         .array(z.string())
         .describe(
-          '待转发的消息 ID 列表，列表内的消息必须来自同一个会话。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+          '待转发的消息 ID 列表，列表内的消息必须来自同一个会话。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
         ),
     }),
     params: z.object({
       receive_id_type: z
         .enum(['open_id', 'user_id', 'union_id', 'email', 'chat_id', 'thread_id'])
         .describe(
-          '消息接收者 ID 类型。 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。),email(以用户的真实邮箱来标识用户。),chat_id(以群 ID 来标识群聊。),thread_id(以话题 ID 来标识话题。了解更多：</md-enum-item>**当值为 `user_id`，字段权限要求**：<md-perm name="contact:user.employee_id:readonly" desc="获取用户 user ID" support_app_types="custom" tags="">获取用户 user ID</md-perm>)',
+          '消息接收者 ID 类型。 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。[了解更多：如何获取 User ID？]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),email(以用户的真实邮箱来标识用户。),chat_id(以群 ID 来标识群聊。[了解更多：如何获取群 ID ]),thread_id(以话题 ID 来标识话题。了解更多：[话题介绍]</md-enum-item>**当值为 `user_id`，字段权限要求**：<md-perm name="contact:user.employee_id:readonly" desc="获取用户 user ID" support_app_types="custom" tags="">获取用户 user ID</md-perm>)',
         ),
       uuid: z
         .string()
@@ -1662,21 +1672,21 @@ export const imV1MessagePatch = {
   path: '/open-apis/im/v1/messages/:message_id',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-消息-消息卡片-更新应用发送的消息卡片-调用该接口，通过消息 ID（message_id）更新指定的消息卡片内容。如果你需要在用户与卡片进行交互后延迟更新卡片，或者通过用户 ID 更新部分成员接收到的卡片内容，可调用接口',
+    '[Feishu/Lark]-消息-消息卡片-更新应用发送的消息卡片-调用该接口，通过消息 ID（message_id）更新指定的消息卡片内容',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       content: z
         .string()
         .describe(
-          '消息卡片的内容，支持卡片 JSON 或构建的卡片，需为 JSON 结构序列化后的字符串。 - 要使用卡片 JSON，参考。 - 要使用构建的卡片模板，你需传入 `type` 和 `data` 参数。参考 文档末尾的字段说明传值。**注意**：- 更新的卡片消息最大不能超过 30 KB。若消息中包含大量样式标签，会使实际消息体长度大于你输入的请求体长度。- 以下示例值未转义，使用时请注意将其转为 JSON 序列化后的字符串',
+          '消息卡片的内容，支持卡片 JSON 或[搭建工具]构建的卡片，需为 JSON 结构序列化后的字符串。 - 要使用卡片 JSON，参考[卡片 JSON 结构]。 - 要使用[搭建工具]构建的卡片模板，参考下文请求体示例。**注意**：- 更新的卡片消息最大不能超过 30 KB。若消息中包含大量样式标签，会使实际消息体长度大于你输入的请求体长度。- 以下示例值未转义，使用时请注意将其转为 JSON 序列化后的字符串',
         ),
     }),
     path: z.object({
       message_id: z
         .string()
         .describe(
-          '待更新的消息 ID，仅支持更新卡片（消息类型为 `interactive`）。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+          '待更新的消息 ID，仅支持更新卡片（消息类型为 `interactive`）。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1735,7 +1745,7 @@ export const imV1MessagePushFollowUp = {
       message_id: z
         .string()
         .describe(
-          '机器人发送的消息 ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+          '机器人发送的消息 ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
         ),
     }),
   },
@@ -1755,7 +1765,7 @@ export const imV1MessageReactionCreate = {
           emoji_type: z
             .string()
             .describe(
-              'emoji 类型。支持的表情与对应的 emoji_type 值参见',
+              'emoji 类型。支持的表情与对应的 emoji_type 值参见[表情文案说明]',
             ),
         })
         .describe('表情类型'),
@@ -1764,7 +1774,7 @@ export const imV1MessageReactionCreate = {
       message_id: z
         .string()
         .describe(
-          '待添加表情回复的消息 ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+          '待添加表情回复的消息 ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1783,12 +1793,12 @@ export const imV1MessageReactionDelete = {
       message_id: z
         .string()
         .describe(
-          '待删除表情回复的消息 ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+          '待删除表情回复的消息 ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
         ),
       reaction_id: z
         .string()
         .describe(
-          '待删除的表情回复 ID，该 ID 获取方式：- 调用接口添加表情回复后，在返回结果中获取。- 调用接口，获取某一表情回复的 ID',
+          '待删除的表情回复 ID，该 ID 获取方式：- 调用[添加消息表情回复]接口添加表情回复后，在返回结果中获取。- 调用[获取消息表情回复]接口，获取某一表情回复的 ID',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1808,7 +1818,7 @@ export const imV1MessageReactionList = {
       reaction_type: z
         .string()
         .describe(
-          '待查询的表情类型，支持的枚举值参考中的 emoji_type 值。**注意**：该参数为可选参数，不传入该参数时将查询消息内所有的表情回复',
+          '待查询的表情类型，支持的枚举值参考[表情文案说明]中的 emoji_type 值。**注意**：该参数为可选参数，不传入该参数时将查询消息内所有的表情回复',
         )
         .optional(),
       page_token: z
@@ -1824,7 +1834,7 @@ export const imV1MessageReactionList = {
       message_id: z
         .string()
         .describe(
-          '待查询的消息ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+          '待查询的消息ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1854,7 +1864,7 @@ export const imV1MessageReadUsers = {
       message_id: z
         .string()
         .describe(
-          '待查询的消息 ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+          '待查询的消息 ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
         ),
     }),
   },
@@ -1873,12 +1883,12 @@ export const imV1MessageReply = {
       content: z
         .string()
         .describe(
-          '消息内容，JSON 结构序列化后的字符串。该参数的取值与 `msg_type` 对应，例如 `msg_type` 取值为 `text`，则该参数需要传入文本类型的内容。**注意：**- JSON 字符串需进行转义。例如，换行符 `` 转义后为 `\\`。- 文本消息请求体最大不能超过 150 KB。- 卡片消息、富文本消息请求体最大不能超过 30 KB。- 如果使用卡片模板（template_id）发送消息，实际大小也包含模板对应的卡片数据大小。- 如果消息中包含样式标签，会使实际消息体长度大于您输入的请求体长度。- 图片需要先，然后使用图片的 Key 发消息。- 音频、视频、文件需要先，然后使用文件的 Key 发消息。了解不同类型的消息内容格式、使用限制，可参见',
+          '消息内容，JSON 结构序列化后的字符串。该参数的取值与 `msg_type` 对应，例如 `msg_type` 取值为 `text`，则该参数需要传入文本类型的内容。**注意：**- JSON 字符串需进行转义。例如，换行符 `` 转义后为 `\\`。- 文本消息请求体最大不能超过 150 KB。- 卡片消息、富文本消息请求体最大不能超过 30 KB。- 如果使用卡片模板（template_id）发送消息，实际大小也包含模板对应的卡片数据大小。- 如果消息中包含样式标签，会使实际消息体长度大于您输入的请求体长度。- 图片需要先[上传图片]，然后使用图片的 Key 发消息。- 音频、视频、文件需要先[上传文件]，然后使用文件的 Key 发消息。了解不同类型的消息内容格式、使用限制，可参见[发送消息内容]',
         ),
       msg_type: z
         .string()
         .describe(
-          '消息类型。**可选值有**：- text：文本- post：富文本- image：图片- file：文件- audio：语音- media：视频- sticker：表情包- interactive：卡片- share_chat：分享群名片- share_user：分享个人名片不同消息类型的详细介绍，参见',
+          '消息类型。**可选值有**：- text：文本- post：富文本- image：图片- file：文件- audio：语音- media：视频- sticker：表情包- interactive：卡片- share_chat：分享群名片- share_user：分享个人名片不同消息类型的详细介绍，参见[发送消息内容]',
         ),
       reply_in_thread: z
         .boolean()
@@ -1897,7 +1907,7 @@ export const imV1MessageReply = {
       message_id: z
         .string()
         .describe(
-          '待回复的消息的 ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+          '待回复的消息的 ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
         ),
     }),
   },
@@ -1909,7 +1919,7 @@ export const imV1MessageUpdate = {
   path: '/open-apis/im/v1/messages/:message_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-消息-消息管理-编辑消息-调用该接口编辑已发送的消息内容，支持编辑文本、富文本消息。如需编辑卡片消息，请使用接口',
+    '[Feishu/Lark]-消息-消息管理-编辑消息-调用该接口编辑已发送的消息内容，支持编辑文本、富文本消息。如需编辑卡片消息，请使用[更新应用发送的消息卡片]接口',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1917,14 +1927,14 @@ export const imV1MessageUpdate = {
       content: z
         .string()
         .describe(
-          '消息内容，JSON 结构序列化后的字符串。该参数的取值与 `msg_type` 对应，例如 `msg_type` 取值为 `text`，则该参数需要传入文本类型的内容。**注意：**- JSON字符串需进行转义，如换行符转义后为`\\`- 文本消息请求体最大不能超过 150 KB- 富文本消息请求体最大不能超过 30 KB- 如果消息中包含样式标签，会使实际消息体长度大于您输入的请求体长度。了解不同类型的消息内容格式、使用限制，可参见',
+          '消息内容，JSON 结构序列化后的字符串。该参数的取值与 `msg_type` 对应，例如 `msg_type` 取值为 `text`，则该参数需要传入文本类型的内容。**注意：**- JSON字符串需进行转义，如换行符转义后为`\\`- 文本消息请求体最大不能超过 150 KB- 富文本消息请求体最大不能超过 30 KB- 如果消息中包含样式标签，会使实际消息体长度大于您输入的请求体长度。了解不同类型的消息内容格式、使用限制，可参见[发送消息内容]',
         ),
     }),
     path: z.object({
       message_id: z
         .string()
         .describe(
-          '待编辑的消息 ID，仅支持编辑文本（text）、富文本（post）消息。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+          '待编辑的消息 ID，仅支持编辑文本（text）、富文本（post）消息。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
         ),
     }),
   },
@@ -1936,7 +1946,7 @@ export const imV1MessageUrgentApp = {
   path: '/open-apis/im/v1/messages/:message_id/urgent_app',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-消息-消息加急-发送应用内加急-调用该接口把指定消息加急给目标用户，加急仅在飞书客户端内通知。了解加急可参见',
+    '[Feishu/Lark]-消息-消息加急-发送应用内加急-调用该接口把指定消息加急给目标用户，加急仅在飞书客户端内通知。了解加急可参见[加急功能]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1951,7 +1961,7 @@ export const imV1MessageUrgentApp = {
       message_id: z
         .string()
         .describe(
-          '待加急的消息 ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取。**注意**：不支持加急（对应的消息ID 格式为 `bm_xxx`）',
+          '待加急的消息 ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取。**注意**：不支持加急[批量发送的消息]（对应的消息ID 格式为 `bm_xxx`）',
         ),
     }),
   },
@@ -1963,7 +1973,7 @@ export const imV1MessageUrgentPhone = {
   path: '/open-apis/im/v1/messages/:message_id/urgent_phone',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-消息-消息加急-发送电话加急-调用该接口把指定消息加急给目标用户，加急将通过飞书客户端和电话进行通知。了解加急可参见',
+    '[Feishu/Lark]-消息-消息加急-发送电话加急-调用该接口把指定消息加急给目标用户，加急将通过飞书客户端和电话进行通知。了解加急可参见[加急功能]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1978,7 +1988,7 @@ export const imV1MessageUrgentPhone = {
       message_id: z
         .string()
         .describe(
-          '待加急的消息 ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取。**注意**：不支持加急（对应的消息ID 格式为 `bm_xxx`）',
+          '待加急的消息 ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取。**注意**：不支持加急[批量发送的消息]（对应的消息ID 格式为 `bm_xxx`）',
         ),
     }),
   },
@@ -1990,7 +2000,7 @@ export const imV1MessageUrgentSms = {
   path: '/open-apis/im/v1/messages/:message_id/urgent_sms',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-消息-消息加急-发送短信加急-调用该接口把指定消息加急给目标用户，加急将通过飞书客户端和短信进行通知。了解加急可参见',
+    '[Feishu/Lark]-消息-消息加急-发送短信加急-调用该接口把指定消息加急给目标用户，加急将通过飞书客户端和短信进行通知。了解加急可参见[加急功能]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2005,7 +2015,7 @@ export const imV1MessageUrgentSms = {
       message_id: z
         .string()
         .describe(
-          '待加急的消息 ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取。**注意**：不支持加急（对应的消息ID 格式为 `bm_xxx`）',
+          '待加急的消息 ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取。**注意**：不支持加急[批量发送的消息]（对应的消息ID 格式为 `bm_xxx`）',
         ),
     }),
   },
@@ -2017,14 +2027,14 @@ export const imV1PinCreate = {
   path: '/open-apis/im/v1/pins',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-消息-Pin-Pin 消息-Pin 一条指定的消息。Pin 消息的效果可参见',
+    '[Feishu/Lark]-消息-Pin-Pin 消息-Pin 一条指定的消息。Pin 消息的效果可参见[Pin 消息概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       message_id: z
         .string()
         .describe(
-          '待 Pin 的消息 ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+          '待 Pin 的消息 ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -2043,7 +2053,7 @@ export const imV1PinDelete = {
       message_id: z
         .string()
         .describe(
-          '待移除 Pin 的消息 ID。ID 获取方式： - 调用接口后，从响应结果的 `message_id` 参数获取。- 监听事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用接口，从响应结果的 `message_id` 参数获取',
+          '待移除 Pin 的消息 ID。ID 获取方式： - 调用[发送消息]接口后，从响应结果的 `message_id` 参数获取。- 监听[接收消息]事件，当触发该事件后可以从事件体内获取消息的 `message_id`。- 调用[获取会话历史消息]接口，从响应结果的 `message_id` 参数获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -2062,7 +2072,7 @@ export const imV1PinList = {
       chat_id: z
         .string()
         .describe(
-          '待获取 Pin 消息的群组 ID。获取方式参见',
+          '待获取 Pin 消息的群组 ID。获取方式参见[群 ID 说明]',
         ),
       start_time: z
         .string()
@@ -2101,7 +2111,7 @@ export const imV1ThreadForward = {
       receive_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'email', 'chat_id', 'thread_id'])
         .describe(
-          '消息接收者 ID 类型。 Options:open_id(OpenID 标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。),union_id(UnionID 标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。),user_id(UserID 标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。),email(以用户的真实邮箱来标识用户。),chat_id(ChatID 以群 ID 来标识群聊。。),thread_id(ThreadID 以话题 ID 来标识话题。了解更多：</md-enum-item>**当值为 `user_id`，字段权限要求**：<md-perm name="contact:user.employee_id:readonly" desc="获取用户 user ID" support_app_types="custom" tags="">获取用户 user ID</md-perm>)',
+          '消息接收者 ID 类型。 Options:open_id(OpenID 标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(UnionID 标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),user_id(UserID 标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。[了解更多：如何获取 User ID？]),email(以用户的真实邮箱来标识用户。),chat_id(ChatID 以群 ID 来标识群聊。[了解更多：如何获取群 ID ]。),thread_id(ThreadID 以话题 ID 来标识话题。了解更多：[话题介绍]</md-enum-item>**当值为 `user_id`，字段权限要求**：<md-perm name="contact:user.employee_id:readonly" desc="获取用户 user ID" support_app_types="custom" tags="">获取用户 user ID</md-perm>)',
         ),
       uuid: z
         .string()
@@ -2114,7 +2124,7 @@ export const imV1ThreadForward = {
       thread_id: z
         .string()
         .describe(
-          '要转发的话题ID，获取方式参见的 **如何获取 thread_id** 章节',
+          '要转发的话题ID，获取方式参见[话题概述]的 **如何获取 thread_id** 章节',
         ),
     }),
   },

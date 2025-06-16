@@ -12,6 +12,9 @@ export type ailyV1ToolName =
   | 'aily.v1.ailySessionRun.list'
   | 'aily.v1.ailySession.update'
   | 'aily.v1.appDataAssetTag.list'
+  | 'aily.v1.appDataAsset.create'
+  | 'aily.v1.appDataAsset.delete'
+  | 'aily.v1.appDataAsset.get'
   | 'aily.v1.appDataAsset.list'
   | 'aily.v1.appKnowledge.ask'
   | 'aily.v1.appSkill.get'
@@ -253,6 +256,215 @@ export const ailyV1AppDataAssetTagList = {
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
+export const ailyV1AppDataAssetCreate = {
+  project: 'aily',
+  name: 'aily.v1.appDataAsset.create',
+  sdkName: 'aily.v1.appDataAsset.create',
+  path: '/open-apis/aily/v1/apps/:app_id/data_assets',
+  httpMethod: 'POST',
+  description:
+    '[Feishu/Lark]-aily-Data Knowledge-Data Knowledge Management-Create data knowledge-Add individual data knowledge in Aily',
+  accessTokens: ['tenant', 'user'],
+  schema: {
+    data: z.object({
+      connect_type: z
+        .enum(['import', 'direct'])
+        .describe('connection type Options:import(import mode),direct(Direct Connect Mode)'),
+      source_type: z
+        .enum(['file', 'lark_wiki_space', 'lark_doc', 'lark_helpdesk'])
+        .describe(
+          'data source type Options:file(File, only import mode is supported),lark_wiki_space(Lark Wiki Workspace, only supports direct connection mode),lark_doc(Feishu cloud documentation, import mode only supports docx.),lark_helpdesk(Feishu service desk, only supports direct connection mode)',
+        ),
+      import_knowledge_setting: z
+        .object({
+          chunk_setting: z
+            .object({
+              rule_type: z
+                .enum(['separator', 'intelligent'])
+                .describe('slicing rule Options:separator(By identifier),intelligent(Smart Slicing)'),
+              separate_type: z
+                .enum(['paragraph', 'title'])
+                .describe(
+                  'slice separator type Options:paragraph(Paragraph separators: "\\ n\\ n", "\\ n", spaces),title(Title separator ：######)',
+                )
+                .optional(),
+              size: z
+                .number()
+                .describe('The maximum segment length (character), which must be filled in when slicing by identifier')
+                .optional(),
+              overlap: z
+                .number()
+                .describe(
+                  'The number of overlapping characters in the segment, which must be filled in when slicing by identifier, and cannot exceed the value of size',
+                )
+                .optional(),
+            })
+            .describe('knowledge slice configuration')
+            .optional(),
+          file: z
+            .object({
+              title: z.string().describe('File title').optional(),
+              token: z
+                .string()
+                .describe(
+                  'The token obtained by uploading the file. Choose one of content and content, and use the token first',
+                )
+                .optional(),
+              content: z
+                .string()
+                .describe(
+                  'File content. Choose one of the two, and the token will be used first. There is a length limit, and the token method will be used first for large files',
+                )
+                .optional(),
+              mime_type: z
+                .string()
+                .describe(
+                  'The MIME type corresponding to the file content must be filled in when using the token method',
+                )
+                .optional(),
+              url: z.string().describe('URL of the file source').optional(),
+            })
+            .describe('Knowledge Import - File')
+            .optional(),
+          lark_doc: z
+            .object({
+              type: z
+                .enum(['doc', 'file', 'wiki', 'docx', 'folder'])
+                .describe(
+                  'Cloud document type Options:doc(Lark documentation),file(Lark file),wiki(Lark wiki),docx(Lark Docx),folder(Lark Folder)',
+                ),
+              token: z
+                .string()
+                .describe(
+                  'Cloud document token, which can be obtained by searching for the [Search document] API',
+                ),
+              with_sub_docs: z
+                .boolean()
+                .describe('Whether to include subdocuments, only wiki-type cloud documents support it')
+                .optional(),
+            })
+            .describe('Knowledge Import - Feishu Cloud Documentation')
+            .optional(),
+          lark_wiki_space: z
+            .object({
+              space_id: z
+                .string()
+                .describe(
+                  'Lark Wiki Workspace ID, which can be obtained by [Search Wiki] API',
+                ),
+              sub_docs: z
+                .array(
+                  z.object({
+                    type: z
+                      .literal('wiki')
+                      .describe(
+                        'Cloud document type, only supports cloud documents in wikis Options:wiki(Feishu Wiki)',
+                      ),
+                    token: z
+                      .string()
+                      .describe(
+                        'Cloud document token, which can be obtained by searching for the [Search document] API',
+                      ),
+                    url: z.string().describe('Cloud document link').optional(),
+                  }),
+                )
+                .describe('When specifying a Wiki Workspace sub-node')
+                .optional(),
+              url: z.string().describe('Wiki Workspace URL').optional(),
+            })
+            .describe('Lark Wiki Workspace')
+            .optional(),
+          lark_helpdesk: z
+            .object({
+              helpdesk_id: z
+                .string()
+                .describe(
+                  'Lark Help Desk ID, which can be obtained through [Help Desk - Access guide]',
+                ),
+            })
+            .describe('Lark Help Desk')
+            .optional(),
+        })
+        .describe('knowledge import configuration')
+        .optional(),
+      description: z.object({}).catchall(z.any()).describe('Data Knowledge Description Information').optional(),
+    }),
+    params: z.object({
+      tenant_type: z
+        .string()
+        .describe(
+          'Application environment, enumeration values: `online` represents the online environment (default value), and `dev` represents the development environment; currently only `dev` is supported',
+        )
+        .optional(),
+    }),
+    path: z.object({
+      app_id: z
+        .string()
+        .describe(
+          "The APPID of the application of the Aily can be obtained directly from the URL of the Aily's application. Get an example:/ai/{APPID}",
+        ),
+    }),
+    useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
+  },
+};
+export const ailyV1AppDataAssetDelete = {
+  project: 'aily',
+  name: 'aily.v1.appDataAsset.delete',
+  sdkName: 'aily.v1.appDataAsset.delete',
+  path: '/open-apis/aily/v1/apps/:app_id/data_assets/:data_asset_id',
+  httpMethod: 'DELETE',
+  description:
+    "[Feishu/Lark]-aily-Data Knowledge-Data Knowledge Management-Delete data knowledge-Delete Aily's data knowledge",
+  accessTokens: ['tenant', 'user'],
+  schema: {
+    params: z.object({
+      tenant_type: z
+        .string()
+        .describe(
+          'Application environment, enumeration values: `online` represents the online environment (default value), and `dev` represents the development environment; currently only `dev` is supported',
+        )
+        .optional(),
+    }),
+    path: z.object({
+      app_id: z
+        .string()
+        .describe(
+          "The APPID of the application of the Aily can be obtained directly from the URL of the Aily's application. Get an example:/ai/{APPID}",
+        ),
+      data_asset_id: z.string().describe('Data Knowledge ID'),
+    }),
+    useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
+  },
+};
+export const ailyV1AppDataAssetGet = {
+  project: 'aily',
+  name: 'aily.v1.appDataAsset.get',
+  sdkName: 'aily.v1.appDataAsset.get',
+  path: '/open-apis/aily/v1/apps/:app_id/data_assets/:data_asset_id',
+  httpMethod: 'GET',
+  description:
+    '[Feishu/Lark]-aily-Data Knowledge-Data Knowledge Management-Get individual data knowledge-Get individual data knowledge',
+  accessTokens: ['tenant', 'user'],
+  schema: {
+    params: z.object({
+      with_data_asset_item: z.boolean().describe('Does the result contain data and knowledge items').optional(),
+      with_connect_status: z.boolean().describe('Does the result contain data knowledge connection status').optional(),
+      tenant_type: z
+        .string()
+        .describe('Application environment, the default is online environment, dev represents development environment')
+        .optional(),
+    }),
+    path: z.object({
+      app_id: z
+        .string()
+        .describe(
+          "The APPID of the application of the Aily can be obtained directly from the URL of the Aily's application. Get an example:/ai/{APPID}",
+        ),
+      data_asset_id: z.string().describe('Data Knowledge ID'),
+    }),
+    useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
+  },
+};
 export const ailyV1AppDataAssetList = {
   project: 'aily',
   name: 'aily.v1.appDataAsset.list',
@@ -432,6 +644,9 @@ export const ailyV1Tools = [
   ailyV1AilySessionRunList,
   ailyV1AilySessionUpdate,
   ailyV1AppDataAssetTagList,
+  ailyV1AppDataAssetCreate,
+  ailyV1AppDataAssetDelete,
+  ailyV1AppDataAssetGet,
   ailyV1AppDataAssetList,
   ailyV1AppKnowledgeAsk,
   ailyV1AppSkillGet,

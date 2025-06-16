@@ -12,6 +12,9 @@ export type ailyV1ToolName =
   | 'aily.v1.ailySessionRun.list'
   | 'aily.v1.ailySession.update'
   | 'aily.v1.appDataAssetTag.list'
+  | 'aily.v1.appDataAsset.create'
+  | 'aily.v1.appDataAsset.delete'
+  | 'aily.v1.appDataAsset.get'
   | 'aily.v1.appDataAsset.list'
   | 'aily.v1.appKnowledge.ask'
   | 'aily.v1.appSkill.get'
@@ -34,7 +37,7 @@ export const ailyV1AilySessionAilyMessageCreate = {
       content_type: z
         .string()
         .describe(
-          '消息的类型，包括 `MDX` | `TEXT` 等- `MDX` 能够表达富文本信息结构，可参考 - `TEXT` 作为纯文本进行处理',
+          '消息的类型，包括 `MDX` | `TEXT` 等- `MDX` 能够表达富文本信息结构，可参考 [Aily 消息节点 markdown 语法]- `TEXT` 作为纯文本进行处理',
         ),
       content: z.string().describe('消息内容'),
       file_ids: z.array(z.string()).describe('消息中包含的文件 ID 列表').optional(),
@@ -55,7 +58,7 @@ export const ailyV1AilySessionAilyMessageCreate = {
     path: z.object({
       aily_session_id: z
         .string()
-        .describe('会话 ID；参考  接口'),
+        .describe('会话 ID；参考 [创建会话] 接口'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -73,7 +76,7 @@ export const ailyV1AilySessionAilyMessageGet = {
     path: z.object({
       aily_session_id: z
         .string()
-        .describe('会话 ID；参考  接口'),
+        .describe('会话 ID；参考 [创建会话] 接口'),
       aily_message_id: z.string().describe('消息 ID'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -108,7 +111,7 @@ export const ailyV1AilySessionAilyMessageList = {
     path: z.object({
       aily_session_id: z
         .string()
-        .describe('会话 ID；参考  接口'),
+        .describe('会话 ID；参考 [创建会话] 接口'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -127,7 +130,7 @@ export const ailyV1AilySessionCreate = {
       channel_context: z
         .string()
         .describe(
-          '可自行构造的 Context ；在 Workflow 技能中可消费这部分全局变量',
+          '可自行构造的 Context [上下文变量]；在 Workflow 技能中可消费这部分全局变量',
         )
         .optional(),
       metadata: z
@@ -180,7 +183,7 @@ export const ailyV1AilySessionRunCancel = {
     path: z.object({
       aily_session_id: z
         .string()
-        .describe('会话 ID；参考  接口'),
+        .describe('会话 ID；参考 [创建会话] 接口'),
       run_id: z.string().describe('运行的唯一 ID'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -218,7 +221,7 @@ export const ailyV1AilySessionRunCreate = {
     path: z.object({
       aily_session_id: z
         .string()
-        .describe('会话 ID；参考  接口'),
+        .describe('会话 ID；参考 [创建会话] 接口'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -236,7 +239,7 @@ export const ailyV1AilySessionRunGet = {
     path: z.object({
       aily_session_id: z
         .string()
-        .describe('会话 ID；参考  接口'),
+        .describe('会话 ID；参考 [创建会话] 接口'),
       run_id: z.string().describe('运行的唯一 ID'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -264,7 +267,7 @@ export const ailyV1AilySessionRunList = {
     path: z.object({
       aily_session_id: z
         .string()
-        .describe('会话 ID；参考  接口'),
+        .describe('会话 ID；参考 [创建会话] 接口'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -283,7 +286,7 @@ export const ailyV1AilySessionUpdate = {
       channel_context: z
         .string()
         .describe(
-          '可自行构造的 Context ；在 Workflow 技能中可消费这部分全局变量',
+          '可自行构造的 Context [上下文变量]；在 Workflow 技能中可消费这部分全局变量',
         )
         .optional(),
       metadata: z
@@ -319,6 +322,181 @@ export const ailyV1AppDataAssetTagList = {
       data_asset_tag_ids: z.array(z.string()).describe('模糊匹配分类名称').optional(),
     }),
     path: z.object({ app_id: z.string().describe('AppID') }),
+    useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
+  },
+};
+export const ailyV1AppDataAssetCreate = {
+  project: 'aily',
+  name: 'aily.v1.appDataAsset.create',
+  sdkName: 'aily.v1.appDataAsset.create',
+  path: '/open-apis/aily/v1/apps/:app_id/data_assets',
+  httpMethod: 'POST',
+  description: '[Feishu/Lark]-飞书智能伙伴创建平台-知识问答-数据知识管理-创建数据知识-在智能伙伴中添加单个数据知识',
+  accessTokens: ['tenant', 'user'],
+  schema: {
+    data: z.object({
+      connect_type: z.enum(['import', 'direct']).describe('连接类型 Options:import(导入模式),direct(直连模式)'),
+      source_type: z
+        .enum(['file', 'lark_wiki_space', 'lark_doc', 'lark_helpdesk'])
+        .describe(
+          '数据源类型 Options:file(文件，只支持导入模式),lark_wiki_space(飞书知识空间，只支持直连模式),lark_doc(飞书云文档，导入模式只支持docx),lark_helpdesk(飞书服务台，只支持直连模式)',
+        ),
+      import_knowledge_setting: z
+        .object({
+          chunk_setting: z
+            .object({
+              rule_type: z
+                .enum(['separator', 'intelligent'])
+                .describe('切片规则 Options:separator(按标识符),intelligent(智能切片)'),
+              separate_type: z
+                .enum(['paragraph', 'title'])
+                .describe('切片分割符类型 Options:paragraph(段落分隔符：""、""、空格),title(标题分割符：######)')
+                .optional(),
+              size: z.number().describe('分段最大长度（字符），按标识符切片时必须填写').optional(),
+              overlap: z.number().describe('分段重叠字符数，按标识符切片时必须填写，不能超过size的数值').optional(),
+            })
+            .describe('知识切片配置')
+            .optional(),
+          file: z
+            .object({
+              title: z.string().describe('文件标题').optional(),
+              token: z.string().describe('上传文件获取到的token。和content二选一，优先使用token').optional(),
+              content: z
+                .string()
+                .describe('文件内容。和token二选一，优先使用token。有长度限制，大文件优先使用token方式')
+                .optional(),
+              mime_type: z
+                .string()
+                .describe(
+                  '文件内容对应的 MIME 类型，必须填写可选值：- text/plain (.txt)- application/pdf (.pdf)- application/vnd.openxmlformats-officedocument.presentationml.presentation (.pptx)- application/vnd.openxmlformats-officedocument.wordprocessingml.document (.docx)',
+                )
+                .optional(),
+              url: z.string().describe('文件源的URL').optional(),
+            })
+            .describe('知识导入-文件')
+            .optional(),
+          lark_doc: z
+            .object({
+              type: z
+                .enum(['doc', 'file', 'wiki', 'docx', 'folder'])
+                .describe(
+                  '云文档类型 Options:doc(飞书文档),file(飞书文件),wiki(飞书知识库),docx(飞书新版文档),folder(飞书文件夹)',
+                ),
+              token: z
+                .string()
+                .describe(
+                  '云文档token，可以通过[搜索云文档]API获取',
+                ),
+              with_sub_docs: z.boolean().describe('是否包含子文档，只有wiki类型的云文档支持').optional(),
+            })
+            .describe('知识导入-飞书云文档')
+            .optional(),
+          lark_wiki_space: z
+            .object({
+              space_id: z
+                .string()
+                .describe(
+                  '飞书知识空间ID，可以通过[搜索 Wiki]API获取',
+                ),
+              sub_docs: z
+                .array(
+                  z.object({
+                    type: z.literal('wiki').describe('云文档类型，只支持wiki中的云文档 Options:wiki(飞书知识库)'),
+                    token: z
+                      .string()
+                      .describe(
+                        '云文档token，可以通过[搜索云文档]API获取',
+                      ),
+                    url: z.string().describe('云文档链接').optional(),
+                  }),
+                )
+                .describe('指定知识空间子节点时使用')
+                .optional(),
+              url: z.string().describe('知识空间URL').optional(),
+            })
+            .describe('知识导入-飞书知识空间')
+            .optional(),
+          lark_helpdesk: z
+            .object({
+              helpdesk_id: z
+                .string()
+                .describe(
+                  '飞书服务台ID，可以通过[服务台-接入指南] 获取',
+                ),
+            })
+            .describe('知识导入-飞书服务台')
+            .optional(),
+        })
+        .describe('知识导入配置')
+        .optional(),
+      description: z.object({}).catchall(z.any()).describe('数据知识描述信息').optional(),
+    }),
+    params: z.object({
+      tenant_type: z
+        .string()
+        .describe('应用环境，枚举值：- `online`：线上环境（默认值）- `dev`：开发环境；目前只支持 `dev`')
+        .optional(),
+    }),
+    path: z.object({
+      app_id: z
+        .string()
+        .describe('智能伙伴创建平台的应用的APPID，可以直接从智能伙伴应用的URL中获取。获取示例：/ai/{APPID}'),
+    }),
+    useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
+  },
+};
+export const ailyV1AppDataAssetDelete = {
+  project: 'aily',
+  name: 'aily.v1.appDataAsset.delete',
+  sdkName: 'aily.v1.appDataAsset.delete',
+  path: '/open-apis/aily/v1/apps/:app_id/data_assets/:data_asset_id',
+  httpMethod: 'DELETE',
+  description: '[Feishu/Lark]-飞书智能伙伴创建平台-知识问答-数据知识管理-删除数据知识-删除智能伙伴的数据知识',
+  accessTokens: ['tenant', 'user'],
+  schema: {
+    params: z.object({
+      tenant_type: z
+        .string()
+        .describe('应用环境，枚举值：- `online`：线上环境（默认值）- `dev`：开发环境；目前只支持 `dev`')
+        .optional(),
+    }),
+    path: z.object({
+      app_id: z
+        .string()
+        .describe('智能伙伴创建平台的应用的APPID，可以直接从智能伙伴应用的URL中获取。获取示例：/ai/{APPID}'),
+      data_asset_id: z
+        .string()
+        .describe(
+          '数据知识ID，可通过在智能伙伴创建平台查看知识详情页的url中获取，获取示例 https://***/ai/app_namespace/data/data-asset/data_asset_id',
+        ),
+    }),
+    useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
+  },
+};
+export const ailyV1AppDataAssetGet = {
+  project: 'aily',
+  name: 'aily.v1.appDataAsset.get',
+  sdkName: 'aily.v1.appDataAsset.get',
+  path: '/open-apis/aily/v1/apps/:app_id/data_assets/:data_asset_id',
+  httpMethod: 'GET',
+  description: '[Feishu/Lark]-飞书智能伙伴创建平台-知识问答-数据知识管理-获取数据知识-获取单个数据知识',
+  accessTokens: ['tenant', 'user'],
+  schema: {
+    params: z.object({
+      with_data_asset_item: z.boolean().describe('结果是否包含数据与知识项').optional(),
+      with_connect_status: z.boolean().describe('结果是否包含数据知识连接状态').optional(),
+      tenant_type: z.string().describe('应用环境，默认为线上环境，dev代表开发环境').optional(),
+    }),
+    path: z.object({
+      app_id: z
+        .string()
+        .describe('智能伙伴创建平台的应用的APPID，可以直接从智能伙伴应用的URL中获取。获取示例：/ai/{APPID}'),
+      data_asset_id: z
+        .string()
+        .describe(
+          '数据知识ID，可通过在智能伙伴创建平台查看知识详情页的url中获取，获取示例 https://***/ai/app_namespace/data/data-asset/data_asset_id',
+        ),
+    }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -462,6 +640,9 @@ export const ailyV1Tools = [
   ailyV1AilySessionRunList,
   ailyV1AilySessionUpdate,
   ailyV1AppDataAssetTagList,
+  ailyV1AppDataAssetCreate,
+  ailyV1AppDataAssetDelete,
+  ailyV1AppDataAssetGet,
   ailyV1AppDataAssetList,
   ailyV1AppKnowledgeAsk,
   ailyV1AppSkillGet,

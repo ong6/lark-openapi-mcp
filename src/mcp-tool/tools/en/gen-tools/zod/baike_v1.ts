@@ -177,7 +177,7 @@ export const baikeV1DraftCreate = {
       rich_text: z
         .string()
         .describe(
-          'Rich text format (when filling in rich text content, the description field will be invalid and may not be filled in), supported formats refer to the interpretation section in [Feishu Dictionary Guide] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/baike-v1/overview)',
+          'Rich text format (when filling in rich text content, the description field will be invalid and may not be filled in), supported formats refer to the interpretation section in [Feishu Dictionary Guide]',
         )
         .optional(),
     }),

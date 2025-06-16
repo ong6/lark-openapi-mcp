@@ -178,13 +178,13 @@ export const corehrV1AuthorizationAddRoleAssign = {
       employment_id: z
         .string()
         .describe(
-          'The ID of the authorized user, defaults to ==employment_id== in Feishu People. You can also use the other 3 IDs declared in the ==user_id_type==.>If you need to use the job number, you can use  in exchange for ==employment_id==',
+          'The ID of the authorized user, defaults to ==employment_id== in Feishu People. You can also use the other 3 IDs declared in the ==user_id_type==.>If you need to use the job number, you can use [ID conversion service] in exchange for ==employment_id==',
         ),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
       role_id: z
         .string()
         .describe(
-          'The ID of the authorized role, which can only be authorized one role at a time. You can get it using , or get it in the role details (number at the end of the URL)',
+          'The ID of the authorized role, which can only be authorized one role at a time. You can get it using [Batch Acquire Role List], or get it in the role details (number at the end of the URL)',
         ),
     }),
   },
@@ -203,7 +203,7 @@ export const corehrV1AuthorizationGetByParam = {
       employment_id: z
         .string()
         .describe(
-          'The ID of the authorized user, defaults to ==employment_id== in Feishu personnel. You can also use the other 3 IDs declared in the user_id_type.>If you need to use the job number, you can use  in exchange for ==employment_id==',
+          'The ID of the authorized user, defaults to ==employment_id== in Feishu personnel. You can also use the other 3 IDs declared in the user_id_type.>If you need to use the job number, you can use [ID conversion service] in exchange for ==employment_id==',
         ),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
     }),
@@ -245,20 +245,20 @@ export const corehrV1AuthorizationRemoveRoleAssign = {
   path: '/open-apis/corehr/v1/authorizations/remove_role_assign',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Feishu People（Enterprise Edition）-User authorization-移除用户被授权的角色-Remove the specified role and authorization scope for which the user is authorized. Existing authorization can be obtained by querying .Or view it in the Feishu ',
+    "[Feishu/Lark]-Feishu People（Enterprise Edition）-User authorization-Remove the user's authorized role-Remove the specified role and authorization scope for which the user is authorized. Existing authorization can be obtained by querying [the authorization of a single user].Or view it in the Feishu [personnel management backend]",
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
       employment_id: z
         .string()
         .describe(
-          'The ID of the authorized user, defaults to ==employment_id== in Feishu People. You can also use the other 3 IDs declared in the ==user_id_type==.>If you need to use the job number, you can use  in exchange for ==employment_id==',
+          'The ID of the authorized user, defaults to ==employment_id== in Feishu People. You can also use the other 3 IDs declared in the ==user_id_type==.>If you need to use the job number, you can use [ID conversion service] in exchange for ==employment_id==',
         ),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
       role_id: z
         .string()
         .describe(
-          'The ID of the character being removed., which can only be removed one role at a time. You can get it using , or get (the number at the end of the URL) role_id from the URL of the Feishu personnel role details page',
+          'The ID of the character being removed., which can only be removed one role at a time. You can get it using [Get a list of roles in batches], or get (the number at the end of the URL) role_id from the URL of the Feishu personnel role details page',
         ),
     }),
   },
@@ -292,13 +292,13 @@ export const corehrV1AuthorizationUpdateRoleAssign = {
       employment_id: z
         .string()
         .describe(
-          'The ID of the authorized user, defaults to ==employment_id== in Feishu People. You can also use the other 3 IDs declared in the ==user_id_type==.>If you need to use the job number, you can use  in exchange for ==employment_id==',
+          'The ID of the authorized user, defaults to ==employment_id== in Feishu People. You can also use the other 3 IDs declared in the ==user_id_type==.>If you need to use the job number, you can use [ID conversion service] in exchange for ==employment_id==',
         ),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
       role_id: z
         .string()
         .describe(
-          'The ID of the authorized role, which can only be authorized one role at a time. You can get it using , or get it in the role details (number at the end of the URL)',
+          'The ID of the authorized role, which can only be authorized one role at a time. You can get it using [Get a list of roles in batches], or get it in the role details (number at the end of the URL)',
         ),
     }),
   },
@@ -332,7 +332,7 @@ export const corehrV1CommonDataIdConvert = {
       feishu_user_id_type: z
         .enum(['open_id', 'union_id', 'user_id'])
         .describe(
-          'User ID categories Options:open_id(Identifies the identity of a user in an application. The same user has different Open IDs in different applications. ),union_id(Identifies the identity of a user under an application developer. The Union ID of the same user in an application under the same developer is the same, and the Union ID in an application under different developers is different. With Union ID, application developers can associate the identity of the same user in multiple applications. ),user_id(Identifies the identity of a user in a tenant. The user ID of the same user in tenant A and tenant B is different. Within the same tenant, the user ID of a user is consistent in all applications (including store applications). User IDs are mainly used to connect user data between different applications. )',
+          'User ID categories Options:open_id(Identifies the identity of a user in an application. The same user has different Open IDs in different applications. [Learn more: How to get an Open ID]),union_id(Identifies the identity of a user under an application developer. The Union ID of the same user in an application under the same developer is the same, and the Union ID in an application under different developers is different. With Union ID, application developers can associate the identity of the same user in multiple applications. [Learn more: How to get Union ID?]),user_id(Identifies the identity of a user in a tenant. The user ID of the same user in tenant A and tenant B is different. Within the same tenant, the user ID of a user is consistent in all applications (including store applications). User IDs are mainly used to connect user data between different applications. [Learn more: How to get a User ID?])',
         )
         .optional(),
       feishu_department_id_type: z
@@ -493,13 +493,13 @@ export const corehrV1CompanyCreate = {
       type: z
         .object({ enum_name: z.string().describe('Enumeration value') })
         .describe(
-          'The nature of the company is obtained through the  query. Request parameters: object_api_name = company; custom_api_name = type',
+          'The nature of the company is obtained through the [Get Field Details] query. Request parameters: object_api_name = company; custom_api_name = type',
         )
         .optional(),
       industry_list: z
         .array(z.object({ enum_name: z.string().describe('Enumeration value') }))
         .describe(
-          'The industry is located, and it is obtained through the  query. Request parameters: object_api_name = company; custom_api_name = industry',
+          'The industry is located, and it is obtained through the [Get Field Details] query. Request parameters: object_api_name = company; custom_api_name = industry',
         )
         .optional(),
       legal_representative: z
@@ -526,7 +526,7 @@ export const corehrV1CompanyCreate = {
       sub_type_list: z
         .array(z.object({ enum_name: z.string().describe('Enumeration value') }))
         .describe(
-          'Company principal type, obtained by  query. Request parameters: object_api_name = company; custom_api_name = subtype',
+          'Company principal type, obtained by [Get Field Details] query. Request parameters: object_api_name = company; custom_api_name = subtype',
         )
         .optional(),
       branch_company: z.boolean().describe('Is it a branch office?').optional(),
@@ -578,13 +578,13 @@ export const corehrV1CompanyCreate = {
           numeric_code: z
             .number()
             .describe(
-              'The reference code of the corresponding currency. obtained through the ',
+              'The reference code of the corresponding currency. obtained through the [Search currency information v2]',
             )
             .optional(),
           currency_alpha_3_code: z
             .string()
             .describe(
-              'Legal currency corresponding codes, such as CNY, USD, etc.obtained through the ',
+              'Legal currency corresponding codes, such as CNY, USD, etc.obtained through the [Search currency information v2]',
             )
             .optional(),
         })
@@ -595,7 +595,7 @@ export const corehrV1CompanyCreate = {
           area_code: z
             .object({ enum_name: z.string().describe('Area code corresponding name') })
             .describe(
-              'The number corresponding to the area code.Query and obtain. Request parameters: object_api_name = phone; custom_api_name = international_area_code',
+              'The number corresponding to the area code.[Request Interface]Query and obtain. Request parameters: object_api_name = phone; custom_api_name = international_area_code',
             ),
           phone_number: z.string().describe('number'),
         })
@@ -606,7 +606,7 @@ export const corehrV1CompanyCreate = {
           area_code: z
             .object({ enum_name: z.string().describe('Area code corresponding name') })
             .describe(
-              'area code.Query and obtain. Request parameters: object_api_name = phone; custom_api_name = international_area_code',
+              'area code.[Request Interface]Query and obtain. Request parameters: object_api_name = phone; custom_api_name = international_area_code',
             ),
           phone_number: z.string().describe('number'),
         })
@@ -617,24 +617,24 @@ export const corehrV1CompanyCreate = {
           country_region_id: z
             .string()
             .describe(
-              'Country/region ID.The fields for each country/region can be queried by referring to Query and obtain',
+              'Country/region ID.The fields for each country/region can be queried by referring to [Address Filling Rules][Request Interface]Query and obtain',
             ),
           region_id: z
             .string()
             .describe(
-              'main administrative region ID.Query and obtain',
+              'main administrative region ID.[Request Interface]Query and obtain',
             )
             .optional(),
           city_id: z
             .string()
             .describe(
-              'City ID.Query and obtain',
+              'City ID.[Request Interface]Query and obtain',
             )
             .optional(),
           distinct_id: z
             .string()
             .describe(
-              'District/County ID,Query and obtain',
+              'District/County ID,[Request Interface]Query and obtain',
             )
             .optional(),
           address_line1: z.string().describe('Address line 1').optional(),
@@ -664,24 +664,24 @@ export const corehrV1CompanyCreate = {
           country_region_id: z
             .string()
             .describe(
-              'Country/region ID.The fields for each country/region can be queried by referring to 。Query and obtain',
+              'Country/region ID.The fields for each country/region can be queried by referring to [Address Filling Rules]。[Request Interface]Query and obtain',
             ),
           region_id: z
             .string()
             .describe(
-              'main administrative region ID.Query and obtain',
+              'main administrative region ID.[Request Interface]Query and obtain',
             )
             .optional(),
           city_id: z
             .string()
             .describe(
-              'City ID.Query and obtain',
+              'City ID.[Request Interface]Query and obtain',
             )
             .optional(),
           distinct_id: z
             .string()
             .describe(
-              'District/County Id. Query and obtain',
+              'District/County Id. [Request Interface]Query and obtain',
             )
             .optional(),
           address_line1: z.string().describe('Address line 1').optional(),
@@ -729,7 +729,7 @@ export const corehrV1CompanyDelete = {
       company_id: z
         .string()
         .describe(
-          'The company ID that needs to be deleted. How to get the ID:- Call [[Create Company]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/company/create) [[Batch Query Company]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/company/list) and other interfaces to return the department ID',
+          'The company ID that needs to be deleted. How to get the ID:- Call [Create Company] [Batch Query Company] and other interfaces to return the department ID',
         ),
     }),
   },
@@ -748,7 +748,7 @@ export const corehrV1CompanyGet = {
       company_id: z
         .string()
         .describe(
-          'The company ID to be queried. How to get the ID:- Call [[Create Company]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/company/create) [[Batch Query Company]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/company/list) and other interfaces to return the department ID',
+          'The company ID to be queried. How to get the ID:- Call [Create Company] [Batch Query Company] and other interfaces to return the department ID',
         ),
     }),
   },
@@ -834,7 +834,7 @@ export const corehrV1CompanyPatch = {
       type: z
         .object({ enum_name: z.string().describe('enumeration value') })
         .describe(
-          'Company properties, enumeration values are available in the document [[Feishu personnel enumeration constants]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant) Company type (company_type) enumeration definition section',
+          'Company properties, enumeration values are available in the document [Feishu personnel enumeration constants] Company type (company_type) enumeration definition section',
         )
         .optional(),
       industry_list: z
@@ -895,13 +895,13 @@ export const corehrV1CompanyPatch = {
           numeric_code: z
             .number()
             .describe(
-              'The reference code of the corresponding currency can be found through the internal system.obtained through the',
+              'The reference code of the corresponding currency can be found through the internal system.obtained through the[Search currency information v2]',
             )
             .optional(),
           currency_alpha_3_code: z
             .string()
             .describe(
-              'Legal tender corresponding codes, such as CNY, USD, etc.obtained through the ',
+              'Legal tender corresponding codes, such as CNY, USD, etc.obtained through the [Search currency information v2]',
             )
             .optional(),
         })
@@ -914,7 +914,7 @@ export const corehrV1CompanyPatch = {
               enum_name: z
                 .string()
                 .describe(
-                  'enumeration value.Query and obtain. Request parameters: object_api_name = phone; custom_api_name = international_area_code',
+                  'enumeration value.[Request Interface]Query and obtain. Request parameters: object_api_name = phone; custom_api_name = international_area_code',
                 ),
             })
             .describe('area code'),
@@ -929,7 +929,7 @@ export const corehrV1CompanyPatch = {
               enum_name: z
                 .string()
                 .describe(
-                  'enumeration value.Query and obtain. Request parameters: object_api_name = phone; custom_api_name = international_area_code',
+                  'enumeration value.[Request Interface]Query and obtain. Request parameters: object_api_name = phone; custom_api_name = international_area_code',
                 ),
             })
             .describe('area code'),
@@ -942,24 +942,24 @@ export const corehrV1CompanyPatch = {
           country_region_id: z
             .string()
             .describe(
-              'Country/Region ID. The fields for each country/region can be queried by referring to。.Query and obtain',
+              'Country/Region ID. The fields for each country/region can be queried by referring to[Address Filling Rules]。.[Request Interface]Query and obtain',
             ),
           region_id: z
             .string()
             .describe(
-              'main administrative region ID.Query and obtain',
+              'main administrative region ID.[Request Interface]Query and obtain',
             )
             .optional(),
           city_id: z
             .string()
             .describe(
-              'City ID, Query and obtain',
+              'City ID, [Request Interface]Query and obtain',
             )
             .optional(),
           distinct_id: z
             .string()
             .describe(
-              'District/County ID, Query and obtain.this field is pending',
+              'District/County ID, [Request Interface]Query and obtain.this field is pending',
             )
             .optional(),
           address_line1: z.string().describe('Address line 1').optional(),
@@ -989,24 +989,24 @@ export const corehrV1CompanyPatch = {
           country_region_id: z
             .string()
             .describe(
-              'Country/Region ID. The fields for each country/region can be queried by referring to。Query and obtain',
+              'Country/Region ID. The fields for each country/region can be queried by referring to[Address Filling Rules]。[Request Interface]Query and obtain',
             ),
           region_id: z
             .string()
             .describe(
-              'main administrative region ID.Query and obtain',
+              'main administrative region ID.[Request Interface]Query and obtain',
             )
             .optional(),
           city_id: z
             .string()
             .describe(
-              'City ID,Query and obtain',
+              'City ID,[Request Interface]Query and obtain',
             )
             .optional(),
           distinct_id: z
             .string()
             .describe(
-              'District/County ID,Query and obtain',
+              'District/County ID,[Request Interface]Query and obtain',
             )
             .optional(),
           address_line1: z.string().describe('Address line 1').optional(),
@@ -1042,7 +1042,7 @@ export const corehrV1CompanyPatch = {
       company_id: z
         .string()
         .describe(
-          'The company ID that needs to be updated. How to get the ID:- Call [[Create Company]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/company/create) [[Batch Query Company]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/company/list) and other interfaces to return the department ID',
+          'The company ID that needs to be updated. How to get the ID:- Call [Create Company] [Batch Query Company] and other interfaces to return the department ID',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1056,7 +1056,7 @@ export const corehrV1CompensationStandardMatch = {
   httpMethod: 'GET',
   description:
     "[Feishu/Lark]-Feishu People（Enterprise Edition）-Basic Compensation-Salary standard-Get employee salary standards-- Call this interface to get salary scale information that matches the employee- When requesting, you can optionally pass the employee's department ID, job level ID, sequence ID and other filter conditions to match the salary standard.- This interface will return all information of salary standards that employees can match, including salary standard table ID, salary level, salary bandwidth, salary standard value, etc",
-  accessTokens: ['tenant'],
+  accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
       user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
@@ -1069,8 +1069,9 @@ export const corehrV1CompensationStandardMatch = {
       employment_id: z
         .string()
         .describe(
-          'Employment ID，obtain through the interface',
-        ),
+          'Employment ID，obtain through the interface[【Batch access to employee information through employee ID】]',
+        )
+        .optional(),
       reference_object_api: z
         .enum(['cpst_item', 'cpst_indicator'])
         .describe(
@@ -1080,42 +1081,48 @@ export const corehrV1CompensationStandardMatch = {
       reference_object_id: z
         .string()
         .describe(
-          'Salary Standard Associated Object ID，cpst_item ID / cpst_indicator ID, obtain through the interface and the interface',
+          'Salary Standard Associated Object ID，cpst_item ID / cpst_indicator ID, obtain through the interface[【Batch query compensation component】] and the interface[【Batch query compensation metric】]',
         ),
       department_id: z
         .string()
         .describe(
-          'Department ID，obtain through the interface',
+          'Department ID，obtain through the interface[【Get department list】]',
         )
         .optional(),
       work_location_id: z
         .string()
         .describe(
-          'Workplace ID，obtain through the interface',
+          'Workplace ID，obtain through the interface[【Get location list】]',
         )
         .optional(),
       company_id: z
         .string()
         .describe(
-          'Company ID，obtain through the interface',
+          'Company ID，obtain through the interface[【Get company list】]',
         )
         .optional(),
       job_family_id: z
         .string()
         .describe(
-          'Job Serial ID，obtain through the interface',
+          'Job Serial ID，obtain through the interface[【Get the list of job family】]',
+        )
+        .optional(),
+      job_id: z
+        .string()
+        .describe(
+          'Job ID，obtain through the interface[【Get the list of job profile】]',
         )
         .optional(),
       job_level_id: z
         .string()
         .describe(
-          'Rank ID，obtain through the interface',
+          'Rank ID，obtain through the interface[【Get the list of job level】]',
         )
         .optional(),
       employee_type_id: z
         .string()
         .describe(
-          'Person type ID，obtain through the interface',
+          'Person type ID，obtain through the interface[【Get the list of workforce type】]',
         )
         .optional(),
       recruitment_type: z
@@ -1127,18 +1134,19 @@ export const corehrV1CompensationStandardMatch = {
       cpst_change_reason_id: z
         .string()
         .describe(
-          'Reason for fixed salary adjustment ID, obtain through the interface',
+          'Reason for fixed salary adjustment ID, obtain through the interface[【Batch query reason for compensation setting and adjustment】]',
         )
         .optional(),
       cpst_plan_id: z
         .string()
         .describe(
-          'Salary Plan ID, obtain through the interface',
+          'Salary Plan ID, obtain through the interface[【Batch query compensation plan】]',
         )
         .optional(),
       cpst_salary_level_id: z.string().describe('Salary Scale Salary Level ID').optional(),
       effective_time: z.string().describe('Effective time(Millisecond-level timestamp)').optional(),
     }),
+    useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
 export const corehrV1ContractCreate = {
@@ -1157,22 +1165,22 @@ export const corehrV1ContractCreate = {
       employment_id: z
         .string()
         .describe(
-          'Employment ID, you can get more information by[[get employment infomation]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/employee/search)',
+          'Employment ID, you can get more information by[get employment infomation]',
         ),
       contract_type: z
         .object({ enum_name: z.string().describe('Enumeration value') })
         .describe(
-          'Contract type can be obtained through the document with param:- object_api_name：contract- custom_api_name：contract_type',
+          'Contract type can be obtained through the document[Get field details] with param:- object_api_name：contract- custom_api_name：contract_type',
         ),
       first_party_company_id: z
         .string()
         .describe(
-          'Company ID, Company Info can be obtained through the document [[Get company by ID]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/company/get)',
+          'Company ID, Company Info can be obtained through the document [Get company by ID]',
         ),
       person_id: z
         .string()
         .describe(
-          'Person Info can be obtained through the document [[Get personal information by ID]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/person/get)',
+          'Person Info can be obtained through the document [Get personal information by ID]',
         )
         .optional(),
       custom_fields: z
@@ -1191,7 +1199,7 @@ export const corehrV1ContractCreate = {
       duration_type: z
         .object({ enum_name: z.string().describe('Enumeration value') })
         .describe(
-          'Duration type can be obtained through the document [[Feishu CoreHR enumeration constants]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant)duration type enumeration definition section',
+          'Duration type can be obtained through the document [Feishu CoreHR enumeration constants]duration type enumeration definition section',
         )
         .optional(),
       contract_end_date: z.string().describe('Contract end date').optional(),
@@ -1199,7 +1207,7 @@ export const corehrV1ContractCreate = {
       signing_type: z
         .object({ enum_name: z.string().describe('Enumeration value') })
         .describe(
-          'Signing type can be obtained through the document [[Feishu CoreHR enumeration constants]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant)signing type enumeration definition section',
+          'Signing type can be obtained through the document [Feishu CoreHR enumeration constants]signing type enumeration definition section',
         )
         .optional(),
     }),
@@ -1225,7 +1233,7 @@ export const corehrV1ContractDelete = {
       contract_id: z
         .string()
         .describe(
-          'Contract ID to be deleted, which can be obtained through [[Get contract list]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/contract/list)',
+          'Contract ID to be deleted, which can be obtained through [Get contract list]',
         ),
     }),
   },
@@ -1244,7 +1252,7 @@ export const corehrV1ContractGet = {
       contract_id: z
         .string()
         .describe(
-          'Contract ID, which can be obtained through [[Get contract list]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/contract/list)',
+          'Contract ID, which can be obtained through [Get contract list]',
         ),
     }),
   },
@@ -1290,13 +1298,13 @@ export const corehrV1ContractPatch = {
       contract_type: z
         .object({ enum_name: z.string().describe('Enumeration value') })
         .describe(
-          'Contract type can be obtained through the document [[Feishu CoreHR enumeration constants]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant)contract_type enumeration definition section',
+          'Contract type can be obtained through the document [Feishu CoreHR enumeration constants]contract_type enumeration definition section',
         )
         .optional(),
       first_party_company_id: z
         .string()
         .describe(
-          'Company ID, Company Info can be obtained through the document [[Get company by ID]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/company/get)',
+          'Company ID, Company Info can be obtained through the document [Get company by ID]',
         )
         .optional(),
       person_id: z
@@ -1319,7 +1327,7 @@ export const corehrV1ContractPatch = {
       duration_type: z
         .object({ enum_name: z.string().describe('Enumeration value') })
         .describe(
-          'Duration type can be obtained through the document [[Feishu CoreHR enumeration constants]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant)duration type enumeration definition section',
+          'Duration type can be obtained through the document [Feishu CoreHR enumeration constants]duration type enumeration definition section',
         )
         .optional(),
       contract_end_date: z.string().describe('Contract end date').optional(),
@@ -1327,7 +1335,7 @@ export const corehrV1ContractPatch = {
       signing_type: z
         .object({ enum_name: z.string().describe('Enumeration value') })
         .describe(
-          'Signing type can be obtained through the document [[Feishu CoreHR enumeration constants]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant)signing type enumeration definition section',
+          'Signing type can be obtained through the document [Feishu CoreHR enumeration constants]signing type enumeration definition section',
         )
         .optional(),
     }),
@@ -1341,7 +1349,7 @@ export const corehrV1ContractPatch = {
       contract_id: z
         .string()
         .describe(
-          'Contract ID, which can be obtained through [[Get contract list]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/contract/list)',
+          'Contract ID, which can be obtained through [Get contract list]',
         ),
     }),
   },
@@ -1421,7 +1429,7 @@ export const corehrV1CustomFieldGetByParam = {
   path: '/open-apis/corehr/v1/custom_fields/get_by_param',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Basic infomation-Meta data-Get field details-Get the details of a field under a specific "Feishu Personnel" object. Both system standard and user defined fields are supported. Could be used to get e.g. the enum option list in an enum field, the custom field list in a lookup field, and so on. Please refer to the operation manual  for more details',
+    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Basic infomation-Meta data-Get field details-Get the details of a field under a specific "Feishu Personnel" object. Both system standard and user defined fields are supported. Could be used to get e.g. the enum option list in an enum field, the custom field list in a lookup field, and so on. Please refer to the operation manual ["How to operate custom fields through OpenAPI] for more details',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -1458,7 +1466,7 @@ export const corehrV1CustomFieldQuery = {
   path: '/open-apis/corehr/v1/custom_fields/query',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Basic infomation-Meta data-Get a list of custom fields-Get the list of custom fields under specified "Feishu Personnel" objects. Please refer to the operation manual  for more details',
+    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Basic infomation-Meta data-Get a list of custom fields-Get the list of custom fields under specified "Feishu Personnel" objects. Please refer to the operation manual ["How to operate custom fields through OpenAPI] for more details',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({ object_api_name_list: z.array(z.string()).describe('Object apiname') }),
@@ -1478,13 +1486,13 @@ export const corehrV1DepartmentCreate = {
       sub_type: z
         .object({ enum_name: z.string().describe('Enumeration value') })
         .describe(
-          'Department type, obtained through thequery. Request parameters: object_api_name = department; custom_api_name = subtype',
+          'Department type, obtained through the[request interface]query. Request parameters: object_api_name = department; custom_api_name = subtype',
         )
         .optional(),
       manager: z
         .string()
         .describe(
-          'department head- Detailed information can be obtained through the [[Search Employee Information]] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/corehr-v2/employee/search) or [[Batch Query Employee]] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/corehr-v2/employee/batch_get) interface',
+          'department head- Detailed information can be obtained through the [Search Employee Information] or [Batch Query Employee] interface',
         )
         .optional(),
       is_confidential: z.boolean().describe('Is it confidential?').optional(),
@@ -1493,7 +1501,7 @@ export const corehrV1DepartmentCreate = {
           parent_id: z
             .string()
             .describe(
-              'The parent organization ID, this field is a general field, if it is a department dimension, it is required. Details can be obtained through the  interface',
+              'The parent organization ID, this field is a general field, if it is a department dimension, it is required. Details can be obtained through the [Query a single department] interface',
             )
             .optional(),
           name: z
@@ -1543,24 +1551,24 @@ export const corehrV1DepartmentCreate = {
             value: z
               .string()
               .describe(
-                'Field value, which is a JSON-escaped string.**Note: For the specific value passing method, please refer to**',
+                'Field value, which is a JSON-escaped string.**Note: For the specific value passing method, please refer to**[Get metadata of custom fields]',
               ),
           }),
         )
         .describe(
-          'custom field type，See ',
+          'custom field type，See [Get custom field list]',
         )
         .optional(),
       cost_center_id: z
         .string()
         .describe(
-          'Cost center idDetailed information can be obtained through the  interface query',
+          'Cost center idDetailed information can be obtained through the [Search cost center information] interface query',
         )
         .optional(),
       staffing_model: z
         .object({ enum_name: z.string().describe('enumeration value') })
         .describe(
-          'Post management mode- For detailed enumeration types, please refer to the definition of staffing_model in ',
+          'Post management mode- For detailed enumeration types, please refer to the definition of staffing_model in [enumeration scene]',
         )
         .optional(),
     }),
@@ -1593,7 +1601,7 @@ export const corehrV1DepartmentDelete = {
       department_id: z
         .string()
         .describe(
-          'The department ID that needs to be deleted can be obtained through the  interface query',
+          'The department ID that needs to be deleted can be obtained through the [Search department information] interface query',
         ),
     }),
   },
@@ -1621,7 +1629,7 @@ export const corehrV1DepartmentGet = {
       department_id: z
         .string()
         .describe(
-          'Department I. ID acquisition:- Call [[create department]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/department/create)[[search department]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/department/search) and other interfaces to return the department ID- You can also create departments through [[Event]Create departments](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/department/events/created) [[Event]Update departments](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/department/events/updated) Get department ID information',
+          'Department I. ID acquisition:- Call [create department][search department] and other interfaces to return the department ID- You can also create departments through [[Event]Create departments](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/department/events/created) [[Event]Update departments](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/department/events/updated) Get department ID information',
         ),
     }),
   },
@@ -1726,13 +1734,13 @@ export const corehrV1DepartmentPatch = {
       cost_center_id: z
         .string()
         .describe(
-          'Cost center ID, you can get the corresponding cost center information through the  interface',
+          'Cost center ID, you can get the corresponding cost center information through the [Search cost center information] interface',
         )
         .optional(),
       staffing_model: z
         .object({ enum_name: z.string().describe('enumeration value') })
         .describe(
-          'Post management mode- For detailed enumeration types, please refer to the definition of staffing_model in ',
+          'Post management mode- For detailed enumeration types, please refer to the definition of staffing_model in [enumeration scene]',
         )
         .optional(),
     }),
@@ -2075,7 +2083,7 @@ export const corehrV1JobChangeCreate = {
   path: '/open-apis/corehr/v1/job_changes',
   httpMethod: 'POST',
   description:
-    "[Feishu/Lark]-Feishu People（Enterprise Edition）-Job change-Initiate employee changes-This interface is used to initiate an employee change. If the initiation is successful, an employee's change data will be generated and corresponding events will be generated at the same time. Refer to ",
+    "[Feishu/Lark]-Feishu People（Enterprise Edition）-Job change-Initiate employee changes-This interface is used to initiate an employee change. If the initiation is successful, an employee's change data will be generated and corresponding events will be generated at the same time. Refer to [Change of Change Status]",
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2088,12 +2096,12 @@ export const corehrV1JobChangeCreate = {
       transfer_type_unique_identifier: z
         .string()
         .describe(
-          'Unique identification of the transaction type. Transaction types that are only used in special scenarios, such as organization_adjustment, responsibility_transfer, and conversion_after_probation_period, are not supported. Available through the interface Attention: This field is required',
+          'Unique identification of the transaction type. Transaction types that are only used in special scenarios, such as organization_adjustment, responsibility_transfer, and conversion_after_probation_period, are not supported. Available through the interface [Get a list of transaction types]Attention: This field is required',
         ),
       flow_id: z
         .string()
         .describe(
-          'Associated process unique device identifiers, available through the interface Note: When the transaction mode is 2, this field is required',
+          'Associated process unique device identifiers, available through the interface [Get a list of transaction types]Note: When the transaction mode is 2, this field is required',
         )
         .optional(),
       effective_date: z.string().describe('Effective Date'),
@@ -2184,12 +2192,12 @@ export const corehrV1JobChangeCreate = {
                     custom_api_name: z
                       .string()
                       .describe(
-                        'Custom field apiname, which is the unique identifier of the custom field. You can get it by [Get Custom Field List] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/custom_field/query)',
+                        'Custom field apiname, which is the unique identifier of the custom field. You can get it by [Get Custom Field List]',
                       ),
                     value: z
                       .string()
                       .describe(
-                        'Field value, which is the string escaped by json, according to the metadata definition, the field format is different (such as 123, 123.23, "true", ["id1", "id2"], "2006-01-02 15:04:05")Attention:1. The enumeration field value can be obtained by [Get Field Details] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/custom_field/get_by_param), the reference interface returns, field details > field type configuration information > option configuration information > option information > enumeration value set API name',
+                        'Field value, which is the string escaped by json, according to the metadata definition, the field format is different (such as 123, 123.23, "true", ["id1", "id2"], "2006-01-02 15:04:05")Attention:1. The enumeration field value can be obtained by [Get Field Details], the reference interface returns, field details > field type configuration information > option configuration information > option information > enumeration value set API name',
                       ),
                   }),
                 )
@@ -2209,12 +2217,12 @@ export const corehrV1JobChangeCreate = {
                     custom_api_name: z
                       .string()
                       .describe(
-                        'Custom field apiname, which is the unique identifier of the custom field. You can get it by [Get Custom Field List] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/custom_field/query)',
+                        'Custom field apiname, which is the unique identifier of the custom field. You can get it by [Get Custom Field List]',
                       ),
                     value: z
                       .string()
                       .describe(
-                        'Field value, which is the string escaped by json, according to the metadata definition, the field format is different (such as 123, 123.23, "true", ["id1", "id2"], "2006-01-02 15:04:05")Attention:1. The enumeration field value can be obtained by [Get Field Details] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/custom_field/get_by_param), the reference interface returns, field details > field type configuration information > option configuration information > option information > enumeration value set API name',
+                        'Field value, which is the string escaped by json, according to the metadata definition, the field format is different (such as 123, 123.23, "true", ["id1", "id2"], "2006-01-02 15:04:05")Attention:1. The enumeration field value can be obtained by [Get Field Details], the reference interface returns, field details > field type configuration information > option configuration information > option information > enumeration value set API name',
                       ),
                   }),
                 )
@@ -2411,14 +2419,14 @@ export const corehrV1JobDataPatch = {
       version_id: z
         .string()
         .describe(
-          'Job record version ID- When the ID is not empty, the job record content of the specified version will be updated- When the ID is empty, a new version will be addedFunction grey release, if you need to update the specified version, please contact [technical support] (https://applink.feishu.cn/TLJpeNdW)',
+          'Job record version ID- When the ID is not empty, the job record content of the specified version will be updated- When the ID is empty, a new version will be addedFunction grey release, if you need to update the specified version, please contact [technical support]',
         )
         .optional(),
       job_level_id: z.string().describe('Level').optional(),
       job_grade_id: z
         .string()
         .describe(
-          'The grade ID, enumeration value and detailed information can be obtained through the [[query grade]] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_grade/query) interface query',
+          'The grade ID, enumeration value and detailed information can be obtained through the [query grade] interface query',
         )
         .optional(),
       employee_type_id: z.string().describe('Type of employee').optional(),
@@ -2436,7 +2444,7 @@ export const corehrV1JobDataPatch = {
       assignment_start_reason: z
         .object({ enum_name: z.string().describe('Enumeration value') })
         .describe(
-          "Assignment start reason can be obtained by .Please note that 'assignment start reason' cannot be filled as 'onboarding'. When the previous job data version's 'assignment start reason' is 'onboarding', 'assignment start reason' is required",
+          "Assignment start reason can be obtained by [Enum constant].Please note that 'assignment start reason' cannot be filled as 'onboarding'. When the previous job data version's 'assignment start reason' is 'onboarding', 'assignment start reason' is required",
         )
         .optional(),
       probation_expected_end_date: z.string().describe('End date of probation period').optional(),
@@ -2465,7 +2473,7 @@ export const corehrV1JobDataPatch = {
       service_company: z
         .string()
         .describe(
-          'The company ID, the detailed information can be obtained through the [[Query a single company]] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/company/get) interface query',
+          'The company ID, the detailed information can be obtained through the [Query a single company] interface query',
         )
         .optional(),
     }),
@@ -2509,10 +2517,17 @@ export const corehrV1JobFamilyCreate = {
         )
         .describe('Job faimly name'),
       active: z.boolean().describe('Enable'),
+      selectable: z.boolean().describe('Selectable').optional(),
       parent_id: z
         .string()
         .describe(
-          'Superior job faimly. ID acquisition method:- Call[[New Job Level]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_level/create) [[Query the rank information of the tenant]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_level/list) and other interfaces to return the Job Level ID',
+          'Senior Job Family ID. ID acquisition method:- Call [Create Job Family] [Query the sequence information of the tenant] and other interfaces to return the Job Family ID',
+        )
+        .optional(),
+      pathway_ids: z
+        .array(z.string())
+        .describe(
+          'Pathway ID, for details, please refer to [Get Pathway information]',
         )
         .optional(),
       effective_time: z
@@ -2520,17 +2535,20 @@ export const corehrV1JobFamilyCreate = {
         .describe(
           'Version effective date- Fill in the format: YYYY-MM-DD 00:00:00 (the system will automatically change the hours, minutes and seconds to 00:00:00)- The system defaults to take effect at 00:00:00 on the day when the date is filled in- This interface only supports the smallest unit of day- Date range requirements: 1900-01-01 00:00:00～9999-12-31 23:59:59',
         ),
-      expiration_time: z
-        .string()
-        .describe(
-          'Version expiration date- Fill in the format: YYYY-MM-DD 00:00:00 (the system will automatically change the hours, minutes and seconds to 00:00:00)- The system defaults to expiry at 00:00:00 on the day when the date is filled in- Date range requirements: 1900-01-01 00:00:00～9999-12-31 23:59:59',
-        )
-        .optional(),
       code: z
         .string()
         .describe(
           'Job faimly Code (cannot be repeated with the encoding of other records), this field will be invalid when automatic encoding is turned on',
         )
+        .optional(),
+      description: z
+        .array(
+          z.object({
+            lang: z.string().describe("description's language,zh-CN in Chinese, en-US in English"),
+            value: z.string().describe("description's value"),
+          }),
+        )
+        .describe('Description')
         .optional(),
       custom_fields: z
         .array(
@@ -2539,7 +2557,7 @@ export const corehrV1JobFamilyCreate = {
             value: z
               .string()
               .describe(
-                'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")- custom field type，See ',
+                'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")- custom field type，See [Get custom field list]',
               ),
           }),
         )
@@ -2568,7 +2586,7 @@ export const corehrV1JobFamilyDelete = {
       job_family_id: z
         .string()
         .describe(
-          'Job family ID to be deleted. How to get the ID:- Call [[Create Job Family]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/create) [[Query the Job Family of the tenant]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/list) and other API to return the Job Family ID',
+          'Job family ID to be deleted. How to get the ID:- Call [Create Job Family] [Query the Job Family of the tenant] and other API to return the Job Family ID',
         ),
     }),
   },
@@ -2587,7 +2605,7 @@ export const corehrV1JobFamilyGet = {
       job_family_id: z
         .string()
         .describe(
-          'List of Job Family IDs. How to get the ID:- Call [[Create Job Family]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/create) [[Query the Job Family of the tenant]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/list) and other API to return the Job Family ID',
+          'List of Job Family IDs. How to get the ID:- Call [Create Job Family] [Query the Job Family of the tenant] and other API to return the Job Family ID',
         ),
     }),
   },
@@ -2638,10 +2656,17 @@ export const corehrV1JobFamilyPatch = {
         .describe('Name')
         .optional(),
       active: z.boolean().describe('Enable').optional(),
+      selectable: z.boolean().describe('Selectable').optional(),
       parent_id: z
         .string()
         .describe(
-          'Senior sequence ID. ID acquisition method:- Call [[New Sequence]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/create) [[Query the sequence information of the tenant]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/list) and other interfaces to return the sequence ID',
+          'Senior Job Family ID. ID acquisition method:- Call [Create Job Family ID] [Query the sequence information of the tenant] and other interfaces to return the Job Family ID',
+        )
+        .optional(),
+      pathway_ids: z
+        .array(z.string())
+        .describe(
+          'Pathway ID, for details, please refer to [Get Pathway information]',
         )
         .optional(),
       effective_time: z
@@ -2650,17 +2675,15 @@ export const corehrV1JobFamilyPatch = {
           'Effective date- Fill in the format: YYYY-MM-DD 00:00:00 (the system will automatically change the hours, minutes and seconds to 00:00:00)- The system defaults to take effect at 00:00:00 on the day when the date is filled in- This interface only supports the smallest unit of day- Date range requirements: 1900-01-01 00:00:00～9999-12-31 23:59:59',
         )
         .optional(),
-      expiration_time: z
-        .string()
-        .describe(
-          'Expiration date- Fill in the format: YYYY-MM-DD 00:00:00 (the system will automatically change the hours, minutes and seconds to 00:00:00)- The expiration time of the edited record version. If the user modifies the information after the effective date of this operation, the system will use the date of the next operation as the expiration time of the current record. - The system defaults to expiry at 00:00:00 on the day when the date is filled in- Date range requirements: 1900-01-01 00:00:00～9999-12-31 23:59:59',
+      code: z.string().describe('Custom field (this field is temporarily unsupported)').optional(),
+      description: z
+        .array(
+          z.object({
+            lang: z.string().describe("description's language,zh-CN in Chinese, en-US in English"),
+            value: z.string().describe("description's value"),
+          }),
         )
-        .optional(),
-      code: z
-        .string()
-        .describe(
-          'Sequence encoding (cannot be duplicated with the encoding of other records)- When turning on automatic encoding, if no value is passed, the encoding will be automatically generated, otherwise the incoming value shall prevail- When automatic encoding is not enabled, the encoding will not be automatically generated without passing the value',
-        )
+        .describe('Description')
         .optional(),
       custom_fields: z
         .array(
@@ -2732,13 +2755,19 @@ export const corehrV1JobLevelCreate = {
             value: z
               .string()
               .describe(
-                'Field value, a JSON escaped string.** Note: For specific value transfer methods, see ** [Get metadata for custom fields] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/custom-fields-guide)',
+                'Field value, a JSON escaped string.** Note: For specific value transfer methods, see ** [Get metadata for custom fields]',
               ),
           }),
         )
         .describe('Custom fields (this feature is not currently supported by the rank)')
         .optional(),
       job_grade: z.array(z.string()).describe('Job grade IDs').optional(),
+      pathway_ids: z
+        .array(z.string())
+        .describe(
+          'Pathway ID, for details, please refer to [Get Pathway information]',
+        )
+        .optional(),
     }),
     params: z.object({
       client_token: z
@@ -2762,7 +2791,7 @@ export const corehrV1JobLevelDelete = {
       job_level_id: z
         .string()
         .describe(
-          'Job level ID to be deleted.D acquisition method:- Call[[New Job Level]](/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_level/create) [[Query the rank information of the tenant]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_level/list) and other interfaces to return the Job Level ID',
+          'Job level ID to be deleted.D acquisition method:- Call[New Job Level] [Query the rank information of the tenant] and other interfaces to return the Job Level ID',
         ),
     }),
   },
@@ -2781,7 +2810,7 @@ export const corehrV1JobLevelGet = {
       job_level_id: z
         .string()
         .describe(
-          'Job Level ID. ID acquisition method:- Call [[Create Job Level]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_level/create) [[Query the Job Level information of the tenant]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_level/list) and other interfaces to return the Job Level ID',
+          'Job Level ID. ID acquisition method:- Call [Create Job Level] [Query the Job Level information of the tenant] and other interfaces to return the Job Level ID',
         ),
     }),
   },
@@ -2855,13 +2884,19 @@ export const corehrV1JobLevelPatch = {
             value: z
               .string()
               .describe(
-                'Field value, which is the string escaped by json, according to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2\\"], "2006-01-02 15:04:05")- See [Get custom field list] for details of custom fields (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/custom_field/query)',
+                'Field value, which is the string escaped by json, according to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2\\"], "2006-01-02 15:04:05")- See [Get custom field list] for details of custom fields (https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/custom_field/query)',
               ),
           }),
         )
         .describe('Custom field (this field is temporarily unsupported)')
         .optional(),
       job_grade: z.array(z.string()).describe('Job grade IDs').optional(),
+      pathway_ids: z
+        .array(z.string())
+        .describe(
+          'Pathway ID, for details, please refer to [Get Pathway information]',
+        )
+        .optional(),
     }),
     params: z.object({
       client_token: z
@@ -2873,7 +2908,7 @@ export const corehrV1JobLevelPatch = {
       job_level_id: z
         .string()
         .describe(
-          'Job Level ID. ID acquisition method:- Call[[New Job Level]](/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_level/create) [[Query the rank information of the tenant]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_level/list) and other interfaces to return the Job Level ID',
+          'Job Level ID. ID acquisition method:- Call[New Job Level] [Query the rank information of the tenant] and other interfaces to return the Job Level ID',
         ),
     }),
   },
@@ -2924,22 +2959,28 @@ export const corehrV1JobCreate = {
         )
         .describe('job title')
         .optional(),
+      pathway_id: z
+        .string()
+        .describe(
+          'Pathway ID, for details, please refer to [Get Pathway information]',
+        )
+        .optional(),
       job_family_id_list: z
         .array(z.string())
         .describe(
-          'Job sequence ID list- Details can be obtained by [Batch Query Sequence] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_family/batch_get)',
+          'Job sequence ID list- Details can be obtained by [Batch Query Sequence]',
         )
         .optional(),
       job_level_id_list: z
         .array(z.string())
         .describe(
-          'Job Level ID List- Details can be obtained by ',
+          'Job Level ID List- Details can be obtained by [Batch Query Job level]',
         )
         .optional(),
       working_hours_type_id: z
         .string()
         .describe(
-          'The working hour system ID, enumeration value and detailed information can be obtained through the [[batch query working hour system]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/working_hours_type/list) interface query',
+          'The working hour system ID, enumeration value and detailed information can be obtained through the [batch query working hour system] interface query',
         )
         .optional(),
       effective_time: z
@@ -2947,12 +2988,6 @@ export const corehrV1JobCreate = {
         .describe(
           'Version effective date- Fill in the format: YYYY-MM-DD 00:00:00 (the system will automatically change the time and seconds to 00:00:00)- The system defaults to 00:00:00 on the day of filling in the date.The interface is only supported up to the smallest unit for the day- Date range requirements: 1900-01-01 00:00:00~ 9999-12-31 23:59:59',
         ),
-      expiration_time: z
-        .string()
-        .describe(
-          'Version expiration date- Fill in the format: YYYY-MM-DD- The system defaults to invalid on 9999-12-31 23:59:59.The interface is only supported up to the smallest unit for the day- Date range requirements: 1900-01-01~ 9999-12-31',
-        )
-        .optional(),
       custom_fields: z
         .array(
           z.object({
@@ -2965,7 +3000,7 @@ export const corehrV1JobCreate = {
           }),
         )
         .describe(
-          'Custom field, format reference:[[Custom Field Description]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_level/batch_get)Position, Job, Custom Organization Module',
+          'Custom field, format reference:[Custom Field Description]Position, Job, Custom Organization Module',
         )
         .optional(),
     }),
@@ -2991,7 +3026,7 @@ export const corehrV1JobDelete = {
       job_id: z
         .string()
         .describe(
-          'The job ID that needs to be deleted. How to get the ID:- Call [[Create job]] (https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job/create) [[Batch query job]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job/list) to return job ID- You can also create jobs through [[Event]Create Jobs](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job/events/created) [[Event]Update jobs](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job/events/updated) Get ID',
+          'The job ID that needs to be deleted. How to get the ID:- Call [Create job] [Batch query job] to return job ID- You can also create jobs through [[Event]Create Jobs](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job/events/created) [[Event]Update jobs](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job/events/updated) Get ID',
         ),
     }),
   },
@@ -3079,34 +3114,34 @@ export const corehrV1JobPatch = {
         )
         .describe('job title')
         .optional(),
+      pathway_id: z
+        .string()
+        .describe(
+          'Pathway ID, for details, please refer to [Get Pathway information]',
+        )
+        .optional(),
       job_family_id_list: z
         .array(z.string())
         .describe(
-          'List of job sequence IDs. How to get the ID:- Call [[New Job family]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/create) [[Query the sequence information of the tenant]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/list) and other interfaces to return the sequence ID',
+          'List of job sequence IDs. How to get the ID:- Call [New Job family] [Query the sequence information of the tenant] and other interfaces to return the sequence ID',
         )
         .optional(),
       job_level_id_list: z
         .array(z.string())
         .describe(
-          'List of job level IDs. How to get the ID:- Call [[Create Job Level]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_level/create)[[Query the rank information of the tenant]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_level/list) and other interfaces to return the rank ID',
+          'List of job level IDs. How to get the ID:- Call [Create Job Level][Query the rank information of the tenant] and other interfaces to return the rank ID',
         )
         .optional(),
       working_hours_type_id: z
         .string()
         .describe(
-          'The working hour system ID, enumeration value and detailed information can be obtained through the [[batch query working hour system]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/working_hours_type/list) interface query',
+          'The working hour system ID, enumeration value and detailed information can be obtained through the [batch query working hour system] interface query',
         )
         .optional(),
       effective_time: z
         .string()
         .describe(
           'Version effective date- Fill in the format: YYYY-MM-DD 00:00:00 (the system will automatically change the time and seconds to 00:00:00)- The system defaults to 00:00:00 on the day of filling in the date.The interface is only supported up to the smallest unit for the day- Date range requirements: 1900-01-01 00:00:00~ 9999-12-31 23:59:59',
-        )
-        .optional(),
-      expiration_time: z
-        .string()
-        .describe(
-          'Version expiration date- Fill in the format: YYYY-MM-DD 00:00:00 (the system will automatically change the hours, minutes and seconds to 00:00:00)- The system defaults to expiry at 00:00:00 on the day when the date is filled in- Date range requirements: 1900-01-01 00:00:00～9999-12-31 23:59:59',
         )
         .optional(),
       custom_fields: z
@@ -3121,7 +3156,7 @@ export const corehrV1JobPatch = {
           }),
         )
         .describe(
-          'Custom field, format reference:[[Custom Field Description]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_level/batch_get)Position, Job, Custom Organization Module',
+          'Custom field, format reference:[Custom Field Description]Position, Job, Custom Organization Module',
         )
         .optional(),
     }),
@@ -3135,7 +3170,7 @@ export const corehrV1JobPatch = {
       job_id: z
         .string()
         .describe(
-          'Job ID. How to get ID:- Call [[Create job]] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job/create) [[Batch query job]] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/corehr-v2/job/list) to return job ID- You can also create jobs through [[Event]] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job/events/created) [Event] Update jobs] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job/events/updated) Get ID',
+          'Job ID. How to get ID:- Call [Create job] [Batch query job] to return job ID- You can also create jobs through [Event] [Event] Update jobs] (https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job/events/updated) Get ID',
         ),
     }),
   },
@@ -3147,14 +3182,14 @@ export const corehrV1LeaveGrantingRecordCreate = {
   path: '/open-apis/corehr/v1/leave_granting_records',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Leave management-Create vacation grant records-Write the leave issuance record to the Feishu personnel leave system. Corresponding to the creation or import function of leave management - leave management - ',
+    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Leave management-Create vacation grant records-Write the leave issuance record to the Feishu personnel leave system. Corresponding to the creation or import function of leave management - leave management - [issuance record]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       leave_type_id: z
         .string()
         .describe(
-          'Leave_type_id type ID, the enumeration value can be obtained through the  interface,if there is a vacation subclass under the vacation type, only the ID of the vacation subclass is passed in here',
+          'Leave_type_id type ID, the enumeration value can be obtained through the [Get a list of vacation types] interface,if there is a vacation subclass under the vacation type, only the ID of the vacation subclass is passed in here',
         ),
       employment_id: z.string().describe('Employee ID, employee id of Feishu personnel. Corresponding user_id_type'),
       granting_quantity: z.string().describe('Number awarded'),
@@ -3189,14 +3224,14 @@ export const corehrV1LeaveGrantingRecordDelete = {
   path: '/open-apis/corehr/v1/leave_granting_records/:leave_granting_record_id',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Leave management-Delete vacation grant records-Delete the issuance records in the Feishu personnel leave system, Leave Management - Leave Management -  (only supports deleting records where the source of issuance is "manual issuance" or "external system issuance")',
+    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Leave management-Delete vacation grant records-Delete the issuance records in the Feishu personnel leave system, Leave Management - Leave Management - [Issuance Records] (only supports deleting records where the source of issuance is "manual issuance" or "external system issuance")',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       leave_granting_record_id: z
         .string()
         .describe(
-          'Vacation Issuance Record ID, which can be obtained from ',
+          'Vacation Issuance Record ID, which can be obtained from [Create Vacation Issuance Record]',
         ),
     }),
   },
@@ -3215,43 +3250,43 @@ export const corehrV1LeaveCalendarByScope = {
       wk_department_id: z
         .string()
         .describe(
-          'List of IDs of the department to which the user belongs.You can obtain the ID of the department through ',
+          'List of IDs of the department to which the user belongs.You can obtain the ID of the department through [Batch query of job information]',
         )
         .optional(),
       wk_country_region_id: z
         .string()
         .describe(
-          'Country ID.You can get the country/region ID through ',
+          'Country ID.You can get the country/region ID through [Batch query of job information]',
         )
         .optional(),
       wk_employee_type_id: z
         .string()
         .describe(
-          'Employee Type ID.You can obtain the personnel type ID through ',
+          'Employee Type ID.You can obtain the personnel type ID through [Batch query of job information]',
         )
         .optional(),
       wk_work_location_id: z
         .string()
         .describe(
-          'Work Location ID.You can obtain the work location ID through ',
+          'Work Location ID.You can obtain the work location ID through [Batch query of employment information]',
         )
         .optional(),
       wk_working_hours_type_id: z
         .string()
         .describe(
-          'Working hours system ID.You can obtain the working hours system ID through ',
+          'Working hours system ID.You can obtain the working hours system ID through [Batch query of job information]',
         )
         .optional(),
       wk_job_family_id: z
         .string()
         .describe(
-          'Job Family ID.You can obtain the job sequence ID through ',
+          'Job Family ID.You can obtain the job sequence ID through [Batch query of job information]',
         )
         .optional(),
       wk_company_id: z
         .string()
         .describe(
-          'Company ID.You can get the company ID through ',
+          'Company ID.You can get the company ID through [Batch query of job information]',
         )
         .optional(),
     }),
@@ -3265,7 +3300,7 @@ export const corehrV1LeaveLeaveBalances = {
   path: '/open-apis/corehr/v1/leaves/leave_balances',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Leave management-Batch check employee vacation balance-Get the balance data of each vacation of employees in batches. The corresponding page is Leave Management - Leave Management - ',
+    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Leave management-Batch check employee vacation balance-Get the balance data of each vacation of employees in batches. The corresponding page is Leave Management - Leave Management - [Leave Report]',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -3304,7 +3339,7 @@ export const corehrV1LeaveLeaveRequestHistory = {
   path: '/open-apis/corehr/v1/leaves/leave_request_history',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Leave management-Batch query employee leave records-Get the leave record data of employees in batches. The corresponding page is Leave Management - Leave Management - ',
+    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Leave management-Batch query employee leave records-Get the leave record data of employees in batches. The corresponding page is Leave Management - Leave Management - [Leave Record]',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -3324,7 +3359,7 @@ export const corehrV1LeaveLeaveRequestHistory = {
       initiator_id_list: z
         .array(z.string())
         .describe(
-          'List of vacation initiator IDs, up to 100, with the same ID type as user_id_type. Note: This interface is a get request, so the incoming array needs to meet the specifications of the incoming array of get requests, such as employment_id_ list=6919733291281024522 & employment_id_ list=6919733291281024523',
+          'List of vacation initiator IDs, up to 100, with the same ID type as user_id_type. Note: This interface is a get request, so the incoming array needs to meet the specifications of the incoming array of get requests, such as initiator_id_list=6919733291281024522&initiator_id_list=6919733291281024523',
         )
         .optional(),
       leave_request_status: z
@@ -3336,7 +3371,7 @@ export const corehrV1LeaveLeaveRequestHistory = {
       leave_type_id_list: z
         .array(z.string())
         .describe(
-          'Vacation type ID list, enumeration values can be obtained through the  interface. Please note: This interface is a get request, so when passing an array, it needs to meet the specifications of the get request to pass an array, such as leave_type_id_list =4718803945687580501 & leave_type_id_ list=4718803945687580500',
+          'Vacation type ID list, enumeration values can be obtained through the [Get Vacation Type List] interface. Please note: This interface is a get request, so when passing an array, it needs to meet the specifications of the get request to pass an array, such as leave_type_id_list =4718803945687580501 & leave_type_id_ list=4718803945687580500',
         )
         .optional(),
       leave_start_date_min: z
@@ -3435,7 +3470,7 @@ export const corehrV1LeaveLeaveTypes = {
   path: '/open-apis/corehr/v1/leaves/leave_types',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Leave management-Get a list of vacation types-Get a list of vacation types configured in the background of vacation settings (such as annual leave, personal leave, marriage leave, etc.). The function of the corresponding page is Settings - Vacation Settings - ',
+    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Leave management-Get a list of vacation types-Get a list of vacation types configured in the background of vacation settings (such as annual leave, personal leave, marriage leave, etc.). The function of the corresponding page is Settings - Vacation Settings - [Vacation Types]',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -3532,7 +3567,7 @@ export const corehrV1LeaveWorkCalendarDate = {
       wk_calendar_ids: z
         .array(z.string())
         .describe(
-          'List of IDs in the work calendar, up to 100. You can obtain the work calendar ID through the API ',
+          'List of IDs in the work calendar, up to 100. You can obtain the work calendar ID through the API [Get work calendar]',
         ),
       dates: z
         .array(z.string())
@@ -3575,7 +3610,7 @@ export const corehrV1LocationCreate = {
           parent_id: z
             .string()
             .describe(
-              'The superior location, in the creation of the scene, this field is required, and the enumeration value and detailed information can be obtained through the  interface query',
+              'The superior location, in the creation of the scene, this field is required, and the enumeration value and detailed information can be obtained through the [Query Location List] interface query',
             )
             .optional(),
           name: z
@@ -3614,7 +3649,7 @@ export const corehrV1LocationCreate = {
             enum_name: z
               .string()
               .describe(
-                'The enumeration value, location use ID, enumeration value and detailed information can be obtained through the  interface query',
+                'The enumeration value, location use ID, enumeration value and detailed information can be obtained through the [Batch Query Location Use] interface query',
               ),
           }),
         )
@@ -3626,139 +3661,139 @@ export const corehrV1LocationCreate = {
             country_region_id: z
               .string()
               .describe(
-                'Country IDIt can be obtained through the  interface',
+                'Country IDIt can be obtained through the [Query country/region information] interface',
               ),
             region_id: z
               .string()
               .describe(
-                'Main administrative region IDIt can be obtained through the  interface',
+                'Main administrative region IDIt can be obtained through the [Query Province/Administrative Region Information] interface',
               )
               .optional(),
             city_id: z
               .string()
               .describe(
-                'City ID.- It can be obtained through the [[Query City Information]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-city/search) interface',
+                'City ID.- It can be obtained through the [Query City Information] interface',
               )
               .optional(),
             distinct_id: z
               .string()
               .describe(
-                'District/County ID- It can be obtained through the [[Query District and County Information]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-district/search) interface',
+                'District/County ID- It can be obtained through the [Query District and County Information] interface',
               )
               .optional(),
             address_line1: z
               .string()
               .describe(
-                'Address line 1- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 1- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             address_line2: z
               .string()
               .describe(
-                'Address line 2- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 2- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             address_line3: z
               .string()
               .describe(
-                'Address line 3- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 3- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             address_line4: z
               .string()
               .describe(
-                'Address line 4- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 4- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             address_line5: z
               .string()
               .describe(
-                'Address line 5- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 5- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             address_line6: z
               .string()
               .describe(
-                'Address line 6- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 6- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             address_line7: z
               .string()
               .describe(
-                'Address line 7- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 7- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             address_line8: z
               .string()
               .describe(
-                'Address line 8- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 8- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             address_line9: z
               .string()
               .describe(
-                'Address line 9- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 9- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             local_address_line1: z
               .string()
               .describe(
-                'Address line 1 (non-Latin native script)- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 1 (non-Latin native script)- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             local_address_line2: z
               .string()
               .describe(
-                'Address line 2 (non-Latin native scripts)- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 2 (non-Latin native scripts)- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             local_address_line3: z
               .string()
               .describe(
-                'Address line 3 (non-Latin native scripts)- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 3 (non-Latin native scripts)- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             local_address_line4: z
               .string()
               .describe(
-                'Address line 4 (non-Latin native scripts)- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 4 (non-Latin native scripts)- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             local_address_line5: z
               .string()
               .describe(
-                'Address line 5 (non-Latin native script)- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 5 (non-Latin native script)- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             local_address_line6: z
               .string()
               .describe(
-                'Address line 6 (non-Latin native script)- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 6 (non-Latin native script)- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             local_address_line7: z
               .string()
               .describe(
-                'Address line 7 (non-Latin native scripts)- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 7 (non-Latin native scripts)- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             local_address_line8: z
               .string()
               .describe(
-                'Address line 8 (non-Latin native scripts)- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 8 (non-Latin native scripts)- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             local_address_line9: z
               .string()
               .describe(
-                'Address line 9 (non-Latin native scripts)- The filling rules can be seen in [[Address Filling Guide]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/basic-infomation/data-calculation-rules/address-completion-guidelines)',
+                'Address line 9 (non-Latin native scripts)- The filling rules can be seen in [Address Filling Guide]',
               )
               .optional(),
             postal_code: z.string().describe('Postal Code').optional(),
             address_type_list: z
               .array(z.object({ enum_name: z.string().describe('enumeration value') }))
               .describe(
-                'Address type, enumeration value and details can be obtained by [[Query Address Type]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/custom_field/get_by_param) interface query.- Request parameter object_api_name=address; custom_api_name=address_type',
+                'Address type, enumeration value and details can be obtained by [Query Address Type] interface query.- Request parameter object_api_name=address; custom_api_name=address_type',
               )
               .optional(),
             is_primary: z.boolean().describe('Primary address').optional(),
@@ -3770,7 +3805,7 @@ export const corehrV1LocationCreate = {
       working_hours_type_id: z
         .string()
         .describe(
-          'The working hour system ID, enumeration value and detailed information can be obtained through the  interface query',
+          'The working hour system ID, enumeration value and detailed information can be obtained through the [batch query working hour system] interface query',
         )
         .optional(),
       effective_time: z
@@ -3781,7 +3816,7 @@ export const corehrV1LocationCreate = {
       locale: z
         .object({ enum_name: z.string().describe('enumeration value') })
         .describe(
-          'Locale ID, enumeration values and details can be obtained by [[Batch Query Enumeration Information]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/custom_field/get_by_param) interface query.- Request parameter object_api_name=location; custom_api_name=locale',
+          'Locale ID, enumeration values and details can be obtained by [Batch Query Enumeration Information] interface query.- Request parameter object_api_name=location; custom_api_name=locale',
         )
         .optional(),
       time_zone_id: z.string().describe('Time zone').optional(),
@@ -3811,7 +3846,7 @@ export const corehrV1LocationDelete = {
       location_id: z
         .string()
         .describe(
-          'Location ID to be deleted ID acquisition method:- Call [[Create Location]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/location/create) [[Batch Paging Query Location]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/location/list) and other interfaces to return the location ID',
+          'Location ID to be deleted ID acquisition method:- Call [Create Location] [Batch Paging Query Location] and other interfaces to return the location ID',
         ),
     }),
   },
@@ -3830,7 +3865,7 @@ export const corehrV1LocationGet = {
       location_id: z
         .string()
         .describe(
-          'The location record ID maintained by the location maintenance administrator in the Feishu personnel system, organization management module.ID acquisition method:- Call [[Create Location]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/location/create) [[Batch Paging Query Location]](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/location/list) and other interfaces to return the location ID',
+          'The location record ID maintained by the location maintenance administrator in the Feishu personnel system, organization management module.ID acquisition method:- Call [Create Location] [Batch Paging Query Location] and other interfaces to return the location ID',
         ),
     }),
   },
@@ -4010,7 +4045,7 @@ export const corehrV1OffboardingQuery = {
   path: '/open-apis/corehr/v1/offboardings/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Employee turnover-Query the list of reasons for employees offboarding-This interface is used to query the option information of  > reason for offboarding, which return the unique identity, name and enabled status of the reason for offboarding option',
+    '[Feishu/Lark]-Feishu People（Enterprise Edition）-Employee turnover-Query the list of reasons for employees offboarding-This interface is used to query the option information of [Offboarding configuration] > reason for offboarding, which return the unique identity, name and enabled status of the reason for offboarding option',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -4043,7 +4078,7 @@ export const corehrV1OffboardingSearch = {
       employment_ids: z
         .array(z.string())
         .describe(
-          'Employment ID list.The ID type is consistent with the value of the query parameter user_id_type:1. When the value of user_id_type is open_id, please refer to  for the ID acquisition method.2. When the value of user_id_type is user_id, please refer to  for the ID acquisition method.3. When the value of user_id_type is union_id, please refer to  for the ID acquisition method.4. When the value of user_id_type is people_corehr_id, first refer to  to obtain the User ID. Then obtain the employment ID through ',
+          'Employment ID list.The ID type is consistent with the value of the query parameter user_id_type:1. When the value of user_id_type is open_id, please refer to [How to obtain your own Open ID] for the ID acquisition method.2. When the value of user_id_type is user_id, please refer to [How to obtain your own User ID] for the ID acquisition method.3. When the value of user_id_type is union_id, please refer to [How to obtain your own Union ID] for the ID acquisition method.4. When the value of user_id_type is people_corehr_id, first refer to [How to obtain your own User ID] to obtain the User ID. Then obtain the employment ID through [ID conversion]',
         )
         .optional(),
       apply_initiating_time_start: z
@@ -4109,13 +4144,13 @@ export const corehrV1OffboardingSearch = {
       reasons: z
         .array(z.string())
         .describe(
-          'The reason for leaving list can be obtained through the [[Query employee reason for leaving list]] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/offboarding/query) interface, and the departure information related to the lower-level reasons is not returned when querying.It will searching offboarding information in all reason when the value is empty. <b> Field permission requirements: </b> <md-perm name="corehr:employment.offboarding_reason.search:read" desc="Search by reason for offboarding" support_app_types="custom,isv" tags="">Search by reason for offboarding</md-perm>',
+          'The reason for leaving list can be obtained through the [Query employee reason for leaving list] interface, and the departure information related to the lower-level reasons is not returned when querying.It will searching offboarding information in all reason when the value is empty. <b> Field permission requirements: </b> <md-perm name="corehr:employment.offboarding_reason.search:read" desc="Search by reason for offboarding" support_app_types="custom,isv" tags="">Search by reason for offboarding</md-perm>',
         )
         .optional(),
       employee_reasons: z
         .array(z.string())
         .describe(
-          'The reason for leaving (employee) list can be obtained through the [[Query the employee reason for leaving list]] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/offboarding/query) interface, and the departure information related to the subordinate reason is not returned when querying.It will searching offboarding information in all reason when the value is empty. <b> Field permission requirements: </b><md-perm name="corehr:employment.offboarding_reason.search:read" desc="Search by reason for offboarding" support_app_types="custom,isv" tags="">Search by reason for offboarding</md-perm>',
+          'The reason for leaving (employee) list can be obtained through the [Query the employee reason for leaving list] interface, and the departure information related to the subordinate reason is not returned when querying.It will searching offboarding information in all reason when the value is empty. <b> Field permission requirements: </b><md-perm name="corehr:employment.offboarding_reason.search:read" desc="Search by reason for offboarding" support_app_types="custom,isv" tags="">Search by reason for offboarding</md-perm>',
         )
         .optional(),
     }),
@@ -4138,7 +4173,7 @@ export const corehrV1OffboardingSubmit = {
   path: '/open-apis/corehr/v1/offboardings/submit',
   httpMethod: 'POST',
   description:
-    "[Feishu/Lark]-Deprecated Version (Not Recommended)-Feishu People-Resignation-Operation employee resignation-This interface is used to initiate employee offboarding, which is equivalent to the direct offboarding function of employees in the Feishu CoreHR. If initiated successfully, an employee's offboarding record will be saved and corresponding events will be send.Refer to  and ",
+    "[Feishu/Lark]-Deprecated Version (Not Recommended)-Feishu People-Resignation-Operation employee resignation-This interface is used to initiate employee offboarding, which is equivalent to the direct offboarding function of employees in the Feishu CoreHR. If initiated successfully, an employee's offboarding record will be saved and corresponding events will be send.Refer to [Change of offboarding application status (new)] and [Change of offboarding checklist status]",
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -4150,13 +4185,13 @@ export const corehrV1OffboardingSubmit = {
       employment_id: z
         .string()
         .describe(
-          'Employee ID. The ID type is consistent with the value of the query parameter user_id_type:1. When the value of user_id_type is open_id, please refer to  for the ID acquisition method.2. When the value of user_id_type is user_id, please refer to  for the ID acquisition method.3. When the value of user_id_type is union_id, please refer to  for the ID acquisition method.4. When the value of user_id_type is people_corehr_id, first refer to  to obtain the User ID. Then obtain the employment ID through ',
+          'Employee ID. The ID type is consistent with the value of the query parameter user_id_type:1. When the value of user_id_type is open_id, please refer to [How to obtain your own Open ID] for the ID acquisition method.2. When the value of user_id_type is user_id, please refer to [How to obtain your own User ID] for the ID acquisition method.3. When the value of user_id_type is union_id, please refer to [How to obtain your own Union ID] for the ID acquisition method.4. When the value of user_id_type is people_corehr_id, first refer to [How to obtain your own User ID] to obtain the User ID. Then obtain the employment ID through [ID conversion]',
         ),
       offboarding_date: z.string().describe('Offboarding date,parameter format should be YYYY-MM-DD'),
       offboarding_reason_unique_identifier: z
         .string()
         .describe(
-          'The reason for offboarding,can be obtained through the interface',
+          'The reason for offboarding,can be obtained through the interface[【Query the list of reasons for employee offboarding】]',
         ),
       offboarding_reason_explanation: z
         .string()
@@ -4167,7 +4202,7 @@ export const corehrV1OffboardingSubmit = {
       initiator_id: z
         .string()
         .describe(
-          'Initiator ID.The ID type is consistent with the value of the query parameter user_id_type:1. When the value of user_id_type is open_id, please refer to  for the ID acquisition method.2. When the value of user_id_type is user_id, please refer to  for the ID acquisition method.3. When the value of user_id_type is union_id, please refer to  for the ID acquisition method.4. When the value of user_id_type is people_corehr_id, first refer to  to obtain the User ID. Then obtain the employment ID through .Note: 1. Only the operator can revoke the offboarding2. The operator will be system user When it is empty',
+          'Initiator ID.The ID type is consistent with the value of the query parameter user_id_type:1. When the value of user_id_type is open_id, please refer to [How to obtain your own Open ID] for the ID acquisition method.2. When the value of user_id_type is user_id, please refer to [How to obtain your own User ID] for the ID acquisition method.3. When the value of user_id_type is union_id, please refer to [How to obtain your own Union ID] for the ID acquisition method.4. When the value of user_id_type is people_corehr_id, first refer to [How to obtain your own User ID] to obtain the User ID. Then obtain the employment ID through [ID conversion].Note: 1. Only the operator can revoke the offboarding2. The operator will be system user When it is empty',
         )
         .optional(),
       add_block_list: z
@@ -4179,7 +4214,7 @@ export const corehrV1OffboardingSubmit = {
       block_reason: z
         .string()
         .describe(
-          'The reason for block listNotice:1. The value of this field is in the blocking reason field option set of  > Individual Information Settings > Offboarding Info.2. Whether this field is required depends on add_blokc_list',
+          'The reason for block listNotice:1. The value of this field is in the blocking reason field option set of [Individual Profile Settings] > Individual Information Settings > Offboarding Info.2. Whether this field is required depends on add_blokc_list',
         )
         .optional(),
       block_reason_explanation: z
@@ -4192,17 +4227,17 @@ export const corehrV1OffboardingSubmit = {
             field_name: z
               .string()
               .describe(
-                'The unique identifier of the fieldNote: The value is the field apiname of each field in  > Individual Information Settings > Offboarding Info',
+                'The unique identifier of the fieldNote: The value is the field apiname of each field in [Individual Profile Settings] > Individual Information Settings > Offboarding Info',
               ),
             value: z
               .string()
               .describe(
-                'The field value is the string escaped by json, and the field format is different according to the metadata definition (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2\\"], "2006-01-02 15:04:05").Attention:1. The enumeration value of the enumeration field is set to  > Information Configuration > Leaving Information, which corresponds to the option encoding of the field option set.2. The enumeration field value also can be obtained by , the reference interface returns, field details > field type configuration information > option configuration information > option information > enumeration value set API name3. The personnel field currently only supports the incoming employee\'s employment ID. First refer to  to obtain the User ID. Then obtain the employment ID through .4. Filling in the attachment type field is not supported for the time being',
+                'The field value is the string escaped by json, and the field format is different according to the metadata definition (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2\\"], "2006-01-02 15:04:05").Attention:1. The enumeration value of the enumeration field is set to [Personnel File Configuration] > Information Configuration > Leaving Information, which corresponds to the option encoding of the field option set.2. The enumeration field value also can be obtained by [Get Field Details], the reference interface returns, field details > field type configuration information > option configuration information > option information > enumeration value set API name3. The personnel field currently only supports the incoming employee\'s employment ID. First refer to [How to obtain your own User ID] to obtain the User ID. Then obtain the employment ID through [ID conversion].4. Filling in the attachment type field is not supported for the time being',
               ),
           }),
         )
         .describe(
-          'Offboarding custom fieldNote: For the range of fields that can be filled in, please refer to the custom fields in  > Individual Information Settings > Offboarding Info',
+          'Offboarding custom fieldNote: For the range of fields that can be filled in, please refer to the custom fields in [Individual Profile Settings] > Individual Information Settings > Offboarding Info',
         )
         .optional(),
     }),
@@ -4509,13 +4544,13 @@ export const corehrV1PersonCreate = {
             bank_account_usage: z
               .array(z.object({ enum_name: z.string().describe('Enumeration value') }))
               .describe(
-                'Bank card usage, the emuneration value can be obtained through the document [[Feishu Personnel Enumeration Constant]] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant) Bank card usage (bank_account_usage) enumeration definition section',
+                'Bank card usage, the emuneration value can be obtained through the document [Feishu Personnel Enumeration Constant] Bank card usage (bank_account_usage) enumeration definition section',
               )
               .optional(),
             bank_account_type: z
               .object({ enum_name: z.string().describe('Enumeration value') })
               .describe(
-                'The bank card type and emuneration value can be obtained through the document [[Feishu Personnel Enumeration Constant]] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant) bank card type (bank_account_type) enumeration definition section',
+                'The bank card type and emuneration value can be obtained through the document [Feishu Personnel Enumeration Constant] bank card type (bank_account_type) enumeration definition section',
               )
               .optional(),
             currency_id: z.string().describe('Currency id').optional(),
@@ -5218,13 +5253,13 @@ export const corehrV1PersonPatch = {
             bank_account_usage: z
               .array(z.object({ enum_name: z.string().describe('Enumeration value') }))
               .describe(
-                'Bank card usage, the emuneration value can be obtained through the document [[Feishu Personnel Enumeration Constant]] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant) Bank card usage (bank_account_usage) enumeration definition section',
+                'Bank card usage, the emuneration value can be obtained through the document [Feishu Personnel Enumeration Constant] Bank card usage (bank_account_usage) enumeration definition section',
               )
               .optional(),
             bank_account_type: z
               .object({ enum_name: z.string().describe('Enumeration value') })
               .describe(
-                'The bank card type and emuneration value can be obtained through the document [[Feishu Personnel Enumeration Constant]] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/feishu-people-enum-constant) bank card type (bank_account_type) enumeration definition section',
+                'The bank card type and emuneration value can be obtained through the document [Feishu Personnel Enumeration Constant] bank card type (bank_account_type) enumeration definition section',
               )
               .optional(),
             currency_id: z.string().describe('Currency id').optional(),

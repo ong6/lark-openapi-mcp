@@ -57,7 +57,7 @@ export const wikiV2SpaceGet = {
       space_id: z
         .string()
         .describe(
-          'Wiki space ID <md-text type="field-name" ></md-text>',
+          'Wiki space ID <md-text type="field-name" >[How to get Wiki space ID]</md-text>',
         )
         .optional(),
     }),
@@ -77,7 +77,7 @@ export const wikiV2SpaceGetNode = {
       token: z
         .string()
         .describe(
-          'The wiki node or the actual token of the corresponding cloud document.- **Wiki node token**: If the token in the URL link is preceded by "wiki", the token is the node token of the wiki.- **Actual cloud document token**: If the token in the URL link is preceded by "docx", "base", "sheets", or other non-"wiki" types, it indicates that the token is the actual token of the current cloud document.For more information, please refer to .**Note**: When querying with a cloud document token, you need to pass the corresponding document type into the `obj_type` parameter',
+          'The wiki node or the actual token of the corresponding cloud document.- **Wiki node token**: If the token in the URL link is preceded by "wiki", the token is the node token of the wiki.- **Actual cloud document token**: If the token in the URL link is preceded by "docx", "base", "sheets", or other non-"wiki" types, it indicates that the token is the actual token of the current cloud document.For more information, please refer to [Frequently Asked Questions about Documents - How to Retrieve Cloud Document Resource Tokens (IDs)].**Note**: When querying with a cloud document token, you need to pass the corresponding document type into the `obj_type` parameter',
         ),
       obj_type: z
         .enum(['doc', 'docx', 'sheet', 'mindnote', 'bitable', 'file', 'slides', 'wiki'])
@@ -96,7 +96,7 @@ export const wikiV2SpaceList = {
   path: '/open-apis/wiki/v2/spaces',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Docs-Wiki-Wiki space-Get a list of Wiki spaces-This interface is used to get a list of Wiki spaces that have permission to access.This interface is a paging interface. Due to permission filtering, the return list may be empty, but the paging flag (has_more) is true, and can continue the paging request.For the description of each attribute of the Wiki space, please refer to ',
+    '[Feishu/Lark]-Docs-Wiki-Wiki space-Get a list of Wiki spaces-This interface is used to get a list of Wiki spaces that have permission to access.This interface is a paging interface. Due to permission filtering, the return list may be empty, but the paging flag (has_more) is true, and can continue the paging request.For the description of each attribute of the Wiki space, please refer to [Access to Wiki space information]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -222,7 +222,7 @@ export const wikiV2SpaceNodeCopy = {
     path: z.object({
       space_id: z
         .string()
-        .describe('')
+        .describe('[Wiki space id]')
         .optional(),
       node_token: z.string().describe('Node token').optional(),
     }),
@@ -236,14 +236,14 @@ export const wikiV2SpaceNodeCreate = {
   path: '/open-apis/wiki/v2/spaces/:space_id/nodes',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Docs-Wiki-node-Create node-This interface is used to create  in the wiki space at given location',
+    '[Feishu/Lark]-Docs-Wiki-node-Create node-This interface is used to create [node] in the wiki space at given location',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       obj_type: z
         .enum(['doc', 'sheet', 'mindnote', 'bitable', 'file', 'docx', 'slides'])
         .describe(
-          'Document type, for shortcuts, this field is the obj_type of the corresponding entity Options:doc(ObjTypeDoc Deprecated, please use `docx` to create documents. For more details, refer to .),sheet(ObjTypeSheet Sheet),mindnote(ObjTypeMindNote Mindnote),bitable(ObjTypeBitable Bitable),file(ObjTypeFile File),docx(ObjTypeDocx Docx),slides(ObjTypeSlides Slides)',
+          'Document type, for shortcuts, this field is the obj_type of the corresponding entity Options:doc(ObjTypeDoc Deprecated, please use `docx` to create documents. For more details, refer to [Scheduled offline of Docs 1.0 creation capability].),sheet(ObjTypeSheet Sheet),mindnote(ObjTypeMindNote Mindnote),bitable(ObjTypeBitable Bitable),file(ObjTypeFile File),docx(ObjTypeDocx Docx),slides(ObjTypeSlides Slides)',
         ),
       parent_node_token: z
         .string()
@@ -263,7 +263,7 @@ export const wikiV2SpaceNodeCreate = {
     path: z.object({
       space_id: z
         .string()
-        .describe('')
+        .describe('[Wiki space id]')
         .optional(),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -292,7 +292,7 @@ export const wikiV2SpaceNodeList = {
     path: z.object({
       space_id: z
         .string()
-        .describe('')
+        .describe('[Wiki space id]')
         .optional(),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -340,7 +340,7 @@ export const wikiV2SpaceNodeMoveDocsToWiki = {
       apply: z.boolean().describe('Whether to apply for moving in documents when there is no permission').optional(),
     }),
     path: z.object({
-      space_id: z.string().describe(''),
+      space_id: z.string().describe('[Wiki space id]'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },

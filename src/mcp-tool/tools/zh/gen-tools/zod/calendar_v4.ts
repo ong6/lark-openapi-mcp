@@ -67,7 +67,7 @@ export const calendarV4CalendarAclCreate = {
           user_id: z
             .string()
             .describe(
-              '用户 ID。当 `type=user` 时，必须设置该参数值。关于用户 ID 的更多介绍可参见',
+              '用户 ID。当 `type=user` 时，必须设置该参数值。关于用户 ID 的更多介绍可参见[用户相关的 ID 概念]',
             )
             .optional(),
         })
@@ -78,7 +78,7 @@ export const calendarV4CalendarAclCreate = {
       calendar_id: z
         .string()
         .describe(
-          '需要添加访问控制的日历 ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- - - ',
+          '需要添加访问控制的日历 ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- [查询主日历信息]- [查询日历列表]- [搜索日历]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -98,12 +98,12 @@ export const calendarV4CalendarAclDelete = {
       calendar_id: z
         .string()
         .describe(
-          '需要删除访问控制的日历 ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- - - ',
+          '需要删除访问控制的日历 ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- [查询主日历信息]- [查询日历列表]- [搜索日历]',
         ),
       acl_id: z
         .string()
         .describe(
-          '访问控制 ID。为日历创建访问控制时会返回访问控制 ID。你也可以调用接口，获取指定日历内的访问控制信息',
+          '访问控制 ID。为日历创建访问控制时会返回访问控制 ID。你也可以调用[获取访问控制列表]接口，获取指定日历内的访问控制信息',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -136,7 +136,7 @@ export const calendarV4CalendarAclList = {
       calendar_id: z
         .string()
         .describe(
-          '日历 ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- - - ',
+          '日历 ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- [查询主日历信息]- [查询日历列表]- [搜索日历]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -156,7 +156,7 @@ export const calendarV4CalendarAclSubscription = {
       calendar_id: z
         .string()
         .describe(
-          '日历ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- - - ',
+          '日历ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- [查询主日历信息]- [查询日历列表]- [搜索日历]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -176,7 +176,7 @@ export const calendarV4CalendarAclUnsubscription = {
       calendar_id: z
         .string()
         .describe(
-          '日历ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- - - ',
+          '日历ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- [查询主日历信息]- [查询日历列表]- [搜索日历]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -227,7 +227,7 @@ export const calendarV4CalendarDelete = {
       calendar_id: z
         .string()
         .describe(
-          '日历 ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- - - ',
+          '日历 ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- [查询主日历信息]- [查询日历列表]- [搜索日历]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -247,7 +247,7 @@ export const calendarV4CalendarEventAttendeeBatchDelete = {
       attendee_ids: z
         .array(z.string())
         .describe(
-          '需要删除的参与人 ID 列表。添加日程参与人时，会返回参与人 ID（attendee_id），你也可以调用接口，查询指定日程的参与人 ID。- 一次最多删除500个参与人（与delete_ids一起计算）',
+          '需要删除的参与人 ID 列表。添加日程参与人时，会返回参与人 ID（attendee_id），你也可以调用[获取日程参与人列表]接口，查询指定日程的参与人 ID。- 一次最多删除500个参与人（与delete_ids一起计算）',
         )
         .optional(),
       delete_ids: z
@@ -301,12 +301,12 @@ export const calendarV4CalendarEventAttendeeBatchDelete = {
       calendar_id: z
         .string()
         .describe(
-          '日程对应的日历 ID。了解更多，参见',
+          '日程对应的日历 ID。了解更多，参见[日历 ID 说明]',
         ),
       event_id: z
         .string()
         .describe(
-          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- - ',
+          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- [获取日程列表]- [搜索日程]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -336,17 +336,17 @@ export const calendarV4CalendarEventAttendeeChatMemberList = {
       calendar_id: z
         .string()
         .describe(
-          '日程所在的日历 ID。关于日历 ID 可参见',
+          '日程所在的日历 ID。关于日历 ID 可参见[日历 ID 说明]',
         ),
       event_id: z
         .string()
         .describe(
-          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- - ',
+          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- [获取日程列表]- [搜索日程]',
         ),
       attendee_id: z
         .string()
         .describe(
-          '群组类型参与人 ID。添加日程参与人时，会返回参与人 ID（attendee_id），你也可以调用接口，查询指定日程的参与人 ID',
+          '群组类型参与人 ID。添加日程参与人时，会返回参与人 ID（attendee_id），你也可以调用[获取日程参与人列表]接口，查询指定日程的参与人 ID',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -372,24 +372,26 @@ export const calendarV4CalendarEventAttendeeCreate = {
               .optional(),
             is_optional: z
               .boolean()
-              .describe('参与人是否为可选参加。**可选值有**：- true：是- false：否**注意**：无法编辑群参与人的此字段')
+              .describe(
+                '参与人是否为可选参加。**可选值有**：- true：是- false：否**注意**：无法编辑会议室类型参与人的此字段',
+              )
               .optional(),
             user_id: z
               .string()
               .describe(
-                '用户 ID。当选择用户类型参与人（type 取值为 user）时，需要传入该参数。传入的用户 ID 类型需要和 user_id_type 的值保持一致。关于用户 ID 可参见',
+                '用户 ID。当选择用户类型参与人（type 取值为 user）时，需要传入该参数。传入的用户 ID 类型需要和 user_id_type 的值保持一致。关于用户 ID 可参见[用户相关的 ID 概念]',
               )
               .optional(),
             chat_id: z
               .string()
               .describe(
-                '群组 ID。当选择群组类型参与人（type 取值为 chat）时，需要传入该参数。关于群组 ID 可参见',
+                '群组 ID。当选择群组类型参与人（type 取值为 chat）时，需要传入该参数。关于群组 ID 可参见[群 ID 说明]',
               )
               .optional(),
             room_id: z
               .string()
               .describe(
-                '会议室 ID。当选择会议室类型参与人（type 取值为 resource）时，需要传入该参数。你可以通过以下接口获取指定会议室 ID：- - ',
+                '会议室 ID。当选择会议室类型参与人（type 取值为 resource）时，需要传入该参数。你可以通过以下接口获取指定会议室 ID：- [查询会议室列表]- [搜索会议室]',
               )
               .optional(),
             third_party_email: z
@@ -399,7 +401,7 @@ export const calendarV4CalendarEventAttendeeCreate = {
             operate_id: z
               .string()
               .describe(
-                '会议室联系人 ID。传入的用户 ID 类型需要和 user_id_type 的值保持一致。关于用户 ID 可参见。**说明**：如果当前日程是基于应用身份创建的，则在添加会议室类型参与人时，需要通过该参数指定会议室的联系人，该联系人会在日程会议室信息中展示。**默认值**：空',
+                '会议室联系人 ID。传入的用户 ID 类型需要和 user_id_type 的值保持一致。关于用户 ID 可参见[用户相关的 ID 概念]。**说明**：如果当前日程是基于应用身份创建的，则在添加会议室类型参与人时，需要通过该参数指定会议室的联系人，该联系人会在日程会议室信息中展示。**默认值**：空',
               )
               .optional(),
             resource_customization: z
@@ -441,7 +443,7 @@ export const calendarV4CalendarEventAttendeeCreate = {
       instance_start_time_admin: z
         .string()
         .describe(
-          '使用管理员身份访问时，要修改的日程实例。**注意**：- 该参数仅用于修改重复日程中的某一日程实例，非重复日程无需填此字段。- 你可以调用接口，获取重复日程中某一日程实例的 event_id。该参数取值为 event_id 的时间戳后缀。例如查询到的日程实例 ID 为 `2cf525f0-1e67-4b04-ad4d-30b7f003903c_1713168000`，则当前的 `instance_start_time_admin` 取值为 `1713168000`。**默认值**：空',
+          '使用管理员身份访问时，要修改的日程实例。**注意**：- 该参数仅用于修改重复日程中的某一日程实例，非重复日程无需填此字段。- 你可以调用[获取重复日程实例]接口，获取重复日程中某一日程实例的 event_id。该参数取值为 event_id 的时间戳后缀。例如查询到的日程实例 ID 为 `2cf525f0-1e67-4b04-ad4d-30b7f003903c_1713168000`，则当前的 `instance_start_time_admin` 取值为 `1713168000`。**默认值**：空',
         )
         .optional(),
       is_enable_admin: z
@@ -460,12 +462,12 @@ export const calendarV4CalendarEventAttendeeCreate = {
       calendar_id: z
         .string()
         .describe(
-          '日程对应的日历 ID。了解更多，参见',
+          '日程对应的日历 ID。了解更多，参见[日历 ID 说明]',
         ),
       event_id: z
         .string()
         .describe(
-          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- - ',
+          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- [获取日程列表]- [搜索日程]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -486,7 +488,7 @@ export const calendarV4CalendarEventAttendeeList = {
       need_resource_customization: z
         .boolean()
         .describe(
-          '是否需要会议室表单信息。**可选值有**：- true：需要- false（默认值）：不需要**注意**：当前身份需要有日程的编辑权限才会返回会议室表单信息，即当前身份需要是日程的组织者，或者是日程参与人且日程设置了**参与人可编辑日程**权限。你可以调用接口，获取日程的参与人权限（attendee_ability）',
+          '是否需要会议室表单信息。**可选值有**：- true：需要- false（默认值）：不需要**注意**：当前身份需要有日程的编辑权限才会返回会议室表单信息，即当前身份需要是日程的组织者，或者是日程参与人且日程设置了**参与人可编辑日程**权限。你可以调用[获取日程]接口，获取日程的参与人权限（attendee_ability）',
         )
         .optional(),
       page_token: z
@@ -504,12 +506,12 @@ export const calendarV4CalendarEventAttendeeList = {
       calendar_id: z
         .string()
         .describe(
-          '日程所在的日历 ID。关于日历 ID 可参见',
+          '日程所在的日历 ID。关于日历 ID 可参见[日历 ID 说明]',
         ),
       event_id: z
         .string()
         .describe(
-          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- - ',
+          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- [获取日程列表]- [搜索日程]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -548,7 +550,7 @@ export const calendarV4CalendarEventCreate = {
           date: z
             .string()
             .describe(
-              '开始时间，仅全天日程使用该字段， 格式，例如，2018-09-01。**注意**：该参数不能与 `timestamp` 同时指定',
+              '开始时间，仅全天日程使用该字段，[RFC 3339] 格式，例如，2018-09-01。**注意**：该参数不能与 `timestamp` 同时指定',
             )
             .optional(),
           timestamp: z
@@ -570,7 +572,7 @@ export const calendarV4CalendarEventCreate = {
           date: z
             .string()
             .describe(
-              '结束时间，仅全天日程使用该字段， 格式，例如，2018-09-01。**注意**：该参数不能与 `timestamp` 同时指定',
+              '结束时间，仅全天日程使用该字段，[RFC 3339] 格式，例如，2018-09-01。**注意**：该参数不能与 `timestamp` 同时指定',
             )
             .optional(),
           timestamp: z
@@ -700,7 +702,7 @@ export const calendarV4CalendarEventCreate = {
       recurrence: z
         .string()
         .describe(
-          '重复日程的重复性规则，规则设置方式参考。**默认值**：空，表示当前日程不是重复日程。**注意**：- COUNT 和 UNTIL 不支持同时出现。- 预定会议室重复日程长度不得超过两年',
+          '重复日程的重复性规则，规则设置方式参考[rfc5545]。**默认值**：空，表示当前日程不是重复日程。**注意**：- COUNT 和 UNTIL 不支持同时出现。- 预定会议室重复日程长度不得超过两年',
         )
         .optional(),
       schemas: z
@@ -732,7 +734,7 @@ export const calendarV4CalendarEventCreate = {
             file_token: z
               .string()
               .describe(
-                '附件 Token。调用接口，获取附件的 file_token。在调用上传素材接口时需要注意：- `parent_type` 需传入固定值 `calendar`。- `parent_node` 需传入与当前接口一致的日历 ID。**附件校验规则**：附件总大小不超过 25 MB',
+                '附件 Token。调用[上传素材]接口，获取附件的 file_token。在调用上传素材接口时需要注意：- `parent_type` 需传入固定值 `calendar`。- `parent_node` 需传入与当前接口一致的日历 ID。**附件校验规则**：附件总大小不超过 25 MB',
               )
               .optional(),
           }),
@@ -790,7 +792,7 @@ export const calendarV4CalendarEventCreate = {
       calendar_id: z
         .string()
         .describe(
-          '日历 ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- - - ',
+          '日历 ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- [查询主日历信息]- [查询日历列表]- [搜索日历]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -815,12 +817,12 @@ export const calendarV4CalendarEventDelete = {
       calendar_id: z
         .string()
         .describe(
-          '日程所在的日历 ID。了解更多，参见',
+          '日程所在的日历 ID。了解更多，参见[日历 ID 说明]',
         ),
       event_id: z
         .string()
         .describe(
-          '日程 ID。获取方式：- 会返回日程 ID- - ',
+          '日程 ID。获取方式：- [创建日程]会返回日程 ID- [获取日程列表]- [搜索日程]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -850,7 +852,7 @@ export const calendarV4CalendarEventGet = {
       max_attendee_num: z
         .number()
         .describe(
-          '返回的最大参与人数量。调用可获取日程完整的参与人信息',
+          '返回的最大参与人数量。调用[获取日程参与人列表]可获取日程完整的参与人信息',
         )
         .optional(),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
@@ -859,12 +861,12 @@ export const calendarV4CalendarEventGet = {
       calendar_id: z
         .string()
         .describe(
-          '日程所在的日历 ID。关于日历 ID 可参见',
+          '日程所在的日历 ID。关于日历 ID 可参见[日历 ID 说明]',
         ),
       event_id: z
         .string()
         .describe(
-          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- - ',
+          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- [获取日程列表]- [搜索日程]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -877,7 +879,7 @@ export const calendarV4CalendarEventInstanceView = {
   path: '/open-apis/calendar/v4/calendars/:calendar_id/events/instance_view',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-日历-日程管理-查询日程视图-调用该接口以用户身份查询指定日历下的日程视图。与不同的是，当前接口会按照重复日程的重复性规则展开成多个日程实例（instance），并根据查询的时间区间返回相应的日程实例信息',
+    '[Feishu/Lark]-日历-日程管理-查询日程视图-调用该接口以用户身份查询指定日历下的日程视图。与[获取日程列表]不同的是，当前接口会按照重复日程的重复性规则展开成多个日程实例（instance），并根据查询的时间区间返回相应的日程实例信息',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -897,7 +899,7 @@ export const calendarV4CalendarEventInstanceView = {
       calendar_id: z
         .string()
         .describe(
-          '日历 ID。关于日历 ID 可参见',
+          '日历 ID。关于日历 ID 可参见[日历 ID 说明]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -936,12 +938,12 @@ export const calendarV4CalendarEventInstances = {
       calendar_id: z
         .string()
         .describe(
-          '日历 ID。关于日历 ID 可参见',
+          '日历 ID。关于日历 ID 可参见[日历 ID 说明]',
         ),
       event_id: z
         .string()
         .describe(
-          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- - ',
+          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- [获取日程列表]- [搜索日程]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -999,7 +1001,7 @@ export const calendarV4CalendarEventList = {
       calendar_id: z
         .string()
         .describe(
-          '日历 ID。关于日历 ID 可参见',
+          '日历 ID。关于日历 ID 可参见[日历 ID 说明]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1018,12 +1020,12 @@ export const calendarV4CalendarEventMeetingChatCreate = {
       calendar_id: z
         .string()
         .describe(
-          '日程所在的日历 ID。了解更多，参见',
+          '日程所在的日历 ID。了解更多，参见[日历 ID 说明]',
         ),
       event_id: z
         .string()
         .describe(
-          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- - ',
+          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- [获取日程列表]- [搜索日程]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1057,12 +1059,12 @@ export const calendarV4CalendarEventMeetingMinuteCreate = {
       calendar_id: z
         .string()
         .describe(
-          '日历 ID。调用接口，获取当前身份的主日历 ID',
+          '日历 ID。调用[查询主日历信息]接口，获取当前身份的主日历 ID',
         ),
       event_id: z
         .string()
         .describe(
-          '日程 ID。调用接口，在指定日历内搜索日程并获取日程 ID',
+          '日程 ID。调用[搜索日程]接口，在指定日历内搜索日程并获取日程 ID',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1097,7 +1099,7 @@ export const calendarV4CalendarEventPatch = {
           date: z
             .string()
             .describe(
-              '开始时间，仅全天日程使用该字段， 格式，例如，2018-09-01。**注意**：该参数不能与 `timestamp` 同时指定',
+              '开始时间，仅全天日程使用该字段，[RFC 3339] 格式，例如，2018-09-01。**注意**：该参数不能与 `timestamp` 同时指定',
             )
             .optional(),
           timestamp: z
@@ -1120,7 +1122,7 @@ export const calendarV4CalendarEventPatch = {
           date: z
             .string()
             .describe(
-              '结束时间，仅全天日程使用该字段， 格式，例如，2018-09-01。**注意**：该参数不能与 `timestamp` 同时指定',
+              '结束时间，仅全天日程使用该字段，[RFC 3339] 格式，例如，2018-09-01。**注意**：该参数不能与 `timestamp` 同时指定',
             )
             .optional(),
           timestamp: z
@@ -1251,7 +1253,7 @@ export const calendarV4CalendarEventPatch = {
       recurrence: z
         .string()
         .describe(
-          '重复日程的重复性规则，规则设置方式参考。**注意**：- COUNT 和 UNTIL 不支持同时出现。- 预定会议室重复日程长度不得超过两年。**默认值**：空，表示不更新该字段',
+          '重复日程的重复性规则，规则设置方式参考[rfc5545]。**注意**：- COUNT 和 UNTIL 不支持同时出现。- 预定会议室重复日程长度不得超过两年。**默认值**：空，表示不更新该字段',
         )
         .optional(),
       schemas: z
@@ -1283,7 +1285,7 @@ export const calendarV4CalendarEventPatch = {
             file_token: z
               .string()
               .describe(
-                '附件 Token。调用接口，获取附件的 file_token。在调用上传素材接口时需要注意：- `parent_type` 需传入固定值 `calender`。- `parent_node` 需传入与当前接口一致的日历 ID。**附件校验规则**：附件总大小不超过 25 MB',
+                '附件 Token。调用[上传素材]接口，获取附件的 file_token。在调用上传素材接口时需要注意：- `parent_type` 需传入固定值 `calender`。- `parent_node` 需传入与当前接口一致的日历 ID。**附件校验规则**：附件总大小不超过 25 MB',
               )
               .optional(),
             is_deleted: z
@@ -1337,12 +1339,12 @@ export const calendarV4CalendarEventPatch = {
       calendar_id: z
         .string()
         .describe(
-          '日程所在的日历 ID。了解更多，参见',
+          '日程所在的日历 ID。了解更多，参见[日历 ID 说明]',
         ),
       event_id: z
         .string()
         .describe(
-          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- - ',
+          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- [获取日程列表]- [搜索日程]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1366,12 +1368,12 @@ export const calendarV4CalendarEventReply = {
       calendar_id: z
         .string()
         .describe(
-          '日程所在的日历 ID。了解更多，参见',
+          '日程所在的日历 ID。了解更多，参见[日历 ID 说明]',
         ),
       event_id: z
         .string()
         .describe(
-          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- - ',
+          '日程 ID。创建日程时会返回日程 ID。你也可以调用以下接口获取某一日历的 ID。- [获取日程列表]- [搜索日程]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1399,7 +1401,7 @@ export const calendarV4CalendarEventSearch = {
               date: z
                 .string()
                 .describe(
-                  '以天为最小单位指定开始时间， 格式，例如，2018-09-01。**注意**：该参数不能与 `timestamp` 同时指定',
+                  '以天为最小单位指定开始时间，[RFC 3339] 格式，例如，2018-09-01。**注意**：该参数不能与 `timestamp` 同时指定',
                 )
                 .optional(),
               timestamp: z
@@ -1424,7 +1426,7 @@ export const calendarV4CalendarEventSearch = {
               date: z
                 .string()
                 .describe(
-                  '以天为最小单位指定结束时间， 格式，例如，2018-09-01。**注意**：该参数不能与 `timestamp` 同时指定',
+                  '以天为最小单位指定结束时间，[RFC 3339] 格式，例如，2018-09-01。**注意**：该参数不能与 `timestamp` 同时指定',
                 )
                 .optional(),
               timestamp: z
@@ -1447,7 +1449,7 @@ export const calendarV4CalendarEventSearch = {
           user_ids: z
             .array(z.string())
             .describe(
-              '搜索过滤项，日程参与人的用户 ID 列表。设置该字段后，被搜索到的日程中至少包含其中一个参与人。**注意**：用户 ID 类型和 user_id_type 的值保持一致，关于用户 ID 可参见。**默认值**：空，表示不设置该过滤项',
+              '搜索过滤项，日程参与人的用户 ID 列表。设置该字段后，被搜索到的日程中至少包含其中一个参与人。**注意**：用户 ID 类型和 user_id_type 的值保持一致，关于用户 ID 可参见[用户相关的 ID 概念]。**默认值**：空，表示不设置该过滤项',
             )
             .optional(),
           room_ids: z
@@ -1459,7 +1461,7 @@ export const calendarV4CalendarEventSearch = {
           chat_ids: z
             .array(z.string())
             .describe(
-              '搜索过滤项，群 ID 列表。设置该字段后，被搜索到的日程中至少包含其中一个群。关于群 ID 可参见。**默认值**：空，表示不设置该过滤项',
+              '搜索过滤项，群 ID 列表。设置该字段后，被搜索到的日程中至少包含其中一个群。关于群 ID 可参见[群 ID 说明]。**默认值**：空，表示不设置该过滤项',
             )
             .optional(),
         })
@@ -1480,7 +1482,7 @@ export const calendarV4CalendarEventSearch = {
       calendar_id: z
         .string()
         .describe(
-          '日历 ID。关于日历 ID 可参见',
+          '日历 ID。关于日历 ID 可参见[日历 ID 说明]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1499,7 +1501,7 @@ export const calendarV4CalendarEventSubscription = {
       calendar_id: z
         .string()
         .describe(
-          '日历 ID。关于日历 ID 可参见',
+          '日历 ID。关于日历 ID 可参见[日历 ID 说明]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1518,7 +1520,7 @@ export const calendarV4CalendarEventUnsubscription = {
       calendar_id: z
         .string()
         .describe(
-          '日历 ID。关于日历 ID 可参见',
+          '日历 ID。关于日历 ID 可参见[日历 ID 说明]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1537,7 +1539,7 @@ export const calendarV4CalendarGet = {
       calendar_id: z
         .string()
         .describe(
-          '日历 ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- - - ',
+          '日历 ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- [查询主日历信息]- [查询日历列表]- [搜索日历]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1609,7 +1611,7 @@ export const calendarV4CalendarPatch = {
       calendar_id: z
         .string()
         .describe(
-          '日历 ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- - - ',
+          '日历 ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- [查询主日历信息]- [查询日历列表]- [搜索日历]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1666,7 +1668,7 @@ export const calendarV4CalendarSubscribe = {
       calendar_id: z
         .string()
         .describe(
-          '日历ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- - - ',
+          '日历ID。创建共享日历时会返回日历 ID。你也可以调用以下接口获取某一日历的 ID。- [查询主日历信息]- [查询日历列表]- [搜索日历]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1679,7 +1681,7 @@ export const calendarV4CalendarSubscription = {
   path: '/open-apis/calendar/v4/calendars/subscription',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-日历-日历管理-订阅日历变更事件-调用该接口为当前用户身份订阅',
+    '[Feishu/Lark]-日历-日历管理-订阅日历变更事件-调用该接口为当前用户身份订阅[日历变更事件]',
   accessTokens: ['user'],
   schema: {
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1698,7 +1700,7 @@ export const calendarV4CalendarUnsubscribe = {
       calendar_id: z
         .string()
         .describe(
-          '日历 ID。你可以调用以下接口获取某一日历的 ID。- - - ',
+          '日历 ID。你可以调用以下接口获取某一日历的 ID。- [查询主日历信息]- [查询日历列表]- [搜索日历]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1711,7 +1713,7 @@ export const calendarV4CalendarUnsubscription = {
   path: '/open-apis/calendar/v4/calendars/unsubscription',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-日历-日历管理-取消订阅日历变更事件-调用该接口为当前用户身份取消订阅',
+    '[Feishu/Lark]-日历-日历管理-取消订阅日历变更事件-调用该接口为当前用户身份取消订阅[日历变更事件]',
   accessTokens: ['user'],
   schema: {
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1733,7 +1735,7 @@ export const calendarV4ExchangeBindingCreate = {
       user_id: z
         .string()
         .describe(
-          '用户 ID，即 Exchange 账户绑定的飞书账户 ID。关于用户 ID 可参见',
+          '用户 ID，即 Exchange 账户绑定的飞书账户 ID。关于用户 ID 可参见[用户相关的 ID 概念]',
         )
         .optional(),
     }),
@@ -1755,7 +1757,7 @@ export const calendarV4ExchangeBindingDelete = {
       exchange_binding_id: z
         .string()
         .describe(
-          'Exchange 绑定的唯一标识 ID。调用  绑定时，可从返回结果中获取 exchange_binding_id',
+          'Exchange 绑定的唯一标识 ID。调用 [将 Exchange 账户绑定到飞书账户] 绑定时，可从返回结果中获取 exchange_binding_id',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1776,7 +1778,7 @@ export const calendarV4ExchangeBindingGet = {
       exchange_binding_id: z
         .string()
         .describe(
-          'Exchange 绑定的唯一标识 ID。调用  绑定时，可从返回结果中获取 exchange_binding_id',
+          'Exchange 绑定的唯一标识 ID。调用 [将 Exchange 账户绑定到飞书账户] 绑定时，可从返回结果中获取 exchange_binding_id',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1796,23 +1798,23 @@ export const calendarV4FreebusyList = {
       time_min: z
         .string()
         .describe(
-          '查询时段开始时间， date_time 格式。**注意**：time_min 与 time_max 之间的时间间隔不能大于 90 天',
+          '查询时段开始时间，[RFC 3339] date_time 格式。**注意**：time_min 与 time_max 之间的时间间隔不能大于 90 天',
         ),
       time_max: z
         .string()
         .describe(
-          '查询时段结束时间， date_time 格式。**注意**：time_min 与 time_max 之间的时间间隔不能大于 90 天',
+          '查询时段结束时间，[RFC 3339] date_time 格式。**注意**：time_min 与 time_max 之间的时间间隔不能大于 90 天',
         ),
       user_id: z
         .string()
         .describe(
-          '用户 ID，需要传入与查询参数 user_id_type 相匹配的 id。例如，`user_id_type=open_id` 时，需要传入用户的 open_id。了解用户 ID 参见。**注意**：user_id 与 room_id 需要二选一传入，如果同时传入则只生效 user_id',
+          '用户 ID，需要传入与查询参数 user_id_type 相匹配的 id。例如，`user_id_type=open_id` 时，需要传入用户的 open_id。了解用户 ID 参见[用户相关的 ID 概念]。**注意**：user_id 与 room_id 需要二选一传入，如果同时传入则只生效 user_id',
         )
         .optional(),
       room_id: z
         .string()
         .describe(
-          '会议室 room_id。你可以调用接口或者接口，获取相应会议室的 room_id。**注意**：user_id 与 room_id 需要二选一传入，如果同时传入则只生效 user_id',
+          '会议室 room_id。你可以调用[查询会议室列表]接口或者[搜索会议室]接口，获取相应会议室的 room_id。**注意**：user_id 与 room_id 需要二选一传入，如果同时传入则只生效 user_id',
         )
         .optional(),
       include_external_calendar: z
@@ -1860,7 +1862,7 @@ export const calendarV4TimeoffEventCreate = {
       user_id: z
         .string()
         .describe(
-          '用户 ID。ID 类型需要与 user_id_type 的值保持一致。关于用户 ID 可参见',
+          '用户 ID。ID 类型需要与 user_id_type 的值保持一致。关于用户 ID 可参见[用户相关的 ID 概念]',
         ),
       timezone: z.string().describe('时区信息'),
       start_time: z

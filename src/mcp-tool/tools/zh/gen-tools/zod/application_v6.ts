@@ -101,7 +101,7 @@ export const applicationV6ApplicationAppUsageDepartmentOverview = {
       department_id: z
         .string()
         .describe(
-          '查询的部门id，获取方法可参考- 若部门id为空，则返回当前租户的使用数据；若填写部门id，则返回当前部门的使用数据（包含子部门的用户） 以及多级子部门的使用数据。- 若路径参数中department_id_type为空或者为open_department_id，则此处应该填写部门的 open_department_id；若路径参数中department_id_type为department_id，则此处应该填写部门的 department_id。- 若不填写则返回整个租户的数据',
+          '查询的部门id，获取方法可参考[部门ID概述]- 若部门id为空，则返回当前租户的使用数据；若填写部门id，则返回当前部门的使用数据（包含子部门的用户） 以及多级子部门的使用数据。- 若路径参数中department_id_type为空或者为open_department_id，则此处应该填写部门的 open_department_id；若路径参数中department_id_type为department_id，则此处应该填写部门的 department_id。- 若不填写则返回整个租户的数据',
         )
         .optional(),
       recursion: z
@@ -153,7 +153,7 @@ export const applicationV6ApplicationAppUsageMessagePushOverview = {
       department_id: z
         .string()
         .describe(
-          '需要查询的部门id，获取方法可参考- 若部门id为空，则返回当前租户的使用数据；若填写部门id，则返回当前部门的使用数据（包含子部门的用户）； - 若路径参数中department_id_type为空或者为open_department_id，则此处应该填写部门的 open_department_id；若路径参数中department_id_type为department_id，则此处应该填写部门的 department_id。返回当前部门的使用数据； 若不填写，则返回当前租户的使用数据',
+          '需要查询的部门id，获取方法可参考[部门ID概述]- 若部门id为空，则返回当前租户的使用数据；若填写部门id，则返回当前部门的使用数据（包含子部门的用户）； - 若路径参数中department_id_type为空或者为open_department_id，则此处应该填写部门的 open_department_id；若路径参数中department_id_type为department_id，则此处应该填写部门的 department_id。返回当前部门的使用数据； 若不填写，则返回当前租户的使用数据',
         )
         .optional(),
     }),
@@ -192,7 +192,7 @@ export const applicationV6ApplicationAppUsageOverview = {
       department_id: z
         .string()
         .describe(
-          '查询的部门id，获取方法可参考- 若部门id为空，则返回当前租户的使用数据；若填写部门id，则返回当前部门的使用数据（包含子部门的用户）； - 若路径参数中department_id_type为空或者为open_department_id，则此处应该填写部门的 open_department_id；若路径参数中department_id_type为department_id，则此处应该填写部门的 department_id',
+          '查询的部门id，获取方法可参考[部门ID概述]- 若部门id为空，则返回当前租户的使用数据；若填写部门id，则返回当前部门的使用数据（包含子部门的用户）； - 若路径参数中department_id_type为空或者为open_department_id，则此处应该填写部门的 open_department_id；若路径参数中department_id_type为department_id，则此处应该填写部门的 department_id',
         )
         .optional(),
       ability: z
@@ -235,12 +235,12 @@ export const applicationV6ApplicationAppVersionContactsRangeSuggest = {
       app_id: z
         .string()
         .describe(
-          '应用的 AppID，可以在 > **凭证与基础信息**页查看。* 仅查询本应用信息时，可填应用自身App ID 或 `me`。* 当值为其他应用的App ID时，必须申请以下权限：<md-perm name="admin:app.info:readonly" desc="获取应用信息" support_app_types="custom" tags="">获取应用信息</md-perm>',
+          '应用的 AppID，可以在[开发者后台] > **凭证与基础信息**页查看。* 仅查询本应用信息时，可填应用自身App ID 或 `me`。* 当值为其他应用的App ID时，必须申请以下权限：<md-perm name="admin:app.info:readonly" desc="获取应用信息" support_app_types="custom" tags="">获取应用信息</md-perm>',
         ),
       version_id: z
         .string()
         .describe(
-          '唯一标识应用版本的 ID，可以调用接口获取',
+          '唯一标识应用版本的 ID，可以调用[获取应用版本列表]接口获取',
         ),
     }),
   },
@@ -264,7 +264,7 @@ export const applicationV6ApplicationAppVersionGet = {
       app_id: z
         .string()
         .describe(
-          '应用的 app_id，需要查询其他应用版本信息时，必须申请权限，仅查询本应用版本信息时，可填入 "me" 或者应用自身 app_id',
+          '应用的 app_id，需要查询其他应用版本信息时，必须申请[获取应用版本信息]权限，仅查询本应用版本信息时，可填入 "me" 或者应用自身 app_id',
         ),
       version_id: z.string().describe('唯一标识应用版本的 ID'),
     }),
@@ -297,7 +297,7 @@ export const applicationV6ApplicationAppVersionList = {
       app_id: z
         .string()
         .describe(
-          '应用的 app_id，需要查询其他应用版本信息时，必须申请权限，仅查询本应用版本信息时，可填入 "me" 或者应用自身 app_id',
+          '应用的 app_id，需要查询其他应用版本信息时，必须申请[获取应用版本信息]权限，仅查询本应用版本信息时，可填入 "me" 或者应用自身 app_id',
         ),
     }),
   },
@@ -345,7 +345,7 @@ export const applicationV6ApplicationCollaboratorsGet = {
     path: z.object({
       app_id: z
         .string()
-        .describe('应用 ID，获取方式参见 '),
+        .describe('应用 ID，获取方式参见 [app_id]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -378,7 +378,7 @@ export const applicationV6ApplicationCollaboratorsUpdate = {
     path: z.object({
       app_id: z
         .string()
-        .describe('应用 ID，获取方式参见 '),
+        .describe('应用 ID，获取方式参见 [app_id]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -412,7 +412,7 @@ export const applicationV6ApplicationContactsRangeConfiguration = {
     path: z.object({
       app_id: z
         .string()
-        .describe('应用的 app_id，可以在 > 凭证与基础信息页查看'),
+        .describe('应用的 app_id，可以在[开发者后台] > 凭证与基础信息页查看'),
     }),
   },
 };
@@ -541,7 +541,7 @@ export const applicationV6ApplicationGet = {
       app_id: z
         .string()
         .describe(
-          '应用的 app_id，需要查询其他应用信息时，必须申请权限，仅查询本应用信息时，可填入 "me" 或者应用自身 app_id',
+          '应用的 app_id，需要查询其他应用信息时，必须申请[获取应用信息]权限，仅查询本应用信息时，可填入 "me" 或者应用自身 app_id',
         ),
     }),
   },
@@ -618,7 +618,7 @@ export const applicationV6ApplicationOwnerUpdate = {
     path: z.object({
       app_id: z
         .string()
-        .describe('应用 ID，获取方式参见 '),
+        .describe('应用 ID，获取方式参见 [app_id]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -681,19 +681,19 @@ export const applicationV6ApplicationVisibilityCheckWhiteBlackList = {
       user_ids: z
         .array(z.string())
         .describe(
-          '想要查询的用户id列表，按照user_id_type录入，最多录入100个。可以调用接口获取',
+          '想要查询的用户id列表，按照user_id_type录入，最多录入100个。可以调用[获取部门直属用户列表]接口获取',
         )
         .optional(),
       department_ids: z
         .array(z.string())
         .describe(
-          '想要查询的部门的 id 列表，最多录入100个。可以接口获取',
+          '想要查询的部门的 id 列表，最多录入100个。可以[调用获取子部门列表]接口获取',
         )
         .optional(),
       group_ids: z
         .array(z.string())
         .describe(
-          '想要查询的用户组id列表，最多录入100个。可以调用接口获取',
+          '想要查询的用户组id列表，最多录入100个。可以调用[查询用户组列表]接口获取',
         )
         .optional(),
     }),
@@ -710,7 +710,7 @@ export const applicationV6ApplicationVisibilityCheckWhiteBlackList = {
       app_id: z
         .string()
         .describe(
-          '应用的 AppID，可以在 > **凭证与基础信息**页查看。* 仅查询本应用信息时，可填应用自身AppID。* 当值为其他应用的App ID时，必须申请以下权限：<md-perm name="admin:app.info:readonly" desc="获取应用信息" support_app_types="custom" tags="">获取应用信息</md-perm>',
+          '应用的 AppID，可以在[开发者后台] > **凭证与基础信息**页查看。* 仅查询本应用信息时，可填应用自身AppID。* 当值为其他应用的App ID时，必须申请以下权限：<md-perm name="admin:app.info:readonly" desc="获取应用信息" support_app_types="custom" tags="">获取应用信息</md-perm>',
         ),
     }),
   },

@@ -38,7 +38,7 @@ export const ehrV1EmployeeList = {
             ),
         )
         .describe(
-          'Employee typeAll employee types will be returned by default if this attribute is not specified.You can use the int value of the custom employee type for search, and the name of the custom employee type for the tenant can be obtained through the API: ',
+          'Employee typeAll employee types will be returned by default if this attribute is not specified.You can use the int value of the custom employee type for search, and the name of the custom employee type for the tenant can be obtained through the API: [Obtain workforce type]',
         )
         .optional(),
       start_time: z.string().describe('Query start time(Hire time &gt;= this time)').optional(),
@@ -47,7 +47,7 @@ export const ehrV1EmployeeList = {
       user_ids: z
         .array(z.string())
         .describe(
-          'user_id, open_id, or union_id. The "open_id" will be returned by default.If the passed value is not an "open_id" , you need to pass the "user_id_type" parameter together.You can query users with multiple ids at once, for example: user_ids=ou_8ebd4f35d7101ffdeb4771d7c8ec517e&user_ids=ou_7abc4f35d7101ffdeb4771dabcde',
+          'user_id, open_id, or union_id. The "open_id" will be returned by default.If the passed value is not an "open_id" , you need to pass the "user_id_type" parameter together.You can query users with multiple ids at once, for example: user_ids=ou_8ebd4f35d7101ffdeb4771d7c8ec517e&user_ids=ou_7abc4f35d7101ffdeb4771dabcde[The ID concepts]',
         )
         .optional(),
       page_token: z

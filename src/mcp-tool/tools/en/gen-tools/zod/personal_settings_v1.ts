@@ -20,7 +20,7 @@ export const personalSettingsV1SystemStatusBatchClose = {
       user_list: z
         .array(z.string())
         .describe(
-          'List of user IDs, the incoming ID type is determined by the user_id_type, OpenID is recommended, and the way to get it can be found in the document [How to get Open ID] (https://open.feishu.cn/document/uAjLw4CM/ugTN1YjL4UTN24CO1UjN/trouble-shooting/how-to-obtain-openid)',
+          'List of user IDs, the incoming ID type is determined by the user_id_type, OpenID is recommended, and the way to get it can be found in the document [How to get Open ID]',
         ),
     }),
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
@@ -28,7 +28,7 @@ export const personalSettingsV1SystemStatusBatchClose = {
       system_status_id: z
         .string()
         .describe(
-          'System Status ID[Get system status ID] (https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/personal_settings-v1/system_status/list)',
+          'System Status ID[Get system status ID]',
         )
         .optional(),
     }),
@@ -51,7 +51,7 @@ export const personalSettingsV1SystemStatusBatchOpen = {
             user_id: z
               .string()
               .describe(
-                'UserID, the ID type is determined by user_id_type. Open ID is recommended here. For details, refer to ',
+                'UserID, the ID type is determined by user_id_type. Open ID is recommended here. For details, refer to [How to get Open ID]',
               ),
             end_time: z.string().describe('End time'),
           }),
@@ -63,7 +63,7 @@ export const personalSettingsV1SystemStatusBatchOpen = {
       system_status_id: z
         .string()
         .describe(
-          'System stauts ID',
+          'System stauts ID[Get system status ID]',
         )
         .optional(),
     }),
@@ -117,7 +117,7 @@ export const personalSettingsV1SystemStatusCreate = {
           'GeneralVacation',
         ])
         .describe(
-          'Icon Options:GeneralDoNotDisturb(GeneralDoNotDisturb),GeneralInMeetingBusy(GeneralInMeetingBusy),Coffee(Coffee),GeneralBusinessTrip(GeneralBusinessTrip),GeneralWorkFromHome(GeneralWorkFromHome),StatusEnjoyLife(StatusEnjoyLife),GeneralTravellingCar(GeneralTravellingCar),StatusBus(StatusBus),StatusInFlight(StatusInFlight),Typing(Typing),EatingFood(EatingFood),SICK(SICK),GeneralSun(GeneralSun),GeneralMoonRest(GeneralMoonRest),StatusReading(StatusReading),Status_PrivateMessage(Status_PrivateMessage),StatusFlashOfInspiration(StatusFlashOfInspiration),GeneralVacation(GeneralVacation)',
+          'Icon[**Icon optional value**] Options:GeneralDoNotDisturb(GeneralDoNotDisturb),GeneralInMeetingBusy(GeneralInMeetingBusy),Coffee(Coffee),GeneralBusinessTrip(GeneralBusinessTrip),GeneralWorkFromHome(GeneralWorkFromHome),StatusEnjoyLife(StatusEnjoyLife),GeneralTravellingCar(GeneralTravellingCar),StatusBus(StatusBus),StatusInFlight(StatusInFlight),Typing(Typing),EatingFood(EatingFood),SICK(SICK),GeneralSun(GeneralSun),GeneralMoonRest(GeneralMoonRest),StatusReading(StatusReading),Status_PrivateMessage(Status_PrivateMessage),StatusFlashOfInspiration(StatusFlashOfInspiration),GeneralVacation(GeneralVacation)',
         ),
       color: z
         .enum([
@@ -200,7 +200,7 @@ export const personalSettingsV1SystemStatusDelete = {
       system_status_id: z
         .string()
         .describe(
-          'System stauts ID',
+          'System stauts ID[Get system status ID]',
         )
         .optional(),
     }),
@@ -277,7 +277,7 @@ export const personalSettingsV1SystemStatusPatch = {
               'GeneralVacation',
             ])
             .describe(
-              'Icon Options:GeneralDoNotDisturb(GeneralDoNotDisturb),GeneralInMeetingBusy(GeneralInMeetingBusy),Coffee(Coffee),GeneralBusinessTrip(GeneralBusinessTrip),GeneralWorkFromHome(GeneralWorkFromHome),StatusEnjoyLife(StatusEnjoyLife),GeneralTravellingCar(GeneralTravellingCar),StatusBus(StatusBus),StatusInFlight(StatusInFlight),Typing(Typing),EatingFood(EatingFood),SICK(SICK),GeneralSun(GeneralSun),GeneralMoonRest(GeneralMoonRest),StatusReading(StatusReading),Status_PrivateMessage(Status_PrivateMessage),StatusFlashOfInspiration(StatusFlashOfInspiration),GeneralVacation(GeneralVacation)',
+              'Icon[**Icon optional value**] Options:GeneralDoNotDisturb(GeneralDoNotDisturb),GeneralInMeetingBusy(GeneralInMeetingBusy),Coffee(Coffee),GeneralBusinessTrip(GeneralBusinessTrip),GeneralWorkFromHome(GeneralWorkFromHome),StatusEnjoyLife(StatusEnjoyLife),GeneralTravellingCar(GeneralTravellingCar),StatusBus(StatusBus),StatusInFlight(StatusInFlight),Typing(Typing),EatingFood(EatingFood),SICK(SICK),GeneralSun(GeneralSun),GeneralMoonRest(GeneralMoonRest),StatusReading(StatusReading),Status_PrivateMessage(Status_PrivateMessage),StatusFlashOfInspiration(StatusFlashOfInspiration),GeneralVacation(GeneralVacation)',
             ),
           color: z
             .enum([
@@ -359,7 +359,7 @@ export const personalSettingsV1SystemStatusPatch = {
       system_status_id: z
         .string()
         .describe(
-          'System stauts ID',
+          'System stauts ID[Get system status ID]',
         )
         .optional(),
     }),

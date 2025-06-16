@@ -39,6 +39,7 @@ export type mailV1ToolName =
   | 'mail.v1.publicMailboxMember.get'
   | 'mail.v1.publicMailboxMember.list'
   | 'mail.v1.publicMailbox.patch'
+  | 'mail.v1.publicMailbox.removeToRecycleBin'
   | 'mail.v1.publicMailbox.update'
   | 'mail.v1.userMailboxAlias.create'
   | 'mail.v1.userMailboxAlias.delete'
@@ -971,6 +972,27 @@ export const mailV1PublicMailboxPatch = {
     }),
   },
 };
+export const mailV1PublicMailboxRemoveToRecycleBin = {
+  project: 'mail',
+  name: 'mail.v1.publicMailbox.removeToRecycleBin',
+  sdkName: 'mail.v1.publicMailbox.removeToRecycleBin',
+  path: '/open-apis/mail/v1/public_mailboxes/:public_mailbox_id/remove_to_recycle_bin',
+  httpMethod: 'DELETE',
+  description:
+    '[Feishu/Lark]-Email-Public Mailbox-Public Mailbox Management-Move Public Mailbox To The Recycle Bin-Move Public Mailbox To The Recycle Bin',
+  accessTokens: ['tenant'],
+  schema: {
+    data: z.object({
+      to_mail_address: z
+        .string()
+        .describe(
+          'Please provide the email address to receive the deleted emails. If left blank, the emails of the public mailbox will be deleted without being forwarded',
+        )
+        .optional(),
+    }),
+    path: z.object({ public_mailbox_id: z.string().describe('Public email address') }),
+  },
+};
 export const mailV1PublicMailboxUpdate = {
   project: 'mail',
   name: 'mail.v1.publicMailbox.update',
@@ -1113,7 +1135,7 @@ export const mailV1UserMailboxFolderCreate = {
       parent_folder_id: z
         .string()
         .describe(
-          'Parent folder ID, where a value of 0 indicates the root folder. The method for obtaining ID is shown in ',
+          'Parent folder ID, where a value of 0 indicates the root folder. The method for obtaining ID is shown in [List Email Folders]',
         ),
     }),
     path: z.object({
@@ -1140,7 +1162,7 @@ export const mailV1UserMailboxFolderDelete = {
       folder_id: z
         .string()
         .describe(
-          'Folder ID. The method for obtaining ID is shown in ',
+          'Folder ID. The method for obtaining ID is shown in [List Email Folders]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1180,7 +1202,7 @@ export const mailV1UserMailboxFolderPatch = {
       parent_folder_id: z
         .string()
         .describe(
-          'Parent folder ID, where a value of 0 indicates the root folder. The method for obtaining ID is shown in ',
+          'Parent folder ID, where a value of 0 indicates the root folder. The method for obtaining ID is shown in [List Email Folders]',
         )
         .optional(),
     }),
@@ -1191,7 +1213,7 @@ export const mailV1UserMailboxFolderPatch = {
       folder_id: z
         .string()
         .describe(
-          'Folder ID. The method for obtaining ID is shown in ',
+          'Folder ID. The method for obtaining ID is shown in [List Email Folders]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1235,7 +1257,7 @@ export const mailV1UserMailboxMailContactDelete = {
       mail_contact_id: z
         .string()
         .describe(
-          "Email Contact's ID. For the acquisition method, see ",
+          "Email Contact's ID. For the acquisition method, see [List Email Contacts]",
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1293,7 +1315,7 @@ export const mailV1UserMailboxMailContactPatch = {
       mail_contact_id: z
         .string()
         .describe(
-          "Email Contact's ID. For the acquisition method, see ",
+          "Email Contact's ID. For the acquisition method, see [List Email Contacts]",
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1317,7 +1339,7 @@ export const mailV1UserMailboxMessageAttachmentDownloadUrl = {
       message_id: z
         .string()
         .describe(
-          'Message ID, the method for obtaining ID is shown in ',
+          'Message ID, the method for obtaining ID is shown in [List Emails]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1339,7 +1361,7 @@ export const mailV1UserMailboxMessageGet = {
       message_id: z
         .string()
         .describe(
-          'Message ID, the method for obtaining ID is shown in ',
+          'Message ID, the method for obtaining ID is shown in [List Emails]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1358,12 +1380,12 @@ export const mailV1UserMailboxMessageGetByCard = {
       card_id: z
         .string()
         .describe(
-          'Mail card ID, available via [Receive message]( https://open.feishu.cn/document/server-docs/im-v1/message/events/receive) events',
+          'Mail card ID, available via [Receive message] events',
         ),
       owner_id: z
         .string()
         .describe(
-          'Mail card OwnerID, available via [Receive message]( https://open.feishu.cn/document/server-docs/im-v1/message/events/receive) events (independent of `user_id_type`)',
+          'Mail card OwnerID, available via [Receive message] events (independent of `user_id_type`)',
         ),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
     }),
@@ -1395,7 +1417,7 @@ export const mailV1UserMailboxMessageList = {
       folder_id: z
         .string()
         .describe(
-          'Folder ID. The method for obtaining ID is shown in ',
+          'Folder ID. The method for obtaining ID is shown in [List Email Folders]',
         ),
       only_unread: z.boolean().describe('Only query unread emails').optional(),
     }),
@@ -1537,7 +1559,7 @@ export const mailV1UserMailboxRuleDelete = {
       rule_id: z
         .string()
         .describe(
-          'Rule ID. The method for obtaining ID is shown in ',
+          'Rule ID. The method for obtaining ID is shown in [List Auto Filters]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1573,7 +1595,7 @@ export const mailV1UserMailboxRuleReorder = {
       rule_ids: z
         .array(z.string())
         .describe(
-          'Auto filter ID list. The method for obtaining ID is shown in ',
+          'Auto filter ID list. The method for obtaining ID is shown in [List Auto Filters]',
         ),
     }),
     path: z.object({ user_mailbox_id: z.string() }),
@@ -1644,7 +1666,7 @@ export const mailV1UserMailboxRuleUpdate = {
       rule_id: z
         .string()
         .describe(
-          'Rule ID. The method for obtaining ID is shown in ',
+          'Rule ID. The method for obtaining ID is shown in [List Auto Filters]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1703,6 +1725,7 @@ export const mailV1Tools = [
   mailV1PublicMailboxMemberGet,
   mailV1PublicMailboxMemberList,
   mailV1PublicMailboxPatch,
+  mailV1PublicMailboxRemoveToRecycleBin,
   mailV1PublicMailboxUpdate,
   mailV1UserMailboxAliasCreate,
   mailV1UserMailboxAliasDelete,

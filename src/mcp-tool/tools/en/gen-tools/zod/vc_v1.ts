@@ -1474,7 +1474,7 @@ export const vcV1RoomLevelCreate = {
       parent_id: z
         .string()
         .describe(
-          'Parent room level ID**Note**: If you need to create a meeting room level at the tenant level (i.e. the root level), you can first call the  interface and pass the path parameter `room_level_id` to `0` for query. The `room_level_id` value in the returned result is the root level ID',
+          'Parent room level ID**Note**: If you need to create a meeting room level at the tenant level (i.e. the root level), you can first call the [Query room level details] interface and pass the path parameter `room_level_id` to `0` for query. The `room_level_id` value in the returned result is the root level ID',
         ),
       custom_group_id: z.string().describe('Custom room level ID').optional(),
     }),

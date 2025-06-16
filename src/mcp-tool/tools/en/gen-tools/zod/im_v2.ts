@@ -506,19 +506,19 @@ export const imV2UrlPreviewBatchUpdate = {
   path: '/open-apis/im/v2/url_previews/batch_update',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Messaging-URL preview-Update URL preview-Actively update the . After the call, the client pull will be triggered again, and the callback service needs to return the updated data',
+    '[Feishu/Lark]-Messaging-URL preview-Update URL preview-Actively update the [URL preview]. After the call, the client pull will be triggered again, and the callback service needs to return the updated data',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       preview_tokens: z
         .array(z.string())
         .describe(
-          'List of preview_tokens for URL preview. You need to get preview_tokens through the  callback.**Notice**: The update frequency of a single token is limited to 1 time/5 seconds',
+          'List of preview_tokens for URL preview. You need to get preview_tokens through the [pull link preview data] callback.**Notice**: The update frequency of a single token is limited to 1 time/5 seconds',
         ),
       open_ids: z
         .array(z.string())
         .describe(
-          'The open_id of the user who needs to update the URL preview. If not passed, it defaults to updating the members of the chat where the URL preview is located; if the user is not in the chat where the URL is located, the URL preview result seen by the user cannot be updated. For details on how to obtain an Open ID, see ',
+          'The open_id of the user who needs to update the URL preview. If not passed, it defaults to updating the members of the chat where the URL preview is located; if the user is not in the chat where the URL is located, the URL preview result seen by the user cannot be updated. For details on how to obtain an Open ID, see [How to obtain an Open ID]',
         )
         .optional(),
     }),

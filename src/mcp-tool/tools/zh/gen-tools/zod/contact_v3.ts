@@ -105,12 +105,12 @@ export const contactV3DepartmentBatch = {
       department_ids: z
         .array(z.string())
         .describe(
-          '部门 ID，ID 类型需要与查询参数 department_id_type 的取值保持一致。ID 获取方式说明：- 调用接口后，可从返回结果中获取到部门 ID 信息。- 部门 API 提供了多种获取其他部门 ID 的方式，如、、，你可以选择合适的 API 进行查询。**注意：**- 单次最大请求的 ID 数量为 50。- 如需一次查询多个部门，可将同一参数名多次传递，并且每次传递不同的部门 ID 进行查询。GET 请求示例：`https://{url}?department_ids={department_id1}&department_ids={department_id2}`。其中： - `department_ids` 是参数名，可以多次传递。 - `department_id1`和`department_id2`是不同的参数值',
+          '部门 ID，ID 类型需要与查询参数 department_id_type 的取值保持一致。ID 获取方式说明：- 调用[创建部门]接口后，可从返回结果中获取到部门 ID 信息。- 部门 API 提供了多种获取其他部门 ID 的方式，如[获取子部门列表]、[获取父部门信息]、[搜索部门]，你可以选择合适的 API 进行查询。**注意：**- 单次最大请求的 ID 数量为 50。- 如需一次查询多个部门，可将同一参数名多次传递，并且每次传递不同的部门 ID 进行查询。GET 请求示例：`https://{url}?department_ids={department_id1}&department_ids={department_id2}`。其中： - `department_ids` 是参数名，可以多次传递。 - `department_id1`和`department_id2`是不同的参数值',
         ),
       department_id_type: z
         .enum(['open_department_id', 'department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
         )
         .optional(),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
@@ -133,7 +133,7 @@ export const contactV3DepartmentChildren = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
       fetch_child: z
@@ -154,7 +154,7 @@ export const contactV3DepartmentChildren = {
       department_id: z
         .string()
         .describe(
-          '部门 ID。**说明：**- ID 类型需要与查询参数 department_id_type 的取值保持一致。- 当你在创建部门时，可从返回结果中获取到部门 ID 信息，你也可以调用接口，获取所需的部门 ID。- 根部门的部门 ID 为 0',
+          '部门 ID。**说明：**- ID 类型需要与查询参数 department_id_type 的取值保持一致。- 当你在创建部门时，可从返回结果中获取到部门 ID 信息，你也可以调用[搜索部门]接口，获取所需的部门 ID。- 根部门的部门 ID 为 0',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -184,7 +184,7 @@ export const contactV3DepartmentCreate = {
       parent_department_id: z
         .string()
         .describe(
-          '父部门的 ID，ID 类型与查询参数的 department_id_type 取值一致。部门 ID 获取方式：- 如果当前是在根部门下创建部门，则该参数值为 `0`。- 部门 API 提供了多种获取其他部门 ID 的方式，如、、，你可以选择合适的 API 进行查询',
+          '父部门的 ID，ID 类型与查询参数的 department_id_type 取值一致。部门 ID 获取方式：- 如果当前是在根部门下创建部门，则该参数值为 `0`。- 部门 API 提供了多种获取其他部门 ID 的方式，如[获取子部门列表]、[获取父部门信息]、[搜索部门]，你可以选择合适的 API 进行查询',
         ),
       department_id: z
         .string()
@@ -195,7 +195,7 @@ export const contactV3DepartmentCreate = {
       leader_user_id: z
         .string()
         .describe(
-          '部门主管的用户 ID。ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见。**默认值**：空',
+          '部门主管的用户 ID。ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。**默认值**：空',
         )
         .optional(),
       order: z
@@ -207,7 +207,7 @@ export const contactV3DepartmentCreate = {
       unit_ids: z
         .array(z.string().describe('部门单位自定义ID'))
         .describe(
-          '部门绑定的单位自定义 ID 列表，当前只支持绑定一个单位。- 了解单位信息参见。- 调用接口，可获取单位 ID。**默认值**：空',
+          '部门绑定的单位自定义 ID 列表，当前只支持绑定一个单位。- 了解单位信息参见[资源介绍]。- 调用[获取单位列表]接口，可获取单位 ID。**默认值**：空',
         )
         .optional(),
       create_group_chat: z
@@ -223,7 +223,7 @@ export const contactV3DepartmentCreate = {
             leaderID: z
               .string()
               .describe(
-                '负责人的用户 ID，ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见',
+                '负责人的用户 ID，ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]',
               ),
           }),
         )
@@ -234,13 +234,13 @@ export const contactV3DepartmentCreate = {
       group_chat_employee_types: z
         .array(z.number().describe('雇员类型'))
         .describe(
-          '部门群的人员类型限制。人员类型的取值范围如下。该参数支持设置多个类型值，若有多个，用英文 `,` 分隔：- 1：正式员工- 2：实习生- 3：外包- 4：劳务- 5：顾问该参数支持传入自定义人员类型对应的编号。你可以调用接口获取相应编号（enum_value）。**默认值**：空',
+          '部门群的人员类型限制。人员类型的取值范围如下。该参数支持设置多个类型值，若有多个，用英文 `,` 分隔：- 1：正式员工- 2：实习生- 3：外包- 4：劳务- 5：顾问该参数支持传入自定义人员类型对应的编号。你可以调用[查询人员类型]接口获取相应编号（enum_value）。**默认值**：空',
         )
         .optional(),
       department_hrbps: z
         .array(z.string().describe('HRBP的ID'))
         .describe(
-          '部门 HRBP 的用户 ID 列表。 ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见。**默认值**：空',
+          '部门 HRBP 的用户 ID 列表。 ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。**默认值**：空',
         )
         .optional(),
     }),
@@ -249,7 +249,7 @@ export const contactV3DepartmentCreate = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。**默认值**：open_department_id Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。**默认值**：open_department_id Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
       client_token: z
@@ -272,7 +272,7 @@ export const contactV3DepartmentDelete = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -280,7 +280,7 @@ export const contactV3DepartmentDelete = {
       department_id: z
         .string()
         .describe(
-          '部门 ID，ID 类型需要与查询参数 department_id_type 的取值保持一致。ID 获取方式说明：- 调用接口后，可从返回结果中获取到部门 ID 信息。- 部门 API 提供了多种获取其他部门 ID 的方式，如、、，你可以选择合适的 API 进行查询',
+          '部门 ID，ID 类型需要与查询参数 department_id_type 的取值保持一致。ID 获取方式说明：- 调用[创建部门]接口后，可从返回结果中获取到部门 ID 信息。- 部门 API 提供了多种获取其他部门 ID 的方式，如[获取子部门列表]、[获取父部门信息]、[搜索部门]，你可以选择合适的 API 进行查询',
         )
         .optional(),
     }),
@@ -301,7 +301,7 @@ export const contactV3DepartmentGet = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -309,7 +309,7 @@ export const contactV3DepartmentGet = {
       department_id: z
         .string()
         .describe(
-          '部门 ID，ID 类型需要与查询参数 department_id_type 的取值保持一致。ID 获取方式说明：- 调用接口后，可从返回结果中获取到部门 ID 信息。- 部门 API 提供了多种获取其他部门 ID 的方式，如、、，你可以选择合适的 API 进行查询',
+          '部门 ID，ID 类型需要与查询参数 department_id_type 的取值保持一致。ID 获取方式说明：- 调用[创建部门]接口后，可从返回结果中获取到部门 ID 信息。- 部门 API 提供了多种获取其他部门 ID 的方式，如[获取子部门列表]、[获取父部门信息]、[搜索部门]，你可以选择合适的 API 进行查询',
         )
         .optional(),
     }),
@@ -323,7 +323,7 @@ export const contactV3DepartmentList = {
   path: '/open-apis/contact/v3/departments',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-历史版本（不推荐）-通讯录-部门管理-获取部门信息列表-该接口用于获取当前部门子部门列表。',
+    '[Feishu/Lark]-历史版本（不推荐）-通讯录-部门管理-获取部门信息列表-该接口用于获取当前部门子部门列表。[常见问题答疑]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -360,13 +360,13 @@ export const contactV3DepartmentParent = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。**默认值**：open_department_id Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。**默认值**：open_department_id Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
       department_id: z
         .string()
         .describe(
-          '部门 ID。ID 类型需要与查询参数 department_id_type 的取值保持一致。当你在创建部门时，可从返回结果中获取到部门 ID 信息，你也可以调用接口，获取所需的部门 ID',
+          '部门 ID。ID 类型需要与查询参数 department_id_type 的取值保持一致。当你在创建部门时，可从返回结果中获取到部门 ID 信息，你也可以调用[搜索部门]接口，获取所需的部门 ID',
         ),
       page_token: z
         .string()
@@ -407,25 +407,19 @@ export const contactV3DepartmentPatch = {
       parent_department_id: z
         .string()
         .describe(
-          '父部门的 ID。部门 ID 获取方式：- 如果需要将部门的父部门设置为根部门，则该参数取值 `0`。- 你可以调用接口获取所需的部门 ID。**默认值**：空，表示不修改',
+          '父部门的 ID。部门 ID 获取方式：- 如果需要将部门的父部门设置为根部门，则该参数取值 `0`。- 你可以调用[搜索部门]接口获取所需的部门 ID。**默认值**：空，表示不修改',
         )
         .optional(),
       leader_user_id: z
         .string()
         .describe(
-          '部门主管的用户 ID。ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见。**注意**：部门主管（leader_user_id）和部门主负责人（leaderType 取值为 1 所对应的 leaderID）取值始终一致。因此：- 如果同时设置了部门主负责人（leaderType 取值为 1 所对应的 leaderID），则此处设置的部门主管必须与部门主负责人为同一个人。- 仅修改部门主管，会同步修改部门主负责人（leaderType 取值为 1 所对应的 leaderID）。**默认值**：空，表示不修改',
+          '部门主管的用户 ID。ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。**注意**：部门主管（leader_user_id）和部门主负责人（leaderType 取值为 1 所对应的 leaderID）取值始终一致。因此：- 如果同时设置了部门主负责人（leaderType 取值为 1 所对应的 leaderID），则此处设置的部门主管必须与部门主负责人为同一个人。- 仅修改部门主管，会同步修改部门主负责人（leaderType 取值为 1 所对应的 leaderID）。**默认值**：空，表示不修改',
         )
         .optional(),
       order: z
         .string()
         .describe(
           '部门的排序，即部门在其同级部门的展示顺序。取值格式为 String 类型的非负整数，数值越小，排序越靠前。**注意**：order 值唯一，即传入的值不能与存量部门的 order 值重复。**默认值**：空，表示不修改',
-        )
-        .optional(),
-      unit_ids: z
-        .array(z.string().describe('部门单位自定义ID'))
-        .describe(
-          '部门绑定的单位自定义 ID 列表，当前只支持绑定一个单位。- 了解单位信息参见。- 调用接口，可获取单位 ID。**默认值**：空，表示不修改',
         )
         .optional(),
       create_group_chat: z
@@ -441,7 +435,7 @@ export const contactV3DepartmentPatch = {
             leaderID: z
               .string()
               .describe(
-                '负责人的用户 ID，ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见',
+                '负责人的用户 ID，ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]',
               ),
           }),
         )
@@ -452,13 +446,13 @@ export const contactV3DepartmentPatch = {
       group_chat_employee_types: z
         .array(z.number().describe('雇员类型'))
         .describe(
-          '部门群的人员类型限制。人员类型的取值范围如下。该参数支持设置多个类型值，若有多个，用英文 `,` 分隔：- 1：正式员工- 2：实习生- 3：外包- 4：劳务- 5：顾问该参数支持传入自定义人员类型对应的编号。你可以调用接口获取相应编号（enum_value）。**默认值**：空',
+          '部门群的人员类型限制。人员类型的取值范围如下。该参数支持设置多个类型值，若有多个，用英文 `,` 分隔：- 1：正式员工- 2：实习生- 3：外包- 4：劳务- 5：顾问该参数支持传入自定义人员类型对应的编号。你可以调用[查询人员类型]接口获取相应编号（enum_value）。**默认值**：空',
         )
         .optional(),
       department_hrbps: z
         .array(z.string().describe('HRBP的ID'))
         .describe(
-          '部门 HRBP 的用户 ID 列表。 ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见。**注意**：department_hrbps 如果传空数组，则会把原有值清空',
+          '部门 HRBP 的用户 ID 列表。 ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。**注意**：department_hrbps 如果传空数组，则会把原有值清空',
         )
         .optional(),
     }),
@@ -467,7 +461,7 @@ export const contactV3DepartmentPatch = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -475,7 +469,7 @@ export const contactV3DepartmentPatch = {
       department_id: z
         .string()
         .describe(
-          '部门 ID，ID 类型需要与查询参数 department_id_type 的取值保持一致。ID 获取方式说明：- 调用接口后，可从返回结果中获取到部门 ID 信息。- 部门 API 提供了多种获取其他部门 ID 的方式，如、、，你可以选择合适的 API 进行查询',
+          '部门 ID，ID 类型需要与查询参数 department_id_type 的取值保持一致。ID 获取方式说明：- 调用[创建部门]接口后，可从返回结果中获取到部门 ID 信息。- 部门 API 提供了多种获取其他部门 ID 的方式，如[获取子部门列表]、[获取父部门信息]、[搜索部门]，你可以选择合适的 API 进行查询',
         )
         .optional(),
     }),
@@ -497,7 +491,7 @@ export const contactV3DepartmentSearch = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。**默认值**：open_department_id Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。**默认值**：open_department_id Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
       page_token: z
@@ -524,14 +518,14 @@ export const contactV3DepartmentUnbindDepartmentChat = {
       department_id: z
         .string()
         .describe(
-          '部门 ID，ID 类型需要与查询参数 department_id_type 的取值保持一致。ID 获取方式说明：- 调用接口后，可从返回结果中获取到部门 ID 信息。- 部门 API 提供了多种获取其他部门 ID 的方式，如、、，你可以选择合适的 API 进行查询',
+          '部门 ID，ID 类型需要与查询参数 department_id_type 的取值保持一致。ID 获取方式说明：- 调用[创建部门]接口后，可从返回结果中获取到部门 ID 信息。- 部门 API 提供了多种获取其他部门 ID 的方式，如[获取子部门列表]、[获取父部门信息]、[搜索部门]，你可以选择合适的 API 进行查询',
         ),
     }),
     params: z.object({
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。**默认值**：open_department_id Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。**默认值**：open_department_id Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -560,24 +554,18 @@ export const contactV3DepartmentUpdate = {
       parent_department_id: z
         .string()
         .describe(
-          '父部门的 ID。部门 ID 获取方式：- 如果需要将部门的父部门设置为根部门，则该参数取值 `0`。- 你可以调用接口获取所需的部门 ID',
+          '父部门的 ID。部门 ID 获取方式：- 如果需要将部门的父部门设置为根部门，则该参数取值 `0`。- 你可以调用[搜索部门]接口获取所需的部门 ID',
         ),
       leader_user_id: z
         .string()
         .describe(
-          '部门主管的用户 ID。ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见。**注意**：部门主管（leader_user_id）和部门主负责人（leaderType 取值为 1 所对应的 leaderID）取值始终一致。因此：- 如果同时设置了部门主负责人（leaderType 取值为 1 所对应的 leaderID），则此处设置的部门主管必须与部门主负责人为同一个人。- 仅修改部门主管，会同步修改部门主负责人（leaderType 取值为 1 所对应的 leaderID）',
+          '部门主管的用户 ID。ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。**注意**：部门主管（leader_user_id）和部门主负责人（leaderType 取值为 1 所对应的 leaderID）取值始终一致。因此：- 如果同时设置了部门主负责人（leaderType 取值为 1 所对应的 leaderID），则此处设置的部门主管必须与部门主负责人为同一个人。- 仅修改部门主管，会同步修改部门主负责人（leaderType 取值为 1 所对应的 leaderID）',
         )
         .optional(),
       order: z
         .string()
         .describe(
           '部门的排序，即部门在其同级部门的展示顺序。取值格式为 String 类型的非负整数，数值越小，排序越靠前。**注意**：- order 值唯一，即传入的值不能与存量部门的 order 值重复。- 不传值表示不修改部门原有的 order 值',
-        )
-        .optional(),
-      unit_ids: z
-        .array(z.string().describe('部门单位自定义ID'))
-        .describe(
-          '部门绑定的单位自定义 ID 列表，当前只支持绑定一个单位。- 了解单位信息参见。- 调用接口，可获取单位 ID',
         )
         .optional(),
       create_group_chat: z
@@ -593,7 +581,7 @@ export const contactV3DepartmentUpdate = {
             leaderID: z
               .string()
               .describe(
-                '负责人的用户 ID，ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见',
+                '负责人的用户 ID，ID 类型与查询参数 user_id_type 的取值保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]',
               ),
           }),
         )
@@ -604,7 +592,7 @@ export const contactV3DepartmentUpdate = {
       group_chat_employee_types: z
         .array(z.number().describe('雇员类型'))
         .describe(
-          '部门群的人员类型限制。人员类型的取值范围如下。该参数支持设置多个类型值，若有多个，用英文 `,` 分隔：- 1：正式员工- 2：实习生- 3：外包- 4：劳务- 5：顾问该参数支持传入自定义人员类型对应的编号。你可以调用接口获取相应编号（enum_value）。**说明**：如果部门之前已创建了部门群，则该参数不传值时，默认不会修改原有的部门群人员类型限制',
+          '部门群的人员类型限制。人员类型的取值范围如下。该参数支持设置多个类型值，若有多个，用英文 `,` 分隔：- 1：正式员工- 2：实习生- 3：外包- 4：劳务- 5：顾问该参数支持传入自定义人员类型对应的编号。你可以调用[查询人员类型]接口获取相应编号（enum_value）。**说明**：如果部门之前已创建了部门群，则该参数不传值时，默认不会修改原有的部门群人员类型限制',
         )
         .optional(),
     }),
@@ -613,7 +601,7 @@ export const contactV3DepartmentUpdate = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -621,7 +609,7 @@ export const contactV3DepartmentUpdate = {
       department_id: z
         .string()
         .describe(
-          '部门 ID，ID 类型需要与查询参数 department_id_type 的取值保持一致。ID 获取方式说明：- 调用接口后，可从返回结果中获取到部门 ID 信息。- 部门 API 提供了多种获取其他部门 ID 的方式，如、、，你可以选择合适的 API 进行查询',
+          '部门 ID，ID 类型需要与查询参数 department_id_type 的取值保持一致。ID 获取方式说明：- 调用[创建部门]接口后，可从返回结果中获取到部门 ID 信息。- 部门 API 提供了多种获取其他部门 ID 的方式，如[获取子部门列表]、[获取父部门信息]、[搜索部门]，你可以选择合适的 API 进行查询',
         )
         .optional(),
     }),
@@ -647,7 +635,7 @@ export const contactV3DepartmentUpdateDepartmentId = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。**默认值**：open_department_id Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。**默认值**：open_department_id Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -655,7 +643,7 @@ export const contactV3DepartmentUpdateDepartmentId = {
       department_id: z
         .string()
         .describe(
-          '需要更新自定义 ID 的部门 ID，该 ID 类型需要与查询参数 department_id_type 的取值一致。ID 获取方式说明：- 调用接口后，可从返回结果中获取到部门 ID 信息。- 部门 API 提供了多种获取其他部门 ID 的方式，如、、，你可以选择合适的 API 进行查询',
+          '需要更新自定义 ID 的部门 ID，该 ID 类型需要与查询参数 department_id_type 的取值一致。ID 获取方式说明：- 调用[创建部门]接口后，可从返回结果中获取到部门 ID 信息。- 部门 API 提供了多种获取其他部门 ID 的方式，如[获取子部门列表]、[获取父部门信息]、[搜索部门]，你可以选择合适的 API 进行查询',
         )
         .optional(),
     }),
@@ -713,7 +701,7 @@ export const contactV3EmployeeTypeEnumDelete = {
       enum_id: z
         .string()
         .describe(
-          '自定义人员类型的选项 ID。你可以在新建人员类型时从返回值中获取，你也可以调用接口，获取选项的 ID',
+          '自定义人员类型的选项 ID。你可以在新建人员类型时从返回值中获取，你也可以调用[查询人员类型]接口，获取选项的 ID',
         )
         .optional(),
     }),
@@ -778,7 +766,7 @@ export const contactV3EmployeeTypeEnumUpdate = {
       enum_id: z
         .string()
         .describe(
-          '自定义人员类型的选项 ID。你可以在新建人员类型时从返回值中获取，你也可以调用接口，获取选项的 ID',
+          '自定义人员类型的选项 ID。你可以在新建人员类型时从返回值中获取，你也可以调用[查询人员类型]接口，获取选项的 ID',
         )
         .optional(),
     }),
@@ -809,7 +797,7 @@ export const contactV3FunctionalRoleDelete = {
       role_id: z
         .string()
         .describe(
-          '角色 ID。获取方式：- 在创建角色时，可从返回结果中获取。- 企业管理员可以在  > **组织架构** > **角色管理** 页面，在角色名称右侧获取角色 ID',
+          '角色 ID。获取方式：- 在创建角色时，可从返回结果中获取。- 企业管理员可以在 [管理后台] > **组织架构** > **角色管理** 页面，在角色名称右侧获取角色 ID',
         ),
     }),
   },
@@ -835,7 +823,7 @@ export const contactV3FunctionalRoleMemberBatchCreate = {
       role_id: z
         .string()
         .describe(
-          '角色 ID。获取方式：- 在时，可从返回结果中获取。- 企业管理员可以在  > **组织架构** > **角色管理** 页面，在角色名称右侧获取角色 ID',
+          '角色 ID。获取方式：- 在[创建角色]时，可从返回结果中获取。- 企业管理员可以在 [管理后台] > **组织架构** > **角色管理** 页面，在角色名称右侧获取角色 ID',
         ),
     }),
   },
@@ -862,7 +850,7 @@ export const contactV3FunctionalRoleMemberBatchDelete = {
       role_id: z
         .string()
         .describe(
-          '角色 ID。获取方式：- 在时，可从返回结果中获取。- 企业管理员可以在  > **组织架构** > **角色管理** 页面，在角色名称右侧获取角色 ID',
+          '角色 ID。获取方式：- 在[创建角色]时，可从返回结果中获取。- 企业管理员可以在 [管理后台] > **组织架构** > **角色管理** 页面，在角色名称右侧获取角色 ID',
         ),
     }),
   },
@@ -882,7 +870,7 @@ export const contactV3FunctionalRoleMemberGet = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -890,7 +878,7 @@ export const contactV3FunctionalRoleMemberGet = {
       role_id: z
         .string()
         .describe(
-          '角色 ID。获取方式：- 在时，可从返回结果中获取。- 企业管理员可以在  > **组织架构** > **角色管理** 页面，在角色名称右侧获取角色 ID',
+          '角色 ID。获取方式：- 在[创建角色]时，可从返回结果中获取。- 企业管理员可以在 [管理后台] > **组织架构** > **角色管理** 页面，在角色名称右侧获取角色 ID',
         ),
       member_id: z.string().describe('角色成员的用户 ID，ID 类型需要和查询参数 user_id_type 的取值保持一致'),
     }),
@@ -918,7 +906,7 @@ export const contactV3FunctionalRoleMemberList = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -926,7 +914,7 @@ export const contactV3FunctionalRoleMemberList = {
       role_id: z
         .string()
         .describe(
-          '角色 ID。获取方式：- 在时，可从返回结果中获取。- 企业管理员可以在  > **组织架构** > **角色管理** 页面，在角色名称右侧获取角色 ID',
+          '角色 ID。获取方式：- 在[创建角色]时，可从返回结果中获取。- 企业管理员可以在 [管理后台] > **组织架构** > **角色管理** 页面，在角色名称右侧获取角色 ID',
         ),
     }),
   },
@@ -950,7 +938,7 @@ export const contactV3FunctionalRoleMemberScopes = {
       departments: z
         .array(z.string())
         .describe(
-          '设置角色成员可管理的部门范围（部门 ID 列表），以 `["xxx", "yyy"]` 数组格式进行传值。ID 类型需要和查询参数 department_id_type 的取值保持一致。部门 API 提供了多种获取部门 ID 的方式，如、、，你可以选择合适的 API 进行查询。**注意**：不支持为角色成员设置根部门（部门 ID 为 0）的管理范围',
+          '设置角色成员可管理的部门范围（部门 ID 列表），以 `["xxx", "yyy"]` 数组格式进行传值。ID 类型需要和查询参数 department_id_type 的取值保持一致。部门 API 提供了多种获取部门 ID 的方式，如[获取子部门列表]、[获取父部门信息]、[搜索部门]，你可以选择合适的 API 进行查询。**注意**：不支持为角色成员设置根部门（部门 ID 为 0）的管理范围',
         ),
     }),
     params: z.object({
@@ -958,7 +946,7 @@ export const contactV3FunctionalRoleMemberScopes = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -966,7 +954,7 @@ export const contactV3FunctionalRoleMemberScopes = {
       role_id: z
         .string()
         .describe(
-          '角色 ID。获取方式：- 在时，可从返回结果中获取。- 企业管理员可以在  > **组织架构** > **角色管理** 页面，在角色名称右侧获取角色 ID',
+          '角色 ID。获取方式：- 在[创建角色]时，可从返回结果中获取。- 企业管理员可以在 [管理后台] > **组织架构** > **角色管理** 页面，在角色名称右侧获取角色 ID',
         ),
     }),
   },
@@ -985,7 +973,7 @@ export const contactV3FunctionalRoleUpdate = {
       role_id: z
         .string()
         .describe(
-          '角色 ID。获取方式：- 在创建角色时，可从返回结果中获取。- 企业管理员可以在  > **组织架构** > **角色管理** 页面，在角色名称右侧获取角色 ID',
+          '角色 ID。获取方式：- 在创建角色时，可从返回结果中获取。- 企业管理员可以在 [管理后台] > **组织架构** > **角色管理** 页面，在角色名称右侧获取角色 ID',
         ),
     }),
   },
@@ -1023,7 +1011,7 @@ export const contactV3GroupCreate = {
       department_id_type: z
         .enum(['open_department_id', 'department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
         )
         .optional(),
     }),
@@ -1042,7 +1030,7 @@ export const contactV3GroupDelete = {
       group_id: z
         .string()
         .describe(
-          '需删除的用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用接口，获取用户组的 ID',
+          '需删除的用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用[查询用户组列表]接口，获取用户组的 ID',
         ),
     }),
   },
@@ -1062,7 +1050,7 @@ export const contactV3GroupGet = {
       department_id_type: z
         .enum(['open_department_id', 'department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
         )
         .optional(),
     }),
@@ -1070,7 +1058,7 @@ export const contactV3GroupGet = {
       group_id: z
         .string()
         .describe(
-          '用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用接口，获取用户组的 ID',
+          '用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用[查询用户组列表]接口，获取用户组的 ID',
         ),
     }),
   },
@@ -1089,7 +1077,7 @@ export const contactV3GroupMemberBelong = {
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id'])
         .describe(
-          '成员 ID 类型。 Options:open_id(OpenID 标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。。),union_id(UnionID 标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。。),user_id(UserID 标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。。)',
+          '成员 ID 类型。 Options:open_id(OpenID 标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]。),union_id(UnionID 标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]。),user_id(UserID 标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。[了解更多：如何获取 User ID？]。)',
         )
         .optional(),
       group_type: z.number().describe('用户组类型。 Options:1(Assign 普通用户组),2(Dynamic 动态用户组)').optional(),
@@ -1122,14 +1110,14 @@ export const contactV3GroupMemberAdd = {
       member_id: z
         .string()
         .describe(
-          '添加的用户 ID，ID 类型与 member_id_type 的取值保持一致。不同类型的 ID 获取方式可参见：- - - ',
+          '添加的用户 ID，ID 类型与 member_id_type 的取值保持一致。不同类型的 ID 获取方式可参见：- [如何获取用户 open_id]- [如何获取用户 union_id]- [如何获取用户 user_id]',
         ),
     }),
     path: z.object({
       group_id: z
         .string()
         .describe(
-          '用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用接口，获取用户组的 ID',
+          '用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用[查询用户组列表]接口，获取用户组的 ID',
         ),
     }),
   },
@@ -1150,7 +1138,7 @@ export const contactV3GroupMemberBatchAdd = {
             member_id: z
               .string()
               .describe(
-                '添加的用户 ID，ID 类型与 member_id_type 的取值保持一致。不同类型的 ID 获取方式可参见：- - - ',
+                '添加的用户 ID，ID 类型与 member_id_type 的取值保持一致。不同类型的 ID 获取方式可参见：- [如何获取用户 open_id]- [如何获取用户 union_id]- [如何获取用户 user_id]',
               ),
             member_type: z.string().describe('用户组成员的类型，目前仅支持选择 user，表示用户类型'),
             member_id_type: z
@@ -1168,7 +1156,7 @@ export const contactV3GroupMemberBatchAdd = {
       group_id: z
         .string()
         .describe(
-          '用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用接口，获取用户组的 ID',
+          '用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用[查询用户组列表]接口，获取用户组的 ID',
         ),
     }),
   },
@@ -1189,7 +1177,7 @@ export const contactV3GroupMemberBatchRemove = {
             member_id: z
               .string()
               .describe(
-                '移除的用户 ID，ID 类型与 member_id_type 的取值保持一致。你可以调用接口，获取用户组内的成员 ID，并将需要移除的成员 ID 传入当前参数。注意仅支持移除用户类型的成员，且需要使用相同的用户 ID 类型，否则会报错',
+                '移除的用户 ID，ID 类型与 member_id_type 的取值保持一致。你可以调用[查询用户组成员列表]接口，获取用户组内的成员 ID，并将需要移除的成员 ID 传入当前参数。注意仅支持移除用户类型的成员，且需要使用相同的用户 ID 类型，否则会报错',
               ),
             member_type: z.string().describe('用户组成员的类型，目前仅支持选择 user，表示用户类型'),
             member_id_type: z
@@ -1206,7 +1194,7 @@ export const contactV3GroupMemberBatchRemove = {
       group_id: z
         .string()
         .describe(
-          '用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用接口，获取用户组的 ID',
+          '用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用[查询用户组列表]接口，获取用户组的 ID',
         ),
     }),
   },
@@ -1225,7 +1213,7 @@ export const contactV3GroupMemberRemove = {
       member_id: z
         .string()
         .describe(
-          '移除的用户 ID，ID 类型与 member_id_type 的取值保持一致。你可以调用接口，获取用户组内的成员 ID，并将需要移除的成员 ID 传入当前参数。注意仅支持移除用户类型的成员，且需要使用相同的用户 ID 类型，否则会报错',
+          '移除的用户 ID，ID 类型与 member_id_type 的取值保持一致。你可以调用[查询用户组成员列表]接口，获取用户组内的成员 ID，并将需要移除的成员 ID 传入当前参数。注意仅支持移除用户类型的成员，且需要使用相同的用户 ID 类型，否则会报错',
         ),
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id'])
@@ -1237,7 +1225,7 @@ export const contactV3GroupMemberRemove = {
       group_id: z
         .string()
         .describe(
-          '用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用接口，获取用户组的 ID',
+          '用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用[查询用户组列表]接口，获取用户组的 ID',
         ),
     }),
   },
@@ -1277,7 +1265,7 @@ export const contactV3GroupMemberSimplelist = {
       group_id: z
         .string()
         .describe(
-          '用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用接口，获取用户组的 ID',
+          '用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用[查询用户组列表]接口，获取用户组的 ID',
         ),
     }),
   },
@@ -1308,7 +1296,7 @@ export const contactV3GroupPatch = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -1316,7 +1304,7 @@ export const contactV3GroupPatch = {
       group_id: z
         .string()
         .describe(
-          '用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用接口，获取用户组的 ID',
+          '用户组 ID。用户组 ID 可在创建用户组时从返回值中获取，你也可以调用[查询用户组列表]接口，获取用户组的 ID',
         ),
     }),
   },
@@ -1359,7 +1347,7 @@ export const contactV3JobFamilyCreate = {
       parent_job_family_id: z
         .string()
         .describe(
-          '上级序列 ID。如果你需要为某一序列添加子序列，则需要传入该参数值。你可以调用接口，获取序列 ID。默认值：空，表示该序列没有上级序列',
+          '上级序列 ID。如果你需要为某一序列添加子序列，则需要传入该参数值。你可以调用[获取租户序列列表]接口，获取序列 ID。默认值：空，表示该序列没有上级序列',
         )
         .optional(),
       status: z.boolean().describe('是否启用序列。**可选值有**：- true：启用- false：禁用'),
@@ -1397,7 +1385,7 @@ export const contactV3JobFamilyDelete = {
       job_family_id: z
         .string()
         .describe(
-          '序列 ID。获取方式：- 时可以从返回结果中获取（job_family_id）。- 调用接口获取序列 ID',
+          '序列 ID。获取方式：- [创建序列]时可以从返回结果中获取（job_family_id）。- 调用[获取租户序列列表]接口获取序列 ID',
         ),
     }),
   },
@@ -1416,7 +1404,7 @@ export const contactV3JobFamilyGet = {
       job_family_id: z
         .string()
         .describe(
-          '序列 ID。获取方式：- 时可以从返回结果中获取（job_family_id）。- 调用接口获取序列 ID',
+          '序列 ID。获取方式：- [创建序列]时可以从返回结果中获取（job_family_id）。- 调用[获取租户序列列表]接口获取序列 ID',
         ),
     }),
   },
@@ -1466,7 +1454,7 @@ export const contactV3JobFamilyUpdate = {
       parent_job_family_id: z
         .string()
         .describe(
-          '上级序列 ID。你可以调用接口，获取序列 ID。**默认值**：空，表示不更新',
+          '上级序列 ID。你可以调用[获取租户序列列表]接口，获取序列 ID。**默认值**：空，表示不更新',
         )
         .optional(),
       status: z
@@ -1496,7 +1484,7 @@ export const contactV3JobFamilyUpdate = {
       job_family_id: z
         .string()
         .describe(
-          '序列 ID。获取方式：- 时可以从返回结果中获取（job_family_id）。- 调用接口获取序列 ID',
+          '序列 ID。获取方式：- [创建序列]时可以从返回结果中获取（job_family_id）。- 调用[获取租户序列列表]接口获取序列 ID',
         ),
     }),
   },
@@ -1562,7 +1550,7 @@ export const contactV3JobLevelDelete = {
       job_level_id: z
         .string()
         .describe(
-          '职级 ID。获取方式：- 创建职级时，可以从返回结果中获取职级 ID。- 调用接口，查找指定职级的 ID 信息',
+          '职级 ID。获取方式：- 创建职级时，可以从返回结果中获取职级 ID。- 调用[获取租户职级列表]接口，查找指定职级的 ID 信息',
         ),
     }),
   },
@@ -1581,7 +1569,7 @@ export const contactV3JobLevelGet = {
       job_level_id: z
         .string()
         .describe(
-          '职级 ID。获取方式：- 创建职级时，可以从返回结果中获取职级 ID。- 调用接口，查找指定职级的 ID 信息',
+          '职级 ID。获取方式：- 创建职级时，可以从返回结果中获取职级 ID。- 调用[获取租户职级列表]接口，查找指定职级的 ID 信息',
         ),
     }),
   },
@@ -1662,7 +1650,7 @@ export const contactV3JobLevelUpdate = {
       job_level_id: z
         .string()
         .describe(
-          '职级 ID。获取方式：- 创建职级时，可以从返回结果中获取职级 ID。- 调用接口，查找指定职级的 ID 信息',
+          '职级 ID。获取方式：- 创建职级时，可以从返回结果中获取职级 ID。- 调用[获取租户职级列表]接口，查找指定职级的 ID 信息',
         ),
     }),
   },
@@ -1681,7 +1669,7 @@ export const contactV3JobTitleGet = {
       job_title_id: z
         .string()
         .describe(
-          '职务 ID。你可以调用接口获取职务 ID',
+          '职务 ID。你可以调用[获取租户职务列表]接口获取职务 ID',
         )
         .optional(),
     }),
@@ -1725,7 +1713,7 @@ export const contactV3ScopeList = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
       page_token: z
@@ -1757,17 +1745,17 @@ export const contactV3UnitBindDepartment = {
       unit_id: z
         .string()
         .describe(
-          '单位 ID。当你在创建单位时，可以在返回结果中获取单位 ID。你也可以调用接口，获取单位 ID',
+          '单位 ID。当你在创建单位时，可以在返回结果中获取单位 ID。你也可以调用[获取单位列表]接口，获取单位 ID',
         ),
       department_id: z
         .string()
         .describe(
-          '单位关联的部门 ID，ID 类型与 department_id_type 的取值保持一致。部门 API 提供了多种获取部门 ID 的方式，如、、，你可以选择合适的 API 进行查询',
+          '单位关联的部门 ID，ID 类型与 department_id_type 的取值保持一致。部门 API 提供了多种获取部门 ID 的方式，如[获取子部门列表]、[获取父部门信息]、[搜索部门]，你可以选择合适的 API 进行查询',
         ),
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -1815,7 +1803,7 @@ export const contactV3UnitDelete = {
       unit_id: z
         .string()
         .describe(
-          '单位 ID。当你在创建单位时，可以在返回结果中获取单位 ID。你也可以调用接口，获取单位 ID',
+          '单位 ID。当你在创建单位时，可以在返回结果中获取单位 ID。你也可以调用[获取单位列表]接口，获取单位 ID',
         ),
     }),
   },
@@ -1833,7 +1821,7 @@ export const contactV3UnitGet = {
       unit_id: z
         .string()
         .describe(
-          '单位 ID。当你在创建单位时，可以在返回结果中获取单位 ID。你也可以调用接口，获取单位 ID',
+          '单位 ID。当你在创建单位时，可以在返回结果中获取单位 ID。你也可以调用[获取单位列表]接口，获取单位 ID',
         ),
     }),
   },
@@ -1872,12 +1860,12 @@ export const contactV3UnitListDepartment = {
       unit_id: z
         .string()
         .describe(
-          '单位 ID。当你在创建单位时，可以在返回结果中获取单位 ID。你也可以调用接口，获取单位 ID',
+          '单位 ID。当你在创建单位时，可以在返回结果中获取单位 ID。你也可以调用[获取单位列表]接口，获取单位 ID',
         ),
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
       page_token: z
@@ -1911,7 +1899,7 @@ export const contactV3UnitPatch = {
       unit_id: z
         .string()
         .describe(
-          '单位 ID。当你在创建单位时，可以在返回结果中获取单位 ID。你也可以调用接口，获取单位 ID',
+          '单位 ID。当你在创建单位时，可以在返回结果中获取单位 ID。你也可以调用[获取单位列表]接口，获取单位 ID',
         ),
     }),
   },
@@ -1929,17 +1917,17 @@ export const contactV3UnitUnbindDepartment = {
       unit_id: z
         .string()
         .describe(
-          '单位 ID。当你在创建单位时，可以在返回结果中获取单位 ID。你也可以调用接口，获取单位 ID',
+          '单位 ID。当你在创建单位时，可以在返回结果中获取单位 ID。你也可以调用[获取单位列表]接口，获取单位 ID',
         ),
       department_id: z
         .string()
         .describe(
-          '待解除关联的部门 ID。ID 类型与 department_id_type 的取值保持一致。部门 API 提供了多种获取部门 ID 的方式，如、、，你可以选择合适的 API 进行查询',
+          '待解除关联的部门 ID。ID 类型与 department_id_type 的取值保持一致。部门 API 提供了多种获取部门 ID 的方式，如[获取子部门列表]、[获取父部门信息]、[搜索部门]，你可以选择合适的 API 进行查询',
         ),
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -1965,7 +1953,7 @@ export const contactV3UserBatch = {
       department_id_type: z
         .enum(['open_department_id', 'department_id'])
         .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
+          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
         )
         .optional(),
     }),
@@ -2047,30 +2035,30 @@ export const contactV3UserCreate = {
       avatar_key: z
         .string()
         .describe(
-          '头像的文件 Key。你可以通过接口，上传并获取头像文件 Key。**默认值**：空',
+          '头像的文件 Key。你可以通过[上传图片]接口，上传并获取头像文件 Key，上传时图片类型需要选择 用于设置头像**默认值**：空',
         )
         .optional(),
       department_ids: z
         .array(z.string())
         .describe(
-          '用户所属部门的 ID 列表。- 一个用户可属于多个部门，最多可设置 50 个部门。- 部门 ID 类型与查询参数 `department_id_type` 保持一致。- 你可以调用接口，通过部门名称关键词获取对应的部门 ID',
+          '用户所属部门的 ID 列表。- 一个用户可属于多个部门，最多可设置 50 个部门。- 部门 ID 类型与查询参数 `department_id_type` 保持一致。- 你可以调用[搜索部门]接口，通过部门名称关键词获取对应的部门 ID',
         ),
       leader_user_id: z
         .string()
         .describe(
-          '用户的直接主管的用户 ID，ID 类型与查询参数 `user_id_type` 保持一致。用户 ID 获取方式可参见。**默认值**：空',
+          '用户的直接主管的用户 ID，ID 类型与查询参数 `user_id_type` 保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。**默认值**：空',
         )
         .optional(),
       city: z
         .string()
         .describe(
-          '工作城市。字符长度上限为 100。**说明**：- 你可以调用接口获取当前租户内已有的工作城市名称。- 如果你传入的工作城市名称不存在，则系统会自动生成该工作城市。工作城市的枚举值数量上限为 10,000。**默认值**：空',
+          '工作城市。字符长度上限为 100。**说明**：- 你可以调用[获取租户工作城市列表]接口获取当前租户内已有的工作城市名称。- 如果你传入的工作城市名称不存在，则系统会自动生成该工作城市。工作城市的枚举值数量上限为 10,000。**默认值**：空',
         )
         .optional(),
       country: z
         .string()
         .describe(
-          '国家或地区 Code 缩写。具体写入格式参考 。**默认值**：空',
+          '国家或地区 Code 缩写。具体写入格式参考 [国家/地区 Code 参照表]。**默认值**：空',
         )
         .optional(),
       work_station: z.string().describe('工位。字符长度上限为 255。**默认值**：空').optional(),
@@ -2087,7 +2075,7 @@ export const contactV3UserCreate = {
       employee_type: z
         .number()
         .describe(
-          '员工类型。**可选值有**：- 1：正式员工- 2：实习生- 3：外包- 4：劳务- 5：顾问 该参数支持读取自定义的员工类型的 int 值。你可通过接口获取到该租户的自定义员工类型的编号值（enum_value）',
+          '员工类型。**可选值有**：- 1：正式员工- 2：实习生- 3：外包- 4：劳务- 5：顾问 该参数支持读取自定义的员工类型的 int 值。你可通过[获取人员类型]接口获取到该租户的自定义员工类型的编号值（enum_value）',
         ),
       orders: z
         .array(
@@ -2132,7 +2120,7 @@ export const contactV3UserCreate = {
             id: z
               .string()
               .describe(
-                '自定义字段 ID。你可以调用接口获取自定义字段对应的字段 ID。**说明**：如果设置了自定义字段类型参数（type），则该参数必填',
+                '自定义字段 ID。你可以调用[获取企业自定义用户字段]接口获取自定义字段对应的字段 ID。**说明**：如果设置了自定义字段类型参数（type），则该参数必填',
               )
               .optional(),
             value: z
@@ -2158,7 +2146,7 @@ export const contactV3UserCreate = {
                 option_id: z
                   .string()
                   .describe(
-                    '自定义字段类型为 ENUMERATION 或 PICTURE_ENUM 时，该参数用于定义选项 ID。你可以调用接口获取自定义字段相应的选项 ID',
+                    '自定义字段类型为 ENUMERATION 或 PICTURE_ENUM 时，该参数用于定义选项 ID。你可以调用[获取企业自定义用户字段]接口获取自定义字段相应的选项 ID',
                   )
                   .optional(),
                 generic_user: z
@@ -2166,7 +2154,7 @@ export const contactV3UserCreate = {
                     id: z
                       .string()
                       .describe(
-                        '引用人员的用户 ID。- ID 类型与查询参数 `user_id_type` 保持一致。- 如何获取用户 ID 可参见',
+                        '引用人员的用户 ID。- ID 类型与查询参数 `user_id_type` 保持一致。- 如何获取用户 ID 可参见[如何获取不同的用户 ID]',
                       ),
                     type: z.number().describe('用户类型。**可选值有**：1：用户**说明**：目前仅支持取值 1，表示用户'),
                   })
@@ -2178,7 +2166,7 @@ export const contactV3UserCreate = {
           }),
         )
         .describe(
-          '自定义字段。设置参数前建议你先了解。**默认值**：空。如果没有设置自定义字段，则无需传入值。**注意事项**：当企业管理员在管理后台配置了自定义字段，且开启了 **允许开放平台 API 调用** 功能后，该字段才会生效',
+          '自定义字段。设置参数前建议你先了解[自定义字段资源介绍]。**默认值**：空。如果没有设置自定义字段，则无需传入值。**注意事项**：当企业管理员在管理后台配置了自定义字段，且开启了 **允许开放平台 API 调用** 功能后，该字段才会生效',
         )
         .optional(),
       enterprise_email: z
@@ -2190,32 +2178,32 @@ export const contactV3UserCreate = {
       job_title: z
         .string()
         .describe(
-          '职务名称。字符数量上限为 255。- 你可以调用接口获取相应的职务名称。- 如果传入的职务名称不存在，则系统会自动创建并使用该名称。职务枚举值数量上限为 10,000。**默认值**：空',
+          '职务名称。字符数量上限为 255。- 你可以调用[获取租户职务列表]接口获取相应的职务名称。- 如果传入的职务名称不存在，则系统会自动创建并使用该名称。职务枚举值数量上限为 10,000。**默认值**：空',
         )
         .optional(),
       geo: z.string().describe('数据驻留地。**注意事项**：需联系服务台技术支持开通使用。**默认值**：空').optional(),
       job_level_id: z
         .string()
         .describe(
-          '职级 ID。你可以调用接口查询相应的职级 ID。**默认值**：空',
+          '职级 ID。你可以调用[获取租户职级列表]接口查询相应的职级 ID。**默认值**：空',
         )
         .optional(),
       job_family_id: z
         .string()
         .describe(
-          '序列 ID。你可以调用接口查询相应的序列 ID。**默认值**：空',
+          '序列 ID。你可以调用[获取租户序列列表]接口查询相应的序列 ID。**默认值**：空',
         )
         .optional(),
       subscription_ids: z
         .array(z.string())
         .describe(
-          '分配给用户的席位 ID 列表。**注意事项**：- 该字段需要应用已开通 **分配用户席位** 权限。- 如果你购买了席位，则创建用户时必须为用户分配席位 ID，否则用户将无法登录企业飞书。更多信息可参见。- 你可通过接口，获取到当前租户的可用席位 ID。**默认值**：空',
+          '分配给用户的席位 ID 列表。**注意事项**：- 该字段需要应用已开通 **分配用户席位** 权限。- 如果你购买了席位，则创建用户时必须为用户分配席位 ID，否则用户将无法登录企业飞书。更多信息可参见[管理员分配席位]。- 你可通过[获取企业席位信息]接口，获取到当前租户的可用席位 ID。**默认值**：空',
         )
         .optional(),
       dotted_line_leader_user_ids: z
         .array(z.string())
         .describe(
-          '虚线上级的用户 ID 列表。- ID 类型与查询参数 `user_id_type` 保持一致。- 如何获取用户 ID 可参见。**默认值**：空',
+          '虚线上级的用户 ID 列表。- ID 类型与查询参数 `user_id_type` 保持一致。- 如何获取用户 ID 可参见[如何获取不同的用户 ID]。**默认值**：空',
         )
         .optional(),
     }),
@@ -2224,7 +2212,7 @@ export const contactV3UserCreate = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
       client_token: z
@@ -2250,43 +2238,43 @@ export const contactV3UserDelete = {
       department_chat_acceptor_user_id: z
         .string()
         .describe(
-          '部门群接收者的用户 ID。被删除用户为部门群群主时，转让群主给指定接收者。**注意**：- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见。- 不指定该参数时，如果被删除用户是部门群群主，则群主会默认转让给群内第一个入群的人',
+          '部门群接收者的用户 ID。被删除用户为部门群群主时，转让群主给指定接收者。**注意**：- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。- 不指定该参数时，如果被删除用户是部门群群主，则群主会默认转让给群内第一个入群的人',
         )
         .optional(),
       external_chat_acceptor_user_id: z
         .string()
         .describe(
-          '外部群接收者的用户 ID。被删除用户为外部群群主时，转让群主给指定接收者。**注意**：- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见。- 不指定该参数时，如果被删除用户是外部群群主，则群主会默认转让给群内与被删除用户在同一组织的第一个入群的人。如果组织内只有被删除用户在群里，则解散外部群',
+          '外部群接收者的用户 ID。被删除用户为外部群群主时，转让群主给指定接收者。**注意**：- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。- 不指定该参数时，如果被删除用户是外部群群主，则群主会默认转让给群内与被删除用户在同一组织的第一个入群的人。如果组织内只有被删除用户在群里，则解散外部群',
         )
         .optional(),
       docs_acceptor_user_id: z
         .string()
         .describe(
-          '文档接收者的用户 ID。用户被删除时，其拥有的文档转让给接收者。**注意**：- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见。- 不指定接收者则默认转让给被删除用户的直属上级。如果被删除用户无直属上级，则将文档资源保留在该用户名下。- 文档转让后，只改变文档所有者，其他权限不受影响',
+          '文档接收者的用户 ID。用户被删除时，其拥有的文档转让给接收者。**注意**：- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。- 不指定接收者则默认转让给被删除用户的直属上级。如果被删除用户无直属上级，则将文档资源保留在该用户名下。- 文档转让后，只改变文档所有者，其他权限不受影响',
         )
         .optional(),
       calendar_acceptor_user_id: z
         .string()
         .describe(
-          '日程接收者的用户 ID。用户被删除时，其拥有的日程转让给接收者。**注意**：- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见。- 不指定接收者则默认转让给被删除用户的直属上级。如果被删除用户无直属上级，则直接删除日程资源',
+          '日程接收者的用户 ID。用户被删除时，其拥有的日程转让给接收者。**注意**：- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。- 不指定接收者则默认转让给被删除用户的直属上级。如果被删除用户无直属上级，则直接删除日程资源',
         )
         .optional(),
       application_acceptor_user_id: z
         .string()
         .describe(
-          '应用接受者的用户 ID。用户被删除时，其创建的应用转让给接收者。**注意**：- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见。- 不指定接收者则默认转让给被删除用户的直属上级。如果被删除用户无直属上级，则保留应用在该用户名下，但该用户无法登录开发者后台进行应用管理。企业管理员可以在管理后台手动转移应用给其他人',
+          '应用接受者的用户 ID。用户被删除时，其创建的应用转让给接收者。**注意**：- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。- 不指定接收者则默认转让给被删除用户的直属上级。如果被删除用户无直属上级，则保留应用在该用户名下，但该用户无法登录开发者后台进行应用管理。企业管理员可以在管理后台手动转移应用给其他人',
         )
         .optional(),
       minutes_acceptor_user_id: z
         .string()
         .describe(
-          '妙记接收者的用户 ID。用户被删除时，其拥有的妙记资源转让给接收者。**注意**：- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见。- 如果不指定接收者，则默认转让给被删除用户的直属上级。如果被删除用户无直属上级，则将妙记保留在该用户名下。- 妙记转让后，只改变妙记所有者，不影响已分享的妙记链接',
+          '妙记接收者的用户 ID。用户被删除时，其拥有的妙记资源转让给接收者。**注意**：- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。- 如果不指定接收者，则默认转让给被删除用户的直属上级。如果被删除用户无直属上级，则将妙记保留在该用户名下。- 妙记转让后，只改变妙记所有者，不影响已分享的妙记链接',
         )
         .optional(),
       survey_acceptor_user_id: z
         .string()
         .describe(
-          '飞书问卷接收者的用户 ID。用户被删除时，其拥有的飞书问卷资源转让给接收者。**注意**：- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见。- 不指定接收者则默认转让给被删除用户的直属上级。如果被删除用户无直属上级，则直接删除飞书问卷资源',
+          '飞书问卷接收者的用户 ID。用户被删除时，其拥有的飞书问卷资源转让给接收者。**注意**：- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。- 不指定接收者则默认转让给被删除用户的直属上级。如果被删除用户无直属上级，则直接删除飞书问卷资源',
         )
         .optional(),
       email_acceptor: z
@@ -2297,7 +2285,7 @@ export const contactV3UserDelete = {
           acceptor_user_id: z
             .string()
             .describe(
-              '邮件资源接收者的用户 ID。ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见。**说明**：仅当 `processing_type` 取值为 `1` 时，需要设置该参数值',
+              '邮件资源接收者的用户 ID。ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。**说明**：仅当 `processing_type` 取值为 `1` 时，需要设置该参数值',
             )
             .optional(),
         })
@@ -2308,7 +2296,7 @@ export const contactV3UserDelete = {
       anycross_acceptor_user_id: z
         .string()
         .describe(
-          '用户集成平台资源的接收者的用户 ID。**注意：**- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见。- 不指定接收者则默认转让给被删除用户的直属上级。如果被删除用户无直属上级，则保留应用在该用户名下，但该用户无法登录飞书集成平台。企业管理员可以在管理后台手动转移应用给其他人',
+          '用户集成平台资源的接收者的用户 ID。**注意：**- ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]。- 不指定接收者则默认转让给被删除用户的直属上级。如果被删除用户无直属上级，则保留应用在该用户名下，但该用户无法登录飞书集成平台。企业管理员可以在管理后台手动转移应用给其他人',
         )
         .optional(),
     }),
@@ -2317,7 +2305,7 @@ export const contactV3UserDelete = {
       user_id: z
         .string()
         .describe(
-          '用户 ID。ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见',
+          '用户 ID。ID 类型需要与查询参数中的 user_id_type 类型保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]',
         ),
     }),
   },
@@ -2337,13 +2325,13 @@ export const contactV3UserFindByDepartment = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中使用的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中使用的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
       department_id: z
         .string()
         .describe(
-          '部门 ID，ID 类型与 department_id_type 的取值保持一致。**说明**：- 根部门的部门 ID 为 0。- 你可以调用接口，通过部门名称关键词获取对应的部门 ID',
+          '部门 ID，ID 类型与 department_id_type 的取值保持一致。**说明**：- 根部门的部门 ID 为 0。- 你可以调用[搜索部门]接口，通过部门名称关键词获取对应的部门 ID',
         ),
       page_size: z.number().describe('分页大小，即本次请求所返回的用户信息列表内的最大条目数').optional(),
       page_token: z
@@ -2371,7 +2359,7 @@ export const contactV3UserGet = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。)',
+          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -2386,7 +2374,7 @@ export const contactV3UserList = {
   path: '/open-apis/contact/v3/users',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-历史版本（不推荐）-通讯录-用户管理-获取用户列表-基于部门ID获取部门下直属用户列表。',
+    '[Feishu/Lark]-历史版本（不推荐）-通讯录-用户管理-获取用户列表-基于部门ID获取部门下直属用户列表。[常见问题答疑]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -2438,31 +2426,31 @@ export const contactV3UserPatch = {
       avatar_key: z
         .string()
         .describe(
-          '头像的文件 Key。你可以通过接口，上传并获取头像文件 Key',
+          '头像的文件 Key。你可以通过[上传图片]接口，上传并获取头像文件 Key，上传时图片类型需要选择 用于设置头像',
         )
         .optional(),
       department_ids: z
         .array(z.string())
         .describe(
-          '用户所属部门的 ID 列表。- 一个用户可属于多个部门。最多可归属 50 个部门。- 部门 ID 类型与查询参数 `department_id_type` 的取值保持一致。- 你可以调用接口，通过部门名称关键词获取对应的部门 ID',
+          '用户所属部门的 ID 列表。- 一个用户可属于多个部门。最多可归属 50 个部门。- 部门 ID 类型与查询参数 `department_id_type` 的取值保持一致。- 你可以调用[搜索部门]接口，通过部门名称关键词获取对应的部门 ID',
         )
         .optional(),
       leader_user_id: z
         .string()
         .describe(
-          '用户的直接主管的用户 ID，ID 类型与查询参数 `user_id_type` 的取值保持一致。用户 ID 获取方式可参见',
+          '用户的直接主管的用户 ID，ID 类型与查询参数 `user_id_type` 的取值保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]',
         )
         .optional(),
       city: z
         .string()
         .describe(
-          '工作城市。字符长度上限为 100。- 调用获取当前租户内已有的工作城市列表。- 如果你传入的工作城市名称不存在，则系统会自动生成该工作城市。工作城市的枚举值数量上限为 10,000',
+          '工作城市。字符长度上限为 100。- 调用[获取租户工作城市列表]获取当前租户内已有的工作城市列表。- 如果你传入的工作城市名称不存在，则系统会自动生成该工作城市。工作城市的枚举值数量上限为 10,000',
         )
         .optional(),
       country: z
         .string()
         .describe(
-          '国家或地区 Code 缩写。具体写入格式参考 ',
+          '国家或地区 Code 缩写。具体写入格式参考 [国家/地区 Code 参照表]',
         )
         .optional(),
       work_station: z.string().describe('工位。字符长度上限为 255').optional(),
@@ -2471,7 +2459,7 @@ export const contactV3UserPatch = {
       employee_type: z
         .number()
         .describe(
-          '员工类型。**可选值有**：- 1：正式员工- 2：实习生- 3：外包- 4：劳务- 5：顾问 该参数支持读取自定义的员工类型的 int 值。你可通过接口获取到该租户的自定义员工类型的编号值（enum_value）',
+          '员工类型。**可选值有**：- 1：正式员工- 2：实习生- 3：外包- 4：劳务- 5：顾问 该参数支持读取自定义的员工类型的 int 值。你可通过[获取人员类型]接口获取到该租户的自定义员工类型的编号值（enum_value）',
         )
         .optional(),
       orders: z
@@ -2537,7 +2525,7 @@ export const contactV3UserPatch = {
                     id: z
                       .string()
                       .describe(
-                        '引用人员的用户 ID。- ID 类型与查询参数 `user_id_type` 的取值保持一致。- 如何获取用户 ID 可参见',
+                        '引用人员的用户 ID。- ID 类型与查询参数 `user_id_type` 的取值保持一致。- 如何获取用户 ID 可参见[如何获取不同的用户 ID]',
                       ),
                     type: z.number().describe('用户类型。**可选值有**：1：用户**说明**：目前仅支持取值 1，表示用户'),
                   })
@@ -2549,7 +2537,7 @@ export const contactV3UserPatch = {
           }),
         )
         .describe(
-          '自定义字段。设置参数前建议你先了解。**注意事项**：当企业管理员在管理后台配置了自定义字段，且开启了 **允许开放平台 API 调用** 功能后，该字段才会生效',
+          '自定义字段。设置参数前建议你先了解[自定义字段资源介绍]。**注意事项**：当企业管理员在管理后台配置了自定义字段，且开启了 **允许开放平台 API 调用** 功能后，该字段才会生效',
         )
         .optional(),
       enterprise_email: z
@@ -2561,32 +2549,32 @@ export const contactV3UserPatch = {
       job_title: z
         .string()
         .describe(
-          '职务名称。字符数量上限为 255。- 你可以调用接口获取相应的租户名称。- 如果传入的职务名称不存在，则系统会自动创建并使用该名称。职务枚举值数量上限为 10,000',
+          '职务名称。字符数量上限为 255。- 你可以调用[获取租户职务列表]接口获取相应的租户名称。- 如果传入的职务名称不存在，则系统会自动创建并使用该名称。职务枚举值数量上限为 10,000',
         )
         .optional(),
       is_frozen: z.boolean().describe('是否是暂停状态的用户。**可选值有**：- true：是- false：否').optional(),
       job_level_id: z
         .string()
         .describe(
-          '职级 ID。你可以调用接口查询相应的职级 ID',
+          '职级 ID。你可以调用[获取租户职级列表]接口查询相应的职级 ID',
         )
         .optional(),
       job_family_id: z
         .string()
         .describe(
-          '序列 ID。你可以调用接口查询相应的序列 ID',
+          '序列 ID。你可以调用[获取租户序列列表]接口查询相应的序列 ID',
         )
         .optional(),
       subscription_ids: z
         .array(z.string())
         .describe(
-          '分配给用户的席位 ID 列表。**注意事项**：- 该字段需开通 **分配用户席位** 权限。- 你可通过接口，获取到当前租户的可用席位 ID',
+          '分配给用户的席位 ID 列表。**注意事项**：- 该字段需开通 **分配用户席位** 权限。- 你可通过[获取企业席位信息]接口，获取到当前租户的可用席位 ID',
         )
         .optional(),
       dotted_line_leader_user_ids: z
         .array(z.string())
         .describe(
-          '虚线上级的用户 ID 列表。- ID 类型与查询参数 `user_id_type` 的取值保持一致。- 如何获取用户 ID 可参见',
+          '虚线上级的用户 ID 列表。- ID 类型与查询参数 `user_id_type` 的取值保持一致。- 如何获取用户 ID 可参见[如何获取不同的用户 ID]',
         )
         .optional(),
     }),
@@ -2595,7 +2583,7 @@ export const contactV3UserPatch = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中使用的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。)',
+          '此次调用中使用的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -2619,7 +2607,7 @@ export const contactV3UserResurrect = {
             department_id: z
               .string()
               .describe(
-                '排序信息对应的部门 ID。表示用户所在的、且需要排序的部门。部门 ID 类型与查询参数 `department_id_type` 保持一致。了解不同类型的部门 ID 以及获取部门 ID 的方式，可参见 ',
+                '排序信息对应的部门 ID。表示用户所在的、且需要排序的部门。部门 ID 类型与查询参数 `department_id_type` 保持一致。了解不同类型的部门 ID 以及获取部门 ID 的方式，可参见 [部门 ID 说明]',
               ),
             user_order: z.number().describe('用户在其直属部门内的排序。数值越大，排序越靠前').optional(),
             department_order: z.number().describe('用户所属的多个部门之间的排序。数值越大，排序越靠前').optional(),
@@ -2632,7 +2620,7 @@ export const contactV3UserResurrect = {
       subscription_ids: z
         .array(z.string())
         .describe(
-          '如果用户正常状态时分配了席位，则可以通过该参数指定恢复后分配的席位 ID。**注意**：- 该字段需开通 **分配用户席位** 权限',
+          '如果用户正常状态时分配了[席位]，则可以通过该参数指定恢复后分配的席位 ID。待分配席位 ID 获取方式参见[获取企业席位信息接口]。**注意**：- 该字段需开通 **分配用户席位** 权限',
         )
         .optional(),
     }),
@@ -2641,7 +2629,7 @@ export const contactV3UserResurrect = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中使用的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。)',
+          '此次调用中使用的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。)',
         )
         .optional(),
     }),
@@ -2649,7 +2637,7 @@ export const contactV3UserResurrect = {
       user_id: z
         .string()
         .describe(
-          '用户 ID。ID 类型需要与查询参数中的 user_id_type类型保持一致。用户 ID 获取方式可参见',
+          '用户 ID。ID 类型需要与查询参数中的 user_id_type类型保持一致。用户 ID 获取方式可参见[如何获取不同的用户 ID]',
         ),
     }),
   },
@@ -2683,25 +2671,25 @@ export const contactV3UserUpdate = {
       avatar_key: z
         .string()
         .describe(
-          '头像的文件Key，可通过“消息与群组/消息/图片信息”中的“上传图片”接口上传并获取头像文件 Key“上传图片”功能参见',
+          '头像的文件Key，可通过“消息与群组/消息/图片信息”中的“上传图片”接口上传并获取头像文件 Key“上传图片”功能参见[上传图片]',
         )
         .optional(),
       department_ids: z
         .array(z.string())
         .describe(
-          '用户所属部门的ID列表，一个用户可属于多个部门。ID值的类型与查询参数中的department_id_type 对应。不同 ID 的说明与department_id的获取方式参见 ',
+          '用户所属部门的ID列表，一个用户可属于多个部门。ID值的类型与查询参数中的department_id_type 对应。不同 ID 的说明与department_id的获取方式参见 [部门ID说明]',
         ),
       leader_user_id: z
         .string()
         .describe(
-          '用户的直接主管的用户ID，ID值与查询参数中的user_id_type 对应。不同 ID 的说明参见 获取方式参见',
+          '用户的直接主管的用户ID，ID值与查询参数中的user_id_type 对应。不同 ID 的说明参见 [用户相关的 ID 概念]获取方式参见[如何获取不同的用户 ID]',
         )
         .optional(),
       city: z.string().describe('工作城市').optional(),
       country: z
         .string()
         .describe(
-          '国家或地区Code缩写，具体写入格式请参考 ',
+          '国家或地区Code缩写，具体写入格式请参考 [国家/地区码表]',
         )
         .optional(),
       work_station: z.string().describe('工位').optional(),
@@ -2710,7 +2698,7 @@ export const contactV3UserUpdate = {
       employee_type: z
         .number()
         .describe(
-          '员工类型，可选值有：- `1`：正式员工- `2`：实习生- `3`：外包- `4`：劳务- `5`：顾问 同时可读取到自定义员工类型的 int 值，可通过下方接口获取到该租户的自定义员工类型的名称，参见',
+          '员工类型，可选值有：- `1`：正式员工- `2`：实习生- `3`：外包- `4`：劳务- `5`：顾问 同时可读取到自定义员工类型的 int 值，可通过下方接口获取到该租户的自定义员工类型的名称，参见[获取人员类型]',
         ),
       orders: z
         .array(
@@ -2718,7 +2706,7 @@ export const contactV3UserUpdate = {
             department_id: z
               .string()
               .describe(
-                '排序信息对应的部门ID， ID值与查询参数中的department_id_type 对应。表示用户所在的、且需要排序的部门。不同 ID 的说明参见及获取方式参见 ',
+                '排序信息对应的部门ID， ID值与查询参数中的department_id_type 对应。表示用户所在的、且需要排序的部门。不同 ID 的说明参见及获取方式参见 [部门ID说明]',
               )
               .optional(),
             user_order: z.number().describe('用户在其直属部门内的排序，数值越大，排序越靠前').optional(),
@@ -2737,7 +2725,7 @@ export const contactV3UserUpdate = {
             type: z
               .string()
               .describe(
-                '自定义字段类型 - `TEXT`：文本- `HREF`：网页- `ENUMERATION`：枚举- `PICTURE_ENUM`：图片- `GENERIC_USER`：用户具体说明参见常见问题的',
+                '自定义字段类型 - `TEXT`：文本- `HREF`：网页- `ENUMERATION`：枚举- `PICTURE_ENUM`：图片- `GENERIC_USER`：用户具体说明参见常见问题的[用户接口相关问题]',
               )
               .optional(),
             id: z.string().describe('自定义字段ID').optional(),
@@ -2761,7 +2749,7 @@ export const contactV3UserUpdate = {
                     id: z
                       .string()
                       .describe(
-                        '用户的user_id ，具体参见',
+                        '用户的user_id ，具体参见[用户相关的 ID 概念]',
                       ),
                     type: z.number().describe('用户类型: 1：用户目前固定为1，表示用户类型'),
                   })
@@ -2773,13 +2761,13 @@ export const contactV3UserUpdate = {
           }),
         )
         .describe(
-          '自定义字段，请确保你的组织管理员已在管理后台/组织架构/成员字段管理/自定义字段管理/全局设置中开启了“允许开放平台 API 调用“，否则该字段不会生效/返回。更多详情参见',
+          '自定义字段，请确保你的组织管理员已在管理后台/组织架构/成员字段管理/自定义字段管理/全局设置中开启了“允许开放平台 API 调用“，否则该字段不会生效/返回。更多详情参见[用户接口相关问题]',
         )
         .optional(),
       enterprise_email: z
         .string()
         .describe(
-          '企业邮箱，请先确保已在管理后台启用飞书邮箱服务创建用户时，企业邮箱的使用方式参见',
+          '企业邮箱，请先确保已在管理后台启用飞书邮箱服务创建用户时，企业邮箱的使用方式参见[用户接口相关问题]',
         )
         .optional(),
       job_title: z.string().describe('职务').optional(),
@@ -2825,7 +2813,7 @@ export const contactV3WorkCityGet = {
       work_city_id: z
         .string()
         .describe(
-          '工作城市 ID。你可以调用接口，获取工作城市 ID',
+          '工作城市 ID。你可以调用[获取租户工作城市列表]接口，获取工作城市 ID',
         )
         .optional(),
     }),

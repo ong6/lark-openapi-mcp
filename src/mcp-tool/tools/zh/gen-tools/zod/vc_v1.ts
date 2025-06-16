@@ -204,7 +204,7 @@ export const vcV1MeetingListGet = {
   path: '/open-apis/vc/v1/meeting_list',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-视频会议-会议数据-查询会议明细-查询会议明细，具体权限要求请参考',
+    '[Feishu/Lark]-视频会议-会议数据-查询会议明细-查询会议明细，具体权限要求请参考[资源介绍]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -485,7 +485,7 @@ export const vcV1ParticipantListGet = {
   path: '/open-apis/vc/v1/participant_list',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-视频会议-会议数据-查询参会人明细-查询参会人明细，具体权限要求请参考',
+    '[Feishu/Lark]-视频会议-会议数据-查询参会人明细-查询参会人明细，具体权限要求请参考[资源介绍]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -1316,7 +1316,7 @@ export const vcV1RoomLevelCreate = {
       parent_id: z
         .string()
         .describe(
-          '父层级ID。**说明**：如需在租户层级（即根层级）下创建会议室层级，可以先调用接口，将路径参数 `room_level_id` 传入 `0` 进行查询，返回结果中的 `room_level_id` 值即为根层级 ID',
+          '父层级ID。**说明**：如需在租户层级（即根层级）下创建会议室层级，可以先调用[查询会议室层级详情]接口，将路径参数 `room_level_id` 传入 `0` 进行查询，返回结果中的 `room_level_id` 值即为根层级 ID',
         ),
       custom_group_id: z.string().describe('自定义层级ID').optional(),
     }),

@@ -18,6 +18,7 @@ import { compensationV1Tools, compensationV1ToolName } from './zod/compensation_
 import { contactV3Tools, contactV3ToolName } from './zod/contact_v3';
 import { corehrV1Tools, corehrV1ToolName } from './zod/corehr_v1';
 import { corehrV2Tools, corehrV2ToolName } from './zod/corehr_v2';
+import { directoryV1Tools, directoryV1ToolName } from './zod/directory_v1';
 import { docsV1Tools, docsV1ToolName } from './zod/docs_v1';
 import { docxV1Tools, docxV1ToolName } from './zod/docx_v1';
 import { driveV1Tools, driveV1ToolName } from './zod/drive_v1';
@@ -33,6 +34,7 @@ import { imV2Tools, imV2ToolName } from './zod/im_v2';
 import { lingoV1Tools, lingoV1ToolName } from './zod/lingo_v1';
 import { mailV1Tools, mailV1ToolName } from './zod/mail_v1';
 import { mdmV1Tools, mdmV1ToolName } from './zod/mdm_v1';
+import { mdmV3Tools, mdmV3ToolName } from './zod/mdm_v3';
 import { minutesV1Tools, minutesV1ToolName } from './zod/minutes_v1';
 import { momentsV1Tools, momentsV1ToolName } from './zod/moments_v1';
 import { okrV1Tools, okrV1ToolName } from './zod/okr_v1';
@@ -51,6 +53,7 @@ import { taskV1Tools, taskV1ToolName } from './zod/task_v1';
 import { taskV2Tools, taskV2ToolName } from './zod/task_v2';
 import { tenantV2Tools, tenantV2ToolName } from './zod/tenant_v2';
 import { translationV1Tools, translationV1ToolName } from './zod/translation_v1';
+import { trustPartyV1Tools, trustPartyV1ToolName } from './zod/trust_party_v1';
 import { vcV1Tools, vcV1ToolName } from './zod/vc_v1';
 import { verificationV1Tools, verificationV1ToolName } from './zod/verification_v1';
 import { wikiV1Tools, wikiV1ToolName } from './zod/wiki_v1';
@@ -77,6 +80,7 @@ export type ToolName =
   | contactV3ToolName
   | corehrV1ToolName
   | corehrV2ToolName
+  | directoryV1ToolName
   | docsV1ToolName
   | docxV1ToolName
   | driveV1ToolName
@@ -92,6 +96,7 @@ export type ToolName =
   | lingoV1ToolName
   | mailV1ToolName
   | mdmV1ToolName
+  | mdmV3ToolName
   | minutesV1ToolName
   | momentsV1ToolName
   | okrV1ToolName
@@ -110,6 +115,7 @@ export type ToolName =
   | taskV2ToolName
   | tenantV2ToolName
   | translationV1ToolName
+  | trustPartyV1ToolName
   | vcV1ToolName
   | verificationV1ToolName
   | wikiV1ToolName
@@ -187,6 +193,7 @@ export const GenTools = [
   ...contactV3Tools,
   ...corehrV1Tools,
   ...corehrV2Tools,
+  ...directoryV1Tools,
   ...docsV1Tools,
   ...docxV1Tools,
   ...driveV1Tools,
@@ -202,6 +209,7 @@ export const GenTools = [
   ...lingoV1Tools,
   ...mailV1Tools,
   ...mdmV1Tools,
+  ...mdmV3Tools,
   ...minutesV1Tools,
   ...momentsV1Tools,
   ...okrV1Tools,
@@ -220,6 +228,7 @@ export const GenTools = [
   ...taskV2Tools,
   ...tenantV2Tools,
   ...translationV1Tools,
+  ...trustPartyV1Tools,
   ...vcV1Tools,
   ...verificationV1Tools,
   ...wikiV1Tools,

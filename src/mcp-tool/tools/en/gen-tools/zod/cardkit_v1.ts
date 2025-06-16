@@ -34,14 +34,14 @@ export const cardkitV1CardBatchUpdate = {
       actions: z
         .string()
         .describe(
-          "List of operations, optional values are:- 'partial_update_setting': Update card configuration, support updating card config and card_link fields. For parameter structure, please refer to ;- 'add_elements': Add components, support type, target_element_id, elements fields. The parameter structure can refer to the  interface request body;- delete_elements: Delete the component, support element_ids fields. The parameter value is the component ID array. The parameter structure can refer to ;- 'partial_update_element': Update the properties of the component, support element_id and partial_element fields. The parameter structure can refer to the path parameters of the  interface element_id and request body partial_element fields;- update_element: full update component, support element_id and element fields. The parameter structure can refer to the path parameter element_id and request body element field of the  interface",
+          "List of operations, optional values are:- 'partial_update_setting': Update card configuration, support updating card config and card_link fields. For parameter structure, please refer to [Update Card Configuration];- 'add_elements': Add components, support type, target_element_id, elements fields. The parameter structure can refer to the [New Component] interface request body;- delete_elements: Delete the component, support element_ids fields. The parameter value is the component ID array. The parameter structure can refer to [Delete Component];- 'partial_update_element': Update the properties of the component, support element_id and partial_element fields. The parameter structure can refer to the path parameters of the [Update Component Properties] interface element_id and request body partial_element fields;- update_element: full update component, support element_id and element fields. The parameter structure can refer to the path parameter element_id and request body element field of the [full update component] interface",
         ),
     }),
     path: z.object({
       card_id: z
         .string()
         .describe(
-          'Card entity ID. Get it by ',
+          'Card entity ID. Get it by [Create Card Entity]',
         ),
     }),
   },
@@ -60,7 +60,7 @@ export const cardkitV1CardCreate = {
       data: z
         .string()
         .describe(
-          'The contents of the card JSON data. Only  is supported, i.e. you must declare the schema as 2.0. The following example values are not escaped, please be careful to convert them to JSON serialized strings when using them',
+          'The contents of the card JSON data. Only [Card JSON 2.0 structure] is supported, i.e. you must declare the schema as 2.0. The following example values are not escaped, please be careful to convert them to JSON serialized strings when using them',
         ),
     }),
   },
@@ -71,7 +71,8 @@ export const cardkitV1CardElementContent = {
   sdkName: 'cardkit.v1.cardElement.content',
   path: '/open-apis/cardkit/v1/cards/:card_id/elements/:element_id/content',
   httpMethod: 'PUT',
-  description: '[Feishu/Lark]-Feishu Card-Element-Stream update text-Stream Updating Text',
+  description:
+    '[Feishu/Lark]-Feishu Card-Element-Stream update text-Stream Updating Text. Refer to the [Streaming updates OpenAPI calling guide] to understand the complete process of streaming updates for text',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -92,7 +93,7 @@ export const cardkitV1CardElementContent = {
       card_id: z
         .string()
         .describe(
-          'Card entity ID. Get it by ',
+          'Card entity ID. Get it by [Create Card Entity]',
         ),
       element_id: z.string().describe('Component ID'),
     }),
@@ -136,7 +137,7 @@ export const cardkitV1CardElementCreate = {
       card_id: z
         .string()
         .describe(
-          'Card entity ID. Get it by ',
+          'Card entity ID. Get it by [Create Card Entity]',
         ),
     }),
   },
@@ -167,7 +168,7 @@ export const cardkitV1CardElementDelete = {
       card_id: z
         .string()
         .describe(
-          'Card entity ID. Get it by ',
+          'Card entity ID. Get it by [Create Card Entity]',
         ),
       element_id: z.string().describe('Component ID'),
     }),
@@ -204,7 +205,7 @@ export const cardkitV1CardElementPatch = {
       card_id: z
         .string()
         .describe(
-          'Card entity ID. Get it by ',
+          'Card entity ID. Get it by [Create Card Entity]',
         ),
       element_id: z.string().describe('Component ID'),
     }),
@@ -237,7 +238,7 @@ export const cardkitV1CardElementUpdate = {
       card_id: z
         .string()
         .describe(
-          'Card entity ID. Get it by ',
+          'Card entity ID. Get it by [Create Card Entity]',
         ),
       element_id: z.string().describe('Component ID'),
     }),
@@ -256,7 +257,7 @@ export const cardkitV1CardIdConvert = {
       message_id: z
         .string()
         .describe(
-          'Message ID. Get via ',
+          'Message ID. Get via [Send Message]',
         ),
     }),
   },
@@ -275,7 +276,7 @@ export const cardkitV1CardSettings = {
       settings: z
         .string()
         .describe(
-          "Card configuration related fields, including'config 'and 'card_link' fields. The following example values are not escaped, please be careful to convert them to JSON serialized strings when using them. For detailed field descriptions, refer to ",
+          "Card configuration related fields, including'config 'and 'card_link' fields. The following example values are not escaped, please be careful to convert them to JSON serialized strings when using them. For detailed field descriptions, refer to [Card JSON 2.0 Structure]",
         ),
       uuid: z
         .string()
@@ -293,7 +294,7 @@ export const cardkitV1CardSettings = {
       card_id: z
         .string()
         .describe(
-          'Card entity ID. Get it by ',
+          'Card entity ID. Get it by [Create Card Entity]',
         ),
     }),
   },
@@ -336,7 +337,7 @@ export const cardkitV1CardUpdate = {
       card_id: z
         .string()
         .describe(
-          'Card entity ID. Get it by ',
+          'Card entity ID. Get it by [Create Card Entity]',
         ),
     }),
   },

@@ -599,7 +599,7 @@ export const docxV1ChatAnnouncementBlockChildrenBatchDelete = {
       revision_id: z
         .number()
         .describe(
-          'The group announcement version to be queried. -1 indicates the latest version of the group announcement. Once the group announcement is created, the `revision_id` is 1. Make sure you have editing permission for the group announcement. You can use the  api to get the latest revision ID',
+          'The group announcement version to be queried. -1 indicates the latest version of the group announcement. Once the group announcement is created, the `revision_id` is 1. Make sure you have editing permission for the group announcement. You can use the [Obtain the basic information of a group announcement] api to get the latest revision ID',
         )
         .optional(),
       client_token: z
@@ -613,12 +613,12 @@ export const docxV1ChatAnnouncementBlockChildrenBatchDelete = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Single chat (group type is `p2p`) does not support getting group announcements',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Single chat (group type is `p2p`) does not support getting group announcements',
         ),
       block_id: z
         .string()
         .describe(
-          'The unique identifier of the parent block. You can get the block_id of the block by calling the  API.** Note**:- This API does not support deleting the rows and columns of the table and deleting the columns of the Grid. You need to complete the relevant operations through the  API.This API does not support deleting all child blocks of Table Cells, Grid Columns, and Callouts',
+          'The unique identifier of the parent block. You can get the block_id of the block by calling the [Get Group Announces All Blocks] API.** Note**:- This API does not support deleting the rows and columns of the table and deleting the columns of the Grid. You need to complete the relevant operations through the [Batch Update Block Contents] API.This API does not support deleting all child blocks of Table Cells, Grid Columns, and Callouts',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -4660,7 +4660,7 @@ export const docxV1ChatAnnouncementGet = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Single chat (group type is `p2p`) does not support getting group announcements',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Single chat (group type is `p2p`) does not support getting group announcements',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -4716,7 +4716,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -4756,7 +4756,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -4803,7 +4803,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -4847,7 +4847,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -4891,7 +4891,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -4932,7 +4932,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -4976,7 +4976,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5158,7 +5158,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5198,7 +5198,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5245,7 +5245,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5289,7 +5289,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5333,7 +5333,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5374,7 +5374,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5418,7 +5418,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5488,7 +5488,7 @@ export const docxV1DocumentBlockBatchUpdate = {
       document_id: z
         .string()
         .describe(
-          'Unique identification of the document. Corresponding to the token of the Upgraded Docs, ',
+          'Unique identification of the document. Corresponding to the token of the Upgraded Docs, [Click to learn how to get document_id]',
         )
         .optional(),
     }),
@@ -5527,7 +5527,7 @@ export const docxV1DocumentBlockChildrenBatchDelete = {
       document_id: z
         .string()
         .describe(
-          'Unique identification of the document. Corresponding to the token of the Upgraded Docs, ',
+          'Unique identification of the document. Corresponding to the token of the Upgraded Docs, [Click to learn how to get document_id]',
         ),
       block_id: z.string().describe("Parent block's unique identity"),
     }),
@@ -5609,7 +5609,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5649,7 +5649,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5695,7 +5695,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5737,7 +5737,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5781,7 +5781,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5821,7 +5821,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5865,7 +5865,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5936,7 +5936,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -5976,7 +5976,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6022,7 +6022,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6064,7 +6064,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6108,7 +6108,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6148,7 +6148,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6192,7 +6192,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6263,7 +6263,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6303,7 +6303,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6349,7 +6349,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6391,7 +6391,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6435,7 +6435,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6475,7 +6475,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6519,7 +6519,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6590,7 +6590,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6630,7 +6630,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6676,7 +6676,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6718,7 +6718,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6762,7 +6762,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6802,7 +6802,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6846,7 +6846,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6917,7 +6917,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -6957,7 +6957,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7003,7 +7003,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7045,7 +7045,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7089,7 +7089,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7129,7 +7129,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7173,7 +7173,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7244,7 +7244,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7284,7 +7284,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7330,7 +7330,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7372,7 +7372,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7416,7 +7416,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7456,7 +7456,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7500,7 +7500,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7571,7 +7571,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7611,7 +7611,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7657,7 +7657,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7699,7 +7699,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7743,7 +7743,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7783,7 +7783,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7827,7 +7827,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7898,7 +7898,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7938,7 +7938,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -7984,7 +7984,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8026,7 +8026,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8070,7 +8070,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8110,7 +8110,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8154,7 +8154,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8225,7 +8225,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8265,7 +8265,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8311,7 +8311,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8353,7 +8353,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8397,7 +8397,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8437,7 +8437,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8481,7 +8481,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8552,7 +8552,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8592,7 +8592,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8638,7 +8638,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8680,7 +8680,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8724,7 +8724,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8764,7 +8764,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8808,7 +8808,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8879,7 +8879,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8919,7 +8919,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -8965,7 +8965,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9007,7 +9007,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9051,7 +9051,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9091,7 +9091,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9135,7 +9135,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9206,7 +9206,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9246,7 +9246,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9292,7 +9292,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9334,7 +9334,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9378,7 +9378,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9418,7 +9418,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9462,7 +9462,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9533,7 +9533,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9573,7 +9573,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9619,7 +9619,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9661,7 +9661,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9705,7 +9705,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9745,7 +9745,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9789,7 +9789,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9860,7 +9860,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9900,7 +9900,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9946,7 +9946,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -9988,7 +9988,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10032,7 +10032,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10072,7 +10072,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10116,7 +10116,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10187,7 +10187,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10227,7 +10227,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10273,7 +10273,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10315,7 +10315,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10359,7 +10359,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10399,7 +10399,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10443,7 +10443,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10514,7 +10514,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10554,7 +10554,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10600,7 +10600,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10642,7 +10642,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10686,7 +10686,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10726,7 +10726,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10770,7 +10770,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                                  'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                                 )
                                 .optional(),
                             })
@@ -10897,7 +10897,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                 okr_id: z
                   .string()
                   .describe(
-                    "OKR ID. Get the OKR ID that needs to be inserted and see ",
+                    "OKR ID. Get the OKR ID that needs to be inserted and see [Get the user's OKR list]",
                   )
                   .optional(),
                 objectives: z
@@ -10950,7 +10950,7 @@ export const docxV1DocumentBlockChildrenCreate = {
       document_id: z
         .string()
         .describe(
-          'Unique identification of the document. Corresponding to the token of the Upgraded Docs, ',
+          'Unique identification of the document. Corresponding to the token of the Upgraded Docs, [Click to learn how to get document_id]',
         ),
       block_id: z.string().describe("Block's unique identity"),
     }),
@@ -10982,7 +10982,7 @@ export const docxV1DocumentBlockChildrenGet = {
       document_id: z
         .string()
         .describe(
-          'Unique identification of the document. Corresponding to the token of the Upgraded Docs, ',
+          'Unique identification of the document. Corresponding to the token of the Upgraded Docs, [Click to learn how to get document_id]',
         ),
       block_id: z.string().describe("Block's unique identity"),
     }),
@@ -15606,7 +15606,7 @@ export const docxV1DocumentBlockGet = {
       document_id: z
         .string()
         .describe(
-          'Unique identification of the document. Corresponding to the token of the Upgraded Docs, ',
+          'Unique identification of the document. Corresponding to the token of the Upgraded Docs, [Click to learn how to get document_id]',
         ),
       block_id: z.string().describe("Block's unique identity"),
     }),
@@ -15638,7 +15638,7 @@ export const docxV1DocumentBlockList = {
       document_id: z
         .string()
         .describe(
-          'Unique identification of the document. Corresponding to the token of the Upgraded Docs, ',
+          'Unique identification of the document. Corresponding to the token of the Upgraded Docs, [Click to learn how to get document_id]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -15691,7 +15691,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                           )
                           .optional(),
                       })
@@ -15731,7 +15731,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                           )
                           .optional(),
                       })
@@ -15777,7 +15777,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                           )
                           .optional(),
                       })
@@ -15819,7 +15819,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                           )
                           .optional(),
                       })
@@ -15863,7 +15863,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                           )
                           .optional(),
                       })
@@ -15903,7 +15903,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                           )
                           .optional(),
                       })
@@ -15947,7 +15947,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                           )
                           .optional(),
                       })
@@ -16126,7 +16126,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                           )
                           .optional(),
                       })
@@ -16166,7 +16166,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                           )
                           .optional(),
                       })
@@ -16212,7 +16212,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                           )
                           .optional(),
                       })
@@ -16254,7 +16254,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                           )
                           .optional(),
                       })
@@ -16298,7 +16298,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                           )
                           .optional(),
                       })
@@ -16338,7 +16338,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                           )
                           .optional(),
                       })
@@ -16382,7 +16382,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「」',
+                            'Comments ID list. When creating a Block, incoming comments ID are not supported. When updating the Element of a text Block, it is allowed to move the existing comment ID of the corresponding version to any Element in the same Block, but does not support incoming new comments ID. For comment content, please see:「[Get Comment]」',
                           )
                           .optional(),
                       })
@@ -16449,7 +16449,7 @@ export const docxV1DocumentBlockPatch = {
       document_id: z
         .string()
         .describe(
-          'Unique identification of the document. Corresponding to the token of the Upgraded Docs, ',
+          'Unique identification of the document. Corresponding to the token of the Upgraded Docs, [Click to learn how to get document_id]',
         ),
       block_id: z.string().describe("Block's unique identity"),
     }),
@@ -16470,7 +16470,7 @@ export const docxV1DocumentCreate = {
       folder_token: z
         .string()
         .describe(
-          'Specify the token of the folder where the document is located. For how to get the token, refer to . Empty means the root directory. If the application is using the `tenant_access_token`, you can only specify folders created by the application',
+          'Specify the token of the folder where the document is located. For how to get the token, refer to [How to get the token of docs resources]. Empty means the root directory. If the application is using the `tenant_access_token`, you can only specify folders created by the application',
         )
         .optional(),
       title: z.string().describe('Document title. Only supports plain text').optional(),
@@ -16492,7 +16492,7 @@ export const docxV1DocumentGet = {
       document_id: z
         .string()
         .describe(
-          'The unique identification of the document. Click  to learn how to get `document_id`',
+          'The unique identification of the document. Click [here] to learn how to get `document_id`',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -16520,7 +16520,7 @@ export const docxV1DocumentRawContent = {
       document_id: z
         .string()
         .describe(
-          'The unique identification of the document. Click  to learn how to get `document_id`',
+          'The unique identification of the document. Click [here] to learn how to get `document_id`',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),

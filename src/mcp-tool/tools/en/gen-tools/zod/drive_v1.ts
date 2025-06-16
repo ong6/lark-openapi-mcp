@@ -56,19 +56,19 @@ export const driveV1ExportTaskCreate = {
   path: '/open-apis/drive/v1/export_tasks',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Space-File-Export docs-Create an export task-This interface is used to create an export file task and returns the export task ID. The export file refers to exporting Feishu documents, spreadsheets, and multidimensional spreadsheets to local files, including formats such as Word, Excel, PDF, and CSV. This interface is asynchronous, requiring a subsequent call to the  interface to obtain the export result. For a complete understanding of the export steps, refer to the ',
+    '[Feishu/Lark]-Space-File-Export docs-Create an export task-This interface is used to create an export file task and returns the export task ID. The export file refers to exporting Feishu documents, spreadsheets, and multidimensional spreadsheets to local files, including formats such as Word, Excel, PDF, and CSV. This interface is asynchronous, requiring a subsequent call to the [Query Export Task Result] interface to obtain the export result. For a complete understanding of the export steps, refer to the [Export docs overview]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       file_extension: z
         .enum(['docx', 'pdf', 'xlsx', 'csv'])
         .describe(
-          'The file extension of the local file after exporting the cloud document. To understand the file formats supported for exporting various cloud documents, refer to the . Options:docx(Microsoft Word (DOCX) format),pdf(PDF format),xlsx(Microsoft Excel (XLSX) format),csv(CSV format)',
+          'The file extension of the local file after exporting the cloud document. To understand the file formats supported for exporting various cloud documents, refer to the [Export docs overview]. Options:docx(Microsoft Word (DOCX) format),pdf(PDF format),xlsx(Microsoft Excel (XLSX) format),csv(CSV format)',
         ),
       token: z
         .string()
         .describe(
-          'The token of the cloud document. For details, see ',
+          'The token of the cloud document. For details, see [How to get document token]',
         ),
       type: z
         .enum(['doc', 'sheet', 'bitable', 'docx'])
@@ -78,7 +78,7 @@ export const driveV1ExportTaskCreate = {
       sub_id: z
         .string()
         .describe(
-          'When exporting spreadsheets or Base to CSV files, you need to pass the ID of the spreadsheet worksheet or the ID of the Base data table:- For spreadsheets, you can call the  API to obtain the returned value of `sheet_id` as the value of this parameter.- For Base apps, you can call the  API to obtain the returned value of `table_id` as the value of this parameter',
+          'When exporting spreadsheets or Base to CSV files, you need to pass the ID of the spreadsheet worksheet or the ID of the Base data table:- For spreadsheets, you can call the [Get Worksheet] API to obtain the returned value of `sheet_id` as the value of this parameter.- For Base apps, you can call the [List Data Tables] API to obtain the returned value of `table_id` as the value of this parameter',
         )
         .optional(),
     }),
@@ -92,21 +92,21 @@ export const driveV1ExportTaskGet = {
   path: '/open-apis/drive/v1/export_tasks/:ticket',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Space-File-Export docs-Query export task results-According to the export task ID (ticket) returned by the  interface, poll the export task result and return the token of the export file. You can use this token to call the  interface to download the exported file to your local device. For a complete understanding of the export file steps, refer to the ',
+    '[Feishu/Lark]-Space-File-Export docs-Query export task results-According to the export task ID (ticket) returned by the [Create Export Task] interface, poll the export task result and return the token of the export file. You can use this token to call the [Download Export File] interface to download the exported file to your local device. For a complete understanding of the export file steps, refer to the [Export docs overview]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
       token: z
         .string()
         .describe(
-          'The token of the cloud document. For details, see ',
+          'The token of the cloud document. For details, see [How to get document token]',
         ),
     }),
     path: z.object({
       ticket: z
         .string()
         .describe(
-          'Export task ID, call  to get the ID',
+          'Export task ID, call [Create export task] to get the ID',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -394,7 +394,7 @@ export const driveV1FileCopy = {
       folder_token: z
         .string()
         .describe(
-          'The target folder token to which the file is copied. Learn how to get the folder token, see ',
+          'The target folder token to which the file is copied. Learn how to get the folder token, see [Folder overview]',
         ),
       extra: z
         .array(
@@ -411,7 +411,7 @@ export const driveV1FileCopy = {
       file_token: z
         .string()
         .describe(
-          'File token that needs to be copied. Learn how to get the file token, see ',
+          'File token that needs to be copied. Learn how to get the file token, see [File overview]',
         )
         .optional(),
     }),
@@ -433,7 +433,7 @@ export const driveV1FileCreateFolder = {
       folder_token: z
         .string()
         .describe(
-          'Parent folder token. This parameter can be an empty string, which means the folder will be created in the root folder. You can refer to  to get other level folder. For details, see ',
+          'Parent folder token. This parameter can be an empty string, which means the folder will be created in the root folder. You can refer to [List items in folder] to get other level folder. For details, see [Folder overview]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -453,14 +453,14 @@ export const driveV1FileCreateShortcut = {
       parent_token: z
         .string()
         .describe(
-          'The token of the target folder into which the file is copied. For how to get the folder token, see ',
+          'The token of the target folder into which the file is copied. For how to get the folder token, see [Folder overview]',
         ),
       refer_entity: z
         .object({
           refer_token: z
             .string()
             .describe(
-              'The token of the file that needs to be copied. For how to get the file token, see ',
+              'The token of the file that needs to be copied. For how to get the file token, see [File overview]',
             ),
           refer_type: z
             .enum(['file', 'docx', 'bitable', 'doc', 'sheet', 'mindnote', 'slides'])
@@ -495,7 +495,7 @@ export const driveV1FileDelete = {
       file_token: z
         .string()
         .describe(
-          "File's or folder's token that needs to be moved.To learn how to get the file token, see .To learn how to get the folder token, see ",
+          "File's or folder's token that needs to be moved.To learn how to get the file token, see [File overview].To learn how to get the folder token, see [Folder overview]",
         )
         .optional(),
     }),
@@ -509,7 +509,7 @@ export const driveV1FileDeleteSubscribe = {
   path: '/open-apis/drive/v1/files/:file_token/delete_subscribe',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-Docs-Space-Event-Unsubscribe Docs events-This interface is used to unsubscribe from notification events of cloud documents. To understand the configuration process and usage scenarios for event subscriptions, refer to . To learn about the types of events supported by cloud documents, refer to ',
+    '[Feishu/Lark]-Docs-Space-Event-Unsubscribe Docs events-This interface is used to unsubscribe from notification events of cloud documents. To understand the configuration process and usage scenarios for event subscriptions, refer to [Event Overview]. To learn about the types of events supported by cloud documents, refer to [Event List]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -528,7 +528,7 @@ export const driveV1FileDeleteSubscribe = {
     path: z.object({
       file_token: z
         .string()
-        .describe('Document token. For details, see '),
+        .describe('Document token. For details, see [FAQs]'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -540,7 +540,7 @@ export const driveV1FileGetSubscribe = {
   path: '/open-apis/drive/v1/files/:file_token/get_subscribe',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Docs-Space-Event-Get Docs events subscription status-This interface is used to query the subscription status of cloud documents. To understand the configuration process and usage scenarios for event subscriptions, refer to . To learn about the types of events supported by cloud documents, refer to ',
+    '[Feishu/Lark]-Docs-Space-Event-Get Docs events subscription status-This interface is used to query the subscription status of cloud documents. To understand the configuration process and usage scenarios for event subscriptions, refer to [Event Overview]. To learn about the types of events supported by cloud documents, refer to [Event List]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -559,7 +559,7 @@ export const driveV1FileGetSubscribe = {
     path: z.object({
       file_token: z
         .string()
-        .describe('Document token. For details, see '),
+        .describe('Document token. For details, see [FAQs]'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -618,7 +618,7 @@ export const driveV1FileMove = {
       folder_token: z
         .string()
         .describe(
-          'Target folder token. To learn how to get the folder token, see ',
+          'Target folder token. To learn how to get the folder token, see [Folder overview]',
         )
         .optional(),
     }),
@@ -626,7 +626,7 @@ export const driveV1FileMove = {
       file_token: z
         .string()
         .describe(
-          "File's or folder's token that needs to be moved.To learn how to get the file token, see .To learn how to get the folder token, see ",
+          "File's or folder's token that needs to be moved.To learn how to get the file token, see [File overview].To learn how to get the folder token, see [Folder overview]",
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -653,7 +653,7 @@ export const driveV1FileStatisticsGet = {
       file_token: z
         .string()
         .describe(
-          'File token. For details, see ',
+          'File token. For details, see [File overview]',
         )
         .optional(),
     }),
@@ -667,7 +667,7 @@ export const driveV1FileSubscribe = {
   path: '/open-apis/drive/v1/files/:file_token/subscribe',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Docs-Space-Event-Subscribe Docs events-This interface is used to subscribe to various notification events of cloud documents. To understand the configuration process and usage scenarios for event subscriptions, refer to . To learn about the types of events supported by cloud documents, refer to ',
+    '[Feishu/Lark]-Docs-Space-Event-Subscribe Docs events-This interface is used to subscribe to various notification events of cloud documents. To understand the configuration process and usage scenarios for event subscriptions, refer to [Event Overview]. To learn about the types of events supported by cloud documents, refer to [Event List]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -686,7 +686,7 @@ export const driveV1FileSubscribe = {
     path: z.object({
       file_token: z
         .string()
-        .describe('Document token. For details, see '),
+        .describe('Document token. For details, see [FAQs]'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -770,7 +770,7 @@ export const driveV1FileTaskCheck = {
       task_id: z
         .string()
         .describe(
-          'File-related asynchronous `task_id`. See  or  to get the `task_id`',
+          'File-related asynchronous `task_id`. See [Delete a folder] or [Move a folder] to get the `task_id`',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -790,12 +790,12 @@ export const driveV1FileUploadFinish = {
       upload_id: z
         .string()
         .describe(
-          'ID of the block upload transaction. You can call the  to get the upload ID',
+          'ID of the block upload transaction. You can call the [Upload a file in blocks-Pre­uploading] to get the upload ID',
         ),
       block_num: z
         .number()
         .describe(
-          'Number of blocks. You can call the  to get the number of blocks',
+          'Number of blocks. You can call the [Upload a file in blocks-Pre­uploading] to get the number of blocks',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -808,7 +808,7 @@ export const driveV1FileUploadPrepare = {
   path: '/open-apis/drive/v1/files/upload_prepare',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-File-Upload files-Multipart Upload-Upload a file in blocks-Pre­uploading-Send an initialization request to obtain the upload ID and split strategy, preparing for . The platform consistently chunks files into 4MB segments. To understand the complete file upload process, refer to ',
+    '[Feishu/Lark]-File-Upload files-Multipart Upload-Upload a file in blocks-Pre­uploading-Send an initialization request to obtain the upload ID and split strategy, preparing for [Uploading blocks]. The platform consistently chunks files into 4MB segments. To understand the complete file upload process, refer to [File Upload Overview]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -821,7 +821,7 @@ export const driveV1FileUploadPrepare = {
       parent_node: z
         .string()
         .describe(
-          'Token of the folder. For details, see ',
+          'Token of the folder. For details, see [Cloud space overview]',
         ),
       size: z.number().describe('File size. The units are in bytes'),
     }),
@@ -857,7 +857,7 @@ export const driveV1FileVersionCreate = {
       file_token: z
         .string()
         .describe(
-          'Document token. For how to get the document token, see ',
+          'Document token. For how to get the document token, see [How to get the token of docs resources]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -883,7 +883,7 @@ export const driveV1FileVersionDelete = {
       file_token: z
         .string()
         .describe(
-          'Document token. For how to get the document token, see ',
+          'Document token. For how to get the document token, see [How to get the token of docs resources]',
         ),
       version_id: z.string().describe('document version ID'),
     }),
@@ -910,7 +910,7 @@ export const driveV1FileVersionGet = {
       file_token: z
         .string()
         .describe(
-          'document token. For how to get the document token, see ',
+          'document token. For how to get the document token, see [Docs overview]',
         ),
       version_id: z.string().describe('document version ID'),
     }),
@@ -942,7 +942,7 @@ export const driveV1FileVersionList = {
       file_token: z
         .string()
         .describe(
-          'parent document token. For how to get the document token. see ',
+          'parent document token. For how to get the document token. see [How to get the token of docs resources]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -974,7 +974,7 @@ export const driveV1FileViewRecordList = {
       viewer_id_type: z
         .enum(['user_id', 'union_id', 'open_id'])
         .describe(
-          'Type of viewer ID used in this call**When the value is `user_id`, the following field scopes are required**：<md-perm name="contact:user.employee_id:readonly" desc="Obtain user ID" support_app_types="custom" tags="">Obtain user ID</md-perm> Options:user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps.),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user\'s identities in multiple apps.),open_id(Identifies a user to an app. The same user has different Open IDs in different apps.)',
+          'Type of viewer ID used in this call**When the value is `user_id`, the following field scopes are required**：<md-perm name="contact:user.employee_id:readonly" desc="Obtain user ID" support_app_types="custom" tags="">Obtain user ID</md-perm> Options:user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps.[How to get User ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user\'s identities in multiple apps.[How to get Union ID]),open_id(Identifies a user to an app. The same user has different Open IDs in different apps.[How to get Open ID])',
         )
         .optional(),
     }),
@@ -982,7 +982,7 @@ export const driveV1FileViewRecordList = {
       file_token: z
         .string()
         .describe(
-          'File token. For how to get tokens, see ',
+          'File token. For how to get tokens, see [File overview]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -995,24 +995,24 @@ export const driveV1ImportTaskCreate = {
   path: '/open-apis/drive/v1/import_tasks',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Space-File-Import files-Create an import task-This interface is used to create a task for importing a file and return the import task ID. Importing files involves transferring local files such as Word, TXT, Markdown, Excel, etc., into various cloud document formats such as online documents, spreadsheets, base, etc., and storing them in a specified directory in the cloud. This interface is asynchronous, you need to continue to call the  interface to get the result of the import. For details, refer to ',
+    '[Feishu/Lark]-Space-File-Import files-Create an import task-This interface is used to create a task for importing a file and return the import task ID. Importing files involves transferring local files such as Word, TXT, Markdown, Excel, etc., into various cloud document formats such as online documents, spreadsheets, base, etc., and storing them in a specified directory in the cloud. This interface is asynchronous, you need to continue to call the [query import task result] interface to get the result of the import. For details, refer to [Import file overview]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       file_extension: z
         .string()
         .describe(
-          'The extension of the file to be imported. To learn about supported file formats, refer to .**Note**: The file extensions filled in here need to be strictly consistent with the suffixes of the actual files. Please be careful to distinguish Markdown files with suffixes ‘markdown’, ‘md’, ‘mark’, and keep the suffixes consistent when you fill in the relevant parameters. Otherwise, an error code 1069910 will be returned. Otherwise, 1069910 error code will be returned',
+          'The extension of the file to be imported. To learn about supported file formats, refer to [Import File Overview].**Note**: The file extensions filled in here need to be strictly consistent with the suffixes of the actual files. Please be careful to distinguish Markdown files with suffixes ‘markdown’, ‘md’, ‘mark’, and keep the suffixes consistent when you fill in the relevant parameters. Otherwise, an error code 1069910 will be returned. Otherwise, 1069910 error code will be returned',
         ),
       file_token: z
         .string()
         .describe(
-          'To import a file token, you need to call the  or  to get the token of the source file before creating an import task. To learn more, refer to ',
+          'To import a file token, you need to call the [upload material] or [upload file] to get the token of the source file before creating an import task. To learn more, refer to [Import file overview]',
         ),
       type: z
         .string()
         .describe(
-          'Target cloud document format. Different files support different cloud document formats. Refer to  for details. The optional values are shown below:- `docx`: new version of document- `sheet`: spreadsheet- `bitable`: multidimensional table',
+          'Target cloud document format. Different files support different cloud document formats. Refer to [Import File Overview] for details. The optional values are shown below:- `docx`: new version of document- `sheet`: spreadsheet- `bitable`: multidimensional table',
         ),
       file_name: z
         .string()
@@ -1028,7 +1028,7 @@ export const driveV1ImportTaskCreate = {
           mount_key: z
             .string()
             .describe(
-              'The token of the folder where the cloud document is mounted, i.e., the token of the folder under the cloud space. empty indicates the cloud space root directory. To learn how to get folder tokens, refer to ',
+              'The token of the folder where the cloud document is mounted, i.e., the token of the folder under the cloud space. empty indicates the cloud space root directory. To learn how to get folder tokens, refer to [folder-overview]',
             ),
         })
         .describe('Mount point (the location of the imported cloud document)'),
@@ -1043,14 +1043,14 @@ export const driveV1ImportTaskGet = {
   path: '/open-apis/drive/v1/import_tasks/:ticket',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Space-File-Import files-Query import task result-Polling the import results based on the `ticket` returned from . For details, see ',
+    '[Feishu/Lark]-Space-File-Import files-Query import task result-Polling the import results based on the `ticket` returned from [Create import task]. For details, see [Import file overview]',
   accessTokens: ['tenant', 'user'],
   schema: {
     path: z.object({
       ticket: z
         .string()
         .describe(
-          'ID of the import task. Call  to get the ID',
+          'ID of the import task. Call [Create import task] to get the ID',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1075,7 +1075,7 @@ export const driveV1MediaBatchGetTmpDownloadUrl = {
       extra: z
         .string()
         .describe(
-          'Extended information: When downloading media from a Base table with advanced permissions, you need to add additional extended information as URL query parameters for authentication. For details, refer to the . Failure to correctly fill in this parameter will result in the interface returning a 403 HTTP status code',
+          'Extended information: When downloading media from a Base table with advanced permissions, you need to add additional extended information as URL query parameters for authentication. For details, refer to the [extra parameter description]. Failure to correctly fill in this parameter will result in the interface returning a 403 HTTP status code',
         )
         .optional(),
     }),
@@ -1089,7 +1089,7 @@ export const driveV1MediaUploadFinish = {
   path: '/open-apis/drive/v1/medias/upload_finish',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Space-Media-Upload media-Upload media in blocks-Completing-After calling the [Uploading](ssl:ttdoc/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/media/upload_part) interface to upload all the shards, you need to call this interface to trigger the completion of the upload. For a complete understanding of the shard upload process, refer to ',
+    '[Feishu/Lark]-Space-Media-Upload media-Upload media in blocks-Completing-After calling the [Uploading](ssl:ttdoc/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/media/upload_part) interface to upload all the shards, you need to call this interface to trigger the completion of the upload. For a complete understanding of the shard upload process, refer to [Media overview]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1114,7 +1114,7 @@ export const driveV1MediaUploadPrepare = {
   path: '/open-apis/drive/v1/medias/upload_prepare',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Space-Media-Upload media-Upload media in blocks-Pre­uploading-Send an initialization request to obtain the upload transaction ID and shard strategy, in preparation for . The platform segments media into fixed 4MB shards. For a complete understanding of the shard upload process, refer to ',
+    '[Feishu/Lark]-Space-Media-Upload media-Upload media in blocks-Pre­uploading-Send an initialization request to obtain the upload transaction ID and shard strategy, in preparation for [Uploading media]. The platform segments media into fixed 4MB shards. For a complete understanding of the shard upload process, refer to [Media overview]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1139,13 +1139,13 @@ export const driveV1MediaUploadPrepare = {
       parent_node: z
         .string()
         .describe(
-          'The token of the upload point, which is the token of the cloud document to be uploaded, used to specify the cloud document or location where the media will be uploaded. Refer to  to understand the relationship between the upload point type and the upload point token',
+          'The token of the upload point, which is the token of the cloud document to be uploaded, used to specify the cloud document or location where the media will be uploaded. Refer to [Media Overview] to understand the relationship between the upload point type and the upload point token',
         ),
       size: z.number().describe('The size of the file, in bytes'),
       extra: z
         .string()
         .describe(
-          'The upload points in the following scenarios need to pass the token of the cloud document where the material is located through this parameter. The format of the extra parameter is `"{\\"drive_route_token\\":\\"token of the cloud document where the material is located\\"}"`. For details, refer to ',
+          'The upload points in the following scenarios need to pass the token of the cloud document where the material is located through this parameter. The format of the extra parameter is `"{\\"drive_route_token\\":\\"token of the cloud document where the material is located\\"}"`. For details, refer to [Material Overview]',
         )
         .optional(),
     }),
@@ -1169,7 +1169,7 @@ export const driveV1MetaBatchQuery = {
             doc_token: z
               .string()
               .describe(
-                'Token of the file. For more information about how to obtain the token, see ',
+                'Token of the file. For more information about how to obtain the token, see [File overview]',
               ),
             doc_type: z
               .enum(['doc', 'sheet', 'bitable', 'mindnote', 'file', 'wiki', 'docx', 'folder', 'synced_block'])
@@ -1211,7 +1211,7 @@ export const driveV1PermissionMemberAuth = {
       token: z
         .string()
         .describe(
-          'Token of the file. For more information about how to obtain the token, see ',
+          'Token of the file. For more information about how to obtain the token, see [How to get the token of docs resources]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1297,7 +1297,7 @@ export const driveV1PermissionMemberCreate = {
       member_type: z
         .enum(['email', 'openid', 'unionid', 'openchat', 'opendepartmentid', 'userid', 'groupid', 'wikispaceid'])
         .describe(
-          'Collaborator type, which needs to match the collaborator id Options:email(Email),openid(open_id The Open ID of the application or user. - To get the application OpenID, refer to  - Get user OpenID, refer to ),unionid(union_id Open platform unionID),openchat(open_chat Open platform chat ID),opendepartmentid(open_department_id Open platform department ID),userid(user_id User customized ID),groupid(group_id Custom user group ID),wikispaceid(wiki_space_id Wiki space ID - **NOTE**: This parameter is only supported by the wiki document, and it is required when you need to operate the "wiki space member" type collaborator in the wiki document)',
+          'Collaborator type, which needs to match the collaborator id Options:email(Email),openid(open_id The Open ID of the application or user. - To get the application OpenID, refer to [How to get the application open_id] - Get user OpenID, refer to [How to get different user IDs]),unionid(union_id Open platform unionID),openchat(open_chat Open platform chat ID),opendepartmentid(open_department_id Open platform department ID),userid(user_id User customized ID),groupid(group_id Custom user group ID),wikispaceid(wiki_space_id Wiki space ID - **NOTE**: This parameter is only supported by the wiki document, and it is required when you need to operate the "wiki space member" type collaborator in the wiki document)',
         ),
       member_id: z.string().describe('Collaborator ID, which needs to match the collaborator type'),
       perm: z
@@ -1335,7 +1335,7 @@ export const driveV1PermissionMemberCreate = {
       token: z
         .string()
         .describe(
-          'Token of the file. For more information about how to obtain the token, see ',
+          'Token of the file. For more information about how to obtain the token, see [How to get the token of docs resources]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1381,7 +1381,7 @@ export const driveV1PermissionMemberDelete = {
       token: z
         .string()
         .describe(
-          'Token of the file. For more information about how to obtain the token, see ',
+          'Token of the file. For more information about how to obtain the token, see [How to get the token of docs resources]',
         ),
       member_id: z.string().describe('Collaborator id, which needs to match the collaborator type'),
     }),
@@ -1421,7 +1421,7 @@ export const driveV1PermissionMemberList = {
       token: z
         .string()
         .describe(
-          'Token of the file. For more information about how to obtain the token, see ',
+          'Token of the file. For more information about how to obtain the token, see [How to get the token of docs resources]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1478,7 +1478,7 @@ export const driveV1PermissionMemberTransferOwner = {
       token: z
         .string()
         .describe(
-          'Token of the file. For more information about how to obtain the token, see ',
+          'Token of the file. For more information about how to obtain the token, see [How to get the token of docs resources]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1535,7 +1535,7 @@ export const driveV1PermissionMemberUpdate = {
       token: z
         .string()
         .describe(
-          'Token of the file. For more information about how to obtain the token, see ',
+          'Token of the file. For more information about how to obtain the token, see [How to get the token of docs resources]',
         ),
       member_id: z.string().describe('Collaborator ID'),
     }),
@@ -1563,7 +1563,7 @@ export const driveV1PermissionPublicGet = {
       token: z
         .string()
         .describe(
-          'Token of the file. For more information about how to obtain the token, see ',
+          'Token of the file. For more information about how to obtain the token, see [How to get the token of docs resources]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1590,7 +1590,7 @@ export const driveV1PermissionPublicPasswordCreate = {
       token: z
         .string()
         .describe(
-          'Token of the file. For more information about how to obtain the token, see ',
+          'Token of the file. For more information about how to obtain the token, see [How to get the token of docs resources]',
         )
         .optional(),
     }),
@@ -1618,7 +1618,7 @@ export const driveV1PermissionPublicPasswordDelete = {
       token: z
         .string()
         .describe(
-          'Token of the file. For more information about how to obtain the token, see ',
+          'Token of the file. For more information about how to obtain the token, see [How to get the token of docs resources]',
         )
         .optional(),
     }),
@@ -1646,7 +1646,7 @@ export const driveV1PermissionPublicPasswordUpdate = {
       token: z
         .string()
         .describe(
-          'Token of the file. For more information about how to obtain the token, see ',
+          'Token of the file. For more information about how to obtain the token, see [How to get the token of docs resources]',
         )
         .optional(),
     }),
@@ -1707,7 +1707,7 @@ export const driveV1PermissionPublicPatch = {
       token: z
         .string()
         .describe(
-          'Token of the file. For more information about how to obtain the token, see ',
+          'Token of the file. For more information about how to obtain the token, see [How to get the token of docs resources]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
