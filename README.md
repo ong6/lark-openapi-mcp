@@ -20,7 +20,7 @@ This is the Feishu/Lark official OpenAPI MCP (Model Context Protocol) tool desig
   - Supports User Access Token authentication
 - **Flexible Communication Protocols:**
   - Supports standard input/output stream (stdio) mode, suitable for integration with AI tools like Trae/Cursor/Claude
-  - Supports StreamableHttp mode, providing HTTP-based interfaces
+  - Supports StreamableHTTP/SSE mode, providing HTTP-based interfaces
 
 - Supports multiple configuration methods, adapting to different usage scenarios
 
@@ -38,66 +38,30 @@ Before using the lark-mcp tool, you need to create a Feishu/Lark application:
 2. Click "Console" and create a new application
 3. Obtain the App ID and App Secret, which will be used for API authentication
 4. Add the necessary permissions for your application based on your usage scenario
-5. If you need to call APIs as a user, set up OAuth 2.0 redirect URLs and obtain user access tokens
+5. If you need to call APIs as a user, set the OAuth 2.0 redirect URL to http://localhost:3000/callback
 
-For detailed application creation and configuration guidelines, please refer to the [Feishu Open Platform Documentation - Creating an Application](https://open.feishu.cn/document/home/introduction-to-custom-app-development/self-built-application-development-process#a0a7f6b0) or the [Lark Open Platform Documentation](https://open.larksuite.com/document/home/introduction-to-custom-app-development/self-built-application-development-process#a0a7f6b0).
+For detailed application creation and configuration guidelines, please refer to the [Feishu Open Platform Documentation - Creating an Application](https://open.feishu.cn/document/home/introduction-to-custom-app-development/self-built-application-development-process#a0a7f6b0).
 
 ### Installing Node.js
 
 Before using the lark-mcp tool, you need to install the Node.js environment.
 
-#### Installing Node.js on macOS
+**Using the Official Installer (Recommended)**:
 
-1. **Using Homebrew (Recommended)**:
-
-   ```bash
-   brew install node
-   ```
-
-2. **Using the Official Installer**:
-   - Visit the [Node.js website](https://nodejs.org/)
-   - Download and install the LTS version
-   - After installation, verify in the terminal:
-     ```bash
-     node -v
-     npm -v
-     ```
-
-#### Installing Node.js on Windows
-
-1. **Using the Official Installer**:
-
-   - Visit the [Node.js website](https://nodejs.org/)
-   - Download and run the Windows installer (.msi file)
-   - Follow the installation wizard to complete the installation
-   - After installation, verify in the command prompt:
-     ```bash
-     node -v
-     npm -v
-     ```
-
-2. **Using nvm-windows**:
-   - Download [nvm-windows](https://github.com/coreybutler/nvm-windows/releases)
-   - Install nvm-windows
-   - Use nvm to install Node.js:
-     ```bash
-     nvm install latest
-     nvm use <version_number>
-     ```
-
-## Installation
-
-Install the lark-mcp tool globally:
+1. Visit the [Node.js website](https://nodejs.org/)
+2. Download and install the LTS version
+3. After installation, verify in the terminal:
 
 ```bash
-npm install -g @larksuiteoapi/lark-mcp
+node -v
+npm -v
 ```
 
 ## Usage Guide
 
 ### Using with Trae/Cursor/Claude
 
-To integrate Feishu/Lark functionality in AI tools like Trae，Cursor or Claude, add the following to your configuration file:
+To integrate Feishu/Lark functionality in AI tools like Trae, Cursor or Claude, add the following to your configuration file:
 
 ```json
 {
@@ -118,13 +82,47 @@ To integrate Feishu/Lark functionality in AI tools like Trae，Cursor or Claude,
 }
 ```
 
-To access APIs with user identity, you can add a user access token:
+If you need to access APIs with **user identity**, you need to login first using the login command in the terminal. Note that you need to configure the application's redirect URL in the developer console first, default is http://localhost:3000/callback
+
+```bash
+
+# Login and get user access token
+npx -y @larksuiteoapi/lark-mcp login -a cli_xxxx -s yyyyy
+   
+# Or optionally, login with specific OAuth scope - if not specified, all permissions will be authorized by default
+npx -y @larksuiteoapi/lark-mcp login -a cli_xxxx -s yyyyy --scope offline_access docx:document
+
+```
+
+Then add the following to your configuration file:
 
 ```json
 {
   "mcpServers": {
     "lark-mcp": {
-     "command": "npx",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@larksuiteoapi/lark-mcp",
+        "mcp",
+        "-a",
+        "<your_app_id>",
+        "-s",
+        "<your_app_secret>",
+        "--oauth"
+      ]
+    }
+  }
+}
+```
+
+You can also directly add a user access token (expires in 2 hours) via -u:
+
+```json
+{
+  "mcpServers": {
+    "lark-mcp": {
+      "command": "npx",
       "args": [
         "-y",
         "@larksuiteoapi/lark-mcp",
@@ -187,13 +185,30 @@ The following table details each API tool and its inclusion in different preset 
 | calendar.v4.freebusy.list | Query free/busy status | | | | | | | | ✓ |
 | calendar.v4.calendar.primary | Get primary calendar | | | | | | | | ✓ |
 
-> **Note**: In the table, "✓" indicates the tool is included in that preset. Using `-t preset.xxx` will only enable tools marked with "✓" in the corresponding column.
+> **Note**: In the table, "✓" indicates the tool is included in that preset. Using `-t preset.xxx` will enable tools marked with "✓" in the corresponding column.
 
 ### Advanced Configuration
 
 #### Command Line Parameters
 
-The `lark-mcp mcp` tool provides various command line parameters for flexible MCP service configuration:
+**`lark-mcp login` Command Parameters**:
+
+| Parameter | Short | Description | Example |
+|------|------|------|------|
+| `--app-id` | `-a` | Feishu/Lark application App ID | `-a cli_xxxx` |
+| `--app-secret` | `-s` | Feishu/Lark application App Secret | `-s xxxx` |
+| `--domain` | `-d` | Feishu/Lark API domain, default is https://open.feishu.cn | `-d https://open.larksuite.com` |
+| `--scope` |  | Specify OAuth scope for user access token, default is all permissions granted to the app, separated by spaces | `--scope offline_access docx:document` |
+
+**`lark-mcp logout` Command Parameters**:
+
+| Parameter | Short | Description | Example |
+|------|------|------|------|
+| `--app-id` | `-a` | Feishu/Lark application App ID, optional. If specified, only clears the token for this app; if not specified, clears tokens for all apps | `-a cli_xxxx` |
+
+This command is used to clear locally stored user access tokens. If the `--app-id` parameter is specified, it only clears the user access token for that application; if not specified, it clears user access tokens for all applications.
+
+**`lark-mcp mcp` Command Parameters**:
 
 | Parameter | Short | Description | Example |
 |------|------|------|------|
@@ -205,7 +220,9 @@ The `lark-mcp mcp` tool provides various command line parameters for flexible MC
 | `--language` | `-l` | Tools language, options are zh or en, default is en | `-l zh` |
 | `--user-access-token` | `-u` | User access token for calling APIs as a user | `-u u-xxxx` |
 | `--token-mode` |  | API token type, options are auto, tenant_access_token, or user_access_token, default is auto | `--token-mode user_access_token` |
-| `--mode` | `-m` | Transport mode, options are stdio or streamable or sse, default is stdio | `-m streamable` |
+| `--oauth` |  | Enable MCP Auth Server to get user_access_token and auto request user login when token expires (Beta) | `--oauth` |
+| `--scope` |  | Specify OAuth scope for user access token, default is all permissions granted to the app, separated by spaces | `--scope offline_access docx:document` |
+| `--mode` | `-m` | Transport mode, options are stdio, streamable, or sse, default is stdio | `-m streamable` |
 | `--host` |  | Listening host in SSE/Streamable mode, default is localhost | `--host 0.0.0.0` |
 | `--port` | `-p` | Listening port in SSE/Streamable mode, default is 3000 | `-p 3000` |
 | `--config` |  | Configuration file path, supports JSON format | `--config ./config.json` |
@@ -214,35 +231,72 @@ The `lark-mcp mcp` tool provides various command line parameters for flexible MC
 
 #### Parameter Usage Examples
 
-1. **Basic Usage** (using application identity):
+1. **Basic Usage**:
+
    ```bash
+   # Start with default settings and auto request user login when token expires (recommended for local scenarios)
+   lark-mcp mcp -a cli_xxxx -s yyyyy --oauth
+
+   # Start with default settings
    lark-mcp mcp -a cli_xxxx -s yyyyy
    ```
 
 2. **Using User Identity**:
+
+   If you need to access APIs with user identity, you need to first use the login command to log in. For details, refer to "Using OAuth Login to Get User Access Token":
+
+   ```bash
+
+   # Login and get user access token
+   lark-mcp login -a cli_xxxx -s yyyyy
+   ```
+
+   You can also manually pass user_access_token using -u:
+
    ```bash
    lark-mcp mcp -a cli_xxxx -s yyyyy -u u-zzzz
    ```
 
-   > **Note**: User access tokens can be obtained through the [Feishu Open Platform's authorization process](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/authentication-management/access-token/get-user-access-token) or [Lark Open Platform's authorization process](https://open.larksuite.com/document/uAjLw4CM/ukTMukTMukTM/reference/authen-v1/oidc-access_token/create), or you can use the API debugging console to obtain them. After using a user access token, API calls will be made with that user's identity.
+    > **Note**: User access tokens can be obtained through the [Feishu Open Platform's authorization process](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/authentication-management/access-token/get-user-access-token), or you can use the API debugging console to obtain them. After using a user access token, API calls will be made with that user's identity.
 
-3. **Setting Specific Token Mode**:
+3. **Using OAuth Login to Get User Access Token**:
+   ```bash
+   # Login and get user access token
+   lark-mcp login -a cli_xxxx -s yyyyy
+   
+   # Specify OAuth scope
+   lark-mcp login -a cli_xxxx -s yyyyy --scope offline_access
+   
+   # Specify domain for OAuth authentication
+   lark-mcp login -a cli_xxxx -s yyyyy -d https://open.larksuite.com
+   ```
+
+   > **Note**: Using the `login` command will start a local OAuth server and open a browser to complete authorization. The user access token will be automatically obtained and stored securely locally for automatic use in subsequent startups.
+
+4. **Logout and Clear Stored Token**:
+   ```bash
+   # Clear locally stored user access token
+   lark-mcp logout
+   ```
+   > **Note**: The `logout` command will clear the locally stored user access token. If there is no stored token currently, a corresponding message will be displayed.
+
+5. **Setting Specific Token Mode**:
    ```bash
    lark-mcp mcp -a cli_xxxx -s yyyyy --token-mode user_access_token
    ```
    
    > **Note**: This option allows you to explicitly specify which token type to use when calling APIs. The `auto` mode (default) will be determined by the LLM when calling the API.
 
-4. **Specifying Lark or KA Domains**:
-   ```bash
-   # Lark international version
-   lark-mcp mcp -a <your_app_id> -s <your_app_secret> -d https://open.larksuite.com
+6. **Specifying Lark or KA Domains**:
+    ```bash
+    # Lark international version
+    lark-mcp mcp -a <your_app_id> -s <your_app_secret> -d https://open.larksuite.com
 
-   # Custom domain (KA domain)
-   lark-mcp mcp -a <your_app_id> -s <your_app_secret> -d https://open.your-ka-domain.com
-   ```
+    # Custom domain (KA domain)
+    lark-mcp mcp -a <your_app_id> -s <your_app_secret> -d https://open.your-ka-domain.com
+    ```
 
-5. **Enabling Only Specific API Tools or Other API Tools**:
+7. **Enabling Only Specific API Tools or Other API Tools**:
    ```bash
    lark-mcp mcp -a cli_xxxx -s yyyyy -t im.v1.chat.create,im.v1.message.create
    ```
@@ -257,19 +311,14 @@ The `lark-mcp mcp` tool provides various command line parameters for flexible MC
    > - `preset.task.default` - Task management related tools, such as task creation, member management, etc.
    > - `preset.calendar.default` - Calendar event management tools, such as creating calendar events, querying free/busy status, etc.
 
-6. **Using SSE Mode with Specific Port and Host**:
-   ```bash
-   lark-mcp mcp -a cli_xxxx -s yyyyy -m sse --host 0.0.0.0 -p 3000
-   ```
-
-7. **Setting Tools Language to Chinese**:
+8. **Setting Tools Language to Chinese**:
    ```bash
    lark-mcp mcp -a cli_xxxx -s yyyyy -l zh
    ```
    
    > **Note**: Setting the language to Chinese (`-l zh`) may consume more tokens. If you encounter token limit issues when integrating with large language models, consider using the default English setting (`-l en`).
 
-8. **Setting Tool Name Format to Camel Case**:
+9. **Setting Tool Name Format to Camel Case**:
    ```bash
    lark-mcp mcp -a cli_xxxx -s yyyyy -c camel
    ```
@@ -280,17 +329,21 @@ The `lark-mcp mcp` tool provides various command line parameters for flexible MC
    > - kebab format: `im-v1-message-create`
    > - dot format: `im.v1.message.create`
 
-9. **Using Environment Variables Instead of Command Line Parameters**:
+10. **Using Environment Variables Instead of Command Line Parameters**:
    ```bash
    # Set environment variables
    export APP_ID=cli_xxxx
    export APP_SECRET=yyyyy
+   export USER_ACCESS_TOKEN=zzzzz
+   export LARK_TOOLS=a.b.c,a.c.d
+   export LARK_DOMAIN=https://open.feishu.cn
+   export LARK_TOKEN_MODE=user_access_token
    
    # Start the service (no need to specify -a and -s parameters)
    lark-mcp mcp
    ```
 
-10. **Using Configuration File**:
+11. **Using Configuration File**:
 
     Besides command line parameters, you can also use a JSON format configuration file to set parameters:
 
@@ -312,15 +365,17 @@ The `lark-mcp mcp` tool provides various command line parameters for flexible MC
       "tokenMode": "auto",
       "mode": "stdio",
       "host": "localhost",
-      "port": "3000"
+      "port": "3000",
+      "oauth": true,
+      "scope": "offline_access docx:document"
     }
     ```
 
     > **Note**: Command line parameters have higher priority than configuration file. When using both command line parameters and configuration file, command line parameters will override corresponding settings in the configuration file.
 
-11. **Transport Modes**:
+12. **Transport Modes**:
 
-    lark-mcp supports two transport modes:
+    lark-mcp supports three transport modes:
 
     1. **stdio mode (Default/Recommended)**: Suitable for integration with AI tools like Trae/Cursor or Claude, communicating through standard input/output streams.
       ```bash
@@ -339,6 +394,13 @@ The `lark-mcp mcp` tool provides various command line parameters for flexible MC
       
       After startup, the SSE endpoint will be accessible at `http://<host>:<port>/sse`.
 
+    3. **streamable mode**: Provides StreamableHTTP-based interface
+      
+      ```bash
+      # Start streamable mode
+      lark-mcp mcp -a <your_app_id> -s <your_app_secret> -m streamable --host 0.0.0.0 -p 3000
+      ```
+
 ## FAQ
 
 - **Issue**: Unable to connect to Feishu/Lark API
@@ -348,7 +410,7 @@ The `lark-mcp mcp` tool provides various command line parameters for flexible MC
   **Solution**: Check if the token has expired. user_access_token usually has a validity period of 2 hours and needs to be refreshed periodically. You can implement an automatic token refresh mechanism.
 
 - **Issue**: Unable to call certain APIs after starting the MCP service, with insufficient permissions errors
-  **Solution**: Check if your application has obtained the corresponding API permissions. Some APIs require additional high-level permissions, which can be configured in the [Developer Console](https://open.feishu.cn/app) or [Lark Developer Console](https://open.larksuite.com/app). Ensure that permissions have been approved.
+  **Solution**: Check if your application has obtained the corresponding API permissions. Some APIs require additional high-level permissions, which can be configured in the [Developer Console](https://open.feishu.cn/app). Ensure that permissions have been approved.
 
 - **Issue**: Image or file upload/download related API calls fail
   **Solution**: The current version does not support file and image upload/download functionality. These APIs will be supported in future versions.
@@ -368,9 +430,9 @@ The `lark-mcp mcp` tool provides various command line parameters for flexible MC
 ## Related Links
 
 - [Feishu Open Platform](https://open.feishu.cn/)
+- [Development Documentation: OpenAPI MCP](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/mcp_integration/mcp_introduction)
 - [Lark International Open Platform](https://open.larksuite.com/)
 - [Feishu Open Platform API Documentation](https://open.feishu.cn/document/home/index)
-- [Lark Open Platform API Documentation](https://open.larksuite.com/document/home/index)
 - [Node.js Website](https://nodejs.org/)
 - [npm Documentation](https://docs.npmjs.com/)
 

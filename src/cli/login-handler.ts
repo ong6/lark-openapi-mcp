@@ -1,0 +1,112 @@
+import express from 'express';
+import { LarkAuthHandlerLocal } from '../auth/handler/handler-local';
+import { authStore } from '../auth/store';
+
+export interface LoginOptions {
+  appId: string;
+  appSecret: string;
+  domain: string;
+  host: string;
+  port: string;
+  scope?: string;
+  timeout?: number;
+}
+
+export class LoginHandler {
+  static async checkTokenWithTimeout(timeout: number, appId: string): Promise<boolean> {
+    let time = 0;
+    return new Promise((resolve) => {
+      const interval = setInterval(async () => {
+        const token = await authStore.getLocalAccessToken(appId);
+        if (token) {
+          clearInterval(interval);
+          resolve(true);
+        }
+        time += 2000;
+        if (time >= timeout) {
+          clearInterval(interval);
+          resolve(false);
+        }
+      }, 2000);
+    });
+  }
+
+  static async handleLogin(options: LoginOptions): Promise<void> {
+    const { appId, appSecret, domain, host, port, scope, timeout = 60000 } = options;
+
+    if (!appId || !appSecret) {
+      console.error('Error: Missing App Credentials (appId and appSecret are required for login)');
+      process.exit(1);
+    }
+
+    try {
+      console.log('🔐 Starting OAuth login process...');
+
+      const app = express();
+      app.use(express.json());
+
+      const authHandler = new LarkAuthHandlerLocal(app, {
+        port: parseInt(port),
+        host,
+        domain,
+        appId,
+        appSecret,
+        scope,
+      });
+
+      const result = await authHandler.reAuthorize();
+
+      if (result.accessToken) {
+        console.log('✅ Already logged in with valid token');
+        process.exit(0);
+      }
+
+      if (result.authorizeUrl) {
+        console.log('📱 Please open the following URL in your browser to complete the login:');
+        console.log(result.authorizeUrl);
+        console.log('\n⏳ Waiting for authorization... (timeout in 60 seconds)');
+
+        await authStore.removeLocalAccessToken(appId);
+        const success = await this.checkTokenWithTimeout(timeout, appId);
+
+        if (success) {
+          console.log('✅ Successfully logged in');
+          process.exit(0);
+        } else {
+          console.log('❌ Login failed');
+          process.exit(1);
+        }
+      } else {
+        process.exit(1);
+      }
+    } catch (error) {
+      console.error('❌ Login failed:', error);
+      process.exit(1);
+    }
+  }
+
+  static async handleLogout(appId?: string): Promise<void> {
+    try {
+      console.log('🔓 Logging out...');
+
+      if (!appId) {
+        await authStore.removeAllLocalAccessTokens();
+        console.log('✅ Successfully logged out from all apps');
+        process.exit(0);
+      }
+
+      const currentToken = await authStore.getLocalAccessToken(appId);
+      if (!currentToken) {
+        console.log(`ℹ️ No active login session found for app: ${appId}`);
+        process.exit(0);
+      }
+
+      await authStore.removeLocalAccessToken(appId);
+      console.log(`✅ Successfully logged out from app: ${appId}`);
+      process.exit(0);
+    } catch (error) {
+      console.error('❌ Logout failed:', error);
+      process.exit(1);
+    }
+  }
+}

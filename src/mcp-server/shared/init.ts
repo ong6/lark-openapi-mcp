@@ -1,13 +1,14 @@
+import * as larkmcp from '../../mcp-tool';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { initStdioServer, initSSEServer, initStreamableServer } from '../transport';
-import { McpServerCommonOptions, McpServerOptions, McpServerType } from './types';
-import * as larkmcp from '../../mcp-tool';
+import { McpServerOptions, McpServerType } from './types';
 import { noop } from '../../utils/noop';
 import { currentVersion } from '../../utils/version';
 import { oapiHttpInstance } from '../../utils/http-instance';
+import { LarkAuthHandler } from '../../auth';
 
-export function initOAPIMcpServer(options: McpServerOptions) {
-  const { appId, appSecret, userAccessToken } = options;
+export function initOAPIMcpServer(options: McpServerOptions, authHandler?: LarkAuthHandler) {
+  const { appId, appSecret, userAccessToken, tokenMode, domain, oauth } = options;
 
   if (!appId || !appSecret) {
     console.error('Error: Missing App Credentials');
@@ -28,17 +29,23 @@ export function initOAPIMcpServer(options: McpServerOptions) {
   // Create MCP Server
   const mcpServer = new McpServer({ id: 'lark-mcp-server', name: 'Feishu/Lark MCP Server', version: currentVersion });
 
-  const larkClient = new larkmcp.LarkMcpTool({
-    appId,
-    appSecret,
-    logger: { warn: noop, error: noop, debug: noop, info: noop, trace: noop },
-    httpInstance: oapiHttpInstance,
-    domain: options.domain,
-    toolsOptions: allowTools.length
-      ? { allowTools: allowTools as larkmcp.ToolName[], language: options.language }
-      : { language: options.language },
-    tokenMode: options.tokenMode,
-  });
+  const toolsOptions = allowTools.length
+    ? { allowTools: allowTools as larkmcp.ToolName[], language: options.language }
+    : { language: options.language };
+
+  const larkClient = new larkmcp.LarkMcpTool(
+    {
+      appId,
+      appSecret,
+      logger: { warn: noop, error: noop, debug: noop, info: noop, trace: noop },
+      httpInstance: oapiHttpInstance,
+      domain,
+      toolsOptions,
+      tokenMode,
+      oauth,
+    },
+    authHandler,
+  );
 
   if (userAccessToken) {
     larkClient.updateUserAccessToken(userAccessToken);
@@ -61,12 +68,16 @@ export function initRecallMcpServer(options: McpServerOptions) {
   return server;
 }
 
-export function initMcpServerWithTransport(serverType: McpServerType, options: McpServerOptions) {
-  const { mode } = options;
+export async function initMcpServerWithTransport(serverType: McpServerType, options: McpServerOptions) {
+  const { mode, userAccessToken, oauth } = options;
 
-  const getNewServer = (commonOptions?: McpServerCommonOptions) => {
+  if (userAccessToken && oauth) {
+    throw new Error('userAccessToken and oauth cannot be used together');
+  }
+
+  const getNewServer = (commonOptions?: McpServerOptions, authHandler?: LarkAuthHandler) => {
     if (serverType === 'oapi') {
-      const { mcpServer } = initOAPIMcpServer({ ...options, ...commonOptions });
+      const { mcpServer } = initOAPIMcpServer({ ...options, ...commonOptions }, authHandler);
       return mcpServer;
     } else if (serverType === 'recall') {
       return initRecallMcpServer({ ...options, ...commonOptions });
@@ -76,13 +87,13 @@ export function initMcpServerWithTransport(serverType: McpServerType, options: M
 
   switch (mode) {
     case 'stdio':
-      initStdioServer(getNewServer);
+      await initStdioServer(getNewServer, options);
       break;
     case 'sse':
-      initSSEServer(getNewServer, options);
+      await initSSEServer(getNewServer, options);
       break;
     case 'streamable':
-      initStreamableServer(getNewServer, options);
+      await initStreamableServer(getNewServer, options);
       break;
     default:
       throw new Error('Invalid mode:' + mode);

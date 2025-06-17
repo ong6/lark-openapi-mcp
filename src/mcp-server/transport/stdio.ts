@@ -1,17 +1,35 @@
+import express from 'express';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { McpServerCommonOptions } from '../shared';
+import { InitTransportServerFunction } from '../shared';
+import { authStore } from '../../auth';
+import { LarkAuthHandlerLocal } from '../../auth';
 
-export function initStdioServer(getNewServer: (options?: McpServerCommonOptions) => McpServer) {
-  try {
-    const transport = new StdioServerTransport();
-    const mcpServer = getNewServer();
-    mcpServer.connect(transport).catch((error) => {
-      console.error('MCP Connect Error:', error);
-      process.exit(1);
-    });
-  } catch (error) {
-    console.error('Error handling MCP request:', error);
-    process.exit(1);
+export const initStdioServer: InitTransportServerFunction = async (getNewServer, options) => {
+  const { userAccessToken, appId } = options;
+
+  let authHandler: LarkAuthHandlerLocal | undefined;
+
+  if (!userAccessToken) {
+    const app = express();
+    app.use(express.json());
+    authHandler = new LarkAuthHandlerLocal(app, options);
   }
-}
+
+  const transport = new StdioServerTransport();
+  const mcpServer = getNewServer(
+    {
+      ...options,
+      userAccessToken: userAccessToken
+        ? userAccessToken
+        : appId
+          ? await authStore.getLocalAccessToken(appId)
+          : undefined,
+    },
+    authHandler,
+  );
+
+  mcpServer.connect(transport).catch((error) => {
+    console.error('MCP Connect Error:', error);
+    process.exit(1);
+  });
+};

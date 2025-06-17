@@ -212,7 +212,7 @@ describe('larkOapiHandler', () => {
 
     // 验证结果
     expect(result.isError).toBe(true);
-    expect(result.content[0].text).toContain('Invalid UserAccessToken');
+    expect(result.content[0].text).toContain('UserAccessToken is invalid or expired');
   });
 
   it('应该测试error处理', async () => {

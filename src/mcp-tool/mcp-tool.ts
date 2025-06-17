@@ -2,11 +2,9 @@ import { Client } from '@larksuiteoapi/node-sdk';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { LarkMcpToolOptions, McpTool, ToolNameCase, TokenMode } from './types';
 import { AllTools, AllToolsZh } from './tools';
-import { filterTools } from './utils/filter-tools';
 import { defaultToolNames } from './constants';
-import { larkOapiHandler } from './utils/handler';
-import { caseTransf } from './utils/case-transf';
-import { getShouldUseUAT } from './utils/get-should-use-uat';
+import { filterTools, larkOapiHandler, caseTransf, getShouldUseUAT } from './utils';
+import { LarkAuthHandler, isTokenValid } from '../auth';
 
 /**
  * Feishu/Lark MCP
@@ -18,8 +16,11 @@ export class LarkMcpTool {
   // User Access Token
   private userAccessToken: string | undefined;
 
-  // Token Mode
-  private tokenMode: TokenMode = TokenMode.AUTO;
+  // Lark User Auth Handler
+  private auth: LarkAuthHandler | undefined;
+
+  // Lark MCP Tool Options
+  private options: LarkMcpToolOptions;
 
   // All Tools
   private allTools: McpTool[] = [];
@@ -28,33 +29,25 @@ export class LarkMcpTool {
    * Feishu/Lark MCP
    * @param options Feishu/Lark Client Options
    */
-  constructor(options: LarkMcpToolOptions) {
+  constructor(options: LarkMcpToolOptions, auth?: LarkAuthHandler) {
+    this.options = options;
+    this.auth = auth;
+
     if (options.client) {
       this.client = options.client;
     } else if (options.appId && options.appSecret) {
-      this.client = new Client({
-        appId: options.appId,
-        appSecret: options.appSecret,
-        ...options,
-      });
+      this.client = new Client({ appId: options.appId, appSecret: options.appSecret, ...options });
     }
-    this.tokenMode = options.tokenMode || TokenMode.AUTO;
+
     const isZH = options.toolsOptions?.language === 'zh';
 
     const filterOptions = {
       allowTools: defaultToolNames,
-      tokenMode: this.tokenMode,
+      tokenMode: this.options.tokenMode || TokenMode.AUTO,
       ...options.toolsOptions,
     };
-    this.allTools = filterTools(isZH ? AllToolsZh : AllTools, filterOptions);
-  }
 
-  /**
-   * Update User Access Token
-   * @param userAccessToken User Access Token
-   */
-  updateUserAccessToken(userAccessToken: string) {
-    this.userAccessToken = userAccessToken;
+    this.allTools = filterTools(isZH ? AllToolsZh : AllTools, filterOptions);
   }
 
   /**
@@ -66,32 +59,84 @@ export class LarkMcpTool {
   }
 
   /**
+   * Update User Access Token
+   * @param userAccessToken User Access Token
+   */
+  updateUserAccessToken(userAccessToken: string) {
+    this.userAccessToken = userAccessToken;
+  }
+
+  async ensureGetUserAccessToken() {
+    if (!this.auth) {
+      return { userAccessToken: this.userAccessToken };
+    }
+
+    const { valid, isExpired, token } = await isTokenValid(this.userAccessToken);
+    if (valid) {
+      return { userAccessToken: this.userAccessToken };
+    }
+
+    try {
+      if (isExpired && token?.extra?.refreshToken) {
+        // refreshToken
+        const newToken = await this.auth.refreshToken(token.token);
+        if (newToken?.access_token) {
+          this.userAccessToken = newToken.access_token;
+          return { userAccessToken: newToken.access_token };
+        }
+      }
+    } catch {
+      // refreshToken failed, reAuthorize
+    }
+
+    // if not enable oauth mode, return empty object
+    if (!this.options.oauth) {
+      return {};
+    }
+    // reAuthorize
+    const { authorizeUrl, accessToken } = await this.auth.reAuthorize(this.userAccessToken);
+
+    if (accessToken) {
+      this.userAccessToken = accessToken;
+      return { userAccessToken: accessToken };
+    }
+
+    return { authorizeUrl };
+  }
+
+  /**
    * Register Tools to MCP Server
    * @param server MCP Server Instance
    */
   registerMcpServer(server: McpServer, options?: { toolNameCase?: ToolNameCase }): void {
     for (const tool of this.allTools) {
-      server.tool(caseTransf(tool.name, options?.toolNameCase), tool.description, tool.schema, (params: any) => {
+      server.tool(caseTransf(tool.name, options?.toolNameCase), tool.description, tool.schema, async (params: any) => {
         try {
           if (!this.client) {
-            return {
-              isError: true,
-              content: [{ type: 'text' as const, text: 'Client not initialized' }],
-            };
+            return { isError: true, content: [{ type: 'text' as const, text: 'Client not initialized' }] };
           }
           const handler = tool.customHandler || larkOapiHandler;
-          if (this.tokenMode == TokenMode.USER_ACCESS_TOKEN && !this.userAccessToken) {
-            return {
-              isError: true,
-              content: [{ type: 'text' as const, text: 'Invalid UserAccessToken' }],
-            };
+
+          const shouldUseUAT = getShouldUseUAT(this.options.tokenMode, params?.useUAT ?? false);
+
+          if (shouldUseUAT) {
+            const { userAccessToken, authorizeUrl } = await this.ensureGetUserAccessToken();
+            if (!userAccessToken) {
+              return {
+                isError: true,
+                content: [
+                  {
+                    type: 'text' as const,
+                    text: authorizeUrl
+                      ? `UserAccessToken is invalid or expired, please authorize at ${authorizeUrl} and then try again. (Link expires in 60s, regenerating a new link will invalidate this one immediately)`
+                      : 'UserAccessToken is invalid or expired',
+                  },
+                ],
+              };
+            }
+            return handler(this.client, { ...params, useUAT: shouldUseUAT }, { userAccessToken, tool });
           }
-          const shouldUseUAT = getShouldUseUAT(this.tokenMode, this.userAccessToken, params?.useUAT);
-          return handler(
-            this.client,
-            { ...params, useUAT: shouldUseUAT },
-            { userAccessToken: this.userAccessToken, tool },
-          );
+          return handler(this.client, { ...params, useUAT: shouldUseUAT }, { tool });
         } catch (error) {
           return {
             isError: true,
