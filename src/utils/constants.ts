@@ -21,3 +21,8 @@ export const OAPI_MCP_ENV_ARGS = cleanEnvArgs({
   tools: process.env.LARK_TOOLS,
   domain: process.env.LARK_DOMAIN,
 });
+
+export enum OAPI_MCP_ERROR_CODE {
+  USER_ACCESS_TOKEN_INVALID = 99991668,
+  USER_ACCESS_TOKEN_UNAUTHORIZED = 99991679,
+}

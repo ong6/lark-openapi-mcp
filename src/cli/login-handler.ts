@@ -64,6 +64,11 @@ export class LoginHandler {
 
       if (result.authorizeUrl) {
         console.log('📱 Please open the following URL in your browser to complete the login:');
+        console.log(
+          `💡 Note: Please ensure the redirect URL (${authHandler.callbackUrl}) is configured in your app's security settings.`,
+        );
+        console.log(`   If not configured yet, go to: ${domain}/app/${appId}/safe`);
+        console.log('🔗 Authorization URL:');
         console.log(result.authorizeUrl);
         console.log('\n⏳ Waiting for authorization... (timeout in 60 seconds)');
 

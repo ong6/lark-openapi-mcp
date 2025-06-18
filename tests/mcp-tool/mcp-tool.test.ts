@@ -163,7 +163,7 @@ describe('LarkMcpTool', () => {
 
       const result = await handlerFunction({ content: 'test' });
       expect(result.isError).toBe(true);
-      expect(result.content[0].text).toBe('Client not initialized');
+      expect(result.content[0].text).toBe('{"msg":"Client not initialized"}');
     });
 
     it('应该使用customHandler而非默认的larkOapiHandler', async () => {
@@ -283,7 +283,7 @@ describe('LarkMcpTool', () => {
       const result = await handlerFunction({ content: 'test' });
 
       expect(result.isError).toBe(true);
-      expect(result.content[0].text).toBe('UserAccessToken is invalid or expired');
+      expect(result.content[0].text).toBe('{"errorMessage":"UserAccessToken is invalid or expired"}');
     });
   });
 
@@ -302,8 +302,7 @@ describe('LarkMcpTool', () => {
       const result = await handlerFunction({ content: 'test' });
 
       expect(result.isError).toBe(true);
-      expect(result.content[0].text).toContain('Error:');
-      expect(result.content[0].text).toContain('测试错误');
+      expect(result.content[0].text).toBe('"测试错误"');
     });
   });
 
@@ -325,7 +324,7 @@ describe('LarkMcpTool', () => {
       // 调用处理程序，当useUAT为true但没有userAccessToken时应返回错误
       const result1 = await autoHandler({ content: 'test', useUAT: true });
       expect(result1.isError).toBe(true);
-      expect(result1.content[0].text).toContain('UserAccessToken is invalid or expired');
+      expect(result1.content[0].text).toBe('{"errorMessage":"UserAccessToken is invalid or expired"}');
 
       // 验证handler没有被调用，因为返回了错误
       expect(mockLarkOapiHandler).not.toHaveBeenCalled();
@@ -392,7 +391,7 @@ describe('LarkMcpTool', () => {
       const result = await handlerFunction({ content: 'test' });
 
       expect(result.isError).toBe(true);
-      expect(result.content[0].text).toContain('Error:');
+      expect(result.content[0].text).toBe('"测试错误"');
     });
   });
 
@@ -694,7 +693,7 @@ describe('LarkMcpTool', () => {
       const result = await handlerFunction({ content: 'test', useUAT: true });
 
       expect(result.isError).toBe(true);
-      expect(result.content[0].text).toBe('UserAccessToken is invalid or expired');
+      expect(result.content[0].text).toBe('{"errorMessage":"UserAccessToken is invalid or expired"}');
     });
 
     it('应该在重新授权返回访问令牌时使用新token', async () => {
@@ -845,7 +844,7 @@ describe('LarkMcpTool', () => {
         content: [
           {
             type: 'text',
-            text: 'UserAccessToken is invalid or expired',
+            text: '{"errorMessage":"UserAccessToken is invalid or expired"}',
           },
         ],
       });
