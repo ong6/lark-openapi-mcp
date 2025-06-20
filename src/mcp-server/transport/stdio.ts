@@ -16,17 +16,14 @@ export const initStdioServer: InitTransportServerFunction = async (getNewServer,
   }
 
   const transport = new StdioServerTransport();
-  const mcpServer = getNewServer(
-    {
-      ...options,
-      userAccessToken: userAccessToken
-        ? userAccessToken
-        : appId
-          ? await authStore.getLocalAccessToken(appId)
-          : undefined,
-    },
-    authHandler,
-  );
+
+  const userAccessTokenValue = userAccessToken
+    ? userAccessToken
+    : appId
+      ? { getter: async () => await authStore.getLocalAccessToken(appId) }
+      : undefined;
+
+  const mcpServer = getNewServer({ ...options, userAccessToken: userAccessTokenValue }, authHandler);
 
   mcpServer.connect(transport).catch((error) => {
     console.error('MCP Connect Error:', error);

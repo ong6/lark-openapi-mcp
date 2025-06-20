@@ -6,7 +6,7 @@ import { isTokenValid } from '../utils/is-token-valid';
 import { generatePKCEPair } from '../utils/pkce';
 
 export class LarkAuthHandlerLocal extends LarkAuthHandler {
-  private static readonly LOCAL_CLIENT_ID = 'LOCAL_CLIENT_ID';
+  private static readonly LOCAL_CLIENT_ID = 'client_id_for_local_auth';
 
   private expressServer: http.Server | null = null;
   private timeoutId: NodeJS.Timeout | null = null;
@@ -89,16 +89,17 @@ export class LarkAuthHandlerLocal extends LarkAuthHandler {
 
   async reAuthorize(accessToken?: string) {
     const localAccessToken = await authStore.getLocalAccessToken(this.options.appId);
+    const { valid } = await isTokenValid(localAccessToken);
 
-    if (accessToken === localAccessToken || !localAccessToken || !isTokenValid(localAccessToken)) {
-      const client = await authStore.getClient(LarkAuthHandlerLocal.LOCAL_CLIENT_ID);
-      if (!client) {
-        authStore.registerClient({
-          client_id: LarkAuthHandlerLocal.LOCAL_CLIENT_ID,
-          client_secret: LarkAuthHandlerLocal.LOCAL_CLIENT_ID,
-          redirect_uris: [this.callbackUrl],
-        });
-      }
+    if (accessToken === localAccessToken || !localAccessToken || !valid) {
+      const scope = this.options.scope?.join(' ');
+
+      await authStore.registerClient({
+        client_id: LarkAuthHandlerLocal.LOCAL_CLIENT_ID,
+        client_secret: LarkAuthHandlerLocal.LOCAL_CLIENT_ID,
+        scope,
+        redirect_uris: [this.callbackUrl],
+      });
 
       await this.startServer();
       this.timeoutId = setTimeout(() => this.stopServer(), 60 * 1000);
@@ -113,8 +114,8 @@ export class LarkAuthHandlerLocal extends LarkAuthHandler {
       authorizeUrl.searchParams.set('code_challenge_method', 'S256');
       authorizeUrl.searchParams.set('redirect_uri', this.callbackUrl);
       authorizeUrl.searchParams.set('state', 'reauthorize');
-      if (this.options.scope) {
-        authorizeUrl.searchParams.set('scope', this.options.scope);
+      if (scope) {
+        authorizeUrl.searchParams.set('scope', scope);
       }
 
       return {

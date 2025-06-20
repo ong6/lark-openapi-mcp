@@ -40,7 +40,7 @@ export const larkOapiHandler: McpHandler = async (client, params, options) => {
       content: [
         {
           type: 'text' as const,
-          text: `Success: ${JSON.stringify(response?.data ?? response)}`,
+          text: JSON.stringify(response?.data ?? response),
         },
       ],
     };
@@ -50,7 +50,7 @@ export const larkOapiHandler: McpHandler = async (client, params, options) => {
       content: [
         {
           type: 'text' as const,
-          text: `Error: ${JSON.stringify((error as any)?.response?.data || (error as any)?.message || error)}`,
+          text: JSON.stringify((error as any)?.response?.data || (error as any)?.message || error),
         },
       ],
     };

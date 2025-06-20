@@ -13,7 +13,7 @@ export interface LarkOAuthClientConfig {
   appId: string;
   appSecret: string;
 
-  scope?: string;
+  scope?: string[];
 }
 
 export class LarkAuthHandler {
@@ -45,7 +45,7 @@ export class LarkAuthHandler {
       callbackUrl: this.callbackUrl,
     };
 
-    if (!this.options.scope?.trim()) {
+    if (!this.options.scope?.length) {
       this.provider = new LarkOIDC2OAuthServerProvider(params);
     } else {
       this.provider = new LarkOAuth2OAuthServerProvider(params);
@@ -145,7 +145,7 @@ export class LarkAuthHandler {
     authorizeUrl.searchParams.set('redirect_uri', this.callbackUrl);
     authorizeUrl.searchParams.set('state', 'reauthorize');
     if (this.options.scope) {
-      authorizeUrl.searchParams.set('scope', this.options.scope);
+      authorizeUrl.searchParams.set('scope', this.options.scope.join(' '));
     }
     return {
       accessToken: '',
