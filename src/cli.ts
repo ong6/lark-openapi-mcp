@@ -15,6 +15,13 @@ const program = new Command();
 program.name('lark-mcp').description('Feishu/Lark MCP Tool').version(currentVersion);
 
 program
+  .command('whoami')
+  .description('Print All User Sessions')
+  .action(() => {
+    LoginHandler.handleWhoAmI();
+  });
+
+program
   .command('login')
   .description('Login using OAuth and get user access token')
   .option('-a, --app-id <appId>', 'Feishu/Lark App ID')

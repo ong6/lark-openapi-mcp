@@ -1,6 +1,7 @@
 import express from 'express';
 import { LarkAuthHandlerLocal } from '../auth/handler/handler-local';
 import { authStore } from '../auth/store';
+import { isTokenExpired } from '../auth/utils';
 
 export interface LoginOptions {
   appId: string;
@@ -107,6 +108,26 @@ export class LoginHandler {
     } catch (error) {
       console.error('❌ Logout failed:', error);
       process.exit(1);
+    }
+  }
+
+  static async handleWhoAmI(): Promise<void> {
+    const tokens = await authStore.getAllLocalAccessTokens();
+
+    if (Object.keys(tokens).length <= 0) {
+      console.log('ℹ️ No active login sessions found');
+      return;
+    }
+
+    console.log('👤 Current login sessions:\n');
+
+    for (const [appId, accessToken] of Object.entries(tokens)) {
+      const token = await authStore.getToken(accessToken);
+      console.log(`📱 App ID: ${appId}`);
+      console.log(`⌚️ AccessToken Expired: ${isTokenExpired(token)}`);
+      console.log(`🔐 Token Info:`);
+      console.log(JSON.stringify(token, null, 2));
+      console.log('\n');
     }
   }
 }
