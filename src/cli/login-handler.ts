@@ -121,7 +121,7 @@ export class LoginHandler {
 
     if (Object.keys(tokens).length <= 0) {
       console.log('ℹ️ No active login sessions found');
-      return;
+      process.exit(0);
     }
 
     console.log('👤 Current login sessions:\n');
@@ -134,5 +134,6 @@ export class LoginHandler {
       console.log(JSON.stringify(token, null, 2));
       console.log('\n');
     }
+    process.exit(0);
   }
 }

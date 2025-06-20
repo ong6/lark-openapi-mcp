@@ -21,7 +21,7 @@ export interface McpServerOptions {
   language?: 'zh' | 'en';
   toolNameCase?: larkmcp.ToolNameCase;
   tokenMode?: larkmcp.TokenMode;
-  userAccessToken?: string;
+  userAccessToken?: string | larkmcp.SettableValue;
   oauth?: boolean;
   scope?: string[];
 

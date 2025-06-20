@@ -89,8 +89,9 @@ export class LarkAuthHandlerLocal extends LarkAuthHandler {
 
   async reAuthorize(accessToken?: string) {
     const localAccessToken = await authStore.getLocalAccessToken(this.options.appId);
+    const { valid } = await isTokenValid(localAccessToken);
 
-    if (accessToken === localAccessToken || !localAccessToken || !isTokenValid(localAccessToken)) {
+    if (accessToken === localAccessToken || !localAccessToken || !valid) {
       const scope = this.options.scope?.join(' ');
 
       await authStore.registerClient({

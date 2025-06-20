@@ -1,6 +1,6 @@
 import { Client } from '@larksuiteoapi/node-sdk';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { LarkMcpToolOptions, McpTool, ToolNameCase, TokenMode } from './types';
+import { LarkMcpToolOptions, McpTool, SettableValue, ToolNameCase, TokenMode } from './types';
 import { AllTools, AllToolsZh } from './tools';
 import { defaultToolNames } from './constants';
 import { filterTools, larkOapiHandler, caseTransf, getShouldUseUAT } from './utils';
@@ -16,7 +16,7 @@ export class LarkMcpTool {
   private client: Client | null = null;
 
   // User Access Token
-  private userAccessToken: string | undefined;
+  private userAccessToken: SettableValue = {};
 
   // Lark User Auth Handler
   private auth: LarkAuthHandler | undefined;
@@ -64,31 +64,51 @@ export class LarkMcpTool {
    * Update User Access Token
    * @param userAccessToken User Access Token
    */
-  updateUserAccessToken(userAccessToken: string) {
-    this.userAccessToken = userAccessToken;
+  updateUserAccessToken(userAccessToken: string | SettableValue) {
+    if (typeof userAccessToken === 'string') {
+      this.userAccessToken.value = userAccessToken;
+    } else {
+      this.userAccessToken = userAccessToken;
+    }
+  }
+
+  private async getUserAccessToken() {
+    if (this.userAccessToken.getter) {
+      return await this.userAccessToken.getter();
+    }
+    return this.userAccessToken.value;
+  }
+
+  private async setUserAccessToken(userAccessToken: string) {
+    this.userAccessToken.value = userAccessToken;
+    if (this.userAccessToken.setter) {
+      await this.userAccessToken.setter(userAccessToken);
+    }
   }
 
   async reAuthorize(): Promise<{ userAccessToken?: string; authorizeUrl?: string }> {
+    const userAccessToken = await this.getUserAccessToken();
     // if not enable oauth mode, return empty object
     if (!this.auth || !this.options.oauth) {
       return {};
     }
-    const { authorizeUrl, accessToken } = await this.auth.reAuthorize(this.userAccessToken);
+    const { authorizeUrl, accessToken } = await this.auth.reAuthorize(userAccessToken);
     if (accessToken) {
-      this.userAccessToken = accessToken;
+      this.setUserAccessToken(accessToken);
       return { userAccessToken: accessToken };
     }
     return { authorizeUrl };
   }
 
   async ensureGetUserAccessToken(): Promise<{ userAccessToken?: string; authorizeUrl?: string }> {
+    const userAccessToken = await this.getUserAccessToken();
     if (!this.auth) {
-      return { userAccessToken: this.userAccessToken };
+      return { userAccessToken };
     }
 
-    const { valid, isExpired, token } = await isTokenValid(this.userAccessToken);
+    const { valid, isExpired, token } = await isTokenValid(userAccessToken);
     if (valid) {
-      return { userAccessToken: this.userAccessToken };
+      return { userAccessToken };
     }
 
     try {
@@ -96,7 +116,7 @@ export class LarkMcpTool {
         // refreshToken
         const newToken = await this.auth.refreshToken(token.token);
         if (newToken?.access_token) {
-          this.userAccessToken = newToken.access_token;
+          this.setUserAccessToken(newToken.access_token);
           return { userAccessToken: newToken.access_token };
         }
       }

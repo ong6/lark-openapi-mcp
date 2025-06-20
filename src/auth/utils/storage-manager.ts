@@ -1,4 +1,3 @@
-import keytar from 'keytar';
 import fs from 'fs';
 import path from 'path';
 import { EncryptionUtil } from './encryption';
@@ -7,28 +6,41 @@ import { StorageData } from '../types';
 
 export class StorageManager {
   private encryptionUtil: EncryptionUtil | undefined;
-  private isInitialized = false;
+  private initializePromise: Promise<void> | undefined;
+  private isInitializedStorageSuccess = false;
+
+  constructor() {
+    this.initialize();
+  }
 
   get storageFile(): string {
     return path.join(AUTH_CONFIG.STORAGE_DIR, AUTH_CONFIG.STORAGE_FILE);
   }
 
-  async initialize(): Promise<void> {
-    if (this.isInitialized) {
-      return;
+  private async initialize(): Promise<void> {
+    if (this.initializePromise) {
+      return this.initializePromise;
     }
+
+    this.initializePromise = this.performInitialization();
+
+    await this.initializePromise;
+  }
+
+  private async performInitialization(): Promise<void> {
     try {
       await this.initializeEncryption();
       this.ensureStorageDir();
-      this.isInitialized = true;
+      this.isInitializedStorageSuccess = true;
     } catch (error) {
       console.error('Failed to initialize StorageManager:', error);
-      throw error;
+      this.isInitializedStorageSuccess = false;
     }
   }
 
   private async initializeEncryption(): Promise<void> {
     try {
+      const keytar = await import('keytar');
       let key = await keytar.getPassword(AUTH_CONFIG.SERVER_NAME, AUTH_CONFIG.AES_KEY_NAME);
       if (!key) {
         key = EncryptionUtil.generateKey();
@@ -48,22 +60,22 @@ export class StorageManager {
   }
 
   encrypt(data: string): string {
-    if (!this.encryptionUtil) {
-      throw new Error('StorageManager not initialized');
+    if (!this.isInitializedStorageSuccess || !this.encryptionUtil) {
+      throw new Error('StorageManager not initialized - call initialize() first');
     }
     return this.encryptionUtil.encrypt(data);
   }
 
   decrypt(encryptedData: string): string {
-    if (!this.encryptionUtil) {
-      throw new Error('StorageManager not initialized');
+    if (!this.isInitializedStorageSuccess || !this.encryptionUtil) {
+      throw new Error('StorageManager not initialized - call initialize() first');
     }
     return this.encryptionUtil.decrypt(encryptedData);
   }
 
   async loadStorageData(): Promise<StorageData> {
     await this.initialize();
-    if (!fs.existsSync(this.storageFile)) {
+    if (!this.isInitializedStorageSuccess || !fs.existsSync(this.storageFile)) {
       return { tokens: {}, clients: {} };
     }
     try {
@@ -76,6 +88,9 @@ export class StorageManager {
   }
 
   async saveStorageData(data: StorageData): Promise<void> {
+    if (!this.isInitializedStorageSuccess) {
+      return;
+    }
     await this.initialize();
     try {
       const encryptedData = this.encrypt(JSON.stringify(data, null, 2));
