@@ -1,7 +1,10 @@
 import { cleanEnvArgs } from './clean-env-args';
 import { currentVersion } from './version';
 
+const [major] = process.versions.node.split('.').map(Number);
+
 export const USER_AGENT = `oapi-sdk-mcp/${currentVersion}`;
+export const NODE_VERSION_MAJOR = major;
 
 export const OAPI_MCP_DEFAULT_ARGS = {
   domain: 'https://open.feishu.cn',

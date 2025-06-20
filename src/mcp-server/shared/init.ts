@@ -15,7 +15,7 @@ export function initOAPIMcpServer(options: McpServerOptions, authHandler?: LarkA
     throw new Error('Missing App Credentials');
   }
 
-  let allowTools = Array.isArray(options.tools) ? options.tools : options.tools?.split(',') || [];
+  let allowTools = options.tools || [];
 
   for (const [presetName, presetTools] of Object.entries(larkmcp.presetTools)) {
     if (allowTools.includes(presetName)) {

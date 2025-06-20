@@ -9,7 +9,7 @@ export interface LoginOptions {
   domain: string;
   host: string;
   port: string;
-  scope?: string;
+  scope?: string[];
   timeout?: number;
 }
 

@@ -5,8 +5,9 @@ import dotenv from 'dotenv';
 import { Command } from 'commander';
 import { currentVersion } from './utils/version';
 import { initMcpServerWithTransport } from './mcp-server';
-import { OAPI_MCP_DEFAULT_ARGS, OAPI_MCP_ENV_ARGS } from './utils/constants';
+import { NODE_VERSION_MAJOR, OAPI_MCP_DEFAULT_ARGS, OAPI_MCP_ENV_ARGS } from './utils/constants';
 import { LoginHandler } from './cli/login-handler';
+import { parseStringArray } from './utils/parser-string-array';
 
 dotenv.config();
 
@@ -26,18 +27,30 @@ program
   .description('Login using OAuth and get user access token')
   .option('-a, --app-id <appId>', 'Feishu/Lark App ID')
   .option('-s, --app-secret <appSecret>', 'Feishu/Lark App Secret')
-  .option('-d, --domain <domain>', 'Feishu/Lark Domain (default: "https://open.feishu.cn")')
-  .option('--host <host>', 'Host to listen (default: "localhost")')
-  .option('-p, --port <port>', 'Port to listen (default: "3000")')
-  .option('--scope <scope>', 'Specify OAuth scope, if not specified, all permissions will be authorized by default')
+  .option('-d, --domain <domain>', '(Optional) Feishu/Lark Domain (default: "https://open.feishu.cn")')
+  .option('--host <host>', '(Optional) Host to listen (default: "localhost")')
+  .option('-p, --port <port>', '(Optional) Port to listen (default: "3000")')
+  .option(
+    '--scope <scope>',
+    '(Optional) Specify OAuth scope for user access token, default is all permissions granted to the app, separated by spaces or commas',
+  )
   .action(async (options) => {
-    await LoginHandler.handleLogin({ ...OAPI_MCP_DEFAULT_ARGS, ...OAPI_MCP_ENV_ARGS, ...options });
+    if (NODE_VERSION_MAJOR < 20) {
+      console.error(
+        `❌ This CLI requires Node.js >= 20. You are using v${process.versions.node}.\n\n` +
+          `👉 Please upgrade Node.js: https://nodejs.org/`,
+      );
+      process.exit(1);
+    }
+    const mergedOptions = { ...OAPI_MCP_DEFAULT_ARGS, ...OAPI_MCP_ENV_ARGS, ...options };
+
+    await LoginHandler.handleLogin({ ...mergedOptions, scope: parseStringArray(mergedOptions.scope) });
   });
 
 program
   .command('logout')
   .description('Logout and clear stored user access token')
-  .option('-a, --app-id <appId>', 'Feishu/Lark App ID')
+  .option('-a, --app-id <appId>', '(Optional) Feishu/Lark App ID, if not specified, logout all apps')
   .action(async (options) => {
     await LoginHandler.handleLogout(options.appId);
   });
@@ -47,21 +60,33 @@ program
   .description('Start Feishu/Lark MCP Service')
   .option('-a, --app-id <appId>', 'Feishu/Lark App ID')
   .option('-s, --app-secret <appSecret>', 'Feishu/Lark App Secret')
-  .option('-d, --domain <domain>', 'Feishu/Lark Domain (default: "https://open.feishu.cn")')
-  .option('-t, --tools <tools>', 'Allowed Tools List, separated by commas')
-  .option('-c, --tool-name-case <toolNameCase>', 'Tool Name Case, snake or camel or kebab or dot (default: "snake")')
-  .option('-l, --language <language>', 'Tools Language, zh or en (default: "en")')
-  .option('--token-mode <tokenMode>', 'Token Mode, auto or user_access_token or tenant_access_token (default: "auto")')
-  .option('-u, --user-access-token <userAccessToken>', 'User Access Token (beta)')
+  .option('-d, --domain <domain>', '(Optional) Feishu/Lark Domain (default: "https://open.feishu.cn")')
+  .option(
+    '-t, --tools <tools>',
+    '(Optional) List of API tools to enable, separated by commas or spaces (default: "preset.default")',
+  )
+  .option(
+    '-c, --tool-name-case <toolNameCase>',
+    '(Optional) Tool Name Case, snake or camel or kebab or dot (default: "snake")',
+  )
+  .option('-l, --language <language>', '(Optional) Tools Language, zh or en (default: "en")')
+  .option(
+    '--token-mode <tokenMode>',
+    '(Optional) Token Mode, auto or user_access_token or tenant_access_token (default: "auto")',
+  )
+  .option('-u, --user-access-token <userAccessToken>', '(Optional) User Access Token (beta)')
   .option(
     '--oauth',
-    'Enable MCP Auth Server to get user_access_token and auto request user login when token expires (Beta) (default: false)',
+    '(Optional) Enable MCP Auth Server to get user_access_token and auto request user login when token expires (Beta) (default: false)',
   )
-  .option('--scope <scope>', 'Specify OAuth scope, if not specified, all permissions will be authorized by default')
-  .option('-m, --mode <mode>', 'Transport Mode, stdio or sse or streamable (default: "stdio")')
-  .option('--host <host>', 'Host to listen (default: "localhost")')
-  .option('-p, --port <port>', 'Port to listen (default: "3000")')
-  .option('--config <configPath>', 'Config file path (JSON)')
+  .option(
+    '--scope <scope>',
+    '(Optional) Specify OAuth scope for user access token, default is all permissions granted to the app, separated by spaces or commas',
+  )
+  .option('-m, --mode <mode>', '(Optional) Transport Mode, stdio or sse or streamable (default: "stdio")')
+  .option('--host <host>', '(Optional) Host to listen (default: "localhost")')
+  .option('-p, --port <port>', '(Optional) Port to listen (default: "3000")')
+  .option('--config <configPath>', '(Optional) Config file path (JSON)')
   .action(async (options) => {
     let fileOptions = {};
     if (options.config) {
@@ -74,16 +99,29 @@ program
       }
     }
     const mergedOptions = { ...OAPI_MCP_DEFAULT_ARGS, ...OAPI_MCP_ENV_ARGS, ...fileOptions, ...options };
-    await initMcpServerWithTransport('oapi', mergedOptions);
+
+    if (NODE_VERSION_MAJOR < 20 && mergedOptions.oauth) {
+      console.error(
+        `❌ This CLI requires Node.js >= 20. You are using v${process.versions.node}.\n\n` +
+          `👉 Please upgrade Node.js: https://nodejs.org/`,
+      );
+      process.exit(1);
+    }
+
+    await initMcpServerWithTransport('oapi', {
+      ...mergedOptions,
+      scope: parseStringArray(mergedOptions.scope),
+      tools: parseStringArray(mergedOptions.tools),
+    });
   });
 
 program
   .command('recall-developer-documents')
   .description('Start Feishu/Lark Open Platform Recall MCP Service')
-  .option('-d, --domain <domain>', 'Feishu Open Platform Domain', 'https://open.feishu.cn')
-  .option('-m, --mode <mode>', 'Transport Mode, stdio or sse or streamable', 'stdio')
-  .option('--host <host>', 'Host to listen', 'localhost')
-  .option('-p, --port <port>', 'Port to listen in sse mode', '3001')
+  .option('-d, --domain <domain>', '(Optional) Feishu Open Platform Domain', 'https://open.feishu.cn')
+  .option('-m, --mode <mode>', '(Optional) Transport Mode, stdio or sse or streamable', 'stdio')
+  .option('--host <host>', '(Optional) Host to listen', 'localhost')
+  .option('-p, --port <port>', '(Optional) Port to listen in sse mode', '3001')
   .action(async (options) => {
     await initMcpServerWithTransport('recall', options);
   });
