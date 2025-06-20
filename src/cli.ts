@@ -8,6 +8,7 @@ import { initMcpServerWithTransport } from './mcp-server';
 import { NODE_VERSION_MAJOR, OAPI_MCP_DEFAULT_ARGS, OAPI_MCP_ENV_ARGS } from './utils/constants';
 import { LoginHandler } from './cli/login-handler';
 import { parseStringArray } from './utils/parser-string-array';
+import { LogLevel, logger } from './utils/logger';
 
 dotenv.config();
 
@@ -34,16 +35,19 @@ program
     '--scope <scope>',
     '(Optional) Specify OAuth scope for user access token, default is all permissions granted to the app, separated by spaces or commas',
   )
+  .option('--debug', '(Optional) Enable debug mode')
   .action(async (options) => {
     if (NODE_VERSION_MAJOR < 20) {
-      console.error(
+      logger.error(
         `❌ This CLI requires Node.js >= 20. You are using v${process.versions.node}.\n\n` +
           `👉 Please upgrade Node.js: https://nodejs.org/`,
       );
       process.exit(1);
     }
     const mergedOptions = { ...OAPI_MCP_DEFAULT_ARGS, ...OAPI_MCP_ENV_ARGS, ...options };
-
+    if (mergedOptions.debug) {
+      logger.setLevel(LogLevel.DEBUG);
+    }
     await LoginHandler.handleLogin({ ...mergedOptions, scope: parseStringArray(mergedOptions.scope) });
   });
 
@@ -51,7 +55,11 @@ program
   .command('logout')
   .description('Logout and clear stored user access token')
   .option('-a, --app-id <appId>', '(Optional) Feishu/Lark App ID, if not specified, logout all apps')
+  .option('--debug', '(Optional) Enable debug mode')
   .action(async (options) => {
+    if (options.debug) {
+      logger.setLevel(LogLevel.DEBUG);
+    }
     await LoginHandler.handleLogout(options.appId);
   });
 
@@ -87,6 +95,7 @@ program
   .option('--host <host>', '(Optional) Host to listen (default: "localhost")')
   .option('-p, --port <port>', '(Optional) Port to listen (default: "3000")')
   .option('--config <configPath>', '(Optional) Config file path (JSON)')
+  .option('--debug', '(Optional) Enable debug mode')
   .action(async (options) => {
     let fileOptions = {};
     if (options.config) {
@@ -94,18 +103,22 @@ program
         const configContent = fs.readFileSync(options.config, 'utf-8');
         fileOptions = JSON.parse(configContent);
       } catch (err) {
-        console.error('Failed to read config file:', err);
+        logger.error(`Failed to read config file: ${err}`);
         process.exit(1);
       }
     }
     const mergedOptions = { ...OAPI_MCP_DEFAULT_ARGS, ...OAPI_MCP_ENV_ARGS, ...fileOptions, ...options };
 
     if (NODE_VERSION_MAJOR < 20 && mergedOptions.oauth) {
-      console.error(
+      logger.error(
         `❌ This CLI requires Node.js >= 20. You are using v${process.versions.node}.\n\n` +
           `👉 Please upgrade Node.js: https://nodejs.org/`,
       );
       process.exit(1);
+    }
+
+    if (mergedOptions.debug) {
+      logger.setLevel(LogLevel.DEBUG);
     }
 
     await initMcpServerWithTransport('oapi', {
@@ -122,7 +135,11 @@ program
   .option('-m, --mode <mode>', '(Optional) Transport Mode, stdio or sse or streamable', 'stdio')
   .option('--host <host>', '(Optional) Host to listen', 'localhost')
   .option('-p, --port <port>', '(Optional) Port to listen in sse mode', '3001')
+  .option('--debug', '(Optional) Enable debug mode')
   .action(async (options) => {
+    if (options.debug) {
+      logger.setLevel(LogLevel.DEBUG);
+    }
     await initMcpServerWithTransport('recall', options);
   });
 

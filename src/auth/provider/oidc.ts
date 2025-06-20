@@ -9,6 +9,7 @@ import { generateCodeChallenge } from '../utils/pkce';
 import { z } from 'zod';
 import { LarkProxyOAuthServerProviderOptions } from './types';
 import { commonHttpInstance } from '../../utils/http-instance';
+import { logger } from '../../utils/logger';
 
 const LarkOIDCTokenSchema = z.object({
   code: z.number(),
@@ -68,6 +69,7 @@ export class LarkOIDC2OAuthServerProvider implements OAuthServerProvider {
       authStore.storeCodeVerifier(`challenge_${client.client_id}`, params.codeChallenge);
     }
     targetUrl.search = searchParams.toString();
+    logger.info(`[LarkOIDC2OAuthServerProvider] Redirecting to authorization URL: ${targetUrl.toString()}`);
     res.redirect(targetUrl.toString());
   }
 
@@ -87,10 +89,16 @@ export class LarkOIDC2OAuthServerProvider implements OAuthServerProvider {
     if (codeVerifier) {
       const storedChallenge = authStore.getCodeVerifier(`challenge_${client.client_id}`);
       if (!storedChallenge) {
+        logger.error(
+          `[LarkOIDC2OAuthServerProvider] exchangeAuthorizationCode: PKCE validation failed: code challenge not found`,
+        );
         throw new Error('PKCE validation failed: code challenge not found');
       }
       const expectedChallenge = generateCodeChallenge(codeVerifier);
       if (expectedChallenge !== storedChallenge) {
+        logger.error(
+          `[LarkOIDC2OAuthServerProvider] exchangeAuthorizationCode: PKCE validation failed: code verifier does not match challenge`,
+        );
         throw new Error('PKCE validation failed: code verifier does not match challenge');
       }
       authStore.removeCodeVerifier(`challenge_${client.client_id}`);
@@ -102,6 +110,9 @@ export class LarkOIDC2OAuthServerProvider implements OAuthServerProvider {
     };
 
     try {
+      logger.info(
+        `[LarkOIDC2OAuthServerProvider] Exchanging authorization code for client ${client.client_id}; appId: ${this._options.appId}`,
+      );
       const appAccessTokenResponse = await commonHttpInstance.post(
         this._endpoints.appAccessTokenUrl,
         { app_id: this._options.appId, app_secret: this._options.appSecret },
@@ -111,19 +122,18 @@ export class LarkOIDC2OAuthServerProvider implements OAuthServerProvider {
       const { app_access_token: appAccessToken } = appAccessTokenResponse.data;
 
       const response = await commonHttpInstance.post(this._endpoints.tokenUrl, params, {
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          Authorization: `Bearer ${appAccessToken}`,
-        },
+        headers: { 'Content-Type': 'application/json; charset=utf-8', Authorization: `Bearer ${appAccessToken}` },
       });
 
       const data = response.data;
       const token = LarkOIDCTokenSchema.parse(data);
-      authStore.storeToken({
+      const expiresAt = token.data.expires_in ? token.data.expires_in + Date.now() / 1000 : undefined;
+
+      await authStore.storeToken({
         clientId: client.client_id,
         token: token.data.access_token,
         scopes: token.data.scope?.split(' ') || [],
-        expiresAt: token.data.expires_in ? token.data.expires_in + Date.now() / 1000 : undefined,
+        expiresAt,
         extra: {
           refreshToken: token.data.refresh_token,
           token,
@@ -131,6 +141,10 @@ export class LarkOIDC2OAuthServerProvider implements OAuthServerProvider {
           appSecret: this._options.appSecret,
         },
       });
+
+      logger.info(
+        `[LarkOIDC2OAuthServerProvider] Successfully exchanged authorization code for client ${client.client_id}; appId: ${this._options.appId}; token: ${Boolean(token.data.access_token)}; refreshToken: ${Boolean(token.data.refresh_token)};expiresAt: ${expiresAt}`,
+      );
 
       return {
         access_token: token.data.access_token,
@@ -140,6 +154,9 @@ export class LarkOIDC2OAuthServerProvider implements OAuthServerProvider {
         refresh_token: token.data.refresh_token,
       };
     } catch (error: any) {
+      logger.error(
+        `[LarkOIDC2OAuthServerProvider] exchangeAuthorizationCode: Token exchange failed: ${error.response?.status || error.status} ${error.response?.data || error.message}`,
+      );
       throw new Error(
         `Token exchange failed: ${error.response?.status || error.status} ${error.response?.data || error.message}`,
       );
@@ -153,6 +170,7 @@ export class LarkOIDC2OAuthServerProvider implements OAuthServerProvider {
   ): Promise<OAuthTokens> {
     const originalToken = await authStore.getTokenByRefreshToken(refreshToken);
     if (!originalToken) {
+      logger.error(`[LarkOIDC2OAuthServerProvider] exchangeRefreshToken: Refresh token is invalid`);
       throw new Error('refresh token is invalid');
     }
 
@@ -160,6 +178,7 @@ export class LarkOIDC2OAuthServerProvider implements OAuthServerProvider {
     const appSecret = (originalToken.extra?.app_secret as string) || this._options.appSecret;
 
     try {
+      logger.info(`[LarkOIDC2OAuthServerProvider] Refreshing token for client ${client.client_id}`);
       const appAccessTokenResponse = await commonHttpInstance.post(
         this._endpoints.appAccessTokenUrl,
         { app_id: appId, app_secret: appSecret },
@@ -171,24 +190,24 @@ export class LarkOIDC2OAuthServerProvider implements OAuthServerProvider {
       const response = await commonHttpInstance.post(
         this._endpoints.refreshTokenUrl,
         { grant_type: 'refresh_token', refresh_token: refreshToken },
-        {
-          headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-            Authorization: `Bearer ${appAccessToken}`,
-          },
-        },
+        { headers: { 'Content-Type': 'application/json; charset=utf-8', Authorization: `Bearer ${appAccessToken}` } },
       );
 
       const data = response.data;
       const token = LarkOIDCTokenSchema.parse(data);
 
+      const expiresAt = token.data.expires_in ? token.data.expires_in + Date.now() / 1000 : undefined;
       await authStore.storeToken({
         clientId: client.client_id,
         token: token.data.access_token,
         scopes: token.data.scope?.split(' ') || [],
-        expiresAt: token.data.expires_in ? token.data.expires_in + Date.now() / 1000 : undefined,
+        expiresAt,
         extra: { refreshToken: token.data.refresh_token, token, appId, appSecret },
       });
+
+      logger.info(
+        `[LarkOIDC2OAuthServerProvider] Successfully refreshed token for client ${client.client_id}; appId: ${appId}; token: ${Boolean(token.data.access_token)}; refreshToken: ${Boolean(token.data.refresh_token)};expiresAt: ${expiresAt}`,
+      );
 
       return {
         access_token: token.data.access_token,
@@ -198,6 +217,9 @@ export class LarkOIDC2OAuthServerProvider implements OAuthServerProvider {
         refresh_token: token.data.refresh_token,
       };
     } catch (error: any) {
+      logger.error(
+        `[LarkOIDC2OAuthServerProvider] exchangeRefreshToken: Token refresh failed: ${error.response?.status || error.status} ${error.response?.data || error.message}`,
+      );
       throw new Error(
         `Token refresh failed: ${error.response?.status || error.status} ${error.response?.data || error.message}`,
       );

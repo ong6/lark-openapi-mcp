@@ -4,6 +4,7 @@ import { OAuthRegisteredClientsStore } from '@modelcontextprotocol/sdk/server/au
 import fs from 'fs';
 import { storageManager } from './utils/storage-manager';
 import { StorageData } from './types';
+import { logger } from '../utils/logger';
 
 export class AuthStore implements OAuthRegisteredClientsStore {
   private storageDataCache: StorageData = { tokens: {}, clients: {} };
@@ -31,11 +32,14 @@ export class AuthStore implements OAuthRegisteredClientsStore {
   private async performInitialization(): Promise<void> {
     try {
       await this.loadFromStorage();
+      logger.info(
+        `[AuthStore] Initialized storage successfully with ${Object.keys(this.storageDataCache.tokens).length} tokens`,
+      );
       await this.clearExpiredTokens();
       this.setupFileWatcher();
       this.isInitializedStorageSuccess = true;
     } catch (error) {
-      console.error('Failed to initialize AuthStore:', error);
+      logger.error(`[AuthStore] Failed to initialize: ${error}`);
       this.isInitializedStorageSuccess = false;
     }
   }
@@ -43,12 +47,13 @@ export class AuthStore implements OAuthRegisteredClientsStore {
   private setupFileWatcher(): void {
     try {
       if (fs.existsSync(storageManager.storageFile)) {
+        logger.info(`[AuthStore] Setup file watcher for ${storageManager.storageFile}`);
         this.fileWatcher = fs.watch(storageManager.storageFile, () => {
           this.handleFileChange();
         });
       }
     } catch (error) {
-      console.error('Failed to setup file watcher:', error);
+      logger.error(`[AuthStore] Failed to setup file watcher: ${error}`);
     }
   }
 
@@ -59,10 +64,11 @@ export class AuthStore implements OAuthRegisteredClientsStore {
 
     this.isReloading = true;
     try {
+      logger.info(`[AuthStore] Reloading storage from ${storageManager.storageFile}`);
       await new Promise((resolve) => setTimeout(resolve, 100));
       await this.loadFromStorage();
     } catch (error) {
-      console.error('Failed to reload storage:', error);
+      logger.error(`[AuthStore] Failed to reload storage: ${error}`);
     } finally {
       this.isReloading = false;
     }
@@ -119,6 +125,7 @@ export class AuthStore implements OAuthRegisteredClientsStore {
     }
 
     if (hasExpiredTokens) {
+      logger.info(`[AuthStore] Cleared expired tokens`);
       await this.saveToStorage();
     }
   }
@@ -166,18 +173,26 @@ export class AuthStore implements OAuthRegisteredClientsStore {
 
   async removeLocalAccessToken(appId: string): Promise<void> {
     await this.initialize();
-
     if (this.storageDataCache.localTokens?.[appId]) {
+      logger.info(`[AuthStore] Removing local access token for app: ${appId}`);
       const tokenToRemove = this.storageDataCache.localTokens[appId];
       delete this.storageDataCache.tokens[tokenToRemove];
       delete this.storageDataCache.localTokens[appId];
+      await this.saveToStorage();
     }
-
-    await this.saveToStorage();
   }
 
   async removeAllLocalAccessTokens(): Promise<void> {
     await this.initialize();
+    logger.info('[AuthStore] Removing all local access tokens');
+    if (this.storageDataCache.localTokens) {
+      const tokens = Object.values(this.storageDataCache.localTokens);
+      for (const token of tokens) {
+        if (this.storageDataCache.tokens[token]) {
+          delete this.storageDataCache.tokens[token];
+        }
+      }
+    }
     this.storageDataCache.localTokens = {};
     await this.saveToStorage();
   }
