@@ -6,6 +6,7 @@ import { AuthInfo } from '@modelcontextprotocol/sdk/server/auth/types.js';
 import { authStore } from '../store';
 import { isTokenValid } from '../utils/is-token-valid';
 import { LarkProxyOAuthServerProviderOptions } from './types';
+import { commonHttpInstance } from '../../utils/http-instance';
 
 interface OAuth2OAuthEndpoints {
   authorizationUrl: string;
@@ -77,34 +78,33 @@ export class LarkOAuth2OAuthServerProvider implements OAuthServerProvider {
       code_verifier: codeVerifier,
     };
 
-    const response = await fetch(this._endpoints.tokenUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
-      body: JSON.stringify(params),
-    });
+    try {
+      const response = await commonHttpInstance.post(this._endpoints.tokenUrl, params, {
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      });
 
-    if (!response.ok) {
-      const body = await response.text();
-      throw new Error(`Token exchange failed: ${response.status} ${body}`);
+      const data = response.data;
+      const token = OAuthTokensSchema.parse(data);
+
+      authStore.storeToken({
+        clientId: client.client_id,
+        token: token.access_token,
+        scopes: token.scope?.split(' ') || [],
+        expiresAt: token.expires_in ? token.expires_in + Date.now() / 1000 : undefined,
+        extra: {
+          token,
+          refreshToken: token.refresh_token,
+          appId: this._options.appId,
+          appSecret: this._options.appSecret,
+        },
+      });
+
+      return token;
+    } catch (error: any) {
+      throw new Error(
+        `Token exchange failed: ${error.response?.status || error.status} ${error.response?.data || error.message}`,
+      );
     }
-
-    const data = await response.json();
-    const token = OAuthTokensSchema.parse(data);
-
-    authStore.storeToken({
-      clientId: client.client_id,
-      token: token.access_token,
-      scopes: token.scope?.split(' ') || [],
-      expiresAt: token.expires_in ? token.expires_in + Date.now() / 1000 : undefined,
-      extra: {
-        token,
-        refreshToken: token.refresh_token,
-        appId: this._options.appId,
-        appSecret: this._options.appSecret,
-      },
-    });
-
-    return token;
   }
 
   async exchangeRefreshToken(
@@ -130,26 +130,27 @@ export class LarkOAuth2OAuthServerProvider implements OAuthServerProvider {
     if (scopes?.length) {
       params.scope = scopes.join(' ');
     }
-    const response = await fetch(this._endpoints.tokenUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json; charset=utf-8' },
-      body: JSON.stringify(params),
-    });
-    if (!response.ok) {
-      const body = await response.text();
-      throw new Error(`Token refresh failed: ${response.status} ${body}`);
-    }
-    const data = await response.json();
-    const token = OAuthTokensSchema.parse(data);
+    try {
+      const response = await commonHttpInstance.post(this._endpoints.tokenUrl, params, {
+        headers: { 'Content-Type': 'application/json; charset=utf-8' },
+      });
 
-    await authStore.storeToken({
-      clientId: client.client_id,
-      token: token.access_token,
-      scopes: token.scope?.split(' ') || [],
-      expiresAt: token.expires_in ? token.expires_in + Date.now() / 1000 : undefined,
-      extra: { refreshToken: token.refresh_token, token, appId, appSecret },
-    });
-    return token;
+      const data = response.data;
+      const token = OAuthTokensSchema.parse(data);
+
+      await authStore.storeToken({
+        clientId: client.client_id,
+        token: token.access_token,
+        scopes: token.scope?.split(' ') || [],
+        expiresAt: token.expires_in ? token.expires_in + Date.now() / 1000 : undefined,
+        extra: { refreshToken: token.refresh_token, token, appId, appSecret },
+      });
+      return token;
+    } catch (error: any) {
+      throw new Error(
+        `Token refresh failed: ${error.response?.status || error.status} ${error.response?.data || error.message}`,
+      );
+    }
   }
 
   async verifyAccessToken(token: string): Promise<AuthInfo> {
