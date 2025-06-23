@@ -105,8 +105,8 @@ describe('StorageManager', () => {
       const manager = new StorageManager();
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      expect(consoleSpy).toHaveBeenCalledWith('Failed to initialize encryption:', expect.any(Error));
-      expect(consoleSpy).toHaveBeenCalledWith('Failed to initialize StorageManager:', expect.any(Error));
+      expect(consoleSpy).toHaveBeenCalledWith('[StorageManager] Failed to initialize encryption: Error: Keytar error');
+      expect(consoleSpy).toHaveBeenCalledWith('[StorageManager] Failed to initialize: Error: Keytar error');
 
       consoleSpy.mockRestore();
     });
@@ -120,7 +120,9 @@ describe('StorageManager', () => {
       const manager = new StorageManager();
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      expect(consoleSpy).toHaveBeenCalledWith('Failed to initialize encryption:', expect.any(Error));
+      expect(consoleSpy).toHaveBeenCalledWith(
+        '[StorageManager] Failed to initialize encryption: Error: Keytar setPassword error',
+      );
 
       consoleSpy.mockRestore();
     });
@@ -200,7 +202,7 @@ describe('StorageManager', () => {
       const result = await storageManager.loadStorageData();
 
       expect(result).toEqual({ tokens: {}, clients: {} });
-      expect(consoleSpy).toHaveBeenCalledWith('Failed to load storage data:', expect.any(Error));
+      expect(consoleSpy).toHaveBeenCalledWith('[StorageManager] Failed to load storage data: Error: Read error');
 
       consoleSpy.mockRestore();
     });

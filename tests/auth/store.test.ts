@@ -371,7 +371,7 @@ describe('AuthStore', () => {
       const newAuthStore = new AuthStore();
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      expect(consoleSpy).toHaveBeenCalledWith('Failed to initialize AuthStore:', expect.any(Error));
+      expect(consoleSpy).toHaveBeenCalledWith('[AuthStore] Failed to initialize: Error: Load failed');
       consoleSpy.mockRestore();
     });
 
@@ -480,7 +480,7 @@ describe('AuthStore', () => {
       const newAuthStore = new AuthStore();
       await new Promise((resolve) => setTimeout(resolve, 100));
 
-      expect(consoleSpy).toHaveBeenCalledWith('Failed to setup file watcher:', expect.any(Error));
+      expect(consoleSpy).toHaveBeenCalledWith('[AuthStore] Failed to setup file watcher: Error: File watcher error');
       consoleSpy.mockRestore();
 
       // Should not throw when no watcher exists

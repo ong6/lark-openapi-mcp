@@ -7,6 +7,7 @@ import { filterTools, larkOapiHandler, caseTransf, getShouldUseUAT } from './uti
 import { LarkAuthHandler, isTokenValid } from '../auth';
 import { safeJsonParse } from '../utils/safe-json-parse';
 import { OAPI_MCP_ERROR_CODE } from '../utils/constants';
+import { logger } from '../utils/logger';
 
 /**
  * Feishu/Lark MCP
@@ -50,6 +51,8 @@ export class LarkMcpTool {
     };
 
     this.allTools = filterTools(isZH ? AllToolsZh : AllTools, filterOptions);
+
+    logger.info(`[LarkMcpTool] Initialized with ${this.allTools.length} tools, tokenMode: ${this.options.tokenMode}`);
   }
 
   /**
@@ -92,8 +95,10 @@ export class LarkMcpTool {
     if (!this.auth || !this.options.oauth) {
       return {};
     }
+    logger.info(`[LarkMcpTool] Re-authorizing user access token`);
     const { authorizeUrl, accessToken } = await this.auth.reAuthorize(userAccessToken);
     if (accessToken) {
+      logger.info(`[LarkMcpTool] Successfully re-authorized user access token`);
       this.setUserAccessToken(accessToken);
       return { userAccessToken: accessToken };
     }
@@ -111,17 +116,19 @@ export class LarkMcpTool {
       return { userAccessToken };
     }
 
+    logger.info(`[LarkMcpTool] UserAccessToken is invalid or expired, trying to get new token...`);
+
     try {
       if (isExpired && token?.extra?.refreshToken) {
-        // refreshToken
+        logger.info(`[LarkMcpTool] UserAccessToken is expired, trying to use refreshToken to refresh...`);
         const newToken = await this.auth.refreshToken(token.token);
         if (newToken?.access_token) {
           this.setUserAccessToken(newToken.access_token);
           return { userAccessToken: newToken.access_token };
         }
       }
-    } catch {
-      // refreshToken failed, reAuthorize
+    } catch (error) {
+      logger.error(`[LarkMcpTool] Failed to refreshToken: ${error}`);
     }
 
     // reAuthorize
@@ -179,6 +186,7 @@ export class LarkMcpTool {
               return this.getReAuthorizeMessage(authorizeUrl);
             }
 
+            logger.info(`[LarkMcpTool] Calling tool: ${tool.name}`);
             const result = await handler(this.client, { ...params, useUAT: shouldUseUAT }, { userAccessToken, tool });
 
             const errorCode = safeJsonParse(result.content?.[0]?.text as string, { code: 0 }).code;
@@ -189,6 +197,9 @@ export class LarkMcpTool {
                 OAPI_MCP_ERROR_CODE.USER_ACCESS_TOKEN_INVALID,
               ].includes(errorCode)
             ) {
+              logger.info(
+                `[LarkMcpTool] User access token unauthorized the scope or invalid, reAuthorize, errorCode: ${errorCode}`,
+              );
               // user access token unauthorized the scope or invalid, reAuthorize
               const { authorizeUrl } = await this.reAuthorize();
               return this.getReAuthorizeMessage(authorizeUrl, errorCode, result.content?.[0]?.text as string);
@@ -196,8 +207,10 @@ export class LarkMcpTool {
 
             return result;
           }
+          logger.info(`[LarkMcpTool] Calling tool: ${tool.name}`);
           return handler(this.client, { ...params, useUAT: shouldUseUAT }, { tool });
         } catch (error) {
+          logger.error(`[LarkMcpTool] Failed to call tool: ${tool.name}, error: ${error}`);
           return {
             isError: true,
             content: [{ type: 'text' as const, text: JSON.stringify((error as Error)?.message) }],

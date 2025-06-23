@@ -1,5 +1,8 @@
 import { cleanEnvArgs } from './clean-env-args';
 import { currentVersion } from './version';
+import envPaths from 'env-paths';
+
+export const ENV_PATHS = envPaths('lark-mcp');
 
 const [major] = process.versions.node.split('.').map(Number);
 

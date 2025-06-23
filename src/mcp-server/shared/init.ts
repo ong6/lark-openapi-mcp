@@ -6,6 +6,7 @@ import { noop } from '../../utils/noop';
 import { currentVersion } from '../../utils/version';
 import { oapiHttpInstance } from '../../utils/http-instance';
 import { LarkAuthHandler } from '../../auth';
+import { logger } from '../../utils/logger';
 
 export function initOAPIMcpServer(options: McpServerOptions, authHandler?: LarkAuthHandler) {
   const { appId, appSecret, userAccessToken, tokenMode, domain, oauth } = options;
@@ -72,6 +73,7 @@ export async function initMcpServerWithTransport(serverType: McpServerType, opti
   const { mode, userAccessToken, oauth } = options;
 
   if (userAccessToken && oauth) {
+    logger.error(`[initMcpServerWithTransport] userAccessToken and oauth cannot be used together`);
     throw new Error('userAccessToken and oauth cannot be used together');
   }
 
@@ -82,6 +84,7 @@ export async function initMcpServerWithTransport(serverType: McpServerType, opti
     } else if (serverType === 'recall') {
       return initRecallMcpServer({ ...options, ...commonOptions });
     }
+    logger.error(`[initMcpServerWithTransport] Invalid server type: ${serverType}`);
     throw new Error('Invalid server type');
   };
 

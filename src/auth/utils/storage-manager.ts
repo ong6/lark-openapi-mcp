@@ -3,6 +3,7 @@ import path from 'path';
 import { EncryptionUtil } from './encryption';
 import { AUTH_CONFIG } from '../config';
 import { StorageData } from '../types';
+import { logger } from '../../utils/logger';
 
 export class StorageManager {
   private encryptionUtil: EncryptionUtil | undefined;
@@ -33,7 +34,7 @@ export class StorageManager {
       this.ensureStorageDir();
       this.isInitializedStorageSuccess = true;
     } catch (error) {
-      console.error('Failed to initialize StorageManager:', error);
+      logger.error(`[StorageManager] Failed to initialize: ${error}`);
       this.isInitializedStorageSuccess = false;
     }
   }
@@ -48,7 +49,7 @@ export class StorageManager {
       }
       this.encryptionUtil = new EncryptionUtil(key);
     } catch (error) {
-      console.error('Failed to initialize encryption:', error);
+      logger.error(`[StorageManager] Failed to initialize encryption: ${error}`);
       throw error;
     }
   }
@@ -82,7 +83,7 @@ export class StorageManager {
       const data = fs.readFileSync(this.storageFile, 'utf8');
       return data ? JSON.parse(this.decrypt(data)) : { tokens: {}, clients: {} };
     } catch (error) {
-      console.error('Failed to load storage data:', error);
+      logger.error(`[StorageManager] Failed to load storage data: ${error}`);
       return { tokens: {}, clients: {} };
     }
   }
@@ -96,7 +97,7 @@ export class StorageManager {
       const encryptedData = this.encrypt(JSON.stringify(data, null, 2));
       fs.writeFileSync(this.storageFile, encryptedData);
     } catch (error) {
-      console.error('Failed to save storage data:', error);
+      logger.error(`[StorageManager] Failed to save storage data: ${error}`);
       throw error;
     }
   }
