@@ -116,6 +116,18 @@ export class LoginHandler {
     }
   }
 
+  private static simpleMask(str: string | undefined): string {
+    if (!str) {
+      return '';
+    }
+
+    if (str.length < 6) {
+      return '*'.repeat(str.length);
+    }
+
+    return str.slice(0, 4) + '*'.repeat(str.length - 6) + str.slice(-2);
+  }
+
   static async handleWhoAmI(): Promise<void> {
     const tokens = await authStore.getAllLocalAccessTokens();
 
@@ -128,10 +140,30 @@ export class LoginHandler {
 
     for (const [appId, accessToken] of Object.entries(tokens)) {
       const token = await authStore.getToken(accessToken);
+      if (!token) {
+        console.log('❌ No token info found');
+        continue;
+      }
       console.log(`📱 App ID: ${appId}`);
       console.log(`⌚️ AccessToken Expired: ${isTokenExpired(token)}`);
       console.log(`🔐 Token Info:`);
-      console.log(JSON.stringify(token, null, 2));
+      console.log(
+        JSON.stringify(
+          {
+            clientId: token.clientId,
+            token: this.simpleMask(token.token),
+            scopes: token.scopes,
+            expiresAt: token.expiresAt,
+            extra: {
+              refreshToken: this.simpleMask(token.extra?.refreshToken as string),
+              appId: token.extra?.appId,
+              appSecret: this.simpleMask(token.extra?.appSecret as string),
+            },
+          },
+          null,
+          2,
+        ),
+      );
       console.log('\n');
     }
     process.exit(0);
