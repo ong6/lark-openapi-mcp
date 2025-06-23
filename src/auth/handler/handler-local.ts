@@ -110,6 +110,9 @@ export class LarkAuthHandlerLocal extends LarkAuthHandler {
       });
 
       await this.startServer();
+      if (this.timeoutId) {
+        clearTimeout(this.timeoutId);
+      }
       this.timeoutId = setTimeout(() => this.stopServer(), 60 * 1000);
 
       const { codeVerifier, codeChallenge } = generatePKCEPair();
