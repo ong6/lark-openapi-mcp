@@ -19,8 +19,14 @@ export const baseV2AppRoleCreate = {
               .describe(
                 'Table perm Options:0(NoPerm No access),1(Read View only),2(Edit Can edit),4(Admin Can manage)',
               ),
-            table_name: z.string().describe('Table name').optional(),
-            table_id: z.string().describe('Table id').optional(),
+            table_name: z
+              .string()
+              .describe('Table name. (This item and the table_id below must have at least one filled in)')
+              .optional(),
+            table_id: z
+              .string()
+              .describe('Table id. (This item and the table_name above must have at least one filled in)')
+              .optional(),
             rec_rule: z
               .object({
                 conditions: z
@@ -33,7 +39,7 @@ export const baseV2AppRoleCreate = {
                           'Operator Options:is(Is),isNot(Is not),contains(Contains),doesNotContain(Does not contain),isEmpty(Is empty),isNotEmpty(Is not empty)',
                         )
                         .optional(),
-                      values: z.array(z.string()).describe('Values').optional(),
+                      value: z.array(z.string()).describe('conditions value').optional(),
                     }),
                   )
                   .describe('Coditions')
@@ -60,7 +66,7 @@ export const baseV2AppRoleCreate = {
                           'Operator Options:is(Is),isNot(Is not),contains(Contains),doesNotContain(Does not contain),isEmpty(Is empty),isNotEmpty(Is not empty)',
                         )
                         .optional(),
-                      values: z.array(z.string()).describe('Values').optional(),
+                      value: z.array(z.string()).describe('conditions value').optional(),
                     }),
                   )
                   .describe('conditions')
@@ -129,7 +135,7 @@ export const baseV2AppRoleCreate = {
       app_token: z
         .string()
         .describe(
-          'Base unique device identifier ',
+          'Base unique device identifier [app_token description]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -157,7 +163,7 @@ export const baseV2AppRoleList = {
       app_token: z
         .string()
         .describe(
-          'Base unique device identifier ',
+          'Base unique device identifier [app_token description]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -196,7 +202,7 @@ export const baseV2AppRoleUpdate = {
                           'Operator Options:is(Is),isNot(Is not),contains(Contains),doesNotContain(Does not contain),isEmpty(Is empty),isNotEmpty(Is not empty)',
                         )
                         .optional(),
-                      values: z.array(z.string()).describe('Values').optional(),
+                      value: z.array(z.string()).describe('conditions value').optional(),
                     }),
                   )
                   .describe('Coditions')
@@ -223,7 +229,7 @@ export const baseV2AppRoleUpdate = {
                           'Operator Options:is(Is),isNot(Is not),contains(Contains),doesNotContain(Does not contain),isEmpty(Is empty),isNotEmpty(Is not empty)',
                         )
                         .optional(),
-                      values: z.array(z.string()).describe('Values').optional(),
+                      value: z.array(z.string()).describe('conditions value').optional(),
                     }),
                   )
                   .describe('conditions')
@@ -292,7 +298,7 @@ export const baseV2AppRoleUpdate = {
       app_token: z
         .string()
         .describe(
-          'Base unique device identifier ',
+          'Base unique device identifier [app_token description]',
         ),
       role_id: z.string().describe('Role id'),
     }),

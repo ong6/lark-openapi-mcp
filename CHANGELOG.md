@@ -1,3 +1,19 @@
+# 0.4.0
+Feat: 新增 StreamableHttp 的传输模式
+Feat: StreamableHttp/SSE 支持 [MCP Auth](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization)
+Feat: Stdio（本地） 模式支持 login 和 logout 命令登录登出和自动使用 refresh_token 刷新
+Fix: 修复 TokenMode=Auto 模式下没有设置UserAccessToken且CallTool传递参数useUAT=true依然使用应用身份
+Bump： 升级 @modelcontextprotocol/sdk 到 1.12.1
+BREAK: 由于升级了 @modelcontextprotocol/sdk，最低兼容 Node 版本调整为 Node 20
+
+Feat: Added StreamableHttp transport mode
+Feat: StreamableHttp/SSE supports [MCP Auth](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization)
+Feat: Stdio (local) mode supports login and logout commands for authentication and automatic refresh_token renewal
+Fix: Fixed issue where TokenMode=Auto would still use app identity when UserAccessToken is not set but CallTool parameter useUAT=true
+Bump: Upgraded @modelcontextprotocol/sdk to 1.12.1
+BREAK: Due to @modelcontextprotocol/sdk upgrade, minimum compatible Node version is now Node 20
+
+
 # 0.3.1
 Fix: 修复使用 configFile 配置 mode 参数不生效的问题
 Fix: 修复由于使用了z.record(z.any())类型的字段导致直接传给豆包模型无法使用的问题

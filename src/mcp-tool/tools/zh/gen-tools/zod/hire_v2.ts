@@ -15,7 +15,7 @@ export const hireV2InterviewRecordGet = {
       interview_record_id: z
         .string()
         .describe(
-          '面试评价 ID，可通过接口获取',
+          '面试评价 ID，可通过[获取面试信息]接口获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -35,7 +35,7 @@ export const hireV2InterviewRecordList = {
       ids: z
         .array(z.string())
         .describe(
-          '面试评价 ID 列表，可通过接口获取，使用该筛选项时不会分页',
+          '面试评价 ID 列表，可通过[获取面试信息]接口获取，使用该筛选项时不会分页',
         )
         .optional(),
       page_size: z.number().describe('分页大小**注意**：若不传该参数，则默认根据 `ids` 参数获取数据').optional(),
@@ -67,7 +67,7 @@ export const hireV2TalentGet = {
       talent_id: z
         .string()
         .describe(
-          '人才 ID，可通过接口获取',
+          '人才 ID，可通过[获取人才列表]接口获取',
         ),
     }),
   },

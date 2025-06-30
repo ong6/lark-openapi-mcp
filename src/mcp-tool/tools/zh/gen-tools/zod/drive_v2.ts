@@ -32,7 +32,7 @@ export const driveV2FileLikeList = {
       file_token: z
         .string()
         .describe(
-          '需要查询点赞者列表的云文档 token。',
+          '需要查询点赞者列表的云文档 token。[点击了解如何获取云文档 Token]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -58,7 +58,7 @@ export const driveV2PermissionPublicGet = {
       token: z
         .string()
         .describe(
-          '文件的 token，获取方式见 ',
+          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -136,7 +136,7 @@ export const driveV2PermissionPublicPatch = {
       token: z
         .string()
         .describe(
-          '文件的 token，获取方式见 ',
+          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),

@@ -39,6 +39,7 @@ export type mailV1ToolName =
   | 'mail.v1.publicMailboxMember.get'
   | 'mail.v1.publicMailboxMember.list'
   | 'mail.v1.publicMailbox.patch'
+  | 'mail.v1.publicMailbox.removeToRecycleBin'
   | 'mail.v1.publicMailbox.update'
   | 'mail.v1.userMailboxAlias.create'
   | 'mail.v1.userMailboxAlias.delete'
@@ -842,6 +843,21 @@ export const mailV1PublicMailboxPatch = {
     path: z.object({ public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional() }),
   },
 };
+export const mailV1PublicMailboxRemoveToRecycleBin = {
+  project: 'mail',
+  name: 'mail.v1.publicMailbox.removeToRecycleBin',
+  sdkName: 'mail.v1.publicMailbox.removeToRecycleBin',
+  path: '/open-apis/mail/v1/public_mailboxes/:public_mailbox_id/remove_to_recycle_bin',
+  httpMethod: 'DELETE',
+  description: '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱管理-将公共邮箱移至回收站-将公共邮箱移至回收站',
+  accessTokens: ['tenant'],
+  schema: {
+    data: z.object({
+      to_mail_address: z.string().describe('接收删除邮件的邮箱地址，不填则删除该公共邮箱的邮件').optional(),
+    }),
+    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱地址') }),
+  },
+};
 export const mailV1PublicMailboxUpdate = {
   project: 'mail',
   name: 'mail.v1.publicMailbox.update',
@@ -976,7 +992,7 @@ export const mailV1UserMailboxFolderCreate = {
       parent_folder_id: z
         .string()
         .describe(
-          '父文件夹 id，该值为 0 表示根文件夹，id 获取方式见 ',
+          '父文件夹 id，该值为 0 表示根文件夹，id 获取方式见 [列出文邮箱文件夹]',
         ),
     }),
     path: z.object({ user_mailbox_id: z.string().describe('用户邮箱地址 或 输入me代表当前调用接口用户') }),
@@ -997,7 +1013,7 @@ export const mailV1UserMailboxFolderDelete = {
       folder_id: z
         .string()
         .describe(
-          '文件夹 id，id 获取方式见 ',
+          '文件夹 id，id 获取方式见 [列出文邮箱文件夹]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1033,7 +1049,7 @@ export const mailV1UserMailboxFolderPatch = {
       parent_folder_id: z
         .string()
         .describe(
-          '父文件夹 id，该值为 0 表示根文件夹，id 获取方式见 ',
+          '父文件夹 id，该值为 0 表示根文件夹，id 获取方式见 [列出文邮箱文件夹]',
         )
         .optional(),
     }),
@@ -1042,7 +1058,7 @@ export const mailV1UserMailboxFolderPatch = {
       folder_id: z
         .string()
         .describe(
-          '文件夹 id，id 获取方式见 ',
+          '文件夹 id，id 获取方式见 [列出文邮箱文件夹]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1084,7 +1100,7 @@ export const mailV1UserMailboxMailContactDelete = {
       mail_contact_id: z
         .string()
         .describe(
-          '邮箱联系人 id，获取方式见 ',
+          '邮箱联系人 id，获取方式见 [列出邮箱联系人]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1135,7 +1151,7 @@ export const mailV1UserMailboxMailContactPatch = {
       mail_contact_id: z
         .string()
         .describe(
-          '邮箱联系人 id，获取方式见 ',
+          '邮箱联系人 id，获取方式见 [列出邮箱联系人]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1156,7 +1172,7 @@ export const mailV1UserMailboxMessageAttachmentDownloadUrl = {
       message_id: z
         .string()
         .describe(
-          '用户邮件 id，获取方式见 ',
+          '用户邮件 id，获取方式见 [列出邮件]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1176,7 +1192,7 @@ export const mailV1UserMailboxMessageGet = {
       message_id: z
         .string()
         .describe(
-          '用户邮件 id，获取方式见 ',
+          '用户邮件 id，获取方式见 [列出邮件]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1195,12 +1211,12 @@ export const mailV1UserMailboxMessageGetByCard = {
       card_id: z
         .string()
         .describe(
-          '邮件卡片ID，可通过事件的推送获取',
+          '邮件卡片ID，可通过[接收消息]事件的推送获取',
         ),
       owner_id: z
         .string()
         .describe(
-          '邮件卡片OwnerID，可通过[接收消息]( https://open.feishu.cn/document/server-docs/im-v1/message/events/receive)事件的推送获取（与`user_id_type`无关）',
+          '邮件卡片OwnerID，可通过[接收消息]事件的推送获取（与`user_id_type`无关）',
         ),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
     }),
@@ -1228,7 +1244,7 @@ export const mailV1UserMailboxMessageList = {
       folder_id: z
         .string()
         .describe(
-          '文件夹 id， 获取方式见 ',
+          '文件夹 id， 获取方式见 [列出文邮箱文件夹]',
         ),
       only_unread: z.boolean().describe('是否只查询未读邮件').optional(),
     }),
@@ -1357,7 +1373,7 @@ export const mailV1UserMailboxRuleDelete = {
       rule_id: z
         .string()
         .describe(
-          '规则 id，获取方式见 ',
+          '规则 id，获取方式见 [列出收信规则]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1389,7 +1405,7 @@ export const mailV1UserMailboxRuleReorder = {
       rule_ids: z
         .array(z.string())
         .describe(
-          '规则 id 列表，获取方式见 ',
+          '规则 id 列表，获取方式见 [列出收信规则]',
         ),
     }),
     path: z.object({ user_mailbox_id: z.string().describe('用户邮箱地址，使用 user_access_token 时可使用 me') }),
@@ -1454,7 +1470,7 @@ export const mailV1UserMailboxRuleUpdate = {
       rule_id: z
         .string()
         .describe(
-          '规则 id，获取方式见 ',
+          '规则 id，获取方式见 [列出收信规则]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1513,6 +1529,7 @@ export const mailV1Tools = [
   mailV1PublicMailboxMemberGet,
   mailV1PublicMailboxMemberList,
   mailV1PublicMailboxPatch,
+  mailV1PublicMailboxRemoveToRecycleBin,
   mailV1PublicMailboxUpdate,
   mailV1UserMailboxAliasCreate,
   mailV1UserMailboxAliasDelete,

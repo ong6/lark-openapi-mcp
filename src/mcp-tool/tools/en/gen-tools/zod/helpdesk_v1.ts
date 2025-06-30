@@ -64,7 +64,7 @@ export const helpdeskV1AgentScheduleCreate = {
             agent_id: z
               .string()
               .describe(
-                'Agent ID',
+                'Agent ID[Initiate a ticket at Help Desk as a user, and obtain the guest.id from the ticket details]',
               )
               .optional(),
             schedule: z
@@ -138,13 +138,13 @@ export const helpdeskV1AgentSkillCreate = {
             id: z
               .string()
               .describe(
-                'Rule ID. See  for how to obtain the rules options',
+                'Rule ID. See [Obtain skill rules] for how to obtain the rules options',
               )
               .optional(),
             selected_operator: z
               .number()
               .describe(
-                'Operator compare. See ',
+                'Operator compare. See [Skill operator options]',
               )
               .optional(),
             operand: z.string().describe('Rule operand value').optional(),
@@ -215,19 +215,19 @@ export const helpdeskV1AgentSkillPatch = {
                 id: z
                   .string()
                   .describe(
-                    'Rule ID. See  for how to obtain the rules options',
+                    'Rule ID. See [Obtain skill rules] for how to obtain the rules options',
                   )
                   .optional(),
                 selected_operator: z
                   .number()
                   .describe(
-                    'Operator compare. See ',
+                    'Operator compare. See [Skill operator options]',
                   )
                   .optional(),
                 operator_options: z
                   .array(z.number())
                   .describe(
-                    'Rule operand value. See ',
+                    'Rule operand value. See [Skills and operators]',
                   )
                   .optional(),
                 operand: z.string().describe('Rule operand value').optional(),
@@ -350,7 +350,7 @@ export const helpdeskV1BotMessageCreate = {
       content: z
         .string()
         .describe(
-          'Message content, JSON structure serialized to string. For format description, refer to ',
+          'Message content, JSON structure serialized to string. For format description, refer to [Send message content]',
         ),
       receiver_id: z.string().describe('User ID of the message recipient'),
       receive_type: z
@@ -493,7 +493,7 @@ export const helpdeskV1FaqCreate = {
           answer_richtext: z
             .string()
             .describe(
-              'Either the rich text answer or the answer is required, in the Json array format. For the rich text structure, see ',
+              'Either the rich text answer or the answer is required, in the Json array format. For the rich text structure, see [Learn more about rich text]',
             )
             .optional(),
           tags: z.array(z.string()).describe('Similar question').optional(),
@@ -583,7 +583,7 @@ export const helpdeskV1FaqPatch = {
               }),
             )
             .describe(
-              'Either the rich text answer or the answer is required, in the Json array format. For the rich text structure, see ',
+              'Either the rich text answer or the answer is required, in the Json array format. For the rich text structure, see [Learn more about rich text]',
             )
             .optional(),
           tags: z.array(z.string()).describe('Similar question').optional(),
@@ -1131,7 +1131,7 @@ export const helpdeskV1TicketMessageCreate = {
       content: z
         .string()
         .describe(
-          '- Plain text, (see content in )- Rich text (see content in )',
+          '- Plain text, (see content in [Send text messages])- Rich text (see content in [Send rich text messages])',
         ),
     }),
     path: z.object({ ticket_id: z.string().describe('Ticket ID').optional() }),
@@ -1174,18 +1174,18 @@ export const helpdeskV1TicketStartService = {
       appointed_agents: z
         .array(z.string())
         .describe(
-          'Agent Open IDs (for how to obtain them, see ). human_service should be true',
+          'Agent Open IDs (for how to obtain them, see [Obtain single user information]). human_service should be true',
         )
         .optional(),
       open_id: z
         .string()
         .describe(
-          'User Open ID, (for how to obtain them, see .)',
+          'User Open ID, (for how to obtain them, see [Obtain single user information].)',
         ),
       customized_info: z
         .string()
         .describe(
-          'Custom information of the ticket source (at most 1,024 characters). If this field is set, the information will be returned when  is called',
+          'Custom information of the ticket source (at most 1,024 characters). If this field is set, the information will be returned when [Obtain ticket details] is called',
         )
         .optional(),
     }),

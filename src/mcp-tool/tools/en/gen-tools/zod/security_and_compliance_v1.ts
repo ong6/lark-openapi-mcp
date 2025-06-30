@@ -14,7 +14,7 @@ export const securityAndComplianceV1OpenapiLogListData = {
       api_keys: z
         .array(z.string())
         .describe(
-          'Feishu OpenAPI definition, reference: ',
+          'Feishu OpenAPI definition, reference: [API list]',
         )
         .optional(),
       start_time: z.number().describe('Starting timestamp in seconds').optional(),
@@ -22,7 +22,7 @@ export const securityAndComplianceV1OpenapiLogListData = {
       app_id: z
         .string()
         .describe(
-          'The unique identifier of the application calling OpenAPI, can be obtained by going to  > Application details page > Certificate and Basic Information',
+          'The unique identifier of the application calling OpenAPI, can be obtained by going to [Developer Console] > Application details page > Certificate and Basic Information',
         )
         .optional(),
       page_size: z.number().describe('paging size').optional(),

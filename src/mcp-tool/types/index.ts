@@ -20,45 +20,46 @@ export type McpHandler = (
   params: any,
   options: McpHandlerOptions,
 ) => Promise<CallToolResult> | CallToolResult;
+
 /**
- * MCP工具类型定义
+ * MCP Tool
  */
 export interface McpTool {
-  // 业务
+  // Project
   project: string;
-  // 工具名称
+  // Tool Name
   name: string;
-  // 工具描述
+  // Tool Description
   description: string;
-  // 工具参数
+  // Tool Parameters
   schema: any;
-  // node sdk 调用名称
+  // Node SDK Call Name
   sdkName?: string;
-  // API 路径
+  // API Path
   path?: string;
-  // API http方法
+  // API HTTP Method
   httpMethod?: string;
-  // 令牌类型
+  // Access Token Type
   accessTokens?: string[];
-  // 是否支持文件上传
+  // Whether to support file upload
   supportFileUpload?: boolean;
-  // 是否支持文件下载
+  // Whether to support file download
   supportFileDownload?: boolean;
-  // 自定义处理函数
+  // Custom Handler
   customHandler?: McpHandler;
 }
 
 /**
- * 注册工具选项
+ * Tools Filter Options
  */
 export interface ToolsFilterOptions {
-  // 语言
+  // Language
   language?: 'zh' | 'en';
-  // 允许的工具
+  // Allowed Tools
   allowTools?: ToolName[];
-  // 允许的业务域
+  // Allowed Projects
   allowProjects?: ProjectName[];
-  // 令牌类型
+  // Access Token Type
   tokenMode?: TokenMode;
 }
 
@@ -68,7 +69,13 @@ export interface LarkMcpToolOptions extends LarkClientOptions {
   client?: lark.Client;
   appId?: string;
   appSecret?: string;
-  // 工具选项
   toolsOptions?: ToolsFilterOptions;
   tokenMode?: TokenMode;
+  oauth?: boolean;
+}
+
+export interface SettableValue {
+  value?: string;
+  getter?: () => Promise<string | undefined>;
+  setter?: (value?: string) => Promise<void>;
 }

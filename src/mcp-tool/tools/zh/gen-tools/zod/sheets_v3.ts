@@ -42,7 +42,7 @@ export const sheetsV3SpreadsheetCreate = {
       folder_token: z
         .string()
         .describe(
-          '文件夹 token。你可通过以下两种方式获取文件夹的 token：- 文件夹的 URL：https://sample.feishu.cn/drive/folder/==fldbcO1UuPz8VwnpPx5a92abcef==- 调用开放平台接口获取： - 调用接口获取根目录（即根文件夹）的 token。 - 继续调用接口，获取根目录下文件夹的 token',
+          '文件夹 token。你可通过以下两种方式获取文件夹的 token：- 文件夹的 URL：https://sample.feishu.cn/drive/folder/==fldbcO1UuPz8VwnpPx5a92abcef==- 调用开放平台接口获取： - 调用[获取我的空间（root folder）元数据]接口获取根目录（即根文件夹）的 token。 - 继续调用[获取文件夹中的文件清单]接口，获取根目录下文件夹的 token。**提示**：要在知识库中创建电子表格，你需调用[创建知识空间节点]接口，并选择表格（sheet）类型',
         )
         .optional(),
     }),
@@ -64,7 +64,7 @@ export const sheetsV3SpreadsheetGet = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
     }),
@@ -91,7 +91,7 @@ export const sheetsV3SpreadsheetPatch = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
     }),
@@ -113,19 +113,19 @@ export const sheetsV3SpreadsheetSheetFilterViewConditionCreate = {
       filter_type: z
         .string()
         .describe(
-          '筛选类型。枚举值如下所示。了解更多，参考。- hiddenValue：隐藏值筛选- number：数字筛选- text：文本筛选- color：颜色筛选',
+          '筛选类型。枚举值如下所示。了解更多，参考[筛选条件指南]。- hiddenValue：隐藏值筛选- number：数字筛选- text：文本筛选- color：颜色筛选',
         )
         .optional(),
       compare_type: z
         .string()
         .describe(
-          '比较类型。了解更多，参考',
+          '比较类型。了解更多，参考[筛选条件指南]',
         )
         .optional(),
       expected: z
         .array(z.string())
         .describe(
-          '筛选参数。了解更多，参考',
+          '筛选参数。了解更多，参考[筛选条件指南]',
         )
         .optional(),
     }),
@@ -133,19 +133,19 @@ export const sheetsV3SpreadsheetSheetFilterViewConditionCreate = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表 ID，通过 获取',
+          '工作表 ID，通过[获取工作表] 获取',
         )
         .optional(),
       filter_view_id: z
         .string()
         .describe(
-          '筛选视图 ID。通过获取',
+          '筛选视图 ID。通过[查询筛选视图]获取',
         )
         .optional(),
     }),
@@ -165,19 +165,19 @@ export const sheetsV3SpreadsheetSheetFilterViewConditionDelete = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表 ID，通过 获取',
+          '工作表 ID，通过[获取工作表] 获取',
         )
         .optional(),
       filter_view_id: z
         .string()
         .describe(
-          '筛选视图 ID。通过获取',
+          '筛选视图 ID。通过[查询筛选视图]获取',
         )
         .optional(),
       condition_id: z.string().describe('要删除所有筛选条件的列，用字母表示').optional(),
@@ -199,19 +199,19 @@ export const sheetsV3SpreadsheetSheetFilterViewConditionGet = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表 ID，通过 获取',
+          '工作表 ID，通过[获取工作表] 获取',
         )
         .optional(),
       filter_view_id: z
         .string()
         .describe(
-          '筛选视图 ID。通过获取',
+          '筛选视图 ID。通过[查询筛选视图]获取',
         )
         .optional(),
       condition_id: z.string().describe('要查询的筛选视图的列').optional(),
@@ -233,19 +233,19 @@ export const sheetsV3SpreadsheetSheetFilterViewConditionQuery = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表 ID，通过 获取',
+          '工作表 ID，通过[获取工作表] 获取',
         )
         .optional(),
       filter_view_id: z
         .string()
         .describe(
-          '筛选视图 ID。通过获取',
+          '筛选视图 ID。通过[查询筛选视图]获取',
         )
         .optional(),
     }),
@@ -266,19 +266,19 @@ export const sheetsV3SpreadsheetSheetFilterViewConditionUpdate = {
       filter_type: z
         .string()
         .describe(
-          '筛选类型。枚举值如下所示。了解更多，参考。- hiddenValue：隐藏值筛选- number：数字筛选- text：文本筛选- color：颜色筛选',
+          '筛选类型。枚举值如下所示。了解更多，参考[筛选条件指南]。- hiddenValue：隐藏值筛选- number：数字筛选- text：文本筛选- color：颜色筛选',
         )
         .optional(),
       compare_type: z
         .string()
         .describe(
-          '比较类型。了解更多，参考',
+          '比较类型。了解更多，参考[筛选条件指南]',
         )
         .optional(),
       expected: z
         .array(z.string())
         .describe(
-          '筛选参数。了解更多，参考',
+          '筛选参数。了解更多，参考[筛选条件指南]',
         )
         .optional(),
     }),
@@ -286,19 +286,19 @@ export const sheetsV3SpreadsheetSheetFilterViewConditionUpdate = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表 ID，通过 获取',
+          '工作表 ID，通过[获取工作表] 获取',
         )
         .optional(),
       filter_view_id: z
         .string()
         .describe(
-          '筛选视图 ID。通过获取',
+          '筛选视图 ID。通过[查询筛选视图]获取',
         )
         .optional(),
       condition_id: z.string().describe('要更新的筛选视图的列的索引，用字母表示').optional(),
@@ -324,7 +324,7 @@ export const sheetsV3SpreadsheetSheetFilterViewCreate = {
       range: z
         .string()
         .describe(
-          '筛选视图的筛选范围。该参数必填，请忽略必填列的“否”。支持以下五种写法，了解更多，参考。- `sheetId`：填写实际的工作表 ID，表示将筛选应用于整表- `sheetId!{开始行索引}:{结束行索引}`：填写工作表 ID 和行数区间，表示将筛选应用于整行- `sheetId!{开始列索引}:{结束列索引}`：填写工作表 ID 和列的区间，表示将筛选应用于整列- `sheetId!{开始单元格}:{结束单元格}`：填写工作表 ID 和单元格区间，表示将筛选应用于单元格选定的区域中- `sheetId!{开始单元格}:{结束列索引}`：填写工作表 ID、起始单元格和结束列，表示省略结束行，使用表格的最后行作为结束行',
+          '筛选视图的筛选范围。该参数必填，请忽略必填列的“否”。支持以下五种写法，了解更多，参考[筛选指南]。- `sheetId`：填写实际的工作表 ID，表示将筛选应用于整表- `sheetId!{开始行索引}:{结束行索引}`：填写工作表 ID 和行数区间，表示将筛选应用于整行- `sheetId!{开始列索引}:{结束列索引}`：填写工作表 ID 和列的区间，表示将筛选应用于整列- `sheetId!{开始单元格}:{结束单元格}`：填写工作表 ID 和单元格区间，表示将筛选应用于单元格选定的区域中- `sheetId!{开始单元格}:{结束列索引}`：填写工作表 ID、起始单元格和结束列，表示省略结束行，使用表格的最后行作为结束行',
         )
         .optional(),
     }),
@@ -332,13 +332,13 @@ export const sheetsV3SpreadsheetSheetFilterViewCreate = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表 ID，通过 获取',
+          '工作表 ID，通过[获取工作表] 获取',
         )
         .optional(),
     }),
@@ -358,19 +358,19 @@ export const sheetsV3SpreadsheetSheetFilterViewDelete = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表 ID，通过 获取',
+          '工作表 ID，通过[获取工作表] 获取',
         )
         .optional(),
       filter_view_id: z
         .string()
         .describe(
-          '筛选视图 ID。通过获取',
+          '筛选视图 ID。通过[查询筛选视图]获取',
         )
         .optional(),
     }),
@@ -390,19 +390,19 @@ export const sheetsV3SpreadsheetSheetFilterViewGet = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表 ID，通过 获取',
+          '工作表 ID，通过[获取工作表] 获取',
         )
         .optional(),
       filter_view_id: z
         .string()
         .describe(
-          '筛选视图 ID。通过获取',
+          '筛选视图 ID。通过[查询筛选视图]获取',
         )
         .optional(),
     }),
@@ -423,7 +423,7 @@ export const sheetsV3SpreadsheetSheetFilterViewPatch = {
       range: z
         .string()
         .describe(
-          '筛选视图的筛选范围。支持以下五种写法，了解更多，参考。- sheetId：填写实际的工作表 ID，表示将筛选应用于整表- sheetId!1:2 ：填写工作表 ID 和行数区间，表示将筛选应用于整行- sheetId!A:B ：填写工作表 ID 和列的区间，表示将筛选应用于整列- sheetId!A1:B2 ：填写工作表 ID 和单元格区间，表示将筛选应用于单元格选定的区域中- sheetId!A1:C ：填写工作表 ID、起始单元格和结束列，表示省略结束行，使用表格的最后行作为结束行',
+          '筛选视图的筛选范围。支持以下五种写法，了解更多，参考[筛选指南]。- sheetId：填写实际的工作表 ID，表示将筛选应用于整表- sheetId!1:2 ：填写工作表 ID 和行数区间，表示将筛选应用于整行- sheetId!A:B ：填写工作表 ID 和列的区间，表示将筛选应用于整列- sheetId!A1:B2 ：填写工作表 ID 和单元格区间，表示将筛选应用于单元格选定的区域中- sheetId!A1:C ：填写工作表 ID、起始单元格和结束列，表示省略结束行，使用表格的最后行作为结束行',
         )
         .optional(),
     }),
@@ -431,19 +431,19 @@ export const sheetsV3SpreadsheetSheetFilterViewPatch = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表 ID，通过 获取',
+          '工作表 ID，通过[获取工作表] 获取',
         )
         .optional(),
       filter_view_id: z
         .string()
         .describe(
-          '筛选视图 ID。通过获取',
+          '筛选视图 ID。通过[查询筛选视图]获取',
         )
         .optional(),
     }),
@@ -464,13 +464,13 @@ export const sheetsV3SpreadsheetSheetFilterViewQuery = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表 ID，通过 获取',
+          '工作表 ID，通过[获取工作表] 获取',
         )
         .optional(),
     }),
@@ -490,7 +490,7 @@ export const sheetsV3SpreadsheetSheetFilterCreate = {
       range: z
         .string()
         .describe(
-          '设置筛选的应用范围。支持以下五种写法，了解更多，参考。- `sheetId`：填写实际的工作表 ID，表示将筛选应用于整表- `sheetId!{开始行索引}:{结束行索引}` ：填写工作表 ID 和行数区间，表示将筛选应用于整行- `sheetId!{开始列索引}:{结束列索引}`：填写工作表 ID 和列的区间，表示将筛选应用于整列- `sheetId!{开始单元格}:{结束单元格}`：填写工作表 ID 和单元格区间，表示将筛选应用于单元格选定的区域中- `sheetId!{开始单元格}:{结束列索引}`：填写工作表 ID、起始单元格和结束列，表示省略结束行，使用表格的最后行作为结束行',
+          '设置筛选的应用范围。支持以下五种写法，了解更多，参考[筛选指南]。- `sheetId`：填写实际的工作表 ID，表示将筛选应用于整表- `sheetId!{开始行索引}:{结束行索引}` ：填写工作表 ID 和行数区间，表示将筛选应用于整行- `sheetId!{开始列索引}:{结束列索引}`：填写工作表 ID 和列的区间，表示将筛选应用于整列- `sheetId!{开始单元格}:{结束单元格}`：填写工作表 ID 和单元格区间，表示将筛选应用于单元格选定的区域中- `sheetId!{开始单元格}:{结束列索引}`：填写工作表 ID、起始单元格和结束列，表示省略结束行，使用表格的最后行作为结束行',
         ),
       col: z.string().describe('设置应用筛选条件的列'),
       condition: z
@@ -498,7 +498,7 @@ export const sheetsV3SpreadsheetSheetFilterCreate = {
           filter_type: z
             .string()
             .describe(
-              '筛选类型，枚举值如下所示。了解更多，参考。- multiValue ：多值筛选- number ：数字筛选- text ：文本筛选- color ：颜色筛选- clear ：清除某列的筛选条件',
+              '筛选类型，枚举值如下所示。了解更多，参考[筛选指南]。- multiValue ：多值筛选- number ：数字筛选- text ：文本筛选- color ：颜色筛选- clear ：清除某列的筛选条件',
             ),
           compare_type: z.string().describe('比较类型').optional(),
           expected: z.array(z.string()).describe('筛选参数'),
@@ -509,13 +509,13 @@ export const sheetsV3SpreadsheetSheetFilterCreate = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表 ID，通过 获取',
+          '工作表 ID，通过[获取工作表] 获取',
         )
         .optional(),
     }),
@@ -535,13 +535,13 @@ export const sheetsV3SpreadsheetSheetFilterDelete = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表 ID，通过 获取',
+          '工作表 ID，通过[获取工作表] 获取',
         )
         .optional(),
     }),
@@ -562,13 +562,13 @@ export const sheetsV3SpreadsheetSheetFilterGet = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表 ID，通过 获取',
+          '工作表 ID，通过[获取工作表] 获取',
         )
         .optional(),
     }),
@@ -591,18 +591,18 @@ export const sheetsV3SpreadsheetSheetFilterUpdate = {
           filter_type: z
             .string()
             .describe(
-              '筛选类型，枚举值如下所示。了解更多，参考。- multiValue ：多值筛选- number ：数字筛选- text ：文本筛选- color ：颜色筛选- clear ：清除某列的筛选条件',
+              '筛选类型，枚举值如下所示。了解更多，参考[筛选指南]。- multiValue ：多值筛选- number ：数字筛选- text ：文本筛选- color ：颜色筛选- clear ：清除某列的筛选条件',
             ),
           compare_type: z
             .string()
             .describe(
-              '比较类型。不同筛选类型的比较类型的枚举值不同，详情参考',
+              '比较类型。不同筛选类型的比较类型的枚举值不同，详情参考[筛选指南]',
             )
             .optional(),
           expected: z
             .array(z.string())
             .describe(
-              '筛选参数。不同筛选类型的筛选参数限制不同，详情参考',
+              '筛选参数。不同筛选类型的筛选参数限制不同，详情参考[筛选指南]',
             ),
         })
         .describe('设置筛选条件'),
@@ -611,13 +611,13 @@ export const sheetsV3SpreadsheetSheetFilterUpdate = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表 ID，通过 获取',
+          '工作表 ID，通过[获取工作表] 获取',
         )
         .optional(),
     }),
@@ -639,7 +639,7 @@ export const sheetsV3SpreadsheetSheetFind = {
           range: z
             .string()
             .describe(
-              '查找范围。格式为 `<sheetId>!<开始位置>:<结束位置>`。其中：- `sheetId` 为工作表 ID，通过 获取- `<开始位置>:<结束位置>` 为工作表中单元格的范围，数字表示行索引，字母表示列索引。如 `A2:B2` 表示该工作表第 2 行的 A 列到 B 列。`range`支持四种写法，详情参考',
+              '查找范围。格式为 `<sheetId>!<开始位置>:<结束位置>`。其中：- `sheetId` 为工作表 ID，通过[获取工作表] 获取- `<开始位置>:<结束位置>` 为工作表中单元格的范围，数字表示行索引，字母表示列索引。如 `A2:B2` 表示该工作表第 2 行的 A 列到 B 列。`range`支持四种写法，详情参考[电子表格概述]',
             ),
           match_case: z
             .boolean()
@@ -669,13 +669,13 @@ export const sheetsV3SpreadsheetSheetFind = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表的 ID，获取方式见',
+          '工作表的 ID，获取方式见[获取工作表]',
         )
         .optional(),
     }),
@@ -701,37 +701,37 @@ export const sheetsV3SpreadsheetSheetFloatImageCreate = {
       float_image_token: z
         .string()
         .describe(
-          '浮动图片的 token。通过或上传图片至表格，获得素材的 `file_token`，即为 float_image_token。**注意**：该参数必填，请忽略左侧必填列的”否”',
+          '浮动图片的 token。通过[上传素材]或[分片上传素材]上传图片至表格，获得素材的 `file_token`，即为 float_image_token。**注意**：该参数必填，请忽略左侧必填列的”否”',
         )
         .optional(),
       range: z
         .string()
         .describe(
-          '浮动图片左上角所在单元格位置，只允许单个单元格的形式，如 "ahgsch!A1:A1"。了解更多，参考。**注意**：该参数必填，请忽略左侧必填列的”否”',
+          '浮动图片左上角所在单元格位置，只允许单个单元格的形式，如 "ahgsch!A1:A1"。了解更多，参考[浮动图片使用指南]。**注意**：该参数必填，请忽略左侧必填列的”否”',
         )
         .optional(),
       width: z
         .number()
         .describe(
-          '浮动图片的宽度，单位为像素。不传会默认采用图片实际宽度，如果传则需要大于等于 20 像素。了解更多，参考',
+          '浮动图片的宽度，单位为像素。不传会默认采用图片实际宽度，如果传则需要大于等于 20 像素。了解更多，参考[浮动图片使用指南]',
         )
         .optional(),
       height: z
         .number()
         .describe(
-          '浮动图片的高度，单位为像素。不传会默认采用图片实际高度，如果传则需要大于等于 20 像素。了解更多，参考',
+          '浮动图片的高度，单位为像素。不传会默认采用图片实际高度，如果传则需要大于等于 20 像素。了解更多，参考[浮动图片使用指南]',
         )
         .optional(),
       offset_x: z
         .number()
         .describe(
-          '浮动图片左上角距离所在单元格左上角的横向偏移，单位为像素，默认为 0，设置的值需要大于等于 0、小于浮动图片左上角所在单元格的宽度。了解更多，参考',
+          '浮动图片左上角距离所在单元格左上角的横向偏移，单位为像素，默认为 0，设置的值需要大于等于 0、小于浮动图片左上角所在单元格的宽度。了解更多，参考[浮动图片使用指南]',
         )
         .optional(),
       offset_y: z
         .number()
         .describe(
-          '浮动图片左上角距离所在单元格左上角的纵向偏移，单位为像素，默认为 0。设置的值需要大于等于 0、小于浮动图片左上角所在单元格的高度。了解更多，参考',
+          '浮动图片左上角距离所在单元格左上角的纵向偏移，单位为像素，默认为 0。设置的值需要大于等于 0、小于浮动图片左上角所在单元格的高度。了解更多，参考[浮动图片使用指南]',
         )
         .optional(),
     }),
@@ -739,13 +739,13 @@ export const sheetsV3SpreadsheetSheetFloatImageCreate = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '电子表格工作表的 ID。调用获取 ID',
+          '电子表格工作表的 ID。调用[获取工作表]获取 ID',
         )
         .optional(),
     }),
@@ -765,19 +765,19 @@ export const sheetsV3SpreadsheetSheetFloatImageDelete = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '电子表格工作表的 ID。调用获取 ID',
+          '电子表格工作表的 ID。调用[获取工作表]获取 ID',
         )
         .optional(),
       float_image_id: z
         .string()
         .describe(
-          '工作表内浮动图片的唯一标识。通过接口获取',
+          '工作表内浮动图片的唯一标识。通过[查询浮动图片]接口获取',
         )
         .optional(),
     }),
@@ -797,19 +797,19 @@ export const sheetsV3SpreadsheetSheetFloatImageGet = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '电子表格工作表的 ID。调用获取 ID',
+          '电子表格工作表的 ID。调用[获取工作表]获取 ID',
         )
         .optional(),
       float_image_id: z
         .string()
         .describe(
-          '工作表内浮动图片的唯一标识。通过接口获取',
+          '工作表内浮动图片的唯一标识。通过[查询浮动图片]接口获取',
         )
         .optional(),
     }),
@@ -830,31 +830,31 @@ export const sheetsV3SpreadsheetSheetFloatImagePatch = {
       range: z
         .string()
         .describe(
-          '浮动图片左上角所在单元格位置，只允许单个单元格的形式，如 "ahgsch!A1:A1"。了解更多，参考',
+          '浮动图片左上角所在单元格位置，只允许单个单元格的形式，如 "ahgsch!A1:A1"。了解更多，参考[浮动图片使用指南]',
         )
         .optional(),
       width: z
         .number()
         .describe(
-          '浮动图片的宽度，单位为像素。不传会默认采用图片实际宽度，如果传则需要大于等于 20 像素。了解更多，参考',
+          '浮动图片的宽度，单位为像素。不传会默认采用图片实际宽度，如果传则需要大于等于 20 像素。了解更多，参考[浮动图片使用指南]',
         )
         .optional(),
       height: z
         .number()
         .describe(
-          '浮动图片的高度，单位为像素。不传会默认采用图片实际高度，如果传则需要大于等于 20 像素。了解更多，参考',
+          '浮动图片的高度，单位为像素。不传会默认采用图片实际高度，如果传则需要大于等于 20 像素。了解更多，参考[浮动图片使用指南]',
         )
         .optional(),
       offset_x: z
         .number()
         .describe(
-          '浮动图片左上角距离所在单元格左上角的横向偏移，单位为像素，默认为 0，设置的值需要大于等于 0、小于浮动图片左上角所在单元格的宽度。了解更多，参考',
+          '浮动图片左上角距离所在单元格左上角的横向偏移，单位为像素，默认为 0，设置的值需要大于等于 0、小于浮动图片左上角所在单元格的宽度。了解更多，参考[浮动图片使用指南]',
         )
         .optional(),
       offset_y: z
         .number()
         .describe(
-          '浮动图片左上角距离所在单元格左上角的纵向偏移，单位为像素，默认为 0。设置的值需要大于等于 0、小于浮动图片左上角所在单元格的高度。了解更多，参考',
+          '浮动图片左上角距离所在单元格左上角的纵向偏移，单位为像素，默认为 0。设置的值需要大于等于 0、小于浮动图片左上角所在单元格的高度。了解更多，参考[浮动图片使用指南]',
         )
         .optional(),
     }),
@@ -862,19 +862,19 @@ export const sheetsV3SpreadsheetSheetFloatImagePatch = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '电子表格工作表的 ID。调用获取 ID',
+          '电子表格工作表的 ID。调用[获取工作表]获取 ID',
         )
         .optional(),
       float_image_id: z
         .string()
         .describe(
-          '工作表内浮动图片的唯一标识。通过接口获取',
+          '工作表内浮动图片的唯一标识。通过[查询浮动图片]接口获取',
         )
         .optional(),
     }),
@@ -894,13 +894,13 @@ export const sheetsV3SpreadsheetSheetFloatImageQuery = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '电子表格工作表的 ID。调用获取 ID',
+          '电子表格工作表的 ID。调用[获取工作表]获取 ID',
         )
         .optional(),
     }),
@@ -921,12 +921,12 @@ export const sheetsV3SpreadsheetSheetGet = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         ),
       sheet_id: z
         .string()
         .describe(
-          '工作表的 ID。调用获取 ID',
+          '工作表的 ID。调用[获取工作表]获取 ID',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -967,13 +967,13 @@ export const sheetsV3SpreadsheetSheetMoveDimension = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表的 ID。调用获取 ID',
+          '工作表的 ID。调用[获取工作表]获取 ID',
         )
         .optional(),
     }),
@@ -994,7 +994,7 @@ export const sheetsV3SpreadsheetSheetQuery = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
     }),
@@ -1016,7 +1016,7 @@ export const sheetsV3SpreadsheetSheetReplace = {
           range: z
             .string()
             .describe(
-              '查找范围。格式为 `<sheetId>!<开始位置>:<结束位置>`。其中：- `sheetId` 为工作表 ID，通过 获取- `<开始位置>:<结束位置>` 为工作表中单元格的范围，数字表示行索引，字母表示列索引。如 `A2:B2` 表示该工作表第 2 行的 A 列到 B 列。`range`支持四种写法，详情参考',
+              '查找范围。格式为 `<sheetId>!<开始位置>:<结束位置>`。其中：- `sheetId` 为工作表 ID，通过[获取工作表] 获取- `<开始位置>:<结束位置>` 为工作表中单元格的范围，数字表示行索引，字母表示列索引。如 `A2:B2` 表示该工作表第 2 行的 A 列到 B 列。`range`支持四种写法，详情参考[电子表格概述]',
             ),
           match_case: z
             .boolean()
@@ -1047,13 +1047,13 @@ export const sheetsV3SpreadsheetSheetReplace = {
       spreadsheet_token: z
         .string()
         .describe(
-          '电子表格的 token。可通过以下两种方式获取。了解更多，参考。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用',
+          '电子表格的 token。可通过以下两种方式获取。了解更多，参考[电子表格概述]。- 电子表格的 URL：https://sample.feishu.cn/sheets/==Iow7sNNEphp3WbtnbCscPqabcef==- 调用[获取文件夹中的文件清单]',
         )
         .optional(),
       sheet_id: z
         .string()
         .describe(
-          '工作表的 ID，获取方式见',
+          '工作表的 ID，获取方式见[获取工作表]',
         )
         .optional(),
     }),

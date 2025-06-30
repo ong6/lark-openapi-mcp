@@ -65,8 +65,13 @@ npm install -g @larksuiteoapi/lark-mcp
 ## 使用指南
 
 ### 在Trae/Cursor/Claude中使用
+如需在Trae/Cursor或Claude等AI工具中集成飞书/Lark功能，你可以通过下方按钮安装到对应的工具：
 
-如需在Trae/Cursor或Claude等AI工具中集成飞书/Lark功能，可以在配置文件中添加以下内容：
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-light.svg)](https://cursor.com/install-mcp?name=lark_open_doc_search&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsYXJrc3VpdGVvYXBpL2xhcmstbWNwIiwicmVjYWxsLWRldmVsb3Blci1kb2N1bWVudHMiXX0=)
+
+[![Install MCP Server](./assets/trae-cn.svg)](trae-cn://trae.ai-ide/mcp-import?source=lark&type=stdio&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsYXJrc3VpdGVvYXBpL2xhcmstbWNwIiwicmVjYWxsLWRldmVsb3Blci1kb2N1bWVudHMiXX0=)  [![Install MCP Server](./assets//trae.svg)](trae://trae.ai-ide/mcp-import?source=lark&type=stdio&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsYXJrc3VpdGVvYXBpL2xhcmstbWNwIiwicmVjYWxsLWRldmVsb3Blci1kb2N1bWVudHMiXX0=)
+
+也可以在配置文件中添加以下内容：
 
 ```json
 {
@@ -91,9 +96,9 @@ npm install -g @larksuiteoapi/lark-mcp
 
 | 参数 | 简写 | 描述 | 示例 |
 |------|------|------|------|
-| `--mode` | `-m` | 传输模式，可选值为stdio或sse，默认为stdio | `-m sse` |
-| `--host` |  | SSE模式下的监听主机，默认为localhost | `--host 0.0.0.0` |
-| `--port` | `-p` | SSE模式下的监听端口，默认为3000 | `-p 3000` |
+| `--mode` | `-m` | 传输模式，可选值为stdio、streamable或sse，默认为stdio | `-m sse` |
+| `--host` |  | SSE\Streamable模式下的监听主机，默认为localhost | `--host 0.0.0.0` |
+| `--port` | `-p` | SSE\Streamable模式下的监听端口，默认为3000 | `-p 3000` |
 | `--version` | `-V` | 显示版本号 | `-V` |
 | `--help` | `-h` | 显示帮助信息 | `-h` |
 

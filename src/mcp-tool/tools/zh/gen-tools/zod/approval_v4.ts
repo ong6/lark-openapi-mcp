@@ -44,7 +44,7 @@ export const approvalV4ApprovalCreate = {
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。使用说明：- 该参数不传值时，表示新建审批定义，最终响应结果会返回由系统自动生成的审批定义 Code。- 该参数传入指定审批定义 Code 时，表示调用该接口更新该审批定义内容，更新方式为覆盖原定义内容的全量更新。审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见',
+          '审批定义 Code。使用说明：- 该参数不传值时，表示新建审批定义，最终响应结果会返回由系统自动生成的审批定义 Code。- 该参数传入指定审批定义 Code 时，表示调用该接口更新该审批定义内容，更新方式为覆盖原定义内容的全量更新。审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]',
         )
         .optional(),
       description: z.string().describe('审批描述的国际化文案 Key，以 `@i18n@` 开头，长度不得少于 9 个字符').optional(),
@@ -77,7 +77,7 @@ export const approvalV4ApprovalCreate = {
           form_content: z
             .string()
             .describe(
-              '审批定义表单。表单格式为 JSON 数组，实际传值时需要将 JSON 压缩转义为 String 类型。表单内各个控件的 JSON 字段说明参见。**注意**：以下示例值未转义，你可以参考下文**请求示例**章节的示例代码',
+              '审批定义表单。表单格式为 JSON 数组，实际传值时需要将 JSON 压缩转义为 String 类型。表单内各个控件的 JSON 字段说明参见[审批定义表单控件参数]。**注意**：以下示例值未转义，你可以参考下文**请求示例**章节的示例代码',
             ),
         })
         .describe('审批定义表单'),
@@ -183,7 +183,7 @@ export const approvalV4ApprovalCreate = {
                   id_list: z
                     .array(z.string())
                     .describe(
-                      'ID 列表。- 当 type 取值 ALL 时，无需传值。- 当 type 取值 PERSONAL 时，传入用户 ID，ID 类型与 user_id_type 取值一致。- 当 type 取值 ROLE 时，传入角色 ID。获取方式：成功后，在返回结果中可获取角色 ID',
+                      'ID 列表。- 当 type 取值 ALL 时，无需传值。- 当 type 取值 PERSONAL 时，传入用户 ID，ID 类型与 user_id_type 取值一致。- 当 type 取值 ROLE 时，传入角色 ID。获取方式：成功[创建角色]后，在返回结果中可获取角色 ID',
                     )
                     .optional(),
                 }),
@@ -199,7 +199,7 @@ export const approvalV4ApprovalCreate = {
           }),
         )
         .describe(
-          '审批定义节点列表，用于设置审批流程所需要的各个节点，审批流程的始末固定为开始节点和结束节点，因此传值时需要将开始节点作为 list 第一个元素，结束节点作为 list 最后一个元素',
+          '审批定义节点列表，用于设置审批流程所需要的各个节点，审批流程的始末固定为开始节点和结束节点，因此传值时需要将开始节点作为 list 第一个元素，结束节点作为 list 最后一个元素。**说明**：API 方式不支持设置条件分支，如需设置条件分支请前往[飞书审批后台]创建审批定义',
         ),
       settings: z
         .object({
@@ -233,7 +233,7 @@ export const approvalV4ApprovalCreate = {
           help_url: z.string().describe('审批定义的帮助文档链接').optional(),
         })
         .describe(
-          '审批定义配置项，用于配置对应审批定义是否可以由用户在进行修改',
+          '审批定义配置项，用于配置对应审批定义是否可以由用户在[审批后台]进行修改',
         )
         .optional(),
       icon: z
@@ -275,7 +275,7 @@ export const approvalV4ApprovalCreate = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中使用的部门 ID 的类型。关于部门 ID 详细介绍参见。 Options:department_id(DepartmentId 支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(OpenDepartmentId 由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中使用的部门 ID 的类型。关于部门 ID 详细介绍参见[部门 ID 介绍]。 Options:department_id(DepartmentId 支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(OpenDepartmentId 由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
@@ -289,7 +289,7 @@ export const approvalV4ApprovalGet = {
   path: '/open-apis/approval/v4/approvals/:approval_code',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-审批-原生审批定义-查看指定审批定义-根据审批定义 Code 以及语言、用户 ID 等筛选条件获取指定审批定义的信息，包括审批定义名称、状态、表单控件以及节点等信息。获取审批定义信息后，可根据信息构造的请求',
+    '[Feishu/Lark]-审批-原生审批定义-查看指定审批定义-根据审批定义 Code 以及语言、用户 ID 等筛选条件获取指定审批定义的信息，包括审批定义名称、状态、表单控件以及节点等信息。获取审批定义信息后，可根据信息构造[创建审批实例]的请求',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -309,7 +309,7 @@ export const approvalV4ApprovalGet = {
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见',
+          '审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]',
         ),
     }),
   },
@@ -321,14 +321,14 @@ export const approvalV4ApprovalSubscribe = {
   path: '/open-apis/approval/v4/approvals/:approval_code/subscribe',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-审批-审批事件-事件接口-订阅审批事件-当应用后，需要调用该接口指定审批定义 Code（approval_code）开启订阅，开启后应用才可以接收该审批定义对应的事件',
+    '[Feishu/Lark]-审批-审批事件-事件接口-订阅审批事件-当应用[订阅审批事件]后，需要调用该接口指定审批定义 Code（approval_code）开启订阅，开启后应用才可以接收该审批定义对应的事件',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见',
+          '审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]',
         ),
     }),
   },
@@ -340,14 +340,14 @@ export const approvalV4ApprovalUnsubscribe = {
   path: '/open-apis/approval/v4/approvals/:approval_code/unsubscribe',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-审批-审批事件-事件接口-取消订阅审批事件-调用接口订阅审批定义 Code 后，如果不再需要接收该审批定义下的事件订阅通知，可以调用本接口取消订阅审批定义 Code，取消后应用无法再收到该审批定义对应实例的事件通知',
+    '[Feishu/Lark]-审批-审批事件-事件接口-取消订阅审批事件-调用[订阅审批事件]接口订阅审批定义 Code 后，如果不再需要接收该审批定义下的事件订阅通知，可以调用本接口取消订阅审批定义 Code，取消后应用无法再收到该审批定义对应实例的事件通知',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见',
+          '审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]',
         )
         .optional(),
     }),
@@ -430,14 +430,14 @@ export const approvalV4ExternalApprovalCreate = {
           action_callback_url: z
             .string()
             .describe(
-              '三方系统的操作回调 URL，**待审批** 实例的任务审批人点击同意或拒绝操作后，审批中心调用该 URL 通知三方系统，回调地址相关信息可参见',
+              '三方系统的操作回调 URL，**待审批** 实例的任务审批人点击同意或拒绝操作后，审批中心调用该 URL 通知三方系统，回调地址相关信息可参见[三方审批快捷审批回调]',
             )
             .optional(),
           action_callback_token: z.string().describe('回调时带的 token，用于业务系统验证请求来自审批中心').optional(),
           action_callback_key: z
             .string()
             .describe(
-              '请求参数加密密钥。如果配置了该参数，则会对请求参数进行加密，接收请求后需要对请求进行解密。加解密算法参考',
+              '请求参数加密密钥。如果配置了该参数，则会对请求参数进行加密，接收请求后需要对请求进行解密。加解密算法参考[关联外部选项说明]',
             )
             .optional(),
           allow_batch_operate: z
@@ -506,7 +506,7 @@ export const approvalV4ExternalApprovalCreate = {
       department_id_type: z
         .enum(['department_id', 'open_department_id'])
         .describe(
-          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见。 Options:department_id(DepartmentId 支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(OpenDepartmentId 由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
+          '此次调用中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门 ID 说明]。 Options:department_id(DepartmentId 支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),open_department_id(OpenDepartmentId 由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。)',
         )
         .optional(),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
@@ -528,7 +528,7 @@ export const approvalV4ExternalApprovalGet = {
       approval_code: z
         .string()
         .describe(
-          '三方审批定义 Code。获取方式：- 调用时，会返回审批定义 Code。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见',
+          '三方审批定义 Code。获取方式：- 调用[创建三方审批定义]时，会返回审批定义 Code。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]',
         ),
     }),
   },
@@ -540,7 +540,7 @@ export const approvalV4ExternalInstanceCheck = {
   path: '/open-apis/approval/v4/external_instances/check',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-审批-三方审批实例-校验三方审批实例-调用该接口校验三方审批实例数据，用于判断服务端数据是否为最新的。请求时提交实例最新更新时间，如果服务端不存在该实例，或者服务端实例更新时间不是最新的，则返回对应实例 ID。例如，设置定时任务每隔 5 分钟，将最近 5 分钟产生的实例使用该接口进行对比。如果数据在服务端不存在或者不是最新，则可以根据本接口返回的实例 ID、任务 ID，前往',
+    '[Feishu/Lark]-审批-三方审批实例-校验三方审批实例-调用该接口校验三方审批实例数据，用于判断服务端数据是否为最新的。请求时提交实例最新更新时间，如果服务端不存在该实例，或者服务端实例更新时间不是最新的，则返回对应实例 ID。例如，设置定时任务每隔 5 分钟，将最近 5 分钟产生的实例使用该接口进行对比。如果数据在服务端不存在或者不是最新，则可以根据本接口返回的实例 ID、任务 ID，前往[同步三方审批实例]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -550,7 +550,7 @@ export const approvalV4ExternalInstanceCheck = {
             instance_id: z
               .string()
               .describe(
-                '审批实例 ID。自定义配置，需要确保当前企业、应用内唯一。**注意**：调用本接口和接口操作同一个三方审批实例时，需要确保所用的实例 ID 一致',
+                '审批实例 ID。自定义配置，需要确保当前企业、应用内唯一。**注意**：调用本接口和[同步三方审批实例]接口操作同一个三方审批实例时，需要确保所用的实例 ID 一致',
               ),
             update_time: z.string().describe('审批实例最近更新时间，Unix 毫秒时间戳'),
             tasks: z
@@ -559,7 +559,7 @@ export const approvalV4ExternalInstanceCheck = {
                   task_id: z
                     .string()
                     .describe(
-                      '审批实例内的审批任务 ID。自定义配置，需要确保当前企业、应用内唯一。**注意**：调用本接口和接口操作同一个三方审批实例内的任务时，需要确保所用的任务 ID 一致',
+                      '审批实例内的审批任务 ID。自定义配置，需要确保当前企业、应用内唯一。**注意**：调用本接口和[同步三方审批实例]接口操作同一个三方审批实例内的任务时，需要确保所用的任务 ID 一致',
                     ),
                   update_time: z.string().describe('任务最近更新时间，Unix 毫秒时间戳'),
                 }),
@@ -585,7 +585,7 @@ export const approvalV4ExternalInstanceCreate = {
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。的返回值，用来指定当前实例属于的审批定义。 **说明**：如果在当前接口设置了 title 参数，则审批实例名称按照 title 展示。如果未设置 title，审批实例的标题取自对应审批定义（approval_code）的 name 参数',
+          '审批定义 Code。[创建三方审批定义]的返回值，用来指定当前实例属于的审批定义。 **说明**：如果在当前接口设置了 title 参数，则审批实例名称按照 title 展示。如果未设置 title，审批实例的标题取自对应审批定义（approval_code）的 name 参数',
         ),
       status: z
         .enum(['PENDING', 'APPROVED', 'REJECTED', 'CANCELED', 'DELETED', 'HIDDEN', 'TERMINATED'])
@@ -644,7 +644,7 @@ export const approvalV4ExternalInstanceCreate = {
       user_id: z
         .string()
         .describe(
-          '审批发起人 user_id。发起人可在审批中心的 **已发起** 列表中看到所有已发起的审批。在 **待办**、**已办**、**抄送我** 列表中，该字段用来展示审批的发起人。获取方式参见。 **注意**：审批发起人的 open_id 和 user_id 需至少传入一个',
+          '审批发起人 user_id。发起人可在审批中心的 **已发起** 列表中看到所有已发起的审批。在 **待办**、**已办**、**抄送我** 列表中，该字段用来展示审批的发起人。获取方式参见[如何获取用户的 User ID]。 **注意**：审批发起人的 open_id 和 user_id 需至少传入一个',
         )
         .optional(),
       user_name: z
@@ -656,13 +656,13 @@ export const approvalV4ExternalInstanceCreate = {
       open_id: z
         .string()
         .describe(
-          '审批发起人 open_id。发起人可在审批中心的 **已发起** 列表中看到所有已发起的审批。在 **待办**、**已办**、**抄送我** 列表中，该字段用来展示审批的发起人。获取方式参见。 **注意**：审批发起人的 open_id 和 user_id 需至少传入一个',
+          '审批发起人 open_id。发起人可在审批中心的 **已发起** 列表中看到所有已发起的审批。在 **待办**、**已办**、**抄送我** 列表中，该字段用来展示审批的发起人。获取方式参见[如何获取用户的 Open ID]。 **注意**：审批发起人的 open_id 和 user_id 需至少传入一个',
         )
         .optional(),
       department_id: z
         .string()
         .describe(
-          '发起人的部门 ID，用于在审批中心列表中展示发起人的所属部门，不传值则不展示。获取方式参见。 **说明**：如果用户没加入任何部门，传 `""`，默认展示企业名称。如果传入 department_name 参数，则展示对应的部门名称',
+          '发起人的部门 ID，用于在审批中心列表中展示发起人的所属部门，不传值则不展示。获取方式参见[部门 ID]。 **说明**：如果用户没加入任何部门，传 `""`，默认展示企业名称。如果传入 department_name 参数，则展示对应的部门名称',
         )
         .optional(),
       department_name: z
@@ -697,13 +697,13 @@ export const approvalV4ExternalInstanceCreate = {
             user_id: z
               .string()
               .describe(
-                '审批人 user_id，获取方式参见。 **说明**： - 该任务会出现在审批人的飞书审批中心 **待办** 或 **已办** 的列表中。- user_id 与 open_id 需至少传入一个',
+                '审批人 user_id，获取方式参见[如何获取用户的 User ID]。 **说明**： - 该任务会出现在审批人的飞书审批中心 **待办** 或 **已办** 的列表中。- user_id 与 open_id 需至少传入一个',
               )
               .optional(),
             open_id: z
               .string()
               .describe(
-                '审批人 open_id，获取方式参见。 **说明**： - 该任务会出现在审批人的飞书审批中心 **待办** 或 **已办** 的列表中。- user_id 与 open_id 需至少传入一个',
+                '审批人 open_id，获取方式参见[如何获取用户的 Open ID]。 **说明**： - 该任务会出现在审批人的飞书审批中心 **待办** 或 **已办** 的列表中。- user_id 与 open_id 需至少传入一个',
               )
               .optional(),
             title: z
@@ -807,13 +807,13 @@ export const approvalV4ExternalInstanceCreate = {
             user_id: z
               .string()
               .describe(
-                '抄送人的 user_id。获取方式参见。 **注意**：抄送人的 open_id 和 user_id 需至少传入一个',
+                '抄送人的 user_id。获取方式参见[如何获取用户的 User ID]。 **注意**：抄送人的 open_id 和 user_id 需至少传入一个',
               )
               .optional(),
             open_id: z
               .string()
               .describe(
-                '抄送人的 open_id。获取方式参见。 **注意**：抄送人的 open_id 和 user_id 需至少传入一个',
+                '抄送人的 open_id。获取方式参见[如何获取用户的 Open ID]。 **注意**：抄送人的 open_id 和 user_id 需至少传入一个',
               )
               .optional(),
             links: z
@@ -833,9 +833,7 @@ export const approvalV4ExternalInstanceCreate = {
               .describe(
                 '审批抄送跳转链接。设置的链接用于在审批中心 **抄送我** 列表内点击跳转，跳回三方审批系统查看审批抄送详情',
               ),
-            read_status: z
-              .enum(['READ', 'UNREAD'])
-              .describe('抄送人的阅读状态，空值表示不支持已读未读。 Options:READ(已读),UNREAD(未读)'),
+            read_status: z.enum(['READ', 'UNREAD']).describe('抄送人的阅读状态 Options:READ(已读),UNREAD(未读)'),
             extra: z.string().describe('扩展字段。JSON 格式，传值时需要压缩转义为字符串').optional(),
             title: z.string().describe('抄送任务名称').optional(),
             create_time: z.string().describe('抄送发起时间，Unix 毫秒时间戳'),
@@ -996,12 +994,12 @@ export const approvalV4InstanceCancel = {
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见',
+          '审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]',
         ),
       instance_code: z
         .string()
         .describe(
-          '审批实例 Code。获取方式：-  后，从返回结果中获取审批实例 Code。- 调用，获取指定审批定义内的审批实例 Code。- 调用，设置过滤条件查询指定的审批实例 Code',
+          '审批实例 Code。获取方式：- [创建审批实例] 后，从返回结果中获取审批实例 Code。- 调用[批量获取审批实例 ID]，获取指定审批定义内的审批实例 Code。- 调用[查询实例列表]，设置过滤条件查询指定的审批实例 Code',
         ),
       user_id: z.string().describe('审批提交人的用户 ID，ID 类型与查询参数 user_id_type 的取值一致'),
     }),
@@ -1022,12 +1020,12 @@ export const approvalV4InstanceCc = {
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见',
+          '审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]',
         ),
       instance_code: z
         .string()
         .describe(
-          '审批实例 Code。获取方式：-  后，从返回结果中获取审批实例 Code。- 调用，获取指定审批定义内的审批实例 Code。- 调用，设置过滤条件查询指定的审批实例 Code',
+          '审批实例 Code。获取方式：- [创建审批实例] 后，从返回结果中获取审批实例 Code。- 调用[批量获取审批实例 ID]，获取指定审批定义内的审批实例 Code。- 调用[查询实例列表]，设置过滤条件查询指定的审批实例 Code',
         ),
       user_id: z.string().describe('发起当前操作的用户 ID，ID 类型与查询参数 user_id_type 取值一致'),
       cc_user_ids: z.array(z.string()).describe('抄送人的用户 ID 列表，ID 类型与查询参数 user_id_type 取值一致'),
@@ -1070,13 +1068,13 @@ export const approvalV4InstanceCommentCreate = {
       parent_comment_id: z
         .string()
         .describe(
-          '父评论 ID，如果是回复评论，需要传入该值。获取方式：- 调用当前接口成功后会返回本次评论的 ID，你可以保存用于下次使用。- 调用接口，获取评论 ID',
+          '父评论 ID，如果是回复评论，需要传入该值。获取方式：- 调用当前接口成功后会返回本次评论的 ID，你可以保存用于下次使用。- 调用[获取评论]接口，获取评论 ID',
         )
         .optional(),
       comment_id: z
         .string()
         .describe(
-          '评论 ID。如果需要编辑、删除一条评论，则需要将该评论的 ID 传入当前参数。获取方式：- 调用当前接口成功后会返回本次评论的 ID，你可以保存用于下次使用。- 调用接口，获取评论 ID',
+          '评论 ID。如果需要编辑、删除一条评论，则需要将该评论的 ID 传入当前参数。获取方式：- 调用当前接口成功后会返回本次评论的 ID，你可以保存用于下次使用。- 调用[获取评论]接口，获取评论 ID',
         )
         .optional(),
       disable_bot: z
@@ -1095,7 +1093,7 @@ export const approvalV4InstanceCommentCreate = {
       instance_id: z
         .string()
         .describe(
-          '审批实例 Code。获取方式：-  后，从返回结果中获取审批实例 Code。- 调用，获取指定审批定义内的审批实例 Code。- 调用，设置过滤条件查询指定的审批实例 Code。说明：支持传入自定义审批实例 ID',
+          '审批实例 Code。获取方式：- [创建审批实例] 后，从返回结果中获取审批实例 Code。- 调用[批量获取审批实例 ID]，获取指定审批定义内的审批实例 Code。- 调用[查询实例列表]，设置过滤条件查询指定的审批实例 Code。说明：支持传入自定义审批实例 ID',
         ),
     }),
   },
@@ -1118,12 +1116,12 @@ export const approvalV4InstanceCommentDelete = {
       instance_id: z
         .string()
         .describe(
-          '审批实例 Code。获取方式：-  后，从返回结果中获取审批实例 Code。- 调用，获取指定审批定义内的审批实例 Code。- 调用，设置过滤条件查询指定的审批实例 Code。说明：支持传入自定义审批实例 ID',
+          '审批实例 Code。获取方式：- [创建审批实例] 后，从返回结果中获取审批实例 Code。- 调用[批量获取审批实例 ID]，获取指定审批定义内的审批实例 Code。- 调用[查询实例列表]，设置过滤条件查询指定的审批实例 Code。说明：支持传入自定义审批实例 ID',
         ),
       comment_id: z
         .string()
         .describe(
-          '评论 ID。获取方式：- 调用成功会返回评论 ID。- 调用接口，获取评论 ID',
+          '评论 ID。获取方式：- 调用[创建评论]成功会返回评论 ID。- 调用[获取评论]接口，获取评论 ID',
         ),
     }),
   },
@@ -1153,7 +1151,7 @@ export const approvalV4InstanceCommentList = {
       instance_id: z
         .string()
         .describe(
-          '审批实例 Code。获取方式：-  后，从返回结果中获取审批实例 Code。- 调用，获取指定审批定义内的审批实例 Code。- 调用，设置过滤条件查询指定的审批实例 Code。**说明**：支持传入自定义审批实例 ID',
+          '审批实例 Code。获取方式：- [创建审批实例] 后，从返回结果中获取审批实例 Code。- 调用[批量获取审批实例 ID]，获取指定审批定义内的审批实例 Code。- 调用[查询实例列表]，设置过滤条件查询指定的审批实例 Code。**说明**：支持传入自定义审批实例 ID',
         ),
     }),
   },
@@ -1175,7 +1173,7 @@ export const approvalV4InstanceCommentRemove = {
       instance_id: z
         .string()
         .describe(
-          '审批实例 Code。获取方式：-  后，从返回结果中获取审批实例 Code。- 调用，获取指定审批定义内的审批实例 Code。- 调用，设置过滤条件查询指定的审批实例 Code。**说明**：支持传入自定义审批实例 ID',
+          '审批实例 Code。获取方式：- [创建审批实例] 后，从返回结果中获取审批实例 Code。- 调用[批量获取审批实例 ID]，获取指定审批定义内的审批实例 Code。- 调用[查询实例列表]，设置过滤条件查询指定的审批实例 Code。**说明**：支持传入自定义审批实例 ID',
         ),
     }),
   },
@@ -1194,30 +1192,30 @@ export const approvalV4InstanceCreate = {
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见',
+          '审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]',
         ),
       user_id: z
         .string()
         .describe(
-          '审批发起人的 user_id，与 open_id 必须传入其中一个。如果传入了 user_id 则优先使用 user_id。获取方式参考',
+          '审批发起人的 user_id，与 open_id 必须传入其中一个。如果传入了 user_id 则优先使用 user_id。获取方式参考[如何获取用户的 User ID]',
         )
         .optional(),
       open_id: z
         .string()
         .describe(
-          '审批发起人的 open_id，与 user_id 必须传入其中一个。如果传入了 user_id 则优先使用 user_id。获取方式参考',
+          '审批发起人的 open_id，与 user_id 必须传入其中一个。如果传入了 user_id 则优先使用 user_id。获取方式参考[如何获取用户的 Open ID]',
         )
         .optional(),
       department_id: z
         .string()
         .describe(
-          '审批发起人所属部门 ID。如果用户只属于一个部门，可以不填。如果用户属于多个部门，不填值则默认选择部门列表第一个部门。获取方式参见。**说明**：- 不支持填写根部门。- 需填写 open_department_id 类型的部门 ID',
+          '审批发起人所属部门 ID。如果用户只属于一个部门，可以不填。如果用户属于多个部门，不填值则默认选择部门列表第一个部门。获取方式参见[部门 ID]。**说明**：- 不支持填写根部门。- 需填写 department_id 类型的部门 ID',
         )
         .optional(),
       form: z
         .string()
         .describe(
-          '填写的审批表单控件值，JSON 数组，传值时需要压缩转义为字符串。各控件值的参数说明参考',
+          '填写的审批表单控件值，JSON 数组，传值时需要压缩转义为字符串。各控件值的参数说明参考[审批实例表单控件参数]',
         ),
       node_approver_user_id_list: z
         .array(
@@ -1225,13 +1223,13 @@ export const approvalV4InstanceCreate = {
             key: z
               .string()
               .describe(
-                '节点的 node_id 或 custom_node_id，可调用  接口，从接口返回的 node_list 参数中获取',
+                '节点的 node_id 或 custom_node_id，可调用 [查看指定审批定义] 接口，从接口返回的 node_list 参数中获取',
               )
               .optional(),
             value: z
               .array(z.string())
               .describe(
-                '审批人列表，需传入用户 user_id。获取方式参考',
+                '审批人列表，需传入用户 user_id。获取方式参考[如何获取用户的 User ID]',
               )
               .optional(),
           }),
@@ -1246,13 +1244,13 @@ export const approvalV4InstanceCreate = {
             key: z
               .string()
               .describe(
-                '节点的 node_id 或 custom_node_id，可调用  接口，从接口返回的 node_list 参数中获取',
+                '节点的 node_id 或 custom_node_id，可调用 [查看指定审批定义] 接口，从接口返回的 node_list 参数中获取',
               )
               .optional(),
             value: z
               .array(z.string())
               .describe(
-                '审批人列表，需传入用户 open_id。获取方式参考',
+                '审批人列表，需传入用户 open_id。获取方式参考[如何获取用户的 Open ID]',
               )
               .optional(),
           }),
@@ -1267,13 +1265,13 @@ export const approvalV4InstanceCreate = {
             key: z
               .string()
               .describe(
-                '节点的 node_id，可调用  接口，从接口返回的 node_list 参数中获取',
+                '节点的 node_id，可调用 [查看指定审批定义] 接口，从接口返回的 node_list 参数中获取',
               )
               .optional(),
             value: z
               .array(z.string())
               .describe(
-                '抄送人列表，需传入用户 user_id。获取方式参考',
+                '抄送人列表，需传入用户 user_id。获取方式参考[如何获取用户的 User ID]',
               )
               .optional(),
           }),
@@ -1288,13 +1286,13 @@ export const approvalV4InstanceCreate = {
             key: z
               .string()
               .describe(
-                '节点的 node_id，可调用  接口，从接口返回的 node_list 参数中获取',
+                '节点的 node_id，可调用 [查看指定审批定义] 接口，从接口返回的 node_list 参数中获取',
               )
               .optional(),
             value: z
               .array(z.string())
               .describe(
-                '抄送人列表，需传入用户 open_id。获取方式参考',
+                '抄送人列表，需传入用户 open_id。获取方式参考[如何获取用户的 Open ID]',
               )
               .optional(),
           }),
@@ -1373,7 +1371,7 @@ export const approvalV4InstanceCreate = {
             node_id: z
               .string()
               .describe(
-                '节点 ID 值，可调用  接口，从接口返回的 node_list 参数中获取',
+                '节点 ID 值，可调用 [查看指定审批定义] 接口，从接口返回的 node_list 参数中获取',
               )
               .optional(),
           }),
@@ -1397,7 +1395,7 @@ export const approvalV4InstanceGet = {
       locale: z
         .enum(['zh-CN', 'en-US', 'ja-JP'])
         .describe(
-          '语言。默认值为时在 i18n_resources 参数中配置的 is_default 取值为 true 的语言。 Options:zh-CN(Zhcn 中文),en-US(Enus 英文),ja-JP(Jajp 日文)',
+          '语言。默认值为[创建审批定义]时在 i18n_resources 参数中配置的 is_default 取值为 true 的语言。 Options:zh-CN(Zhcn 中文),en-US(Enus 英文),ja-JP(Jajp 日文)',
         )
         .optional(),
       user_id: z.string().describe('发起审批的用户 ID，ID 类型由 user_id_type 参数指定').optional(),
@@ -1407,7 +1405,7 @@ export const approvalV4InstanceGet = {
       instance_id: z
         .string()
         .describe(
-          '审批实例 Code。获取方式：-  后，从返回结果中获取审批实例 Code。如果在创建的时候传了 uuid 参数，则本参数也可以通过传 uuid 获取指定审批实例详情。- 调用，获取指定审批定义内的审批实例 Code。- 调用，设置过滤条件查询指定的审批实例 Code',
+          '审批实例 Code。获取方式：- [创建审批实例] 后，从返回结果中获取审批实例 Code。如果在创建的时候传了 uuid 参数，则本参数也可以通过传 uuid 获取指定审批实例详情。- 调用[批量获取审批实例 ID]，获取指定审批定义内的审批实例 Code。- 调用[查询实例列表]，设置过滤条件查询指定的审批实例 Code',
         ),
     }),
   },
@@ -1433,7 +1431,7 @@ export const approvalV4InstanceList = {
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见',
+          '审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]',
         ),
       start_time: z
         .string()
@@ -1483,13 +1481,13 @@ export const approvalV4InstanceQuery = {
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见。**注意**：- user_id、approval_code、instance_code、instance_external_id、group_external_id 不能同时为空。- approval_code 和 group_external_id 查询结果取并集',
+          '审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]。**注意**：- user_id、approval_code、instance_code、instance_external_id、group_external_id 不能同时为空。- approval_code 和 group_external_id 查询结果取并集',
         )
         .optional(),
       instance_code: z
         .string()
         .describe(
-          '审批实例 Code。获取方式：- 调用接口后，从响应参数 instance_code 获取。- 调用接口，获取所需的审批实例 Code。**注意**：- user_id、approval_code、instance_code、instance_external_id、group_external_id 不能同时为空。- instance_code 和 instance_external_id 查询结果取并集',
+          '审批实例 Code。获取方式：- 调用[创建审批实例]接口后，从响应参数 instance_code 获取。- 调用[批量获取审批实例 ID]接口，获取所需的审批实例 Code。**注意**：- user_id、approval_code、instance_code、instance_external_id、group_external_id 不能同时为空。- instance_code 和 instance_external_id 查询结果取并集',
         )
         .optional(),
       instance_external_id: z
@@ -1559,13 +1557,13 @@ export const approvalV4InstanceSearchCc = {
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见。**注意**：- user_id、approval_code、instance_code、instance_external_id、group_external_id 不能同时为空。- approval_code 和 group_external_id 查询结果取并集',
+          '审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]。**注意**：- user_id、approval_code、instance_code、instance_external_id、group_external_id 不能同时为空。- approval_code 和 group_external_id 查询结果取并集',
         )
         .optional(),
       instance_code: z
         .string()
         .describe(
-          '审批实例 Code。获取方式：- 调用接口后，从响应参数 instance_code 获取。- 调用接口，获取所需的审批实例 Code。**注意**：- user_id、approval_code、instance_code、instance_external_id、group_external_id 不能同时为空。- instance_code 和 instance_external_id 查询结果取并集',
+          '审批实例 Code。获取方式：- 调用[创建审批实例]接口后，从响应参数 instance_code 获取。- 调用[批量获取审批实例 ID]接口，获取所需的审批实例 Code。**注意**：- user_id、approval_code、instance_code、instance_external_id、group_external_id 不能同时为空。- instance_code 和 instance_external_id 查询结果取并集',
         )
         .optional(),
       instance_external_id: z
@@ -1630,19 +1628,19 @@ export const approvalV4InstanceSpecifiedRollback = {
       user_id: z
         .string()
         .describe(
-          '当前审批任务的审批人的用户 ID，ID 类型与查询参数 user_id_type 取值一致。可调用，从返回结果的 task_list 参数中获取用户 ID 以及任务状态必须为 PENDING',
+          '当前审批任务的审批人的用户 ID，ID 类型与查询参数 user_id_type 取值一致。可调用[获取单个审批实例详情]，从返回结果的 task_list 参数中获取用户 ID 以及任务状态必须为 PENDING',
         ),
       task_id: z
         .string()
         .describe(
-          '当前需要回退的审批任务 ID。可调用，从返回结果的 task_list 参数中获取任务 ID 以及任务状态必须为 PENDING',
+          '当前需要回退的审批任务 ID。可调用[获取单个审批实例详情]，从返回结果的 task_list 参数中获取任务 ID 以及任务状态必须为 PENDING',
         ),
       reason: z.string().describe('退回原因').optional(),
       extra: z.string().describe('扩展字段。**注意**：灰度参数，暂未开放使用').optional(),
       task_def_key_list: z
         .array(z.string())
         .describe(
-          '需要退回到的任务 node_key。可调用，从返回结果的 timeline 参数中获取，且动态类型 type 必须为 PASS',
+          '需要退回到的任务 node_key。可调用[获取单个审批实例详情]，从返回结果的 timeline 参数中获取，且动态类型 type 必须为 PASS',
         ),
     }),
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
@@ -1662,19 +1660,19 @@ export const approvalV4TaskApprove = {
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见',
+          '审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]',
         ),
       instance_code: z
         .string()
         .describe(
-          '审批实例 Code。获取方式：- 调用接口后，从响应参数 instance_code 获取。- 调用接口，获取所需的审批实例 Code。- 调用，设置过滤条件查询指定的审批实例 Code',
+          '审批实例 Code。获取方式：- 调用[创建审批实例]接口后，从响应参数 instance_code 获取。- 调用[批量获取审批实例 ID]接口，获取所需的审批实例 Code。- 调用[查询实例列表]，设置过滤条件查询指定的审批实例 Code',
         ),
       user_id: z.string().describe('审批人的用户 ID，ID 类型与查询参数 user_id_type 取值一致'),
       comment: z.string().describe('审批意见').optional(),
       task_id: z
         .string()
         .describe(
-          '审批任务 ID，调用，从返回结果的 task_list 中获取所需的 id',
+          '审批任务 ID，调用[获取单个审批实例详情]，从返回结果的 task_list 中获取所需的 id',
         ),
       form: z
         .string()
@@ -1727,19 +1725,19 @@ export const approvalV4TaskReject = {
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见',
+          '审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]',
         ),
       instance_code: z
         .string()
         .describe(
-          '审批实例 Code。获取方式：- 调用接口后，从响应参数 instance_code 获取。- 调用接口，获取所需的审批实例 Code。- 调用，设置过滤条件查询指定的审批实例 Code',
+          '审批实例 Code。获取方式：- 调用[创建审批实例]接口后，从响应参数 instance_code 获取。- 调用[批量获取审批实例 ID]接口，获取所需的审批实例 Code。- 调用[查询实例列表]，设置过滤条件查询指定的审批实例 Code',
         ),
       user_id: z.string().describe('审批人的用户 ID，ID 类型与查询参数 user_id_type 取值一致'),
       comment: z.string().describe('审批意见').optional(),
       task_id: z
         .string()
         .describe(
-          '审批任务 ID，调用，从返回结果的 task_list 中获取所需的 id',
+          '审批任务 ID，调用[获取单个审批实例详情]，从返回结果的 task_list 中获取所需的 id',
         ),
       form: z
         .string()
@@ -1765,12 +1763,12 @@ export const approvalV4TaskResubmit = {
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见',
+          '审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]',
         ),
       instance_code: z
         .string()
         .describe(
-          '审批实例 Code。获取方式：- 调用接口后，从响应参数 instance_code 获取。- 调用接口，获取所需的审批实例 Code。- 调用，设置过滤条件查询指定的审批实例 Code',
+          '审批实例 Code。获取方式：- 调用[创建审批实例]接口后，从响应参数 instance_code 获取。- 调用[批量获取审批实例 ID]接口，获取所需的审批实例 Code。- 调用[查询实例列表]，设置过滤条件查询指定的审批实例 Code',
         ),
       user_id: z.string().describe('操作人 ID，ID 类型与查询参数 user_id_type 取值一致'),
       comment: z
@@ -1782,12 +1780,12 @@ export const approvalV4TaskResubmit = {
       task_id: z
         .string()
         .describe(
-          '任务 ID。你可调用，从返回结果的 task_list 中获取所需的 id',
+          '任务 ID。你可调用[获取单个审批实例详情]，从返回结果的 task_list 中获取所需的 id',
         ),
       form: z
         .string()
         .describe(
-          '审批表单控件值，JSON 数组，传值时需要压缩转义为字符串。该参数与中的 form 参数用法一致',
+          '审批表单控件值，JSON 数组，传值时需要压缩转义为字符串。该参数与[创建审批实例]中的 form 参数用法一致',
         ),
     }),
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
@@ -1807,13 +1805,13 @@ export const approvalV4TaskSearch = {
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见。**注意**：- user_id、approval_code、instance_code、instance_external_id、group_external_id 不能同时为空。- approval_code 和 group_external_id 查询结果取并集',
+          '审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]。**注意**：- user_id、approval_code、instance_code、instance_external_id、group_external_id 不能同时为空。- approval_code 和 group_external_id 查询结果取并集',
         )
         .optional(),
       instance_code: z
         .string()
         .describe(
-          '审批实例 Code。获取方式：- 调用接口后，从响应参数 instance_code 获取。- 调用接口，获取所需的审批实例 Code。**注意**：- user_id、approval_code、instance_code、instance_external_id、group_external_id 不能同时为空。- instance_code 和 instance_external_id 查询结果取并集',
+          '审批实例 Code。获取方式：- 调用[创建审批实例]接口后，从响应参数 instance_code 获取。- 调用[批量获取审批实例 ID]接口，获取所需的审批实例 Code。**注意**：- user_id、approval_code、instance_code、instance_external_id、group_external_id 不能同时为空。- instance_code 和 instance_external_id 查询结果取并集',
         )
         .optional(),
       instance_external_id: z
@@ -1895,12 +1893,12 @@ export const approvalV4TaskTransfer = {
       approval_code: z
         .string()
         .describe(
-          '审批定义 Code。获取方式：- 调用接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见',
+          '审批定义 Code。获取方式：- 调用[创建审批定义]接口后，从响应参数 approval_code 获取。- 登录审批管理后台，在指定审批定义的 URL 中获取，具体操作参见[什么是 Approval Code]',
         ),
       instance_code: z
         .string()
         .describe(
-          '审批实例 Code。获取方式：- 调用接口后，从响应参数 instance_code 获取。- 调用接口，获取所需的审批实例 Code。- 调用，设置过滤条件查询指定的审批实例 Code',
+          '审批实例 Code。获取方式：- 调用[创建审批实例]接口后，从响应参数 instance_code 获取。- 调用[批量获取审批实例 ID]接口，获取所需的审批实例 Code。- 调用[查询实例列表]，设置过滤条件查询指定的审批实例 Code',
         ),
       user_id: z.string().describe('当前审批人的用户 ID，ID 类型与查询参数 user_id_type 取值一致'),
       comment: z.string().describe('审批意见').optional(),
@@ -1908,7 +1906,7 @@ export const approvalV4TaskTransfer = {
       task_id: z
         .string()
         .describe(
-          '审批任务 ID，调用，从返回结果的 task_list 中获取所需的 id',
+          '审批任务 ID，调用[获取单个审批实例详情]，从返回结果的 task_list 中获取所需的 id',
         ),
     }),
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),

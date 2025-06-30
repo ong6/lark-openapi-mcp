@@ -37,7 +37,7 @@ export const taskV1TaskBatchDeleteCollaborator = {
       id_list: z
         .array(z.string())
         .describe(
-          'List of collaborator ids added when creating the task. The value passed in is user_id or open_id, determined by user_id_type. For details, see: ',
+          'List of collaborator ids added when creating the task. The value passed in is user_id or open_id, determined by user_id_type. For details, see: [How to get ID]',
         )
         .optional(),
     }),
@@ -76,13 +76,13 @@ export const taskV1TaskCollaboratorCreate = {
       id: z
         .string()
         .describe(
-          'The ID of the task collaborator. The value passed in is user_id or open_id, determined by user_id_type. For details, see: <md-alert>Deprecated, reserved for forward compatibility in the early days when only one person was added at a time, but it is no longer recommended, it is recommended to use the id_list field</md-alert>',
+          'The ID of the task collaborator. The value passed in is user_id or open_id, determined by user_id_type. For details, see: [How to get ID]<md-alert>Deprecated, reserved for forward compatibility in the early days when only one person was added at a time, but it is no longer recommended, it is recommended to use the id_list field</md-alert>',
         )
         .optional(),
       id_list: z
         .array(z.string())
         .describe(
-          'List of collaborator ids added when creating the task. The value passed in is user_id or open_id, determined by user_id_type. For details, see: ',
+          'List of collaborator ids added when creating the task. The value passed in is user_id or open_id, determined by user_id_type. For details, see: [How to get ID]',
         )
         .optional(),
     }),
@@ -91,7 +91,7 @@ export const taskV1TaskCollaboratorCreate = {
       task_id: z
         .string()
         .describe(
-          'The task ID, which can be obtained from the id field in the response body ',
+          'The task ID, which can be obtained from the id field in the response body [when the task is created]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -171,7 +171,7 @@ export const taskV1TaskCommentCreate = {
       rich_content: z
         .string()
         .describe(
-          'Rich text comment content. See ',
+          'Rich text comment content. See [Markdown module]',
         )
         .optional(),
     }),
@@ -272,7 +272,7 @@ export const taskV1TaskComplete = {
       task_id: z
         .string()
         .describe(
-          'The task ID, which can be obtained from the id field in the response body ',
+          'The task ID, which can be obtained from the id field in the response body [when the task is created]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -313,7 +313,7 @@ export const taskV1TaskCreate = {
           timezone: z
             .string()
             .describe(
-              'The time zone corresponding to the deadline. The incoming value needs to conform to the IANA Time Zone Database standard, see the specification：',
+              'The time zone corresponding to the deadline. The incoming value needs to conform to the IANA Time Zone Database standard, see the specification：[https://www.iana.org/time-zones]',
             )
             .optional(),
           is_all_day: z
@@ -330,14 +330,14 @@ export const taskV1TaskCreate = {
           platform_i18n_name: z
             .string()
             .describe(
-              'The name of the task source. Used to display on the task center details page. A dictionary is required to support multiple language name mappings. When the application uses a different language, the import source will also display the corresponding content. For details, see: ',
+              'The name of the task source. Used to display on the task center details page. A dictionary is required to support multiple language name mappings. When the application uses a different language, the import source will also display the corresponding content. For details, see: [Supplementary directions of task fields]',
             ),
           href: z
             .object({
               url: z
                 .string()
                 .describe(
-                  'Specific link address. URL only supports parsing http, https. For details, see: ',
+                  'Specific link address. URL only supports parsing http, https. For details, see: [Supplementary directions of task fields]',
                 )
                 .optional(),
               title: z.string().describe('Title that corresponds to the URL').optional(),
@@ -355,37 +355,37 @@ export const taskV1TaskCreate = {
       custom: z
         .string()
         .describe(
-          'Customize complete configuration. This field is used to set a page jump when completing a task, or to display a prompt message. For details, see: ',
+          'Customize complete configuration. This field is used to set a page jump when completing a task, or to display a prompt message. For details, see: [Supplementary directions of task fields]',
         )
         .optional(),
       collaborator_ids: z
         .array(z.string())
         .describe(
-          'List of collaborator ids added when creating the task. The value passed in is user_id or open_id , determined by user_id_type. For details, see: ',
+          'List of collaborator ids added when creating the task. The value passed in is user_id or open_id , determined by user_id_type. For details, see: [How to get ID]',
         )
         .optional(),
       follower_ids: z
         .array(z.string())
         .describe(
-          'A list of follower ids added when creating a task. The value passed in is user_id or open_id , determined by user_id_type. For details, see: ',
+          'A list of follower ids added when creating a task. The value passed in is user_id or open_id , determined by user_id_type. For details, see: [How to get ID]',
         )
         .optional(),
       repeat_rule: z
         .string()
         .describe(
-          'Regular expression for repeating tasks. For the syntax format, see  section 4.3.10',
+          'Regular expression for repeating tasks. For the syntax format, see [RRule Syntax Specification] section 4.3.10',
         )
         .optional(),
       rich_summary: z
         .string()
         .describe(
-          'Rich-text task summary. For syntax format see: When creating a task, the task summary (summary field) and task rich text summary (rich_summary field) cannot be empty at the same time, and at least one of them needs to be filled in',
+          'Rich-text task summary. For syntax format see: [Markdown module]When creating a task, the task summary (summary field) and task rich text summary (rich_summary field) cannot be empty at the same time, and at least one of them needs to be filled in',
         )
         .optional(),
       rich_description: z
         .string()
         .describe(
-          'Rich-text task description. For syntax format see: ',
+          'Rich-text task description. For syntax format see: [Markdown module]',
         )
         .optional(),
     }),
@@ -555,7 +555,7 @@ export const taskV1TaskPatch = {
               timezone: z
                 .string()
                 .describe(
-                  'The time zone corresponding to the deadline. The incoming value needs to conform to the IANA Time Zone Database standard, see the specification：',
+                  'The time zone corresponding to the deadline. The incoming value needs to conform to the IANA Time Zone Database standard, see the specification：[https://www.iana.org/time-zones]',
                 )
                 .optional(),
               is_all_day: z
@@ -572,14 +572,14 @@ export const taskV1TaskPatch = {
               platform_i18n_name: z
                 .string()
                 .describe(
-                  'The name of the task source. Used to display on the task center details page. A dictionary is required to support multiple language name mappings. When the application uses a different language, the import source will also display the corresponding content. For details, see: ',
+                  'The name of the task source. Used to display on the task center details page. A dictionary is required to support multiple language name mappings. When the application uses a different language, the import source will also display the corresponding content. For details, see: [Supplementary directions of task fields]',
                 ),
               href: z
                 .object({
                   url: z
                     .string()
                     .describe(
-                      'Specific link address. URL only supports parsing http, https. For details, see: ',
+                      'Specific link address. URL only supports parsing http, https. For details, see: [Supplementary directions of task fields]',
                     )
                     .optional(),
                   title: z.string().describe('Title that corresponds to the URL').optional(),
@@ -598,7 +598,7 @@ export const taskV1TaskPatch = {
           custom: z
             .string()
             .describe(
-              'Customize complete configuration. This field is used to set a page jump when completing a task, or to display a prompt message. For details, see: ',
+              'Customize complete configuration. This field is used to set a page jump when completing a task, or to display a prompt message. For details, see: [Supplementary directions of task fields]',
             )
             .optional(),
           followers: z
@@ -616,13 +616,13 @@ export const taskV1TaskPatch = {
                 id: z
                   .string()
                   .describe(
-                    'The ID of the task collaborator. The value passed in is user_id or open_id, determined by user_id_type. For details, see: <md-alert>Deprecated, reserved for forward compatibility in the early days when only one person was added at a time, but it is no longer recommended, it is recommended to use the id_list field</md-alert>',
+                    'The ID of the task collaborator. The value passed in is user_id or open_id, determined by user_id_type. For details, see: [How to get ID]<md-alert>Deprecated, reserved for forward compatibility in the early days when only one person was added at a time, but it is no longer recommended, it is recommended to use the id_list field</md-alert>',
                   )
                   .optional(),
                 id_list: z
                   .array(z.string())
                   .describe(
-                    'List of collaborator ids added when creating the task. The value passed in is user_id or open_id, determined by user_id_type. For details, see: ',
+                    'List of collaborator ids added when creating the task. The value passed in is user_id or open_id, determined by user_id_type. For details, see: [How to get ID]',
                   )
                   .optional(),
               }),
@@ -632,31 +632,31 @@ export const taskV1TaskPatch = {
           collaborator_ids: z
             .array(z.string())
             .describe(
-              'List of collaborator ids added when creating the task. The value passed in is user_id or open_id , determined by user_id_type. For details, see: ',
+              'List of collaborator ids added when creating the task. The value passed in is user_id or open_id , determined by user_id_type. For details, see: [How to get ID]',
             )
             .optional(),
           follower_ids: z
             .array(z.string())
             .describe(
-              'A list of follower ids added when creating a task. The value passed in is user_id or open_id , determined by user_id_type. For details, see: ',
+              'A list of follower ids added when creating a task. The value passed in is user_id or open_id , determined by user_id_type. For details, see: [How to get ID]',
             )
             .optional(),
           repeat_rule: z
             .string()
             .describe(
-              'Regular expression for repeating tasks. For the syntax format, see  section 4.3.10',
+              'Regular expression for repeating tasks. For the syntax format, see [RRule Syntax Specification] section 4.3.10',
             )
             .optional(),
           rich_summary: z
             .string()
             .describe(
-              'Rich-text task summary. For syntax format see: When creating a task, the task summary (summary field) and task rich text summary (rich_summary field) cannot be empty at the same time, and at least one of them needs to be filled in',
+              'Rich-text task summary. For syntax format see: [Markdown module]When creating a task, the task summary (summary field) and task rich text summary (rich_summary field) cannot be empty at the same time, and at least one of them needs to be filled in',
             )
             .optional(),
           rich_description: z
             .string()
             .describe(
-              'Rich-text task description. For syntax format see: ',
+              'Rich-text task description. For syntax format see: [Markdown module]',
             )
             .optional(),
         })

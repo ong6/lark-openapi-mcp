@@ -1,10 +1,17 @@
-import { initMcpServer } from '../../../src/mcp-server/shared/init';
+import {
+  initMcpServerWithTransport,
+  initOAPIMcpServer,
+  initRecallMcpServer,
+} from '../../../src/mcp-server/shared/init';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 
 // 模拟依赖项
 jest.mock('@modelcontextprotocol/sdk/server/mcp.js', () => ({
   McpServer: jest.fn().mockImplementation(() => ({
     connect: jest.fn().mockResolvedValue(undefined),
+    tool: jest.fn().mockImplementation((name, description, schema, handler) => {
+      handler();
+    }),
   })),
 }));
 
@@ -19,15 +26,33 @@ jest.mock('../../../src/mcp-tool', () => {
     presetTools: {
       'preset.default': ['default-tool-1', 'default-tool-2'],
     },
+    RecallTool: {
+      name: 'RecallTool',
+      description: 'RecallTool description',
+      schema: jest.fn(),
+      handler: jest.fn(),
+    },
   };
 });
+
+jest.mock('../../../src/mcp-server/transport', () => ({
+  initSSEServer: jest.fn().mockImplementation((getNewServer) => {
+    getNewServer?.();
+  }),
+  initStreamableServer: jest.fn().mockImplementation((getNewServer) => {
+    getNewServer?.();
+  }),
+  initStdioServer: jest.fn().mockImplementation((getNewServer) => {
+    getNewServer?.();
+  }),
+}));
 
 // 保存原始的环境变量和console.error
 const originalEnv = process.env;
 const originalConsoleError = console.error;
 const originalProcessExit = process.exit;
 
-describe('initMcpServer', () => {
+describe('initOAPIMcpServer', () => {
   beforeEach(() => {
     // 重置模拟
     jest.clearAllMocks();
@@ -57,7 +82,7 @@ describe('initMcpServer', () => {
       port: 3000,
     };
 
-    const { mcpServer, larkClient } = initMcpServer(options);
+    initOAPIMcpServer(options);
 
     expect(McpServer).toHaveBeenCalled();
     // 从mcp-tool模块导入LarkMcpTool
@@ -67,27 +92,7 @@ describe('initMcpServer', () => {
         appId: 'test-app-id',
         appSecret: 'test-app-secret',
       }),
-    );
-  });
-
-  it('应该使用环境变量中的凭证', () => {
-    process.env.APP_ID = 'env-app-id';
-    process.env.APP_SECRET = 'env-app-secret';
-
-    const options = {
-      host: 'localhost',
-      port: 3000,
-    };
-
-    const { mcpServer, larkClient } = initMcpServer(options);
-
-    // 从mcp-tool模块导入LarkMcpTool
-    const { LarkMcpTool } = require('../../../src/mcp-tool');
-    expect(LarkMcpTool).toHaveBeenCalledWith(
-      expect.objectContaining({
-        appId: 'env-app-id',
-        appSecret: 'env-app-secret',
-      }),
+      undefined,
     );
   });
 
@@ -100,7 +105,7 @@ describe('initMcpServer', () => {
       port: 3000,
     };
 
-    const { larkClient } = initMcpServer(options);
+    const { larkClient } = initOAPIMcpServer(options);
 
     expect(larkClient.updateUserAccessToken).toHaveBeenCalledWith('test-user-access-token');
   });
@@ -114,7 +119,7 @@ describe('initMcpServer', () => {
       port: 3000,
     };
 
-    const { larkClient } = initMcpServer(options);
+    initOAPIMcpServer(options);
 
     // 从mcp-tool模块导入LarkMcpTool
     const { LarkMcpTool } = require('../../../src/mcp-tool');
@@ -124,6 +129,7 @@ describe('initMcpServer', () => {
           allowTools: ['tool1', 'tool2'],
         }),
       }),
+      undefined,
     );
   });
 
@@ -131,12 +137,12 @@ describe('initMcpServer', () => {
     const options = {
       appId: 'test-app-id',
       appSecret: 'test-app-secret',
-      tools: 'tool1,tool2',
+      tools: ['tool1', 'tool2'],
       host: 'localhost',
       port: 3000,
     };
 
-    const { larkClient } = initMcpServer(options);
+    initOAPIMcpServer(options);
 
     // 从mcp-tool模块导入LarkMcpTool
     const { LarkMcpTool } = require('../../../src/mcp-tool');
@@ -146,6 +152,7 @@ describe('initMcpServer', () => {
           allowTools: ['tool1', 'tool2'],
         }),
       }),
+      undefined,
     );
   });
 
@@ -155,14 +162,13 @@ describe('initMcpServer', () => {
       port: 3000,
     };
 
-    // 清除环境变量
-    delete process.env.APP_ID;
-    delete process.env.APP_SECRET;
-
-    initMcpServer(options);
+    try {
+      initOAPIMcpServer(options);
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+    }
 
     expect(console.error).toHaveBeenCalled();
-    expect(process.exit).toHaveBeenCalledWith(1);
   });
 
   it('应该处理preset.default工具集', () => {
@@ -174,20 +180,126 @@ describe('initMcpServer', () => {
       port: 3000,
     };
 
-    // 从模块导入默认工具列表
-    const { defaultToolNames } = require('../../../src/mcp-tool');
-
-    const { larkClient } = initMcpServer(options);
+    initOAPIMcpServer(options);
 
     // 从mcp-tool模块导入LarkMcpTool
     const { LarkMcpTool } = require('../../../src/mcp-tool');
-    // 检查是否合并了默认工具和额外的工具
+    // 验证LarkMcpTool被调用且包含toolsOptions
     expect(LarkMcpTool).toHaveBeenCalledWith(
       expect.objectContaining({
         toolsOptions: expect.objectContaining({
-          allowTools: expect.arrayContaining([...defaultToolNames, 'preset.default', 'extra-tool']),
+          allowTools: expect.any(Array),
         }),
       }),
+      undefined,
     );
+
+    // 验证tools被正确传递
+    const calls = LarkMcpTool.mock.calls;
+    const toolsOptions = calls[calls.length - 1][0].toolsOptions;
+    expect(toolsOptions.allowTools).toEqual(expect.arrayContaining(['preset.default', 'extra-tool']));
+  });
+});
+
+describe('initRecallMcpServer', () => {
+  it('应该正确初始化Recall MCP服务器', () => {
+    const options = {
+      appId: 'test-app-id',
+      appSecret: 'test-app-secret',
+      host: 'localhost',
+      port: 3000,
+      mode: 'stdio' as const,
+    };
+
+    initRecallMcpServer(options);
+
+    expect(McpServer).toHaveBeenCalled();
+  });
+});
+
+describe('initMcpServerWithTransport', () => {
+  it('应该正确初始化OAPI MCP服务器', () => {
+    const options = {
+      appId: 'test-app-id',
+      appSecret: 'test-app-secret',
+      host: 'localhost',
+      port: 3000,
+      mode: 'stdio' as const,
+    };
+    initMcpServerWithTransport('oapi', options);
+  });
+
+  it('应该正确初始化OAPI SSE MCP服务器', () => {
+    const options = {
+      appId: 'test-app-id',
+      appSecret: 'test-app-secret',
+      host: 'localhost',
+      port: 3000,
+      mode: 'sse' as const,
+    };
+    initMcpServerWithTransport('oapi', options);
+  });
+
+  it('应该正确初始化OAPI streamable MCP服务器', () => {
+    const options = {
+      appId: 'test-app-id',
+      appSecret: 'test-app-secret',
+      host: 'localhost',
+      port: 3000,
+      mode: 'streamable' as const,
+    };
+    initMcpServerWithTransport('oapi', options);
+  });
+
+  it('应该正确初始化Recall MCP服务器', () => {
+    const options = {
+      appId: 'test-app-id',
+      appSecret: 'test-app-secret',
+      host: 'localhost',
+      port: 3000,
+      mode: 'stdio' as const,
+    };
+
+    initMcpServerWithTransport('recall', options);
+  });
+
+  it('应该在userAccessToken和oauth同时存在时抛出错误', async () => {
+    const options = {
+      appId: 'test-app-id',
+      appSecret: 'test-app-secret',
+      host: 'localhost',
+      port: 3000,
+      mode: 'stdio' as const,
+      userAccessToken: 'test-token',
+      oauth: true,
+    };
+
+    await expect(initMcpServerWithTransport('oapi', options)).rejects.toThrow(
+      'userAccessToken and oauth cannot be used together',
+    );
+  });
+
+  it('应该在无效的服务器类型时抛出错误', async () => {
+    const options = {
+      appId: 'test-app-id',
+      appSecret: 'test-app-secret',
+      host: 'localhost',
+      port: 3000,
+      mode: 'stdio' as const,
+    };
+
+    await expect(initMcpServerWithTransport('invalid' as any, options)).rejects.toThrow('Invalid server type');
+  });
+
+  it('应该在无效的模式时抛出错误', async () => {
+    const options = {
+      appId: 'test-app-id',
+      appSecret: 'test-app-secret',
+      host: 'localhost',
+      port: 3000,
+      mode: 'invalid' as any,
+    };
+
+    await expect(initMcpServerWithTransport('oapi', options)).rejects.toThrow('Invalid mode:invalid');
   });
 });

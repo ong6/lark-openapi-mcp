@@ -123,7 +123,7 @@ export const apaasV1ApplicationAuditLogGet = {
       log_id: z
         .string()
         .describe(
-          '审计日志ID信息（通过获取单条日志ID）',
+          '审计日志ID信息（通过[查询审计日志列表]获取单条日志ID）',
         ),
     }),
     path: z.object({ namespace: z.string().describe('应用命名空间') }),

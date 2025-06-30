@@ -64,7 +64,7 @@ export const taskV2AttachmentDelete = {
       attachment_guid: z
         .string()
         .describe(
-          '要删除附件的GUID。可以通过创建接口创建, 或者通过接口查询得到',
+          '要删除附件的GUID。可以通过创建[上传附件]接口创建, 或者通过[列取附件]接口查询得到',
         )
         .optional(),
     }),
@@ -86,7 +86,7 @@ export const taskV2AttachmentGet = {
       attachment_guid: z
         .string()
         .describe(
-          '获取详情的附件GUID。可以通过创建接口创建, 或者通过接口查询得到',
+          '获取详情的附件GUID。可以通过创建[上传附件]接口创建, 或者通过[列取附件]接口查询得到',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -114,7 +114,7 @@ export const taskV2AttachmentList = {
       resource_id: z
         .string()
         .describe(
-          '附件归属资源的id，配合resource_type使用。例如希望获取任务的附件，需要设置 resource_type为task， resource_id为任务GUID。任务GUID的获取方式可以参考',
+          '附件归属资源的id，配合resource_type使用。例如希望获取任务的附件，需要设置 resource_type为task， resource_id为任务GUID。任务GUID的获取方式可以参考[任务功能概述]',
         ),
       user_id_type: z.string().describe('用户ID类型').optional(),
     }),
@@ -207,7 +207,7 @@ export const taskV2CommentPatch = {
   path: '/open-apis/task/v2/comments/:comment_id',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-任务-评论-更新评论-更新一条评论。更新时，将`update_fields`字段中填写所有要修改的评论的字段名，同时在`comment`字段中填写要修改的字段的新值即可。更新接口规范详情见中的“ 关于资源的更新”章节。目前只支持更新评论的"conent"字段',
+    '[Feishu/Lark]-任务-评论-更新评论-更新一条评论。更新时，将`update_fields`字段中填写所有要修改的评论的字段名，同时在`comment`字段中填写要修改的字段的新值即可。更新接口规范详情见[功能概述]中的“ 关于资源的更新”章节。目前只支持更新评论的"conent"字段',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -246,7 +246,7 @@ export const taskV2CustomFieldAdd = {
       custom_field_guid: z
         .string()
         .describe(
-          '自定义字段GUID。自定义字段GUID。可以通过接口创建, 或者通过接口查询得到',
+          '自定义字段GUID。自定义字段GUID。可以通过[创建自定义字段]接口创建, 或者通过[列取自定义字段]接口查询得到',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -381,7 +381,7 @@ export const taskV2CustomFieldGet = {
       custom_field_guid: z
         .string()
         .describe(
-          '自定义字段GUID。可以通过接口创建, 或者通过接口查询得到',
+          '自定义字段GUID。可以通过[创建自定义字段]接口创建, 或者通过[列取自定义字段]接口查询得到',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -478,7 +478,7 @@ export const taskV2CustomFieldPatch = {
   path: '/open-apis/task/v2/custom_fields/:custom_field_guid',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-任务-自定义字段-更新自定义字段-更新一个自定义字段的名称和设定。更新时，将`update_fields`字段中填写所有要修改的任务字段名，同时在`custom_field`字段中填写要修改的字段的新值即可。自定义字段不允许修改类型，只能根据类型修改其设置。`update_fields`支持更新的字段包括：* `name`：自定义字段名称* `number_setting` ：数字类型设置（当且仅当要更新的自定义字段类型是数字时)* `member_setting` ：人员类型设置（当且仅当要更新的自定义字段类型是人员时)* `datetime_setting` ：日期类型设置 (当且仅当要更新的自定义字段类型是日期时)* `single_select_setting`：单选类型设置 (当且仅当要更新的自定义字段类型是单选时)* `multi_select_setting`：多选类型设置 (当且仅当要更新的自定义字段类型是多选时)* `text_setting`: 文本类型设置（目前文本类型没有可设置项）当更改某个设置时，如果不填写一个字段，表示不覆盖原有的设定。比如，对于一个数字，原有的setting是:```json"number_setting": { "format": "normal", "decimal_count": 2, "separator": "none", "custom_symbol": "L", "custom_symbol_position": "right"}```使用如下参数调用接口：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "number_setting": { "decimal_count": 4 } }, "update_fields": ["number_setting"]}```表示仅仅将小数位数从2改为4，其余的设置`format`, `separator`, `custom_field`等都不变。对于单选/多选类型的自定义字段，其设定是一个选项列表。更新时，使用方式接近使用App的界面。使用者不必传入字段的所有选项，而是只需要提供最终希望界面可见（is_hidden=false) 的选项。原有字段中的选项如果没有出现在输入中，则被置为`is_hidden=true`并放到所有可见选项之后。对于某一个更新的选项，如果提供了option_guid，将视作更新该选项（此时option_guid必须存在于当前字段，否则会返回错误）；如果不提供，将视作新建一个选项（新的选项的option_guid会在reponse中被返回)。例如，一个单选字段原来有3个选项A，B，C，D。其中C是隐藏的。用户可以这样更新选项：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "optoins": [ { "name": "E", "color_index": 25 }, { "guid": "<option_guid of A>" "name": "A2" }, { "guid": "<option_guid of C>", }, ] } }, "update_fields": ["single_select_setting"]}```调用后最终得到了新的选项列表E, A, C, B, D。其中：* 选项E被新建出来，其`color_index`被设为了25。* 选项A被更新，其名称被改为了"A2"。但其color_index因为没有设置而保持不变；* 选项整体顺序遵循用户的输入顺序，即E，A，C。同时E，A，C作为直接的输入，其is_hidden均被设为了false，其中，C原本是is_hidden=true，也会被设置为is_hidden=false。* 选项B和D因为用户没有输入，其`is_hidden`被置为了true，并且被放到了所有用户输入的选项之后。如果只是单纯的希望修改用户可见的选项的顺序，比如从原本的选项A,B,C修改为C,B,A，可以这样调用接口：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "optoins": [ { "guid": "<option_guid_of_C>" }, { "guid": "<option_guid of B>" }, { "guid": "<option_guid of A>", }, ] } }, "update_fields": ["single_select_setting"]}```如果希望直接将字段里的所有选项都标记为不可见，可以这样调用接口：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "optoins": [] } }, "update_fields": ["single_select_setting"]}```更新单选/多选字段的选项必须满足“可见选项名字不能重复”的约束。否则会返回错误。开发者需要自行保证输入的选项名不可以重复。如希望只更新单个选项，或者希望单独设置某个选项的is_hidden，本接口无法支持，但可以使用接口实现',
+    '[Feishu/Lark]-任务-自定义字段-更新自定义字段-更新一个自定义字段的名称和设定。更新时，将`update_fields`字段中填写所有要修改的任务字段名，同时在`custom_field`字段中填写要修改的字段的新值即可。自定义字段不允许修改类型，只能根据类型修改其设置。`update_fields`支持更新的字段包括：* `name`：自定义字段名称* `number_setting` ：数字类型设置（当且仅当要更新的自定义字段类型是数字时)* `member_setting` ：人员类型设置（当且仅当要更新的自定义字段类型是人员时)* `datetime_setting` ：日期类型设置 (当且仅当要更新的自定义字段类型是日期时)* `single_select_setting`：单选类型设置 (当且仅当要更新的自定义字段类型是单选时)* `multi_select_setting`：多选类型设置 (当且仅当要更新的自定义字段类型是多选时)* `text_setting`: 文本类型设置（目前文本类型没有可设置项）当更改某个设置时，如果不填写一个字段，表示不覆盖原有的设定。比如，对于一个数字，原有的setting是:```json"number_setting": { "format": "normal", "decimal_count": 2, "separator": "none", "custom_symbol": "L", "custom_symbol_position": "right"}```使用如下参数调用接口：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "number_setting": { "decimal_count": 4 } }, "update_fields": ["number_setting"]}```表示仅仅将小数位数从2改为4，其余的设置`format`, `separator`, `custom_field`等都不变。对于单选/多选类型的自定义字段，其设定是一个选项列表。更新时，使用方式接近使用App的界面。使用者不必传入字段的所有选项，而是只需要提供最终希望界面可见（is_hidden=false) 的选项。原有字段中的选项如果没有出现在输入中，则被置为`is_hidden=true`并放到所有可见选项之后。对于某一个更新的选项，如果提供了option_guid，将视作更新该选项（此时option_guid必须存在于当前字段，否则会返回错误）；如果不提供，将视作新建一个选项（新的选项的option_guid会在reponse中被返回)。例如，一个单选字段原来有3个选项A，B，C，D。其中C是隐藏的。用户可以这样更新选项：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "optoins": [ { "name": "E", "color_index": 25 }, { "guid": "<option_guid of A>" "name": "A2" }, { "guid": "<option_guid of C>", }, ] } }, "update_fields": ["single_select_setting"]}```调用后最终得到了新的选项列表E, A, C, B, D。其中：* 选项E被新建出来，其`color_index`被设为了25。* 选项A被更新，其名称被改为了"A2"。但其color_index因为没有设置而保持不变；* 选项整体顺序遵循用户的输入顺序，即E，A，C。同时E，A，C作为直接的输入，其is_hidden均被设为了false，其中，C原本是is_hidden=true，也会被设置为is_hidden=false。* 选项B和D因为用户没有输入，其`is_hidden`被置为了true，并且被放到了所有用户输入的选项之后。如果只是单纯的希望修改用户可见的选项的顺序，比如从原本的选项A,B,C修改为C,B,A，可以这样调用接口：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "optoins": [ { "guid": "<option_guid_of_C>" }, { "guid": "<option_guid of B>" }, { "guid": "<option_guid of A>", }, ] } }, "update_fields": ["single_select_setting"]}```如果希望直接将字段里的所有选项都标记为不可见，可以这样调用接口：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "optoins": [] } }, "update_fields": ["single_select_setting"]}```更新单选/多选字段的选项必须满足“可见选项名字不能重复”的约束。否则会返回错误。开发者需要自行保证输入的选项名不可以重复。如希望只更新单个选项，或者希望单独设置某个选项的is_hidden，本接口无法支持，但可以使用[更新自定义字段选项]接口实现',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -577,7 +577,7 @@ export const taskV2CustomFieldPatch = {
       custom_field_guid: z
         .string()
         .describe(
-          '自定义字段GUID。自定义字段GUID。可以通过接口创建, 或者通过接口查询得到',
+          '自定义字段GUID。自定义字段GUID。可以通过[创建自定义字段]接口创建, 或者通过[列取自定义字段]接口查询得到',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -603,7 +603,7 @@ export const taskV2CustomFieldRemove = {
       custom_field_guid: z
         .string()
         .describe(
-          '自定义字段GUID。自定义字段GUID。可以通过接口创建, 或者通过接口查询得到',
+          '自定义字段GUID。自定义字段GUID。可以通过[创建自定义字段]接口创建, 或者通过[列取自定义字段]接口查询得到',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -713,7 +713,7 @@ export const taskV2SectionPatch = {
   path: '/open-apis/task/v2/sections/:section_guid',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-任务-自定义分组-更新自定义分组-更新自定义分组，可以更新自定义分组的名称和位置。更新时，将`update_fields`字段中填写所有要修改的字段名，同时在`section`字段中填写要修改的字段的新值即可。调用约定详情见中的“ 关于资源的更新”章节。目前支持更新的字段包括：* `name` - 自定义字段名字;* `insert_before` - 要让当前自定义分组放到某个自定义分组前面的secion_guid，用于改变当前自定义分组的位置;* `insert_after` - 要让当前自定义分组放到某个自定义分组后面的secion_guid，用于改变当前自定义分组的位置。`insert_before`和`insert_after`如果填写，必须是同一个资源的合法section_guid。注意不能同时设置`insert_before`和`insert_after`',
+    '[Feishu/Lark]-任务-自定义分组-更新自定义分组-更新自定义分组，可以更新自定义分组的名称和位置。更新时，将`update_fields`字段中填写所有要修改的字段名，同时在`section`字段中填写要修改的字段的新值即可。调用约定详情见[功能概述]中的“ 关于资源的更新”章节。目前支持更新的字段包括：* `name` - 自定义字段名字;* `insert_before` - 要让当前自定义分组放到某个自定义分组前面的secion_guid，用于改变当前自定义分组的位置;* `insert_after` - 要让当前自定义分组放到某个自定义分组后面的secion_guid，用于改变当前自定义分组的位置。`insert_before`和`insert_after`如果填写，必须是同一个资源的合法section_guid。注意不能同时设置`insert_before`和`insert_after`',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -793,7 +793,7 @@ export const taskV2TaskAddMembers = {
   path: '/open-apis/task/v2/tasks/:task_guid/add_members',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-任务-任务-添加任务成员-添加任务的负责人或者关注人。一次性可以添加多个成员。返回任务的实体中会返回最终任务成员的列表。* 关于member的格式，详见中的“ 如何表示任务和清单的成员？”章节。* 成员的角色支持"assignee"和"follower"。* 成员类型支持"user"和"app"。* 如果要添加的成员已经在任务中，则自动被忽略',
+    '[Feishu/Lark]-任务-任务-添加任务成员-添加任务的负责人或者关注人。一次性可以添加多个成员。返回任务的实体中会返回最终任务成员的列表。* 关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节。* 成员的角色支持"assignee"和"follower"。* 成员类型支持"user"和"app"。* 如果要添加的成员已经在任务中，则自动被忽略',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -806,12 +806,12 @@ export const taskV2TaskAddMembers = {
           }),
         )
         .describe(
-          '要添加的members列表，单请求支持最大50个成员（去重后)。关于member的格式，详见中的“ 如何表示任务和清单的成员？”章节',
+          '要添加的members列表，单请求支持最大50个成员（去重后)。关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节',
         ),
       client_token: z
         .string()
         .describe(
-          '幂等token，如果提供则实现幂等行为。详见中的“ 幂等调用 ”章节',
+          '幂等token，如果提供则实现幂等行为。详见[功能概述]中的“ 幂等调用 ”章节',
         )
         .optional(),
     }),
@@ -827,7 +827,7 @@ export const taskV2TaskAddReminders = {
   path: '/open-apis/task/v2/tasks/:task_guid/add_reminders',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-任务-任务-添加任务提醒-为一个任务添加提醒。提醒是基于任务的截止时间计算得到的一个时刻。为了设置提醒，任务必须首先拥有截止时间(due)。可以在时设置截止时间，或者通过设置一个截止时间。目前一个任务只能设置1个提醒。但接口的形式可以在未来扩充为一个任务支持多个提醒。如果当前任务已经有提醒了，要更新提醒的设置，需要先调用接口移除原有提醒。再调用本接口添加提醒',
+    '[Feishu/Lark]-任务-任务-添加任务提醒-为一个任务添加提醒。提醒是基于任务的截止时间计算得到的一个时刻。为了设置提醒，任务必须首先拥有截止时间(due)。可以在[创建任务]时设置截止时间，或者通过[更新任务]设置一个截止时间。目前一个任务只能设置1个提醒。但接口的形式可以在未来扩充为一个任务支持多个提醒。如果当前任务已经有提醒了，要更新提醒的设置，需要先调用[移除任务提醒]接口移除原有提醒。再调用本接口添加提醒',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -872,7 +872,7 @@ export const taskV2TaskCreate = {
   path: '/open-apis/task/v2/tasks',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-任务-任务-创建任务-该接口可以创建一个任务，在创建任务时，支持填写任务的基本信息（如标题、描述、负责人等），此外，还可以设置任务的开始时间、截止时间提醒等条件，此外，还可以通过传入 tasklists 字段将新任务加到多个清单中。创建任务时，可以通过设置`members`字段来设置任务的负责人和关注人。关于member的格式，详见中的“ 如何表示任务和清单的成员？ ”章节。如果要设置任务的开始时间和截止时间，需要遵守任务时间的格式和约束。详见中的“ 如何使用开始时间和截止时间？”章节。如要设置自定义字段值，可以设置`custom_fields`字段。但因为自定义字段归属于清单，因此要填写的自定义字段的guid必须归属于要添加的清单(通过`tasklists`设置）。详见。通过设置`client_token`实现幂等调用。详见中的“ 幂等调用 ”章节。如要创建一个任务的子任务，需要使用接口。创建任务时可以一并设置自定义字段值。但根据自定义字段的权限关系，任务只能添加`tasklists`字段设置的清单中关联的自定义字段的值。详见中的介绍',
+    '[Feishu/Lark]-任务-任务-创建任务-该接口可以创建一个任务，在创建任务时，支持填写任务的基本信息（如标题、描述、负责人等），此外，还可以设置任务的开始时间、截止时间提醒等条件，此外，还可以通过传入 tasklists 字段将新任务加到多个清单中。创建任务时，可以通过设置`members`字段来设置任务的负责人和关注人。关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？ ”章节。如果要设置任务的开始时间和截止时间，需要遵守任务时间的格式和约束。详见[功能概述]中的“ 如何使用开始时间和截止时间？”章节。如要设置自定义字段值，可以设置`custom_fields`字段。但因为自定义字段归属于清单，因此要填写的自定义字段的guid必须归属于要添加的清单(通过`tasklists`设置）。详见[自定义字段概览]。通过设置`client_token`实现幂等调用。详见[功能概述]中的“ 幂等调用 ”章节。如要创建一个任务的子任务，需要使用[创建子任务]接口。创建任务时可以一并设置自定义字段值。但根据自定义字段的权限关系，任务只能添加`tasklists`字段设置的清单中关联的自定义字段的值。详见[自定义字段功能概述]中的介绍',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -892,7 +892,7 @@ export const taskV2TaskCreate = {
             .optional(),
         })
         .describe(
-          '任务截止时间。详见中的“ 如何使用开始时间和截止时间？”章节',
+          '任务截止时间。详见[功能概述]中的“ 如何使用开始时间和截止时间？”章节',
         )
         .optional(),
       origin: z
@@ -928,7 +928,7 @@ export const taskV2TaskCreate = {
             .optional(),
         })
         .describe(
-          '任务关联的第三方平台来源信息，用于来源信息在飞书任务界面的展示。只能创建任务时设置，一旦设置后就不可变更。详见中的“ 如何使用Origin? ”章节',
+          '任务关联的第三方平台来源信息，用于来源信息在飞书任务界面的展示。只能创建任务时设置，一旦设置后就不可变更。详见[功能概述]中的“ 如何使用Origin? ”章节',
         )
         .optional(),
       extra: z
@@ -949,16 +949,17 @@ export const taskV2TaskCreate = {
             id: z.string().describe('表示member的id'),
             type: z.string().describe('成员的类型，可以是user或者app').optional(),
             role: z.string().describe('成员角色，可以是"assignee"或者"follower"'),
+            name: z.string().describe('成员名称').optional(),
           }),
         )
         .describe(
-          '任务成员列表，包括负责人和关注人。不填写表示任务无成员。单次请求支持最大50个成员（去重后）。详见中的“ 如何表示任务和清单的成员？ ”章节',
+          '任务成员列表，包括负责人和关注人。不填写表示任务无成员。单次请求支持最大50个成员（去重后）。详见[功能概述]中的“ 如何表示任务和清单的成员？ ”章节',
         )
         .optional(),
       repeat_rule: z
         .string()
         .describe(
-          '重复任务规则。如果设置，则该任务为“重复任务”。详见中的“如何使用重复任务？”章节',
+          '重复任务规则。如果设置，则该任务为“重复任务”。详见[任务功能概述]中的“如何使用重复任务？”章节',
         )
         .optional(),
       custom_complete: z
@@ -1034,7 +1035,7 @@ export const taskV2TaskCreate = {
             .optional(),
         })
         .describe(
-          '任务自定义完成配置。详见中的“ 如何使用任务自定义完成？”章节',
+          '任务自定义完成配置。详见[任务功能概述]中的“ 如何使用任务自定义完成？”章节',
         )
         .optional(),
       tasklists: z
@@ -1057,7 +1058,7 @@ export const taskV2TaskCreate = {
       client_token: z
         .string()
         .describe(
-          '幂等token。如果提供则触发后端实现幂等行为。详见中的“ 幂等调用 ”章节',
+          '幂等token。如果提供则触发后端实现幂等行为。详见[功能概述]中的“ 幂等调用 ”章节',
         )
         .optional(),
       start: z
@@ -1074,7 +1075,7 @@ export const taskV2TaskCreate = {
             .optional(),
         })
         .describe(
-          '任务的开始时间(ms), 详见中的“ 如何使用开始时间和截止时间？”章节',
+          '任务的开始时间(ms), 详见[功能概述]中的“ 如何使用开始时间和截止时间？”章节',
         )
         .optional(),
       reminders: z
@@ -1104,6 +1105,7 @@ export const taskV2TaskCreate = {
                 z.object({
                   id: z.string().describe('表示member的id').optional(),
                   type: z.string().describe('成员类型（默认user，可不填写）').optional(),
+                  name: z.string().describe('成员名称').optional(),
                 }),
               )
               .describe(
@@ -1130,6 +1132,31 @@ export const taskV2TaskCreate = {
         .describe(
           '自定义字段值。可以在创建任务的同时设置一个或多个自定义字段的值。要设置值的自定义字段必须关联于任务要加入的清单(通过`tasklists`字段设置），否则将无法设置。每个字段的值根据字段类型填写相应的字段。* 当`type`为"number"时，应使用`number_value`字段，表示数字类型自定义字段的值；* 当`type`为"member"时，应使用`member_value`字段，表示人员类型自定义字段的值；* 当`type`为"datetime"时，应使用`datetime_value`字段，表示日期类型自定义字段的值；* 当`type`为"single_select"时，应使用`single_select_value`字段，表示单选类型自定义字段的值；* 当`type`为"multi_select"时，应使用`multi_select_value`字段，表示多选类型自定义字段的值；* 当`type`为“text”时，应使用`text_value`字段，表示文本字段类型的值',
         )
+        .optional(),
+      docx_source: z
+        .object({
+          token: z
+            .string()
+            .describe(
+              '任务关联的文档token，要求：如果使用tenant_access_token请求，则请求机器人有文档编辑权限；如果使用user_access_token，则请求用户有文档的编辑权限',
+            ),
+          block_id: z
+            .string()
+            .describe('任务关联的文档block_id，要求block_id存在于token对应文档中、且block_id没有绑定过其他的任务'),
+        })
+        .describe(
+          '如果希望设置任务来源为文档，则设置此字段- 和extra互斥，同时设置时报错- 和origin互斥，同时设置时报错- 和custom_complete互斥，同时设置时报错',
+        )
+        .optional(),
+      positive_reminders: z
+        .array(
+          z.object({
+            relative_fire_minute: z
+              .number()
+              .describe('相对于截止时间的提醒时间分钟数。例如30表示截止时间前30分钟提醒；0表示截止时提醒'),
+          }),
+        )
+        .describe('正数协议每日提醒')
         .optional(),
     }),
     params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
@@ -1200,7 +1227,7 @@ export const taskV2TaskPatch = {
   path: '/open-apis/task/v2/tasks/:task_guid',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-任务-任务-更新任务-该接口用于修改任务的标题、描述、截止时间等信息。更新时，将`update_fields`字段中填写所有要修改的任务字段名，同时在`task`字段中填写要修改的字段的新值即可。如果`update_fields`中设置了要变更一个字段的名字，但是task里没设置新的值，则表示将该字段清空。调用约定详情见中的“ 关于资源的更新”章节。目前支持更新的字段包括：* `summary` - 任务标题* `description` - 任务描述* `start` - 任务开始时间* `due` - 任务截止时间* `completed_at` - 用于标记任务完成/未完成* `extra` - 任务附带自定义数据* `custom_complete` - 任务自定义完成配置。* `repeat_rule` - 重复任务规则。* `mode` - 任务完成模式。* `is_milestone` - 是否是里程碑任务。* `custom_fields` - 自定义字段值。该接口可以用于完成任务和将任务恢复至未完成，只需要修改`completed_at`字段即可。但留意，目前不管任务本身是会签任务还是或签任务，oapi对任务进行完成只能实现“整体完成”，不支持个人单独完成。此外，不能对已经完成的任务再次完成，但可以将其恢复到未完成的状态(设置`completed_at`为"0")。如更新自定义字段的值，需要调用身份同时拥有任务的编辑权限和自定义字段的编辑权限。详情见。更新时，只有填写在`task.custom_fields`的自定义字段值会被更新，不填写的不会被改变。任务成员/提醒/清单数据不能使用本接口进行更新。* 如要修改任务成员，需要使用和接口。* 如要修改任务提醒，需要使用和接口。* 如要变更任务所在的清单，需要使用和[任务移出清单]( https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/remove_tasklist)接口',
+    '[Feishu/Lark]-任务-任务-更新任务-该接口用于修改任务的标题、描述、截止时间等信息。更新时，将`update_fields`字段中填写所有要修改的任务字段名，同时在`task`字段中填写要修改的字段的新值即可。如果`update_fields`中设置了要变更一个字段的名字，但是task里没设置新的值，则表示将该字段清空。调用约定详情见[功能概述]中的“ 关于资源的更新”章节。目前支持更新的字段包括：* `summary` - 任务标题* `description` - 任务描述* `start` - 任务开始时间* `due` - 任务截止时间* `completed_at` - 用于标记任务完成/未完成* `extra` - 任务附带自定义数据* `custom_complete` - 任务自定义完成配置。* `repeat_rule` - 重复任务规则。* `mode` - 任务完成模式。* `is_milestone` - 是否是里程碑任务。* `custom_fields` - 自定义字段值。该接口可以用于完成任务和将任务恢复至未完成，只需要修改`completed_at`字段即可。但留意，目前不管任务本身是会签任务还是或签任务，oapi对任务进行完成只能实现“整体完成”，不支持个人单独完成。此外，不能对已经完成的任务再次完成，但可以将其恢复到未完成的状态(设置`completed_at`为"0")。如更新自定义字段的值，需要调用身份同时拥有任务的编辑权限和自定义字段的编辑权限。详情见[自定义字段功能概览]。更新时，只有填写在`task.custom_fields`的自定义字段值会被更新，不填写的不会被改变。任务成员/提醒/清单数据不能使用本接口进行更新。* 如要修改任务成员，需要使用[添加任务成员]和[移除任务成员]接口。* 如要修改任务提醒，需要使用[添加任务提醒]和[移除任务提醒]接口。* 如要变更任务所在的清单，需要使用[任务加入清单]和[任务移出清单]接口',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1225,7 +1252,7 @@ export const taskV2TaskPatch = {
                 .optional(),
             })
             .describe(
-              '任务截止时间。详见中的“ 如何使用开始时间和截止时间？”章节',
+              '任务截止时间。详见[功能概述]中的“ 如何使用开始时间和截止时间？”章节',
             )
             .optional(),
           extra: z.string().describe('调用者可以传入的任意附带到任务上的数据。在获取任务详情时会原样返回').optional(),
@@ -1233,7 +1260,7 @@ export const taskV2TaskPatch = {
           repeat_rule: z
             .string()
             .describe(
-              '如果设置，则该任务为“重复任务”。详见中的“如何使用重复任务？”章节',
+              '如果设置，则该任务为“重复任务”。详见[任务功能概述]中的“如何使用重复任务？”章节',
             )
             .optional(),
           custom_complete: z
@@ -1309,7 +1336,7 @@ export const taskV2TaskPatch = {
                 .optional(),
             })
             .describe(
-              '任务自定义完成配置。详见中的“ 如何使用任务自定义完成？”章节',
+              '任务自定义完成配置。详见[任务功能概述]中的“ 如何使用任务自定义完成？”章节',
             )
             .optional(),
           start: z
@@ -1326,7 +1353,7 @@ export const taskV2TaskPatch = {
                 .optional(),
             })
             .describe(
-              '任务的开始时间(ms)。详见中的“ 如何使用开始时间和截止时间？”章节',
+              '任务的开始时间(ms)。详见[功能概述]中的“ 如何使用开始时间和截止时间？”章节',
             )
             .optional(),
           mode: z.number().describe('任务的完成模式。1 - 会签任务；2 - 或签任务').optional(),
@@ -1470,7 +1497,7 @@ export const taskV2TaskSubtaskCreate = {
   path: '/open-apis/task/v2/tasks/:task_guid/subtasks',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-任务-子任务-创建子任务-给一个任务创建一个子任务。接口功能除了额外需要输入父任务的GUID之外，和接口功能完全一致',
+    '[Feishu/Lark]-任务-子任务-创建子任务-给一个任务创建一个子任务。接口功能除了额外需要输入父任务的GUID之外，和[创建任务]接口功能完全一致',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1519,7 +1546,7 @@ export const taskV2TaskSubtaskCreate = {
             .optional(),
         })
         .describe(
-          '任务关联的第三方平台来源信息。详见',
+          '任务关联的第三方平台来源信息。详见[如何使用Origin?]',
         )
         .optional(),
       extra: z.string().describe('调用者可以传入的任意附带到任务上的数据。在获取任务详情时会原样返回').optional(),
@@ -1537,7 +1564,7 @@ export const taskV2TaskSubtaskCreate = {
       repeat_rule: z
         .string()
         .describe(
-          '如果设置，则该任务为“重复任务”。该字段表示了重复任务的重复规则。详见中的“如何使用重复任务？”章节',
+          '如果设置，则该任务为“重复任务”。该字段表示了重复任务的重复规则。详见[功能概述]中的“如何使用重复任务？”章节',
         )
         .optional(),
       custom_complete: z
@@ -1613,7 +1640,7 @@ export const taskV2TaskSubtaskCreate = {
             .optional(),
         })
         .describe(
-          '任务自定义完成规则。详见中的“如何使用自定义完成？”章节',
+          '任务自定义完成规则。详见[功能概述]中的“如何使用自定义完成？”章节',
         )
         .optional(),
       tasklists: z
@@ -1633,7 +1660,7 @@ export const taskV2TaskSubtaskCreate = {
       client_token: z
         .string()
         .describe(
-          '幂等token。如果提供则触发后端实现幂等行为。详见中的“ 幂等调用 ”章节',
+          '幂等token。如果提供则触发后端实现幂等行为。详见[功能概述]中的“ 幂等调用 ”章节',
         )
         .optional(),
       start: z
@@ -1751,12 +1778,12 @@ export const taskV2TasklistActivitySubscriptionDelete = {
       tasklist_guid: z
         .string()
         .describe(
-          '清单GUID。可以通过，或者通过接口查询得到',
+          '清单GUID。可以通过[创建清单]，或者通过[获取清单列表]接口查询得到',
         ),
       activity_subscription_guid: z
         .string()
         .describe(
-          '要删除的订阅GUID。可以通过接口创建，或者通过查询得到',
+          '要删除的订阅GUID。可以通过[创建动态订阅]接口创建，或者通过[列取动态订阅]查询得到',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1777,12 +1804,12 @@ export const taskV2TasklistActivitySubscriptionGet = {
       tasklist_guid: z
         .string()
         .describe(
-          '清单GUID。可以通过，或者通过接口查询得到',
+          '清单GUID。可以通过[创建清单]，或者通过[获取清单列表]接口查询得到',
         ),
       activity_subscription_guid: z
         .string()
         .describe(
-          '订阅GUID。可以通过接口创建，或者通过查询得到',
+          '订阅GUID。可以通过[创建动态订阅]接口创建，或者通过[列取动态订阅]查询得到',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1806,7 +1833,7 @@ export const taskV2TasklistActivitySubscriptionList = {
       tasklist_guid: z
         .string()
         .describe(
-          '清单GUID。可以通过，或者通过接口查询得到',
+          '清单GUID。可以通过[创建清单]，或者通过[获取清单列表]接口查询得到',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1859,12 +1886,12 @@ export const taskV2TasklistActivitySubscriptionPatch = {
       tasklist_guid: z
         .string()
         .describe(
-          '清单GUID。可以通过，或者通过接口查询得到',
+          '清单GUID。可以通过[创建清单]，或者通过[获取清单列表]接口查询得到',
         ),
       activity_subscription_guid: z
         .string()
         .describe(
-          '要更新的动态订阅GUID。可以通过接口创建，或者通过查询得到',
+          '要更新的动态订阅GUID。可以通过[创建动态订阅]接口创建，或者通过[列取动态订阅]查询得到',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1877,7 +1904,7 @@ export const taskV2TasklistAddMembers = {
   path: '/open-apis/task/v2/tasklists/:tasklist_guid/add_members',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-任务-清单-添加清单成员-向一个清单添加1个或多个协作成员。成员信息通过设置`members`字段实现。关于member的格式，详见中的“ 如何表示任务和清单的成员？”章节。一个清单协作成员可以是一个用户，应用或者群组。每个成员可以设置“可编辑”或者“可阅读”的角色。群组作为协作成员表示该群里所有群成员都自动拥有群组协作成员的角色。如果要添加的成员已经是清单成员，且角色和请求中设置是一样的，则会被自动忽略，接口返回成功。如果要添加的成员已经是清单成员，且角色和请求中设置是不一样的（比如原来的角色是可阅读，请求中设为可编辑），则相当于更新其角色。如果要添加的成员已经是清单的所有者，则会被自动忽略。接口返回成功。其所有者的角色不会改变。本接口不能用来设置清单所有者，如要设置，可以使用接口',
+    '[Feishu/Lark]-任务-清单-添加清单成员-向一个清单添加1个或多个协作成员。成员信息通过设置`members`字段实现。关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节。一个清单协作成员可以是一个用户，应用或者群组。每个成员可以设置“可编辑”或者“可阅读”的角色。群组作为协作成员表示该群里所有群成员都自动拥有群组协作成员的角色。如果要添加的成员已经是清单成员，且角色和请求中设置是一样的，则会被自动忽略，接口返回成功。如果要添加的成员已经是清单成员，且角色和请求中设置是不一样的（比如原来的角色是可阅读，请求中设为可编辑），则相当于更新其角色。如果要添加的成员已经是清单的所有者，则会被自动忽略。接口返回成功。其所有者的角色不会改变。本接口不能用来设置清单所有者，如要设置，可以使用[更新清单]接口',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1900,7 +1927,7 @@ export const taskV2TasklistAddMembers = {
           }),
         )
         .describe(
-          '要添加的成员列表。关于member的格式，详见中的“ 如何表示任务和清单的成员？”章节',
+          '要添加的成员列表。关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节',
         ),
     }),
     params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
@@ -1915,7 +1942,7 @@ export const taskV2TasklistCreate = {
   path: '/open-apis/task/v2/tasklists',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-任务-清单-创建清单-创建一个清单。清单可以用于组织和管理属于同一个项目的多个任务。创建时，必须填写清单的名字。同时，可以设置通过`members`字段设置清单的协作成员。关于member的格式，详见中的“ 如何表示任务和清单的成员？”章节。创建清单后，创建人自动成为清单的所有者。如果请求同时将创建人设置为可编辑/可阅读角色，则最终该用户成为清单所有者，并自动从清单成员列表中消失。因为同一个用户在同一个清单只能拥有一个角色',
+    '[Feishu/Lark]-任务-清单-创建清单-创建一个清单。清单可以用于组织和管理属于同一个项目的多个任务。创建时，必须填写清单的名字。同时，可以设置通过`members`字段设置清单的协作成员。关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节。创建清单后，创建人自动成为清单的所有者。如果请求同时将创建人设置为可编辑/可阅读角色，则最终该用户成为清单所有者，并自动从清单成员列表中消失。因为同一个用户在同一个清单只能拥有一个角色',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1937,7 +1964,7 @@ export const taskV2TasklistCreate = {
           }),
         )
         .describe(
-          '清单的成员列表。关于member的格式，详见中的“ 如何表示任务和清单的成员？”章节',
+          '清单的成员列表。关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节',
         )
         .optional(),
     }),
@@ -2002,7 +2029,7 @@ export const taskV2TasklistPatch = {
   path: '/open-apis/task/v2/tasklists/:tasklist_guid',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-任务-清单-更新清单-更新清单，可以更新清单的名字和所有者。更新清单时，将`update_fields`字段中填写所有要修改的清单字段名，同时在`tasklist`字段中填写要修改的字段的新值即可。更新调用规范详见中的“ 关于资源的更新”章节。支持更新的字段包括:* `name` - 清单名字* `owner` - 清单所有者更新清单所有者（owner）时，如果该成员已经是清单的“可编辑”或者“可阅读”角色，则该成员将直接升级为所有者角色，自动从清单的成员列表中消失。这是因为同一个用户在同一个清单中只能有一个角色。同时，支持使用`origin_owner_to_role`字段将原有所有者变为可编辑/可阅读角色或者直接退出清单。该接口不能用于更新清单的成员和增删清单中的任务。* 如要增删清单中的成员，可以使用和接口。* 如要增删清单中的任务，可以使用和[任务移出清单]( https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/remove_tasklist)接口',
+    '[Feishu/Lark]-任务-清单-更新清单-更新清单，可以更新清单的名字和所有者。更新清单时，将`update_fields`字段中填写所有要修改的清单字段名，同时在`tasklist`字段中填写要修改的字段的新值即可。更新调用规范详见[功能概述]中的“ 关于资源的更新”章节。支持更新的字段包括:* `name` - 清单名字* `owner` - 清单所有者更新清单所有者（owner）时，如果该成员已经是清单的“可编辑”或者“可阅读”角色，则该成员将直接升级为所有者角色，自动从清单的成员列表中消失。这是因为同一个用户在同一个清单中只能有一个角色。同时，支持使用`origin_owner_to_role`字段将原有所有者变为可编辑/可阅读角色或者直接退出清单。该接口不能用于更新清单的成员和增删清单中的任务。* 如要增删清单中的成员，可以使用[添加清单成员]和[移除清单成员]接口。* 如要增删清单中的任务，可以使用[任务加入清单]和[任务移出清单]接口',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -2043,7 +2070,7 @@ export const taskV2TasklistRemoveMembers = {
   path: '/open-apis/task/v2/tasklists/:tasklist_guid/remove_members',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-任务-清单-移除清单成员-移除清单的一个或多个协作成员。通过设置`members`字段表示要移除的成员信息。关于member的格式，详见中的“ 如何表示任务和清单的成员？”章节。清单中同一个成员只能有一个角色，通过的member的id和type可以唯一确定一个成员，因此请求参数中对于要删除的成员，不需要填写"role"字段。如果要移除的成员不在清单中，则被自动忽略，接口返回成功。该接口不能用于移除清单所有者。如果要移除的成员是清单所有者，则会被自动忽略。如要设置清单所有者，需要调用接口',
+    '[Feishu/Lark]-任务-清单-移除清单成员-移除清单的一个或多个协作成员。通过设置`members`字段表示要移除的成员信息。关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节。清单中同一个成员只能有一个角色，通过的member的id和type可以唯一确定一个成员，因此请求参数中对于要删除的成员，不需要填写"role"字段。如果要移除的成员不在清单中，则被自动忽略，接口返回成功。该接口不能用于移除清单所有者。如果要移除的成员是清单所有者，则会被自动忽略。如要设置清单所有者，需要调用[更新清单]接口',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -2061,7 +2088,7 @@ export const taskV2TasklistRemoveMembers = {
           }),
         )
         .describe(
-          '要移除的member列表。关于member的格式，详见中的“ 如何表示任务和清单的成员？”章节',
+          '要移除的member列表。关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节',
         ),
     }),
     params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),

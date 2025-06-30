@@ -65,8 +65,13 @@ npm install -g @larksuiteoapi/lark-mcp
 ## User Guide
 
 ### Use in Trae/Cursor/Claude
+To integrate Lark features in AI tools such as Trae, Cursor or Claude, you can install using the button below.
 
-To integrate Lark features in AI tools such as Trae, Cursor or Claude, you can add the following to your configuration file:
+[![Install MCP Server](https://cursor.com/deeplink/mcp-install-light.svg)](https://cursor.com/install-mcp?name=lark_open_doc_search&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsYXJrc3VpdGVvYXBpL2xhcmstbWNwIiwicmVjYWxsLWRldmVsb3Blci1kb2N1bWVudHMiXX0=)
+
+[![Install MCP Server](./assets/trae-cn.svg)](trae-cn://trae.ai-ide/mcp-import?source=lark&type=stdio&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsYXJrc3VpdGVvYXBpL2xhcmstbWNwIiwicmVjYWxsLWRldmVsb3Blci1kb2N1bWVudHMiXX0=)  [![Install MCP Server](./assets/trae.svg)](trae-cn://trae.ai-ide/mcp-import?source=lark&type=stdio&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsYXJrc3VpdGVvYXBpL2xhcmstbWNwIiwicmVjYWxsLWRldmVsb3Blci1kb2N1bWVudHMiXX0=)
+
+or you can add the following to your configuration file:
 
 ```json
 {
@@ -91,9 +96,9 @@ The `lark-mcp recall-developer-documents` tool provides a variety of command lin
 
 | Parameter | Short | Description | Example |
 |------|------|------|------|
-| `--mode` | `-m` | Transfer mode, options are stdio or sse, default is stdio | `-m sse` |
-| `--host` |  | Listening host in SSE mode, default is localhost | `--host 0.0.0.0` |
-| `--port` | `-p` | Listening port in SSE mode, default is 3000 | `-p 3000` |
+| `--mode` | `-m` | Transfer mode, options are stdio or streamable or sse, default is stdio | `-m sse` |
+| `--host` |  | Listening host in SSE\Streamable mode, default is localhost | `--host 0.0.0.0` |
+| `--port` | `-p` | Listening port in SSE\Streamable mode, default is 3000 | `-p 3000` |
 | `--version` | `-V` | Show version number | `-V` |
 | `--help` | `-h` | Show help information | `-h` |
 

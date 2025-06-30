@@ -19,8 +19,7 @@ export const minutesV1MinuteGet = {
         .string()
         .describe(
           'Minute uniquely identifies,it can be obtained from the minute link, usually the last string of characters in the link',
-        )
-        .optional(),
+        ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -55,8 +54,7 @@ export const minutesV1MinuteStatisticsGet = {
         .string()
         .describe(
           'Minute uniquely identifies,it can be obtained from the minute link, usually the last string of characters in the link',
-        )
-        .optional(),
+        ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },

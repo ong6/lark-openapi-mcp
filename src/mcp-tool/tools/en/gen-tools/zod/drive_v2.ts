@@ -32,7 +32,7 @@ export const driveV2FileLikeList = {
       file_token: z
         .string()
         .describe(
-          'The document token specified to query the like list. ',
+          'The document token specified to query the like list. [Click to learn how to get document token]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -59,7 +59,7 @@ export const driveV2PermissionPublicGet = {
       token: z
         .string()
         .describe(
-          'Token of the file. For more information about how to obtain the token, see ',
+          'Token of the file. For more information about how to obtain the token, see [How to get the token of docs resources]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -138,7 +138,7 @@ export const driveV2PermissionPublicPatch = {
       token: z
         .string()
         .describe(
-          'Token of the file. For more information about how to obtain the token, see ',
+          'Token of the file. For more information about how to obtain the token, see [How to get the token of docs resources]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),

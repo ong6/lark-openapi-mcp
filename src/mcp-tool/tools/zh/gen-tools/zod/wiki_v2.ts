@@ -57,7 +57,7 @@ export const wikiV2SpaceGet = {
       space_id: z
         .string()
         .describe(
-          '知识空间 ID。可通过以下两种方式获取。了解更多，参考。- 调用 获取- 如果你是知识库管理员，可以进入知识库设置页面，复制地址栏的数字部分：https://sample.feishu.cn/wiki/settings/==6870403571079249922==',
+          '知识空间 ID。可通过以下两种方式获取。了解更多，参考[知识库概述]。- 调用 [获取知识空间列表]获取- 如果你是知识库管理员，可以进入知识库设置页面，复制地址栏的数字部分：https://sample.feishu.cn/wiki/settings/==6870403571079249922==',
         )
         .optional(),
     }),
@@ -77,7 +77,7 @@ export const wikiV2SpaceGetNode = {
       token: z
         .string()
         .describe(
-          '知识库节点或对应云文档的实际 token。- 知识库节点 token：如果 URL 链接中 token 前为 wiki，该 token 为知识库的节点 token。- 云文档实际 token：如果 URL 链接中 token 前为 docx、base、sheets 等非 wiki 类型，则说明该 token 是当前云文档的实际 token。了解更多，请参考。**注意**：使用云文档 token 查询时，需要对 obj_type 参数传入文档对应的类型',
+          '知识库节点或对应云文档的实际 token。- 知识库节点 token：如果 URL 链接中 token 前为 wiki，该 token 为知识库的节点 token。- 云文档实际 token：如果 URL 链接中 token 前为 docx、base、sheets 等非 wiki 类型，则说明该 token 是当前云文档的实际 token。了解更多，请参考[文档常见问题-如何获取云文档资源相关 token（id）]。**注意**：使用云文档 token 查询时，需要对 obj_type 参数传入文档对应的类型',
         ),
       obj_type: z
         .enum(['doc', 'docx', 'sheet', 'mindnote', 'bitable', 'file', 'slides', 'wiki'])
@@ -129,7 +129,7 @@ export const wikiV2SpaceMemberCreate = {
       member_type: z
         .string()
         .describe(
-          '要添加的成员或管理员的身份类型。可选值：- openchat：群组 ID。参考获取- userid：用户 ID。详情参考- email：用户邮箱- opendepartmentid：部门 ID。参考获取- openid：用户的 Open ID。详情参考- unionid：用户的 Union ID。详情参考',
+          '要添加的成员或管理员的身份类型。可选值：- openchat：群组 ID。参考[群 ID 说明]获取- userid：用户 ID。详情参考[如何获取 User ID]- email：用户邮箱- opendepartmentid：部门 ID。参考[部门资源介绍]获取- openid：用户的 Open ID。详情参考[如何获取 Open ID]- unionid：用户的 Union ID。详情参考[如何获取 Union ID]',
         ),
       member_id: z
         .string()
@@ -141,7 +141,7 @@ export const wikiV2SpaceMemberCreate = {
       space_id: z
         .string()
         .describe(
-          '知识空间 ID。可通过以下两种方式获取。了解更多，参考。- 调用 获取- 如果你是知识库管理员，可以进入知识库设置页面，复制地址栏的数字部分：https://sample.feishu.cn/wiki/settings/==6870403571079249922==',
+          '知识空间 ID。可通过以下两种方式获取。了解更多，参考[知识库概述]。- 调用 [获取知识空间列表]获取- 如果你是知识库管理员，可以进入知识库设置页面，复制地址栏的数字部分：https://sample.feishu.cn/wiki/settings/==6870403571079249922==',
         )
         .optional(),
     }),
@@ -232,14 +232,14 @@ export const wikiV2SpaceNodeCreate = {
   path: '/open-apis/wiki/v2/spaces/:space_id/nodes',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-云文档-知识库-节点-创建知识空间节点-此接口用于在知识节点里创建到指定位置',
+    '[Feishu/Lark]-云文档-知识库-节点-创建知识空间节点-此接口用于在知识节点里创建[节点]到指定位置',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       obj_type: z
         .enum(['doc', 'sheet', 'mindnote', 'bitable', 'file', 'docx', 'slides'])
         .describe(
-          '文档类型，对于快捷方式，该字段是对应的实体的obj_type。 Options:doc(ObjTypeDoc 已废弃，创建文档请使用`docx`。详情参考。),sheet(ObjTypeSheet 表格),mindnote(ObjTypeMindNote 思维导图),bitable(ObjTypeBitable 多维表格),file(ObjTypeFile 文件),docx(ObjTypeDocx 新版文档),slides(ObjTypeSlides 幻灯片)',
+          '文档类型，对于快捷方式，该字段是对应的实体的obj_type。 Options:doc(ObjTypeDoc 已废弃，创建文档请使用`docx`。详情参考[旧版文档（Docs 1.0）创建能力下线说明]。),sheet(ObjTypeSheet 表格),mindnote(ObjTypeMindNote 思维导图),bitable(ObjTypeBitable 多维表格),file(ObjTypeFile 文件),docx(ObjTypeDocx 新版文档),slides(ObjTypeSlides 幻灯片)',
         ),
       parent_node_token: z.string().describe('父节点 token。若当前节点为一级节点，父节点 token 为空').optional(),
       node_type: z
@@ -251,7 +251,7 @@ export const wikiV2SpaceNodeCreate = {
     path: z.object({
       space_id: z
         .string()
-        .describe('知识空间id')
+        .describe('知识空间id[获取方式]')
         .optional(),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -383,7 +383,7 @@ export const wikiV2TaskGet = {
       task_type: z
         .literal('move')
         .describe(
-          '任务类型 Options:move(任务)',
+          '任务类型 Options:move([移动云空间文档至知识空间]任务)',
         ),
     }),
     path: z.object({ task_id: z.string().describe('任务id').optional() }),

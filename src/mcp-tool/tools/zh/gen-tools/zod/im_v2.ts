@@ -468,19 +468,19 @@ export const imV2UrlPreviewBatchUpdate = {
   path: '/open-apis/im/v2/url_previews/batch_update',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-消息-URL 预览-更新 URL 预览-该接口用于主动更新 ，调用后会重新触发一次客户端拉取，需要回调服务返回更新后的数据',
+    '[Feishu/Lark]-消息-URL 预览-更新 URL 预览-该接口用于主动更新 [URL 预览]，调用后会重新触发一次客户端拉取，需要回调服务返回更新后的数据',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       preview_tokens: z
         .array(z.string())
         .describe(
-          'URL 预览的 preview_tokens 列表。需要通过回调获取 preview_tokens。**注意**：单个 token 限制更新频率为 1次/5秒',
+          'URL 预览的 preview_tokens 列表。需要通过[拉取链接预览数据]回调获取 preview_tokens。**注意**：单个 token 限制更新频率为 1次/5秒',
         ),
       open_ids: z
         .array(z.string())
         .describe(
-          '需要更新 URL 预览的用户 open_id。若不传，则默认更新 URL 预览所在会话的所有成员；若用户不在 URL 所在会话，则无法触发更新该用户对应的 URL 预览结果。获取方式参见',
+          '需要更新 URL 预览的用户 open_id。若不传，则默认更新 URL 预览所在会话的所有成员；若用户不在 URL 所在会话，则无法触发更新该用户对应的 URL 预览结果。获取方式参见[如何获取 Open ID]',
         )
         .optional(),
     }),

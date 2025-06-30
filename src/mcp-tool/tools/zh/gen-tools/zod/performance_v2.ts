@@ -29,7 +29,7 @@ export const performanceV2ActivityQuery = {
       semester_ids: z
         .array(z.string())
         .describe(
-          '评估周期 ID 列表，可通过获取**注意**：若填写了 `activity_ids` 参数时，此参数无效',
+          '评估周期 ID 列表，可通过[获取周期]获取**注意**：若填写了 `activity_ids` 参数时，此参数无效',
         )
         .optional(),
       activity_ids: z.array(z.string()).describe('项目 ID 列表').optional(),
@@ -51,7 +51,7 @@ export const performanceV2AdditionalInformationImport = {
       semester_id: z
         .string()
         .describe(
-          '评估周期 ID，可通过接口获取',
+          '评估周期 ID，可通过[获取周期列表]接口获取',
         ),
       additional_informations: z
         .array(
@@ -69,7 +69,7 @@ export const performanceV2AdditionalInformationImport = {
             reviewee_user_id: z
               .string()
               .describe(
-                '被评估人 ID 列表，与入参 `user_id_type` 类型一致，可通过接口获取**注意**：若 `reviewee_user_id`、`item `、`time `、`detailed_description` 的参数组合在系统中已存在内容一致的补充消息时，将更新对应的补充消息数据',
+                '被评估人 ID 列表，与入参 `user_id_type` 类型一致，可通过[获取被评估人信息]接口获取**注意**：若 `reviewee_user_id`、`item `、`time `、`detailed_description` 的参数组合在系统中已存在内容一致的补充消息时，将更新对应的补充消息数据',
               ),
             item: z
               .string()
@@ -115,24 +115,24 @@ export const performanceV2AdditionalInformationQuery = {
       semester_id: z
         .string()
         .describe(
-          '评估周期 ID，可通过接口获取**注意**：若请求参数 `item_ids`、`external_ids`、`reviewee_user_ids` 均为空，返回 `semester_id` 参数指定周期的所有补充信息',
+          '评估周期 ID，可通过[获取周期列表]接口获取**注意**：若请求参数 `item_ids`、`external_ids`、`reviewee_user_ids` 均为空，返回 `semester_id` 参数指定周期的所有补充信息',
         ),
       item_ids: z
         .array(z.string())
         .describe(
-          '补充信息 ID 列表，可通过接口获取**说明**：若提供多个筛选参数，按照 `item_ids` > `external_ids` > `reviewee_user_ids` 的优先级顺序，以第一个有值的筛选参数进行筛选',
+          '补充信息 ID 列表，可通过[批量导入补充信息]接口获取**说明**：若提供多个筛选参数，按照 `item_ids` > `external_ids` > `reviewee_user_ids` 的优先级顺序，以第一个有值的筛选参数进行筛选',
         )
         .optional(),
       external_ids: z
         .array(z.string())
         .describe(
-          '外部系统补充信息 ID 列表，该 ID 在通过接口导入时写入**说明**：若提供多个筛选参数，按照 `item_ids` > `external_ids` > `reviewee_user_ids` 的优先级顺序，以第一个有值的筛选参数进行筛选',
+          '外部系统补充信息 ID 列表，该 ID 在通过[批量导入补充信息]接口导入时写入**说明**：若提供多个筛选参数，按照 `item_ids` > `external_ids` > `reviewee_user_ids` 的优先级顺序，以第一个有值的筛选参数进行筛选',
         )
         .optional(),
       reviewee_user_ids: z
         .array(z.string())
         .describe(
-          '被评估人 ID 列表，与入参 `user_id_type` 类型一致，可通过接口获取**说明**：若提供多个筛选参数，按照 `item_ids` > `external_ids` > `reviewee_user_ids` 的优先级顺序，以第一个有值的筛选参数进行筛选',
+          '被评估人 ID 列表，与入参 `user_id_type` 类型一致，可通过[获取被评估人信息]接口获取**说明**：若提供多个筛选参数，按照 `item_ids` > `external_ids` > `reviewee_user_ids` 的优先级顺序，以第一个有值的筛选参数进行筛选',
         )
         .optional(),
     }),
@@ -161,12 +161,12 @@ export const performanceV2AdditionalInformationsBatchDelete = {
       semester_id: z
         .string()
         .describe(
-          '评估周期 ID，可通过接口获取',
+          '评估周期 ID，可通过[获取周期列表]接口获取',
         ),
       additional_informations: z
         .array(z.string().describe('飞书绩效的事项 ID'))
         .describe(
-          '补充信息 ID 列表，可通过接口获取',
+          '补充信息 ID 列表，可通过[批量查询补充信息]接口获取',
         ),
     }),
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
@@ -211,7 +211,7 @@ export const performanceV2MetricDetailImport = {
     data: z.object({
       semester_id: z
         .string()
-        .describe('周期 ID，可通过接口获取'),
+        .describe('周期 ID，可通过[获取周期]接口获取'),
       import_record_name: z.string().describe('数据源录入人，在录入记录页面可以查看该记录名称').optional(),
       imported_metrics: z
         .array(
@@ -220,7 +220,7 @@ export const performanceV2MetricDetailImport = {
             metric_id: z
               .string()
               .describe(
-                '指标 ID，可通过接口获取',
+                '指标 ID，可通过[获取指标列表]接口获取',
               ),
             fields: z
               .array(
@@ -228,7 +228,7 @@ export const performanceV2MetricDetailImport = {
                   field_id: z
                     .string()
                     .describe(
-                      '指标字段 ID，可通过接口获取',
+                      '指标字段 ID，可通过[获取指标字段列表]接口获取',
                     ),
                   field_value: z.string().describe('字段值').optional(),
                   field_value_person: z.string().describe('字段值，当字段为人员信息时必填').optional(),
@@ -258,7 +258,7 @@ export const performanceV2MetricDetailQuery = {
       semester_id: z
         .string()
         .describe(
-          '周期 ID，1 次只允许查询 1 个周期，semester_id 可通过【】接口获得',
+          '周期 ID，1 次只允许查询 1 个周期，semester_id 可通过【[获取周期]】接口获得',
         ),
       reviewee_user_ids: z.array(z.string()).describe('被评估人 ID 列表，与入参 `user_id_type` 类型一致'),
     }),
@@ -300,13 +300,13 @@ export const performanceV2MetricLibQuery = {
       tag_ids: z
         .array(z.string())
         .describe(
-          '指标标签 ID 列表，可通过接口获取，填写时筛选拥有指定标签的指标',
+          '指标标签 ID 列表，可通过[获取指标标签信息]接口获取，填写时筛选拥有指定标签的指标',
         )
         .optional(),
       type_ids: z
         .array(z.string())
         .describe(
-          '指标类型 ID 列表，可通过接口返回结果中的 `data.items.metrics.type_id` 获取，填写时根据指定的指标类型进行筛选',
+          '指标类型 ID 列表，可通过[获取指标模板列表]接口返回结果中的 `data.items.metrics.type_id` 获取，填写时根据指定的指标类型进行筛选',
         )
         .optional(),
       range_of_availability: z
@@ -429,7 +429,7 @@ export const performanceV2ReviewDataQuery = {
       semester_ids: z
         .array(z.string())
         .describe(
-          '评估周期 ID 列表，semester_id 可通过获得',
+          '评估周期 ID 列表，semester_id 可通过[【获取周期】]获得',
         ),
       reviewee_user_ids: z.array(z.string()).describe('被评估人 ID 列表，ID 类型与user_id_type 的取值一致'),
       stage_types: z
@@ -475,7 +475,7 @@ export const performanceV2ReviewDataQuery = {
       stage_ids: z
         .array(z.string())
         .describe(
-          '环节 ID，如果同时传了环节 ID 和环节类型，优先返回环节 ID 对应的绩效数据。stage_types 和 stage_ids 至少要传一个，不传默认不返回任何环节评估数据。可在事件、获得，用于接收事件后按环节查询评估数据场景',
+          '环节 ID，如果同时传了环节 ID 和环节类型，优先返回环节 ID 对应的绩效数据。stage_types 和 stage_ids 至少要传一个，不传默认不返回任何环节评估数据。可在事件[绩效结果开通]、[绩效详情变更]获得，用于接收事件后按环节查询评估数据场景',
         )
         .optional(),
       need_leader_review_data_source: z
@@ -543,7 +543,7 @@ export const performanceV2RevieweeQuery = {
       semester_id: z
         .string()
         .describe(
-          '周期 ID，可通过接口获取',
+          '周期 ID，可通过[获取周期列表]接口获取',
         ),
       user_ids: z
         .array(z.string())
@@ -552,7 +552,7 @@ export const performanceV2RevieweeQuery = {
       activity_ids: z
         .array(z.string())
         .describe(
-          '项目 ID 列表，可通过接口获取，查询指定的项目下的被评估人信息',
+          '项目 ID 列表，可通过[获取项目列表]接口获取，查询指定的项目下的被评估人信息',
         )
         .optional(),
     }),

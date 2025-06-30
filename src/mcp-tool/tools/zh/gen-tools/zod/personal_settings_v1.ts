@@ -19,7 +19,7 @@ export const personalSettingsV1SystemStatusBatchClose = {
       user_list: z
         .array(z.string())
         .describe(
-          '用户ID列表，传入的ID类型由user_id_type决定，推荐使用 OpenID，获取方式可参考文档',
+          '用户ID列表，传入的ID类型由user_id_type决定，推荐使用 OpenID，获取方式可参考文档[如何获取 Open ID]',
         ),
     }),
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
@@ -27,7 +27,7 @@ export const personalSettingsV1SystemStatusBatchClose = {
       system_status_id: z
         .string()
         .describe(
-          '系统状态ID',
+          '系统状态ID[获取系统状态ID]',
         )
         .optional(),
     }),
@@ -49,7 +49,7 @@ export const personalSettingsV1SystemStatusBatchOpen = {
             user_id: z
               .string()
               .describe(
-                '用户ID，传入的ID类型由user_id_type决定，推荐使用 OpenID，获取方式可参考文档',
+                '用户ID，传入的ID类型由user_id_type决定，推荐使用 OpenID，获取方式可参考文档[如何获取 Open ID]',
               ),
             end_time: z.string().describe('结束时间，传入的应为秒单位的时间戳，距当前的时间跨度不能超过365天'),
           }),
@@ -61,7 +61,7 @@ export const personalSettingsV1SystemStatusBatchOpen = {
       system_status_id: z
         .string()
         .describe(
-          '系统状态ID',
+          '系统状态ID[获取系统状态ID]',
         )
         .optional(),
     }),
@@ -114,7 +114,7 @@ export const personalSettingsV1SystemStatusCreate = {
           'GeneralVacation',
         ])
         .describe(
-          '图标 Options:GeneralDoNotDisturb(GeneralDoNotDisturb),GeneralInMeetingBusy(GeneralInMeetingBusy),Coffee(Coffee),GeneralBusinessTrip(GeneralBusinessTrip),GeneralWorkFromHome(GeneralWorkFromHome),StatusEnjoyLife(StatusEnjoyLife),GeneralTravellingCar(GeneralTravellingCar),StatusBus(StatusBus),StatusInFlight(StatusInFlight),Typing(Typing),EatingFood(EatingFood),SICK(SICK),GeneralSun(GeneralSun),GeneralMoonRest(GeneralMoonRest),StatusReading(StatusReading),Status_PrivateMessage(Status_PrivateMessage),StatusFlashOfInspiration(StatusFlashOfInspiration),GeneralVacation(GeneralVacation)',
+          '图标[**了解icon_key可选值**] Options:GeneralDoNotDisturb(GeneralDoNotDisturb),GeneralInMeetingBusy(GeneralInMeetingBusy),Coffee(Coffee),GeneralBusinessTrip(GeneralBusinessTrip),GeneralWorkFromHome(GeneralWorkFromHome),StatusEnjoyLife(StatusEnjoyLife),GeneralTravellingCar(GeneralTravellingCar),StatusBus(StatusBus),StatusInFlight(StatusInFlight),Typing(Typing),EatingFood(EatingFood),SICK(SICK),GeneralSun(GeneralSun),GeneralMoonRest(GeneralMoonRest),StatusReading(StatusReading),Status_PrivateMessage(Status_PrivateMessage),StatusFlashOfInspiration(StatusFlashOfInspiration),GeneralVacation(GeneralVacation)',
         ),
       color: z
         .enum([
@@ -186,7 +186,7 @@ export const personalSettingsV1SystemStatusDelete = {
       system_status_id: z
         .string()
         .describe(
-          '系统状态ID',
+          '系统状态ID[获取系统状态ID]',
         )
         .optional(),
     }),
@@ -261,7 +261,7 @@ export const personalSettingsV1SystemStatusPatch = {
               'GeneralVacation',
             ])
             .describe(
-              '图标 Options:GeneralDoNotDisturb(GeneralDoNotDisturb),GeneralInMeetingBusy(GeneralInMeetingBusy),Coffee(Coffee),GeneralBusinessTrip(GeneralBusinessTrip),GeneralWorkFromHome(GeneralWorkFromHome),StatusEnjoyLife(StatusEnjoyLife),GeneralTravellingCar(GeneralTravellingCar),StatusBus(StatusBus),StatusInFlight(StatusInFlight),Typing(Typing),EatingFood(EatingFood),SICK(SICK),GeneralSun(GeneralSun),GeneralMoonRest(GeneralMoonRest),StatusReading(StatusReading),Status_PrivateMessage(Status_PrivateMessage),StatusFlashOfInspiration(StatusFlashOfInspiration),GeneralVacation(GeneralVacation)',
+              '图标[**了解icon_key可选值**] Options:GeneralDoNotDisturb(GeneralDoNotDisturb),GeneralInMeetingBusy(GeneralInMeetingBusy),Coffee(Coffee),GeneralBusinessTrip(GeneralBusinessTrip),GeneralWorkFromHome(GeneralWorkFromHome),StatusEnjoyLife(StatusEnjoyLife),GeneralTravellingCar(GeneralTravellingCar),StatusBus(StatusBus),StatusInFlight(StatusInFlight),Typing(Typing),EatingFood(EatingFood),SICK(SICK),GeneralSun(GeneralSun),GeneralMoonRest(GeneralMoonRest),StatusReading(StatusReading),Status_PrivateMessage(Status_PrivateMessage),StatusFlashOfInspiration(StatusFlashOfInspiration),GeneralVacation(GeneralVacation)',
             ),
           color: z
             .enum([
@@ -335,7 +335,7 @@ export const personalSettingsV1SystemStatusPatch = {
       system_status_id: z
         .string()
         .describe(
-          '系统状态ID',
+          '系统状态ID[获取系统状态ID]',
         )
         .optional(),
     }),

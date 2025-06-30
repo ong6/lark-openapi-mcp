@@ -135,7 +135,7 @@ export const apaasV1ApplicationAuditLogGet = {
       log_id: z
         .string()
         .describe(
-          'Audit log ID information (obtain a single log ID by )',
+          'Audit log ID information (obtain a single log ID by [Query audit log list])',
         ),
     }),
     path: z.object({ namespace: z.string().describe('Application namespace') }),

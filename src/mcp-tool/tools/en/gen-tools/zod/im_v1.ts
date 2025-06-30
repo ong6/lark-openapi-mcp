@@ -61,14 +61,14 @@ export const imV1BatchMessageDelete = {
   path: '/open-apis/im/v1/batch_messages/:batch_message_id',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-Messaging-Batch message-Recall messages in batches-This interface is used to withdraw messages sent through the  interface',
+    '[Feishu/Lark]-Messaging-Batch message-Recall messages in batches-This interface is used to withdraw messages sent through the [batch send message] interface',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       batch_message_id: z
         .string()
         .describe(
-          'The ID of the batch message task to be withdrawn. The ID is the `message_id` field in the return value of the  interface, which is used to identify a batch message sending request',
+          'The ID of the batch message task to be withdrawn. The ID is the `message_id` field in the return value of the [Batch Send Messages] interface, which is used to identify a batch message sending request',
         ),
     }),
   },
@@ -80,14 +80,14 @@ export const imV1BatchMessageGetProgress = {
   path: '/open-apis/im/v1/batch_messages/:batch_message_id/get_progress',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Messaging-Batch message-Query the overall progress of a batch message-After  or , you can use this interface to query the message send and recall progress',
+    '[Feishu/Lark]-Messaging-Batch message-Query the overall progress of a batch message-After [send batch messages] or [recall batch messages], you can use this interface to query the message send and recall progress',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       batch_message_id: z
         .string()
         .describe(
-          'The batch message task ID to be queried. This ID is the `message_id` field in the return value of the [Batch Send Messages]( https://open.feishu.cn/document/ukTMukTMukTM/ucDO1EjL3gTNx4yN4UTM) interface, which is used to identify a batch message sending request',
+          'The batch message task ID to be queried. This ID is the `message_id` field in the return value of the [Batch Send Messages] interface, which is used to identify a batch message sending request',
         ),
     }),
   },
@@ -99,14 +99,14 @@ export const imV1BatchMessageReadUser = {
   path: '/open-apis/im/v1/batch_messages/:batch_message_id/read_user',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Messaging-Batch message-Query the number of pushers and readers of batch messages-After , you can use this interface to query the total number of people who have received the message push and the number of people who have read the message',
+    '[Feishu/Lark]-Messaging-Batch message-Query the number of pushers and readers of batch messages-After [sending messages in batches], you can use this interface to query the total number of people who have received the message push and the number of people who have read the message',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       batch_message_id: z
         .string()
         .describe(
-          'The batch message task ID to be queried. This ID is the `message_id` field in the return value of the [Batch Send Messages]( https://open.feishu.cn/document/ukTMukTMukTM/ucDO1EjL3gTNx4yN4UTM) interface, which is used to identify a batch message sending request',
+          'The batch message task ID to be queried. This ID is the `message_id` field in the return value of the [Batch Send Messages] interface, which is used to identify a batch message sending request',
         ),
     }),
   },
@@ -118,7 +118,7 @@ export const imV1ChatAnnouncementGet = {
   path: '/open-apis/im/v1/chats/:chat_id/announcement',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Group Chat-Group announcement-Obtain group announcement information-Obtains the group announcement in a chat, with the same format as ',
+    '[Feishu/Lark]-Group Chat-Group announcement-Obtain group announcement information-Obtains the group announcement in a chat, with the same format as [Docs]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
@@ -126,7 +126,7 @@ export const imV1ChatAnnouncementGet = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Single chat (group type is `p2p`) does not support getting group announcements',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Single chat (group type is `p2p`) does not support getting group announcements',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -139,7 +139,7 @@ export const imV1ChatAnnouncementPatch = {
   path: '/open-apis/im/v1/chats/:chat_id/announcement',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Group Chat-Group announcement-Update group announcement info-Updates the group announcement information in a chat, with the same format as , newer document formats are not supported',
+    '[Feishu/Lark]-Group Chat-Group announcement-Update group announcement info-Updates the group announcement information in a chat, with the same format as [Docs], newer document formats are not supported',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -151,7 +151,7 @@ export const imV1ChatAnnouncementPatch = {
       requests: z
         .array(z.string())
         .describe(
-          'Announcement content. This parameter must be passed in when calling the interface. The format of the announcement content is the same as the format of updating the old version of the document content. For the specific data structure, refer to ',
+          'Announcement content. This parameter must be passed in when calling the interface. The format of the announcement content is the same as the format of updating the old version of the document content. For the specific data structure, refer to [Edit the old version of the document content]',
         )
         .optional(),
     }),
@@ -159,7 +159,7 @@ export const imV1ChatAnnouncementPatch = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Single chat (group type is `p2p`) does not support updating group announcements',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Single chat (group type is `p2p`) does not support updating group announcements',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -179,7 +179,7 @@ export const imV1ChatCreate = {
       avatar: z
         .string()
         .describe(
-          'Image Key of group avatar- Can be obtained by  (Note: ==image_type== of uploaded image needs to be specified as ==avatar==)- If no value is passed, the system default avatar will be used',
+          'Image Key of group avatar- Can be obtained by [upload image] (Note: ==image_type== of uploaded image needs to be specified as ==avatar==)- If no value is passed, the system default avatar will be used',
         )
         .optional(),
       name: z
@@ -205,19 +205,19 @@ export const imV1ChatCreate = {
       owner_id: z
         .string()
         .describe(
-          'The group owner specified when a group was created. If the field is left empty, the bot that created the group will be specified as the owner. The group owner ID value corresponds to ==user_id_type== in the query parameter. Open ID is recommended here. For details, refer to **Note**: When a robot with external sharing capability is enabled, it cannot be the group owner when creating an external group. A user must be designated as the group owner. In addition, when adding external users to a group, the external users must be friends with the group owner on Feishu',
+          'The group owner specified when a group was created. If the field is left empty, the bot that created the group will be specified as the owner. The group owner ID value corresponds to ==user_id_type== in the query parameter. Open ID is recommended here. For details, refer to [How to get Open ID?]**Note**: When a robot with external sharing capability is enabled, it cannot be the group owner when creating an external group. A user must be designated as the group owner. In addition, when adding external users to a group, the external users must be friends with the group owner on Feishu',
         )
         .optional(),
       user_id_list: z
         .array(z.string())
         .describe(
-          "Group members invited when creating the group. The ID type is specified in the query parameter ==user_id_type==. Open ID is recommended here. For details, refer to **Note**: - Up to 50 users can be invited at the same time.- To facilitate viewing the effect on the client, it is recommended to add the developer's own ID when debugging the API.- If you need to invite external users to create an external group, the external users must be friends with the group owner on Feishu.- To obtain the open_id of an external user, refer to ",
+          "Group members invited when creating the group. The ID type is specified in the query parameter ==user_id_type==. Open ID is recommended here. For details, refer to [How to get Open ID?]**Note**: - Up to 50 users can be invited at the same time.- To facilitate viewing the effect on the client, it is recommended to add the developer's own ID when debugging the API.- If you need to invite external users to create an external group, the external users must be friends with the group owner on Feishu.- To obtain the open_id of an external user, refer to [Obtaining the open_id of an external user]",
         )
         .optional(),
       bot_id_list: z
         .array(z.string())
         .describe(
-          'Group robots invited when creating a group. For more information, please refer to  to get the App ID of the application.**Notes**:- The Bot operating this API will automatically join the group, no need to fill in again.- Please use `app_id` to invite the bot into the group.- At most 5 bots can be invited at the same time, and the number of bots in the group after invitation cannot exceed 15',
+          'Group robots invited when creating a group. For more information, please refer to [How to Obtain App ID ?] to get the App ID of the application.**Notes**:- The Bot operating this API will automatically join the group, no need to fill in again.- Please use `app_id` to invite the bot into the group.- At most 5 bots can be invited at the same time, and the number of bots in the group after invitation cannot exceed 15',
         )
         .optional(),
       group_message_type: z
@@ -275,7 +275,7 @@ export const imV1ChatCreate = {
             .optional(),
         })
         .describe(
-          'Restricted mode setting**Notice**: Confidentiality mode is applicable to Enterprise Ultimate Edition. For applicable versions and function introduction, please refer to ',
+          'Restricted mode setting**Notice**: Confidentiality mode is applicable to Enterprise Ultimate Edition. For applicable versions and function introduction, please refer to [Session Confidentiality Mode]',
         )
         .optional(),
       urgent_setting: z
@@ -334,7 +334,7 @@ export const imV1ChatDelete = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Notice**: Only group IDs with group mode of `group` are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Notice**: Only group IDs with group mode of `group` are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -355,7 +355,7 @@ export const imV1ChatGet = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to obtain it:- , and get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group where the user or bot is.- Call the  to search for the chat_id of the group where the user or bot is and the group that is open to the user or bot',
+          'Group ID. How to obtain it:- [Create a group], and get the chat_id of the group from the returned result.- Call the [Get the list of groups where the user or bot is] interface to query the chat_id of the group where the user or bot is.- Call the [Search the list of groups visible to the user or bot] to search for the chat_id of the group where the user or bot is and the group that is open to the user or bot',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -383,7 +383,7 @@ export const imV1ChatLink = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or bot is in.- Call  to search the chat_id of the group that the user or robot is in and the group that is open to the user or bot.**Note**: Single chat, private chat, and team group do not support sharing group links',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or bot is in.- Call [Search the list of groups visible to the user or robot] to search the chat_id of the group that the user or robot is in and the group that is open to the user or bot.**Note**: Single chat, private chat, and team group do not support sharing group links',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -396,7 +396,7 @@ export const imV1ChatList = {
   path: '/open-apis/im/v1/chats',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Group Chat-Group management-Obtain groups where the user or bot is a member-Get the list of groups where the user or bot represented by  is a member',
+    '[Feishu/Lark]-Group Chat-Group management-Obtain groups where the user or bot is a member-Get the list of groups where the user or bot represented by [access_token] is a member',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -435,7 +435,7 @@ export const imV1ChatManagersAddManagers = {
       manager_ids: z
         .array(z.string())
         .describe(
-          "To set the administrator's ID, the ID type is consistent with the query parameter member_id_type value.- If it is a user (member_id_type value is user_id/open_id/union_id), it is recommended to use the user's open_id. For how to obtain it, please refer to the document .- If it is a bot (member_id_type value is app_id), please refer to **Note**:- For ordinary groups, up to 10 administrators can be specified.- For super large groups, up to 20 administrators can be specified.- When making a single request to specify robots, up to 5 bots can be specified.For the difference between super large groups and ordinary groups, see ",
+          "To set the administrator's ID, the ID type is consistent with the query parameter member_id_type value.- If it is a user (member_id_type value is user_id/open_id/union_id), it is recommended to use the user's open_id. For how to obtain it, please refer to the document [How to obtain Open ID].- If it is a bot (member_id_type value is app_id), please refer to [How to obtain the App ID of the application]**Note**:- For ordinary groups, up to 10 administrators can be specified.- For super large groups, up to 20 administrators can be specified.- When making a single request to specify robots, up to 5 bots can be specified.For the difference between super large groups and ordinary groups, see [What is the difference between super large groups and ordinary groups]",
         )
         .optional(),
     }),
@@ -443,7 +443,7 @@ export const imV1ChatManagersAddManagers = {
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'app_id'])
         .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. ),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. ),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. ),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. )",
+          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID]),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. [How to get App ID])",
         )
         .optional(),
     }),
@@ -451,7 +451,7 @@ export const imV1ChatManagersAddManagers = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or bot is in.- Call the  to search for the chat_id of the group that the user or bot is in and the group that is open to the user or bot.**Note**: Only group IDs with group modes **group** and **topic** are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` or `topic` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or bot is in] interface to query the chat_id of the group that the user or bot is in.- Call the [Search the list of groups visible to the user or bot] to search for the chat_id of the group that the user or bot is in and the group that is open to the user or bot.**Note**: Only group IDs with group modes **group** and **topic** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` or `topic` in the returned result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -471,7 +471,7 @@ export const imV1ChatManagersDeleteManagers = {
       manager_ids: z
         .array(z.string())
         .describe(
-          "The administrator ID to be deleted. The ID type is consistent with the value of the query parameter member_id_type.- If it is a user (member_id_type is user_id/open_id/union_id), it is recommended to use the user's open_id. For how to obtain it, please refer to the document .- If it is a robot (member_id_type is app_id), please refer to **Note**: Each request can specify up to 50 users or 5 robots",
+          "The administrator ID to be deleted. The ID type is consistent with the value of the query parameter member_id_type.- If it is a user (member_id_type is user_id/open_id/union_id), it is recommended to use the user's open_id. For how to obtain it, please refer to the document [How to obtain Open ID].- If it is a robot (member_id_type is app_id), please refer to [How to obtain the App ID of the application]**Note**: Each request can specify up to 50 users or 5 robots",
         )
         .optional(),
     }),
@@ -479,7 +479,7 @@ export const imV1ChatManagersDeleteManagers = {
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'app_id'])
         .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. ),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. ),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. ),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. )",
+          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID]),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. [How to get App ID])",
         )
         .optional(),
     }),
@@ -487,7 +487,7 @@ export const imV1ChatManagersDeleteManagers = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group modes **group** and **topic** are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` or `topic` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group modes **group** and **topic** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` or `topic` in the returned result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -507,7 +507,7 @@ export const imV1ChatMembersCreate = {
       id_list: z
         .array(z.string())
         .describe(
-          'Member ID list. - It is recommended to use OpenID when inviting users to join the group. For how to obtain it, please refer to .- When inviting bots into the group, you need to fill in the App ID of the application. Please refer to **Note**: - The list cannot be empty.- The member ID type filled in the list should correspond to the type selected in the ==member_id_type== parameter.- Each request can pull up to 50 users and does not exceed the upper limit of the group size. The default maximum number of Feishu groups for certified companies is: 5,000 members in general groups, 3,000 members in conference groups, and 5,000 members in topic groups. If the tenant administrator configures the upper limit of the number of groups, the upper limit shall prevail.- At most 5 bots can be invited at the same time, and the number of bots in the group after invitation cannot exceed 15',
+          'Member ID list. - It is recommended to use OpenID when inviting users to join the group. For how to obtain it, please refer to [How to get Open ID? ].- When inviting bots into the group, you need to fill in the App ID of the application. Please refer to [How to get the App ID of the application?]**Note**: - The list cannot be empty.- The member ID type filled in the list should correspond to the type selected in the ==member_id_type== parameter.- Each request can pull up to 50 users and does not exceed the upper limit of the group size. The default maximum number of Feishu groups for certified companies is: 5,000 members in general groups, 3,000 members in conference groups, and 5,000 members in topic groups. If the tenant administrator configures the upper limit of the number of groups, the upper limit shall prevail.- At most 5 bots can be invited at the same time, and the number of bots in the group after invitation cannot exceed 15',
         )
         .optional(),
     }),
@@ -515,7 +515,7 @@ export const imV1ChatMembersCreate = {
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'app_id'])
         .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. ),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. ),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. ),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. )",
+          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID]),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. [How to get App ID])",
         )
         .optional(),
       succeed_type: z
@@ -529,7 +529,7 @@ export const imV1ChatMembersCreate = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group modes **group** and **topic** are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` or `topic` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group modes **group** and **topic** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` or `topic` in the returned result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -549,7 +549,7 @@ export const imV1ChatMembersDelete = {
       id_list: z
         .array(z.string())
         .describe(
-          'Member ID list. The ID type is consistent with the value of the query parameter member_id_type.- It is recommended to use OpenID when removing users from the group. For how to obtain it, please refer to .- When removing bots from the group, you need to fill in the App ID of the application. Please refer to .**Note**: - ==id_list== cannot be empty.- For each request, a maximum of 50 users or 5 bots can be removed',
+          'Member ID list. The ID type is consistent with the value of the query parameter member_id_type.- It is recommended to use OpenID when removing users from the group. For how to obtain it, please refer to [How to get Open ID? ].- When removing bots from the group, you need to fill in the App ID of the application. Please refer to [How to get the App ID of the application?].**Note**: - ==id_list== cannot be empty.- For each request, a maximum of 50 users or 5 bots can be removed',
         )
         .optional(),
     }),
@@ -557,7 +557,7 @@ export const imV1ChatMembersDelete = {
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'app_id'])
         .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. ),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. ),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. ),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. )",
+          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID]),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. [How to get App ID])",
         )
         .optional(),
     }),
@@ -565,7 +565,7 @@ export const imV1ChatMembersDelete = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **group** and **topic** are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` or `topic` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **group** and **topic** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` or `topic` in the returned result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -585,7 +585,7 @@ export const imV1ChatMembersGet = {
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id'])
         .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. ),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. ),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. )",
+          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID])",
         )
         .optional(),
       page_size: z
@@ -605,7 +605,7 @@ export const imV1ChatMembersGet = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to obtain it:- , and get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group where the user or robot is.- Call the  to search for the chat_id of the group where the user or robot is and the group that is open to the user or robot',
+          'Group ID. How to obtain it:- [Create a group], and get the chat_id of the group from the returned result.- Call the [Get the list of groups where the user or robot is] interface to query the chat_id of the group where the user or robot is.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group where the user or robot is and the group that is open to the user or robot',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -625,7 +625,7 @@ export const imV1ChatMembersIsInChat = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to obtain it:- , and get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group where the user or robot is.- Call the  to search for the chat_id of the group where the user or robot is and the group that is open to the user or robot',
+          'Group ID. How to obtain it:- [Create a group], and get the chat_id of the group from the returned result.- Call the [Get the list of groups where the user or robot is] interface to query the chat_id of the group where the user or robot is.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group where the user or robot is and the group that is open to the user or robot',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -645,7 +645,7 @@ export const imV1ChatMembersMeJoin = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group where the user or robot is.- Call  to search the chat_id of the group where the user or robot is and the group open to the user or robot.**Note**:- Only public groups are supported. You can call the  interface and check whether the `chat_type` parameter value is `public` in the returned result.- You cannot join the group when the number of group members reaches the upper limit. For certified companies, the default upper limit of the number of people in Feishu groups is: 5,000 for ordinary groups, 3,000 for conference groups, and 5,000 for topic groups',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups where the user or robot is] interface to query the chat_id of the group where the user or robot is.- Call [Search the list of groups visible to the user or robot] to search the chat_id of the group where the user or robot is and the group open to the user or robot.**Note**:- Only public groups are supported. You can call the [Get Group Information] interface and check whether the `chat_type` parameter value is `public` in the returned result.- You cannot join the group when the number of group members reaches the upper limit. For certified companies, the default upper limit of the number of people in Feishu groups is: 5,000 for ordinary groups, 3,000 for conference groups, and 5,000 for topic groups',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -710,7 +710,7 @@ export const imV1ChatMenuItemPatch = {
           image_key: z
             .string()
             .describe(
-              'image_key, upload a message type image through the  interface to obtain image_key and pass in the value.**Note**: If the top level menu has a second level menu, the icon cannot be set for this top level menu',
+              'image_key, upload a message type image through the [Upload Image] interface to obtain image_key and pass in the value.**Note**: If the top level menu has a second level menu, the icon cannot be set for this top level menu',
             )
             .optional(),
           name: z
@@ -734,13 +734,13 @@ export const imV1ChatMenuItemPatch = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
         )
         .optional(),
       menu_item_id: z
         .string()
         .describe(
-          'The ID of the top level menu or second level menu. The ID can be obtained through the  interface',
+          'The ID of the top level menu or second level menu. The ID can be obtained through the [get group menu] interface',
         )
         .optional(),
     }),
@@ -802,7 +802,7 @@ export const imV1ChatMenuTreeCreate = {
                     image_key: z
                       .string()
                       .describe(
-                        'The key value of the top level menu icon. Upload a message type image through the  interface to obtain image_key and pass in the value.**Note**: If the top level menu has a second level menu, the icon cannot be set for this top level menu',
+                        'The key value of the top level menu icon. Upload a message type image through the [Upload Image] interface to obtain image_key and pass in the value.**Note**: If the top level menu has a second level menu, the icon cannot be set for this top level menu',
                       )
                       .optional(),
                     name: z
@@ -869,7 +869,7 @@ export const imV1ChatMenuTreeCreate = {
                           image_key: z
                             .string()
                             .describe(
-                              'The key value of the second level menu icon. Upload a message type image through the  interface to obtain image_key and pass in the value',
+                              'The key value of the second level menu icon. Upload a message type image through the [Upload Image] interface to obtain image_key and pass in the value',
                             )
                             .optional(),
                           name: z
@@ -905,7 +905,7 @@ export const imV1ChatMenuTreeCreate = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
         )
         .optional(),
     }),
@@ -925,14 +925,14 @@ export const imV1ChatMenuTreeDelete = {
       chat_menu_top_level_ids: z
         .array(z.string())
         .describe(
-          'The top level menu ID. The ID can be obtained through the  interface',
+          'The top level menu ID. The ID can be obtained through the [get group menu] interface',
         ),
     }),
     path: z.object({
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
         )
         .optional(),
     }),
@@ -952,7 +952,7 @@ export const imV1ChatMenuTreeGet = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
         )
         .optional(),
     }),
@@ -972,14 +972,14 @@ export const imV1ChatMenuTreeSort = {
       chat_menu_top_level_ids: z
         .array(z.string())
         .describe(
-          'Sort by the ID of the top level menu. The order of the elements in the array corresponds to the order of the top level menu in the group from left to right. The ID can be obtained through the  interface.**Note**: The ID list to be sorted needs to be aligned with the ID list of the top level menu in the group',
+          'Sort by the ID of the top level menu. The order of the elements in the array corresponds to the order of the top level menu in the group from left to right. The ID can be obtained through the [Get Group Menu] interface.**Note**: The ID list to be sorted needs to be aligned with the ID list of the top level menu in the group',
         ),
     }),
     path: z.object({
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
         )
         .optional(),
     }),
@@ -1012,7 +1012,7 @@ export const imV1ChatModerationGet = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to obtain it:- , and get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group where the user or bot is.- Call the  to search for the chat_id of the group where the user or bot is and the group that is open to the user or bot',
+          'Group ID. How to obtain it:- [Create a group], and get the chat_id of the group from the returned result.- Call the [Get the list of groups where the user or robot is] interface to query the chat_id of the group where the user or bot is.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group where the user or bot is and the group that is open to the user or bot',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1038,13 +1038,13 @@ export const imV1ChatModerationUpdate = {
       moderator_added_list: z
         .array(z.string())
         .describe(
-          'When `moderation_setting` is set to `moderator_list`, users who can speak are added as an ID list.**Notice**:- The ID type is consistent with the query parameter user_id_type. It is recommended to use OpenID. For how to obtain it, please refer to the document .- If the user in the list is not in the group, it will be automatically filtered out.- When requesting, please ensure that the IDs in the two parameters `moderator_added_list` and `moderator_removed_list` are not repeated',
+          'When `moderation_setting` is set to `moderator_list`, users who can speak are added as an ID list.**Notice**:- The ID type is consistent with the query parameter user_id_type. It is recommended to use OpenID. For how to obtain it, please refer to the document [How to obtain Open ID].- If the user in the list is not in the group, it will be automatically filtered out.- When requesting, please ensure that the IDs in the two parameters `moderator_added_list` and `moderator_removed_list` are not repeated',
         )
         .optional(),
       moderator_removed_list: z
         .array(z.string())
         .describe(
-          'When `moderation_setting` is set to `moderator_list`, users who can speak are removed in the form of an ID list.**Notice**:- The ID type is consistent with the query parameter user_id_type. It is recommended to use OpenID. For how to obtain it, please refer to the document .- If the user in the list is not in the group, it will be automatically filtered out.- When requesting, please ensure that the IDs in the two parameters `moderator_added_list` and `moderator_removed_list` are not repeated',
+          'When `moderation_setting` is set to `moderator_list`, users who can speak are removed in the form of an ID list.**Notice**:- The ID type is consistent with the query parameter user_id_type. It is recommended to use OpenID. For how to obtain it, please refer to the document [How to obtain Open ID].- If the user in the list is not in the group, it will be automatically filtered out.- When requesting, please ensure that the IDs in the two parameters `moderator_added_list` and `moderator_removed_list` are not repeated',
         )
         .optional(),
     }),
@@ -1053,7 +1053,7 @@ export const imV1ChatModerationUpdate = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to obtain:- , and obtain the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group where the user or bot is.- Call  to search for the chat_id of the group where the user or bot is and the group that is open to the user or bot',
+          'Group ID. How to obtain:- [Create a group], and obtain the chat_id of the group from the returned result.- Call the [Get the list of groups where the user or robot is] interface to query the chat_id of the group where the user or bot is.- Call [Search the list of groups visible to the user or bot] to search for the chat_id of the group where the user or bot is and the group that is open to the user or bot',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1123,9 +1123,10 @@ export const imV1ChatTabCreate = {
                 'file',
                 'files_resources',
                 'images_videos',
+                'task',
               ])
               .describe(
-                'Tab type**Note**: Only doc and url type tabs are supported, other fields are read-only fields Options:message(Message type),doc_list(DocList List of Cloud Documents),doc(Document),pin(Pin),meeting_minute(MeetingMinute Meeting notes),chat_announcement(ChatAnnouncement Group announcement),url(URL),file(File),files_resources(files_resources: Combination type, Find all shared docs, links, and files in one place.),images_videos(images_videos: Combination type, Find all shared image and video in one place.)',
+                'Tab type**Note**: Only doc and url type tabs are supported, other fields are read-only fields Options:message(Message type),doc_list(DocList List of Cloud Documents),doc(Document),pin(Pin),meeting_minute(MeetingMinute Meeting notes),chat_announcement(ChatAnnouncement Group announcement),url(URL),file(File),files_resources(files_resources: Combination type, Find all shared docs, links, and files in one place.),images_videos(images_videos: Combination type, Find all shared image and video in one place.),task(Task)',
               ),
             tab_content: z
               .object({
@@ -1145,6 +1146,12 @@ export const imV1ChatTabCreate = {
                     'Meeting minutes. Since adding chat tags of type meeting_minute is not supported, this field is read-only and does not require a value to be passed',
                   )
                   .optional(),
+                task: z
+                  .string()
+                  .describe(
+                    'Task. Since adding chat tags of type task is not supported, this field is read-only and does not require a value to be passed',
+                  )
+                  .optional(),
               })
               .describe('Tab content')
               .optional(),
@@ -1153,7 +1160,7 @@ export const imV1ChatTabCreate = {
                 icon_key: z
                   .string()
                   .describe(
-                    'Chat tab icon key. You need to call the  interface first, set the image type to message to upload the image, and then get the `image_key` and pass in the current parameters',
+                    'Chat tab icon key. You need to call the [upload image] interface first, set the image type to message to upload the image, and then get the `image_key` and pass in the current parameters',
                   )
                   .optional(),
                 is_built_in: z.boolean().describe('Whether the chat tab is opened inline in the app').optional(),
@@ -1168,7 +1175,7 @@ export const imV1ChatTabCreate = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group modes **group** and **p2p** are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` or `p2p` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group modes **group** and **p2p** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` or `p2p` in the returned result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1188,14 +1195,14 @@ export const imV1ChatTabDeleteTabs = {
       tab_ids: z
         .array(z.string())
         .describe(
-          'Chat tag ID list. Tab ID can be found in  and  return value',
+          'Chat tag ID list. Tab ID can be found in [Add Chat Tab] and [Pull Chat Tab] return value',
         ),
     }),
     path: z.object({
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group modes **group** and **p2p** are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` or `p2p` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group modes **group** and **p2p** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` or `p2p` in the returned result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1215,7 +1222,7 @@ export const imV1ChatTabListTabs = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group modes **group** and **p2p** are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` or `p2p` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group modes **group** and **p2p** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` or `p2p` in the returned result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1235,7 +1242,7 @@ export const imV1ChatTabSortTabs = {
       tab_ids: z
         .array(z.string())
         .describe(
-          'List of chat tag IDs. Tab ID can be found in  and  return value.**Note**:- Must include the IDs of all tabs in the chat.- The sorting of the current parameters corresponds to the sorting from left to right in the chat.- The message type tab in the chat is fixed in the first order',
+          'List of chat tag IDs. Tab ID can be found in [Add Chat Tab] and [Pull Chat Tab] return value.**Note**:- Must include the IDs of all tabs in the chat.- The sorting of the current parameters corresponds to the sorting from left to right in the chat.- The message type tab in the chat is fixed in the first order',
         )
         .optional(),
     }),
@@ -1243,7 +1250,7 @@ export const imV1ChatTabSortTabs = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group modes **group** and **p2p** are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` or `p2p` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group modes **group** and **p2p** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` or `p2p` in the returned result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1266,7 +1273,7 @@ export const imV1ChatTabUpdateTabs = {
             tab_id: z
               .string()
               .describe(
-                'Chat tag ID. Tab ID can be found in  and  return value',
+                'Chat tag ID. Tab ID can be found in [Add Chat Tab] and [Pull Chat Tab] return value',
               )
               .optional(),
             tab_name: z
@@ -1285,9 +1292,10 @@ export const imV1ChatTabUpdateTabs = {
                 'file',
                 'files_resources',
                 'images_videos',
+                'task',
               ])
               .describe(
-                'Tab type**Note**: Only doc and url type tabs can be updated. Other fields are read-only fields. Options:message(Message type),doc_list(DocList List of Cloud Documents),doc(Document),pin(Pin),meeting_minute(MeetingMinute Meeting notes),chat_announcement(ChatAnnouncement Group announcement),url(URL),file(File),files_resources(files_resources: Combination type, Find all shared docs, links, and files in one place.),images_videos(images_videos: Combination type, Find all shared image and video in one place.)',
+                'Tab type**Note**: Only doc and url type tabs can be updated. Other fields are read-only fields. Options:message(Message type),doc_list(DocList List of Cloud Documents),doc(Document),pin(Pin),meeting_minute(MeetingMinute Meeting notes),chat_announcement(ChatAnnouncement Group announcement),url(URL),file(File),files_resources(files_resources: Combination type, Find all shared docs, links, and files in one place.),images_videos(images_videos: Combination type, Find all shared image and video in one place.),task(Task)',
               ),
             tab_content: z
               .object({
@@ -1307,6 +1315,12 @@ export const imV1ChatTabUpdateTabs = {
                     'Meeting minutes. Because the chat tab page of the meeting_minute type is not supported for updating, this field is read-only and does not require a value to be passed',
                   )
                   .optional(),
+                task: z
+                  .string()
+                  .describe(
+                    'Task. Because the chat tab page of the task type is not supported for updating, this field is read-only and does not require a value to be passed',
+                  )
+                  .optional(),
               })
               .describe('Tab content')
               .optional(),
@@ -1315,7 +1329,7 @@ export const imV1ChatTabUpdateTabs = {
                 icon_key: z
                   .string()
                   .describe(
-                    'Chat tab icon key. You need to call the  interface first, set the image type to message to upload the image, and then get the `image_key` and pass in the current parameters',
+                    'Chat tab icon key. You need to call the [upload image] interface first, set the image type to message to upload the image, and then get the `image_key` and pass in the current parameters',
                   )
                   .optional(),
                 is_built_in: z.boolean().describe('Whether the chat tab is opened inline in the app').optional(),
@@ -1331,7 +1345,7 @@ export const imV1ChatTabUpdateTabs = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or robot is in.- Call the  to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group modes **group** and **p2p** are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` or `p2p` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group modes **group** and **p2p** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` or `p2p` in the returned result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1351,7 +1365,7 @@ export const imV1ChatTopNoticeDeleteTopNotice = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or bot is in.- Call the  to search for the chat_id of the group that the user or bot is in and the group that is open to the user or bot',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or bot is in] interface to query the chat_id of the group that the user or bot is in.- Call the [Search the list of groups visible to the user or bot] to search for the chat_id of the group that the user or bot is in and the group that is open to the user or bot',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1380,7 +1394,7 @@ export const imV1ChatTopNoticePutTopNotice = {
             message_id: z
               .string()
               .describe(
-                'Message ID. How to get the ID:- After calling the  interface, get it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the  interface and get it from the `message_id` parameter of the response result',
+                'Message ID. How to get the ID:- After calling the [Send Message] interface, get it from the `message_id` parameter of the response result.- Listen to the [Receive Message] event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the [Get Session History Messages] interface and get it from the `message_id` parameter of the response result',
               )
               .optional(),
           }),
@@ -1391,7 +1405,7 @@ export const imV1ChatTopNoticePutTopNotice = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or bot is in.- Call the  to search for the chat_id of the group that the user or bot is in and the group that is open to the user or bot',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or bot is in] interface to query the chat_id of the group that the user or bot is in.- Call the [Search the list of groups visible to the user or bot] to search for the chat_id of the group that the user or bot is in and the group that is open to the user or bot',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1411,7 +1425,7 @@ export const imV1ChatUpdate = {
       avatar: z
         .string()
         .describe(
-          'The image key that corresponds to the group profile photo. It can be obtained using the  API. (Note: The ==image_type== of the uploaded image needs to be specified as ==avatar==)',
+          'The image key that corresponds to the group profile photo. It can be obtained using the [Upload image] API. (Note: The ==image_type== of the uploaded image needs to be specified as ==avatar==)',
         )
         .optional(),
       name: z
@@ -1456,7 +1470,7 @@ export const imV1ChatUpdate = {
       owner_id: z
         .string()
         .describe(
-          'New group owner ID, no need to fill in if the group owner is not transferred. Open ID is recommended here. For details, refer to ',
+          'New group owner ID, no need to fill in if the group owner is not transferred. Open ID is recommended here. For details, refer to [How to get Open ID?]',
         )
         .optional(),
       join_message_visibility: z
@@ -1505,7 +1519,7 @@ export const imV1ChatUpdate = {
             .optional(),
         })
         .describe(
-          'Restricted mode setting **Notice**: Confidentiality mode is applicable to Enterprise Ultimate Edition. For applicable versions and function introduction, please refer to ',
+          'Restricted mode setting **Notice**: Confidentiality mode is applicable to Enterprise Ultimate Edition. For applicable versions and function introduction, please refer to [Session Confidentiality Mode]',
         )
         .optional(),
       chat_type: z
@@ -1540,7 +1554,7 @@ export const imV1ChatUpdate = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. How to get it:- , get the chat_id of the group from the returned result.- Call the  interface to query the chat_id of the group that the user or bot is in.- Call the  to search for the chat_id of the group that the user or bot is in and the group that is open to the user or bot.**Note**: Only group IDs with group mode of `group` are supported. You can call the  interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
+          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or bot is in] interface to query the chat_id of the group that the user or bot is in.- Call the [Search the list of groups visible to the user or bot] to search for the chat_id of the group that the user or bot is in and the group that is open to the user or bot.**Note**: Only group IDs with group mode of `group` are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1560,17 +1574,17 @@ export const imV1MessageCreate = {
       receive_id: z
         .string()
         .describe(
-          "The ID of the message recipient. The ID type is consistent with the value of the query parameter `receive_id_type`.**Notice**:- When sending a message to a user, the user needs to be in the bot's . For example, if you need to send a message to all employees of the company, you need to set the application's availability scope to all employees.- When sending a message to a group, the bot needs to be in the group and have the right to speak in the group.- If the message recipient is a user, it is recommended to use the user's `open_id`",
+          "The ID of the message recipient. The ID type is consistent with the value of the query parameter `receive_id_type`.**Notice**:- When sending a message to a user, the user needs to be in the bot's [availability scope]. For example, if you need to send a message to all employees of the company, you need to set the application's availability scope to all employees.- When sending a message to a group, the bot needs to be in the group and have the right to speak in the group.- If the message recipient is a user, it is recommended to use the user's `open_id`",
         ),
       msg_type: z
         .string()
         .describe(
-          'Message type.**Optional values**:- text- post- image- file- audio- media- sticker- interactive- share_chat- share_user- system: This type only supports pushing system messages in bot single chats and not in group chats. For example, as shown in the image below to highlight a new conversation. For detailed description of different message types, see ',
+          'Message type.**Optional values**:- text- post- image- file- audio- media- sticker- interactive- share_chat- share_user- system: This type only supports pushing system messages in bot single chats and not in group chats. For example, as shown in the image below to highlight a new conversation. For detailed description of different message types, see [Send message content]',
         ),
       content: z
         .string()
         .describe(
-          "Message content, a string serialized from a JSON structure. The value of this parameter corresponds to `msg_type`. For example, if the value of `msg_type` is `text`, this parameter needs to pass in text type content.**Note:**- JSON strings need to be escaped. For example, the line break `` is escaped as `\\`.- The maximum size of a text message request body cannot exceed 150 KB.- The maximum size of a card message or rich text message request body cannot exceed 30 KB.- If a card template (template_id) is used to send a message, the actual size also includes the card data size corresponding to the template.- If the message contains style tags, the actual message body length will be greater than the request body length you entered.- For images, you need to  first, and then use the image's Key to send a message.- Audio, video, and files need to be  first, and then the file's key is used to send a message. Note that you cannot use the file_token returned by the cloud document  interface.For different types of message content formats and usage restrictions, see ",
+          "Message content, a string serialized from a JSON structure. The value of this parameter corresponds to `msg_type`. For example, if the value of `msg_type` is `text`, this parameter needs to pass in text type content.**Note:**- JSON strings need to be escaped. For example, the line break `` is escaped as `\\`.- The maximum size of a text message request body cannot exceed 150 KB.- The maximum size of a card message or rich text message request body cannot exceed 30 KB. - If a card template (template_id) is used to send a message, the actual size also includes the card data size corresponding to the template. - If the message contains style tags, the actual message body length will be greater than the request body length you entered.- For images, you need to [upload the image] first, and then use the image's Key to send a message.- Audio, video, and files need to be [uploaded] first, and then the file's key is used to send a message. Note that you cannot use the file_token returned by the cloud document [upload material] interface.For different types of message content formats and usage restrictions, see [Sending Message Content]",
         ),
       uuid: z
         .string()
@@ -1583,7 +1597,7 @@ export const imV1MessageCreate = {
       receive_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'email', 'chat_id'])
         .describe(
-          'Message recipient ID type. Support open_id/union_id/user_id/email/chat_id Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. ),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user\'s identities in multiple apps. ),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. .),email(Identifies users by "email", which is the user\'s actual email address),chat_id(Identifies group chats by chat_id. You can call the API  to obtain the chat_id value. For group ID description, refer to .</md-enum-item>)',
+          'Message recipient ID type. Support open_id/union_id/user_id/email/chat_id Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user\'s identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID].),email(Identifies users by "email", which is the user\'s actual email address),chat_id(Identifies group chats by chat_id. You can call the API [Search for groups visible to a user or bot] to obtain the chat_id value. For group ID description, refer to [Group ID description].</md-enum-item>)',
         ),
     }),
   },
@@ -1602,7 +1616,7 @@ export const imV1MessageDelete = {
       message_id: z
         .string()
         .describe(
-          'The ID of the message to be withdrawn.How to obtain the ID:- After calling the  interface, obtain it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can obtain the `message_id` of the message from the event body.- Call the  interface and obtain it from the `message_id` parameter of the response result',
+          'The ID of the message to be withdrawn.How to obtain the ID:- After calling the [Send Message] interface, obtain it from the `message_id` parameter of the response result.- Listen to the [Receive Message] event. When the event is triggered, you can obtain the `message_id` of the message from the event body.- Call the [Get Session History Messages] interface and obtain it from the `message_id` parameter of the response result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1627,7 +1641,7 @@ export const imV1MessageForward = {
       receive_id_type: z
         .enum(['open_id', 'user_id', 'union_id', 'email', 'chat_id', 'thread_id'])
         .describe(
-          'Message recipient ID type. Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. ),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. ),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user\'s identities in multiple apps. ),email(Identifies users by "email", which is the user\'s actual email address),chat_id(Identifies group chats by chat_id. You can call the API  to obtain the chat_id value. For group ID description, refer to ),thread_id(Identifies thread by thread_id. For thread ID description, refer to </md-enum-item>**When the value is `user_id`, the following field scopes are required:**<md-perm name="contact:user.employee_id:readonly" desc="Obtain user ID" support_app_types="custom" tags="">Obtain user ID</md-perm>)',
+          'Message recipient ID type. Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user\'s identities in multiple apps. [How to get Union ID]),email(Identifies users by "email", which is the user\'s actual email address),chat_id(Identifies group chats by chat_id. You can call the API [Search for groups visible to a user or bot] to obtain the chat_id value. For group ID description, refer to [Group ID description]),thread_id(Identifies thread by thread_id. For thread ID description, refer to [Thread Introduction]</md-enum-item>**When the value is `user_id`, the following field scopes are required:**<md-perm name="contact:user.employee_id:readonly" desc="Obtain user ID" support_app_types="custom" tags="">Obtain user ID</md-perm>)',
         ),
       uuid: z
         .string()
@@ -1640,7 +1654,7 @@ export const imV1MessageForward = {
       message_id: z
         .string()
         .describe(
-          'The ID of the message to be forwarded. How to obtain the ID:- After calling the  interface, obtain it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can obtain the `message_id` of the message from the event body.- Call the  interface and obtain it from the `message_id` parameter of the response result',
+          'The ID of the message to be forwarded. How to obtain the ID:- After calling the [Send Message] interface, obtain it from the `message_id` parameter of the response result.- Listen to the [Receive Message] event. When the event is triggered, you can obtain the `message_id` of the message from the event body.- Call the [Get Session History Messages] interface and obtain it from the `message_id` parameter of the response result',
         ),
     }),
   },
@@ -1660,7 +1674,7 @@ export const imV1MessageGet = {
       message_id: z
         .string()
         .describe(
-          'Message ID. How to get the ID:- After calling the  interface, get it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the  interface and get it from the `message_id` parameter of the response result',
+          'Message ID. How to get the ID:- After calling the [Send Message] interface, get it from the `message_id` parameter of the response result.- Listen to the [Receive Message] event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the [Get Session History Messages] interface and get it from the `message_id` parameter of the response result',
         ),
     }),
   },
@@ -1684,7 +1698,7 @@ export const imV1MessageList = {
       container_id: z
         .string()
         .describe(
-          'Container ID. The ID type is the same as the value of container_id_type.- For how to obtain the ID of a group chat or a single chat, see .- For how to obtain the topic ID, see the **How ​​to obtain thread_id** section of ',
+          'Container ID. The ID type is the same as the value of container_id_type.- For how to obtain the ID of a group chat or a single chat, see [Group ID Description].- For how to obtain the topic ID, see the **How ​​to obtain thread_id** section of [Topic Overview]',
         ),
       start_time: z
         .string()
@@ -1734,14 +1748,14 @@ export const imV1MessageMergeForward = {
       message_id_list: z
         .array(z.string())
         .describe(
-          'The list of message IDs to be forwarded. The messages in the list must be from the same session. How to get the ID:- After calling the  interface, get it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the  interface and get it from the `message_id` parameter of the response result',
+          'The list of message IDs to be forwarded. The messages in the list must be from the same session. How to get the ID:- After calling the [Send message] interface, get it from the `message_id` parameter of the response result.- Listen to the [Receive message] event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the [Get session history messages] interface and get it from the `message_id` parameter of the response result',
         ),
     }),
     params: z.object({
       receive_id_type: z
         .enum(['open_id', 'user_id', 'union_id', 'email', 'chat_id', 'thread_id'])
         .describe(
-          'Message recipient ID type. Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. ),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. ),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user\'s identities in multiple apps. ),email(Identifies users by "email", which is the user\'s actual email address),chat_id(Identifies group chats by chat_id. You can call the API  to obtain the chat_id value. For group ID description, refer to ),thread_id(Identifies thread by thread_id. For thread ID description, refer to </md-enum-item>**When the value is `user_id`, the following field scopes are required:**<md-perm name="contact:user.employee_id:readonly" desc="Obtain user ID" support_app_types="custom" tags="">Obtain user ID</md-perm>)',
+          'Message recipient ID type. Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user\'s identities in multiple apps. [How to get Union ID]),email(Identifies users by "email", which is the user\'s actual email address),chat_id(Identifies group chats by chat_id. You can call the API [Search for groups visible to a user or bot] to obtain the chat_id value. For group ID description, refer to [Group ID description]),thread_id(Identifies thread by thread_id. For thread ID description, refer to [Thread Introduction]</md-enum-item>**When the value is `user_id`, the following field scopes are required:**<md-perm name="contact:user.employee_id:readonly" desc="Obtain user ID" support_app_types="custom" tags="">Obtain user ID</md-perm>)',
         ),
       uuid: z
         .string()
@@ -1759,21 +1773,21 @@ export const imV1MessagePatch = {
   path: '/open-apis/im/v1/messages/:message_id',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Messaging-Message card-Update the message card sent by the app-Call this interface to update the content of the specified message card by the message ID (message_id). If you need to delay updating the card after the user interacts with the card, or update the content of the card received by some members by user ID, you can call the  interface',
+    '[Feishu/Lark]-Messaging-Message card-Update the message card sent by the app-Call this interface to update the content of the specified message card by the message ID (message_id)',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       content: z
         .string()
         .describe(
-          'Message card content. Cards constructed with Card JSON or the  are supported. - To use card JSON, refer to . When passing the value, you need to compress and escape the JSON as a string. - To use the card template built by the , you need to pass in the `type` and `data` parameters. Refer to the field descriptions at the end of the  document for instructions on passing values. **Note**:- The updated card message must not exceed 30 KB. If the message contains a large number of style tags, it will make the actual message body length larger than the input request body length.- The following example values ​​are not escaped. Please pay attention to convert them into JSON serialized strings when using them',
+          'Message card content. Cards constructed with Card JSON or the [Card building tool] are supported. - To use card JSON, refer to [card JSON structure]. When passing the value, you need to compress and escape the JSON as a string. - To use the card template built by the [Card building tool], you need to pass in the `type` and `data` parameters. Refer to following description for details. **Note**:- The updated card message must not exceed 30 KB. If the message contains a large number of style tags, it will make the actual message body length larger than the input request body length.- The following example values ​​are not escaped. Please pay attention to convert them into JSON serialized strings when using them',
         ),
     }),
     path: z.object({
       message_id: z
         .string()
         .describe(
-          'The ID of the message to be updated. Only update cards (message type is `interactive`) are supported. ID acquisition method:- After calling the  interface, get it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the  interface and get it from the `message_id` parameter of the response result',
+          'The ID of the message to be updated. Only update cards (message type is `interactive`) are supported. ID acquisition method:- After calling the [Send message] interface, get it from the `message_id` parameter of the response result.- Listen to the [Receive message] event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the [Get session history messages] interface and get it from the `message_id` parameter of the response result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1832,7 +1846,7 @@ export const imV1MessagePushFollowUp = {
       message_id: z
         .string()
         .describe(
-          'The ID of the message sent by the robot. How to obtain the ID:- After calling the  interface, obtain it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can obtain the `message_id` of the message from the event body.- Call the  interface and obtain it from the `message_id` parameter of the response result',
+          'The ID of the message sent by the robot. How to obtain the ID:- After calling the [Send Message] interface, obtain it from the `message_id` parameter of the response result.- Listen to the [Receive Message] event. When the event is triggered, you can obtain the `message_id` of the message from the event body.- Call the [Get Session History Messages] interface and obtain it from the `message_id` parameter of the response result',
         ),
     }),
   },
@@ -1853,7 +1867,7 @@ export const imV1MessageReactionCreate = {
           emoji_type: z
             .string()
             .describe(
-              'Emoji type. For supported emojis and corresponding emoji_type values, see the ',
+              'Emoji type. For supported emojis and corresponding emoji_type values, see the [emoji introduction]',
             ),
         })
         .describe('Reaction type'),
@@ -1862,7 +1876,7 @@ export const imV1MessageReactionCreate = {
       message_id: z
         .string()
         .describe(
-          'Message ID of the reaction to be added. How to get the ID:- After calling the  interface, get it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the  interface and get it from the `message_id` parameter of the response result',
+          'Message ID of the reaction to be added. How to get the ID:- After calling the [Send message] interface, get it from the `message_id` parameter of the response result.- Listen to the [Receive message] event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the [Get session history messages] interface and get it from the `message_id` parameter of the response result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1882,12 +1896,12 @@ export const imV1MessageReactionDelete = {
       message_id: z
         .string()
         .describe(
-          'Message ID of the reaction to be deleted. How to get the ID:- After calling the  interface, get it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the  interface and get it from the `message_id` parameter of the response result',
+          'Message ID of the reaction to be deleted. How to get the ID:- After calling the [Send message] interface, get it from the `message_id` parameter of the response result.- Listen to the [Receive message] event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the [Get session history messages] interface and get it from the `message_id` parameter of the response result',
         ),
       reaction_id: z
         .string()
         .describe(
-          'ID of the reaction to be deleted, how to get the ID:- Call the  interface to add an emoji reply, and get it in the returned result.- Call the  interface to get the ID of a certain emoji reply',
+          'ID of the reaction to be deleted, how to get the ID:- Call the [Add message reaction] interface to add an emoji reply, and get it in the returned result.- Call the [Get message reaction] interface to get the ID of a certain emoji reply',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1907,7 +1921,7 @@ export const imV1MessageReactionList = {
       reaction_type: z
         .string()
         .describe(
-          'The type of emoji to be queried. For supported enumeration values, refer to the emoji_type value in .**Notice**: This parameter is optional. If it is not passed, all reactions in the message will be queried',
+          'The type of emoji to be queried. For supported enumeration values, refer to the emoji_type value in [Emoji Text Description].**Notice**: This parameter is optional. If it is not passed, all reactions in the message will be queried',
         )
         .optional(),
       page_token: z
@@ -1926,7 +1940,7 @@ export const imV1MessageReactionList = {
       message_id: z
         .string()
         .describe(
-          'Message ID of the reaction to be obtained. How to get the ID:- After calling the  interface, get it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the  interface and get it from the `message_id` parameter of the response result',
+          'Message ID of the reaction to be obtained. How to get the ID:- After calling the [Send message] interface, get it from the `message_id` parameter of the response result.- Listen to the [Receive message] event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the [Get session history messages] interface and get it from the `message_id` parameter of the response result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1959,7 +1973,7 @@ export const imV1MessageReadUsers = {
       message_id: z
         .string()
         .describe(
-          'The ID of the message to be queried. How to obtain the ID:- After calling the  interface, obtain it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can obtain the `message_id` of the message from the event body.- Call the  interface and obtain it from the `message_id` parameter of the response result',
+          'The ID of the message to be queried. How to obtain the ID:- After calling the [Send Message] interface, obtain it from the `message_id` parameter of the response result.- Listen to the [Receive Message] event. When the event is triggered, you can obtain the `message_id` of the message from the event body.- Call the [Get Session History Messages] interface and obtain it from the `message_id` parameter of the response result',
         ),
     }),
   },
@@ -1978,12 +1992,12 @@ export const imV1MessageReply = {
       content: z
         .string()
         .describe(
-          "Message content, a string serialized from a JSON structure. The value of this parameter corresponds to `msg_type`. For example, if the value of `msg_type` is `text`, this parameter needs to pass in text type content.**Note:**- JSON strings need to be escaped. For example, the line break `` is escaped as `\\`.- The maximum size of a text message request body cannot exceed 150 KB.- The maximum size of a card message or rich text message request body cannot exceed 30 KB.- If a card template (template_id) is used to send a message, the actual size also includes the card data size corresponding to the template.- If the message contains style tags, the actual message body length will be greater than the request body length you entered.- For images, you need to  first, and then use the image's Key to send a message.- Audio, video, and files need to be uploaded first, and then the file's key is used to send a message.For different types of message content formats and usage restrictions, see ",
+          "Message content, a string serialized from a JSON structure. The value of this parameter corresponds to `msg_type`. For example, if the value of `msg_type` is `text`, this parameter needs to pass in text type content.**Note:**- JSON strings need to be escaped. For example, the line break `` is escaped as `\\`.- The maximum size of a text message request body cannot exceed 150 KB.- The maximum size of a card message or rich text message request body cannot exceed 30 KB.- If a card template (template_id) is used to send a message, the actual size also includes the card data size corresponding to the template.- If the message contains style tags, the actual message body length will be greater than the request body length you entered.- For images, you need to [upload the image] first, and then use the image's Key to send a message.- Audio, video, and files need to be uploaded first, and then the file's key is used to send a message.For different types of message content formats and usage restrictions, see [Sending Message Content]",
         ),
       msg_type: z
         .string()
         .describe(
-          'Message type.**Optional values**:- text- post- image- file- audio- media- sticker- interactive- share_chat- share_userFor detailed information on different message types, see ',
+          'Message type.**Optional values**:- text- post- image- file- audio- media- sticker- interactive- share_chat- share_userFor detailed information on different message types, see [Send message content]',
         ),
       reply_in_thread: z
         .boolean()
@@ -2002,7 +2016,7 @@ export const imV1MessageReply = {
       message_id: z
         .string()
         .describe(
-          'The ID of the message to be replied. How to get the ID:- After calling the  interface, get it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the  interface and get it from the `message_id` parameter of the response result',
+          'The ID of the message to be replied. How to get the ID:- After calling the [Send Message] interface, get it from the `message_id` parameter of the response result.- Listen to the [Receive Message] event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the [Get Session History Messages] interface and get it from the `message_id` parameter of the response result',
         ),
     }),
   },
@@ -2014,7 +2028,7 @@ export const imV1MessageUpdate = {
   path: '/open-apis/im/v1/messages/:message_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-Messaging-Message management-Edit message-Call this interface to edit the content of the sent message. It supports editing text and rich text messages. If you need to edit the card message, please use the  interface',
+    '[Feishu/Lark]-Messaging-Message management-Edit message-Call this interface to edit the content of the sent message. It supports editing text and rich text messages. If you need to edit the card message, please use the [update the message card sent by the application] interface',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2022,14 +2036,14 @@ export const imV1MessageUpdate = {
       content: z
         .string()
         .describe(
-          'Message content, a string serialized from a JSON structure. The value of this parameter corresponds to `msg_type`. For example, if the value of `msg_type` is `text`, this parameter needs to pass in text type content.**Note:**- JSON strings need to be escaped, such as `\\` after line break escape- The maximum size of a text message request body cannot exceed 150 KB- The maximum size of a rich text message request body cannot exceed 30 KB- If the message contains style tags, the actual message body length will be greater than the request body length you enter.For information about different types of message content formats and usage restrictions, see ',
+          'Message content, a string serialized from a JSON structure. The value of this parameter corresponds to `msg_type`. For example, if the value of `msg_type` is `text`, this parameter needs to pass in text type content.**Note:**- JSON strings need to be escaped, such as `\\` after line break escape- The maximum size of a text message request body cannot exceed 150 KB- The maximum size of a rich text message request body cannot exceed 30 KB- If the message contains style tags, the actual message body length will be greater than the request body length you enter.For information about different types of message content formats and usage restrictions, see [Sending Message Content]',
         ),
     }),
     path: z.object({
       message_id: z
         .string()
         .describe(
-          'The ID of the message to be edited. Only text and post messages are supported.How to get the ID:- After calling the  interface, get it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the  interface and get it from the `message_id` parameter of the response result',
+          'The ID of the message to be edited. Only text and post messages are supported.How to get the ID:- After calling the [Send Message] interface, get it from the `message_id` parameter of the response result.- Listen to the [Receive Message] event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the [Get Session History Messages] interface and get it from the `message_id` parameter of the response result',
         ),
     }),
   },
@@ -2041,7 +2055,7 @@ export const imV1MessageUrgentApp = {
   path: '/open-apis/im/v1/messages/:message_id/urgent_app',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Messaging-Buzz message-Send buzz messages in apps-Call this interface to send the specified message buzz to the target user. Buzz is only notified in the Feishu client. For more information about buzz, please refer to ',
+    '[Feishu/Lark]-Messaging-Buzz message-Send buzz messages in apps-Call this interface to send the specified message buzz to the target user. Buzz is only notified in the Feishu client. For more information about buzz, please refer to [Buzz function]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2056,7 +2070,7 @@ export const imV1MessageUrgentApp = {
       message_id: z
         .string()
         .describe(
-          'ID of the message to be buzzed. How to get the ID:- After calling the  interface, get it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the  interface and get it from the `message_id` parameter of the response result.**Notice**: Buzz  are not supported (the corresponding message ID format is `bm_xxx`)',
+          'ID of the message to be buzzed. How to get the ID:- After calling the [Send Message] interface, get it from the `message_id` parameter of the response result.- Listen to the [Receive Message] event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the [Get Session History Messages] interface and get it from the `message_id` parameter of the response result.**Notice**: Buzz [batch messages] are not supported (the corresponding message ID format is `bm_xxx`)',
         ),
     }),
   },
@@ -2068,7 +2082,7 @@ export const imV1MessageUrgentPhone = {
   path: '/open-apis/im/v1/messages/:message_id/urgent_phone',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Messaging-Buzz message-Send buzz messages via phone call-Call this interface to buzz the specified message to the target user, and the buzz will be notified through the Feishu client and phone. For more information about buzz, please refer to ',
+    '[Feishu/Lark]-Messaging-Buzz message-Send buzz messages via phone call-Call this interface to buzz the specified message to the target user, and the buzz will be notified through the Feishu client and phone. For more information about buzz, please refer to [Buzz function]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2083,7 +2097,7 @@ export const imV1MessageUrgentPhone = {
       message_id: z
         .string()
         .describe(
-          'ID of the message to be buzzed. How to get the ID:- After calling the  interface, get it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the  interface and get it from the `message_id` parameter of the response result.**Notice**: Buzz  are not supported (the corresponding message ID format is `bm_xxx`)',
+          'ID of the message to be buzzed. How to get the ID:- After calling the [Send Message] interface, get it from the `message_id` parameter of the response result.- Listen to the [Receive Message] event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the [Get Session History Messages] interface and get it from the `message_id` parameter of the response result.**Notice**: Buzz [batch messages] are not supported (the corresponding message ID format is `bm_xxx`)',
         ),
     }),
   },
@@ -2095,7 +2109,7 @@ export const imV1MessageUrgentSms = {
   path: '/open-apis/im/v1/messages/:message_id/urgent_sms',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Messaging-Buzz message-Send buzz messages via SMS-Call this interface to send the specified message buzz to the target user, and buzz will be notified through Feishu client and SMS. For more information about buzz, please refer to ',
+    '[Feishu/Lark]-Messaging-Buzz message-Send buzz messages via SMS-Call this interface to send the specified message buzz to the target user, and buzz will be notified through Feishu client and SMS. For more information about buzz, please refer to [Buzz function]',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2110,7 +2124,7 @@ export const imV1MessageUrgentSms = {
       message_id: z
         .string()
         .describe(
-          'ID of the message to be buzzed. How to get the ID:- After calling the  interface, get it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the  interface and get it from the `message_id` parameter of the response result.**Notice**: Buzz  are not supported (the corresponding message ID format is `bm_xxx`)',
+          'ID of the message to be buzzed. How to get the ID:- After calling the [Send Message] interface, get it from the `message_id` parameter of the response result.- Listen to the [Receive Message] event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the [Get Session History Messages] interface and get it from the `message_id` parameter of the response result.**Notice**: Buzz [batch messages] are not supported (the corresponding message ID format is `bm_xxx`)',
         ),
     }),
   },
@@ -2122,14 +2136,14 @@ export const imV1PinCreate = {
   path: '/open-apis/im/v1/pins',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Messaging-Pin-Pin a message-Pin a specified message. For the effects of Pin messages, see ',
+    '[Feishu/Lark]-Messaging-Pin-Pin a message-Pin a specified message. For the effects of Pin messages, see [Pin overview]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       message_id: z
         .string()
         .describe(
-          'Message ID to be pinned. How to get the ID:- After calling the  interface, get it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the  interface and get it from the `message_id` parameter of the response result',
+          'Message ID to be pinned. How to get the ID:- After calling the [Send Message] interface, get it from the `message_id` parameter of the response result.- Listen to the [Receive Message] event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the [Get Session History Messages] interface and get it from the `message_id` parameter of the response result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -2148,7 +2162,7 @@ export const imV1PinDelete = {
       message_id: z
         .string()
         .describe(
-          'Message ID to be unpin. How to get the ID:- After calling the  interface, get it from the `message_id` parameter of the response result.- Listen to the  event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the  interface and get it from the `message_id` parameter of the response result',
+          'Message ID to be unpin. How to get the ID:- After calling the [Send Message] interface, get it from the `message_id` parameter of the response result.- Listen to the [Receive Message] event. When the event is triggered, you can get the `message_id` of the message from the event body.- Call the [Get Session History Messages] interface and get it from the `message_id` parameter of the response result',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -2168,7 +2182,7 @@ export const imV1PinList = {
       chat_id: z
         .string()
         .describe(
-          'Group ID. For details, refer to ',
+          'Group ID. For details, refer to [Group ID description]',
         ),
       start_time: z
         .string()
@@ -2215,7 +2229,7 @@ export const imV1ThreadForward = {
       receive_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'email', 'chat_id', 'thread_id'])
         .describe(
-          'Message recipient ID type. Options:open_id(OpenID Identifies the identity of a user in an application. The same user has different Open IDs in different applications.),union_id(UnionID Identifies the identity of a user under an application developer. The Union ID of the same user in applications under the same developer is the same, and the Union ID in applications under different developers is different. With Union ID, application developers can associate the identity of the same user in multiple applications.),user_id(UserID Identifies the identity of a user in a tenant. The user ID of the same user in tenant A and tenant B is different. In the same tenant, the user ID of a user is consistent in all applications (including store applications). User IDs are mainly used to connect user data between different applications.),email(Identify the user by their real email address.),chat_id(ChatID Identifies group chats by chat_id. You can call the API  to obtain the chat_id value. For group ID description, refer to ),thread_id(ThreadID Identifies thread by thread_id. For thread ID description, refer to </md-enum-item>)',
+          'Message recipient ID type. Options:open_id(OpenID Identifies the identity of a user in an application. The same user has different Open IDs in different applications.),union_id(UnionID Identifies the identity of a user under an application developer. The Union ID of the same user in applications under the same developer is the same, and the Union ID in applications under different developers is different. With Union ID, application developers can associate the identity of the same user in multiple applications.),user_id(UserID Identifies the identity of a user in a tenant. The user ID of the same user in tenant A and tenant B is different. In the same tenant, the user ID of a user is consistent in all applications (including store applications). User IDs are mainly used to connect user data between different applications.),email(Identify the user by their real email address.),chat_id(ChatID Identifies group chats by chat_id. You can call the API [Search for groups visible to a user or bot] to obtain the chat_id value. For group ID description, refer to [Group ID description]),thread_id(ThreadID Identifies thread by thread_id. For thread ID description, refer to [Thread Introduction]</md-enum-item>)',
         ),
       uuid: z
         .string()
@@ -2228,7 +2242,7 @@ export const imV1ThreadForward = {
       thread_id: z
         .string()
         .describe(
-          'The ID of the thread to be forwarded. For how to obtain it, see the **How ​​to obtain thread_id** section in ',
+          'The ID of the thread to be forwarded. For how to obtain it, see the **How ​​to obtain thread_id** section in [Thread Overview]',
         ),
     }),
   },

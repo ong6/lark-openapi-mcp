@@ -56,19 +56,19 @@ export const driveV1ExportTaskCreate = {
   path: '/open-apis/drive/v1/export_tasks',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-云空间-文件-导出云文档-创建导出任务-该接口用于创建导出文件的任务，并返回导出任务 ID。导出文件指将飞书文档、电子表格、多维表格导出为本地文件，包括 Word、Excel、PDF、CSV 格式。该接口为异步接口，需要继续调用接口获取导出结果。了解完整的导出步骤，参考',
+    '[Feishu/Lark]-云空间-文件-导出云文档-创建导出任务-该接口用于创建导出文件的任务，并返回导出任务 ID。导出文件指将飞书文档、电子表格、多维表格导出为本地文件，包括 Word、Excel、PDF、CSV 格式。该接口为异步接口，需要继续调用[查询导出任务结果]接口获取导出结果。了解完整的导出步骤，参考[导出云文档概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       file_extension: z
         .enum(['docx', 'pdf', 'xlsx', 'csv'])
         .describe(
-          '将云文档导出为本地文件后，本地文件的扩展名。了解各类云文档支持导出的文件格式，参考。 Options:docx(Microsoft Word 格式),pdf(PDF 格式),xlsx(Microsoft Excel 格式),csv(CSV 格式)',
+          '将云文档导出为本地文件后，本地文件的扩展名。了解各类云文档支持导出的文件格式，参考[导出云文档概述]。 Options:docx(Microsoft Word 格式),pdf(PDF 格式),xlsx(Microsoft Excel 格式),csv(CSV 格式)',
         ),
       token: z
         .string()
         .describe(
-          '要导出的云文档的 token。获取方式参考 ',
+          '要导出的云文档的 token。获取方式参考 [如何获取云文档相关 token]',
         ),
       type: z
         .enum(['doc', 'sheet', 'bitable', 'docx'])
@@ -78,7 +78,7 @@ export const driveV1ExportTaskCreate = {
       sub_id: z
         .string()
         .describe(
-          '导出飞书电子表格或多维表格为 CSV 文件时，需传入电子表格工作表的 ID 或多维表格数据表的 ID：- 电子表格可调用 接口获取返回的 `sheet_id` 的值作为该参数的值- 多维表格可调用接口获取返回的 `table_id` 的值作为该参数的值',
+          '导出飞书电子表格或多维表格为 CSV 文件时，需传入电子表格工作表的 ID 或多维表格数据表的 ID：- 电子表格可调用[获取工作表] 接口获取返回的 `sheet_id` 的值作为该参数的值- 多维表格可调用[列出数据表]接口获取返回的 `table_id` 的值作为该参数的值',
         )
         .optional(),
     }),
@@ -92,21 +92,21 @@ export const driveV1ExportTaskGet = {
   path: '/open-apis/drive/v1/export_tasks/:ticket',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-云空间-文件-导出云文档-查询导出任务结果-根据返回的导出任务 ID（ticket）轮询导出任务结果，并返回导出文件的 token。你可使用该 token 继续调用接口将导出的产物下载到本地。了解完整的导出文件步骤，参考',
+    '[Feishu/Lark]-云空间-文件-导出云文档-查询导出任务结果-根据[创建导出任务]返回的导出任务 ID（ticket）轮询导出任务结果，并返回导出文件的 token。你可使用该 token 继续调用[下载导出文件]接口将导出的产物下载到本地。了解完整的导出文件步骤，参考[导出飞书云文档概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
       token: z
         .string()
         .describe(
-          '要导出的云文档的 token。获取方式参考。你可参考以下请求示例了解如何使用查询参数',
+          '要导出的云文档的 token。获取方式参考[如何获取云文档相关 token]。你可参考以下请求示例了解如何使用查询参数',
         ),
     }),
     path: z.object({
       ticket: z
         .string()
         .describe(
-          '导出任务 ID。调用 获取',
+          '导出任务 ID。调用[创建导出任务] 获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -246,7 +246,7 @@ export const driveV1FileCommentList = {
       file_token: z
         .string()
         .describe(
-          '云文档的 token。获取方式参考 ',
+          '云文档的 token。获取方式参考 [如何获取云文档相关 token]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -399,7 +399,7 @@ export const driveV1FileCopy = {
       folder_token: z
         .string()
         .describe(
-          '目标文件夹的 token。若传入根文件夹 token，表示复制的新文件将被创建在云空间根目录。了解如何获取文件夹 token，参考',
+          '目标文件夹的 token。若传入根文件夹 token，表示复制的新文件将被创建在云空间根目录。了解如何获取文件夹 token，参考[文件夹概述]',
         ),
       extra: z
         .array(
@@ -413,7 +413,7 @@ export const driveV1FileCopy = {
       file_token: z
         .string()
         .describe(
-          '被复制的源文件的 token。了解如何获取文件 token，参考',
+          '被复制的源文件的 token。了解如何获取文件 token，参考[文件概述]',
         )
         .optional(),
     }),
@@ -434,7 +434,7 @@ export const driveV1FileCreateFolder = {
       folder_token: z
         .string()
         .describe(
-          '父文件夹的 token。参数为空字符串时，表示在根目录下创建文件夹。你可参考获取某个文件夹的 token。了解更多，参考',
+          '父文件夹的 token。参数为空字符串时，表示在根目录下创建文件夹。你可参考[获取文件夹中的文件清单]获取某个文件夹的 token。了解更多，参考[文件夹概述]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -453,14 +453,14 @@ export const driveV1FileCreateShortcut = {
       parent_token: z
         .string()
         .describe(
-          '目标父文件夹的 token，获取方式见',
+          '目标父文件夹的 token，获取方式见[文件夹概述]',
         ),
       refer_entity: z
         .object({
           refer_token: z
             .string()
             .describe(
-              '源文件的 token。获取方式见',
+              '源文件的 token。获取方式见[文件概述]',
             ),
           refer_type: z
             .enum(['file', 'docx', 'bitable', 'doc', 'sheet', 'mindnote', 'slides'])
@@ -495,7 +495,7 @@ export const driveV1FileDelete = {
       file_token: z
         .string()
         .describe(
-          '需要删除的文件或文件夹 token。了解如何获取文件 token，参考。了解如何获取文件夹 token，参考',
+          '需要删除的文件或文件夹 token。了解如何获取文件 token，参考[文件概述]。了解如何获取文件夹 token，参考[文件夹概述]',
         )
         .optional(),
     }),
@@ -509,7 +509,7 @@ export const driveV1FileDeleteSubscribe = {
   path: '/open-apis/drive/v1/files/:file_token/delete_subscribe',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-云文档-云空间-事件-取消云文档事件订阅-该接口用于取消订阅云文档的通知事件。了解事件订阅的配置流程和使用场景，参考。了解云文档支持的事件类型，参考',
+    '[Feishu/Lark]-云文档-云空间-事件-取消云文档事件订阅-该接口用于取消订阅云文档的通知事件。了解事件订阅的配置流程和使用场景，参考[事件概述]。了解云文档支持的事件类型，参考[事件列表]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -527,7 +527,7 @@ export const driveV1FileDeleteSubscribe = {
       file_token: z
         .string()
         .describe(
-          '云文档的 token。了解如何获取各类云文档的token，参考',
+          '云文档的 token。了解如何获取各类云文档的token，参考[云空间常见问题]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -540,7 +540,7 @@ export const driveV1FileGetSubscribe = {
   path: '/open-apis/drive/v1/files/:file_token/get_subscribe',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-云文档-云空间-事件-查询云文档事件订阅状态-该接口用于查询云文档事件的订阅状态。了解事件订阅的配置流程和使用场景，参考。了解云文档支持的事件类型，参考',
+    '[Feishu/Lark]-云文档-云空间-事件-查询云文档事件订阅状态-该接口用于查询云文档事件的订阅状态。了解事件订阅的配置流程和使用场景，参考[事件概述]。了解云文档支持的事件类型，参考[事件列表]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -558,7 +558,7 @@ export const driveV1FileGetSubscribe = {
       file_token: z
         .string()
         .describe(
-          '云文档的 token。了解如何获取各类云文档的 token，参考',
+          '云文档的 token。了解如何获取各类云文档的 token，参考[云空间常见问题]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -585,7 +585,7 @@ export const driveV1FileList = {
       folder_token: z
         .string()
         .describe(
-          '文件夹的 token。不填写或填空字符串，将获取用户云空间根目录下的清单，且不支持分页。了解如何获取文件夹 token，参考',
+          '文件夹的 token。不填写或填空字符串，将获取用户云空间根目录下的清单，且不支持分页。了解如何获取文件夹 token，参考[文件夹概述]',
         )
         .optional(),
       order_by: z
@@ -620,7 +620,7 @@ export const driveV1FileMove = {
       folder_token: z
         .string()
         .describe(
-          '目标文件夹的 token。了解如何获取文件夹 token，参考',
+          '目标文件夹的 token。了解如何获取文件夹 token，参考[文件夹概述]',
         )
         .optional(),
     }),
@@ -628,7 +628,7 @@ export const driveV1FileMove = {
       file_token: z
         .string()
         .describe(
-          '需要移动的文件或文件夹 token。了解如何获取文件 token，参考。了解如何获取文件夹 token，参考',
+          '需要移动的文件或文件夹 token。了解如何获取文件 token，参考[文件概述]。了解如何获取文件夹 token，参考[文件夹概述]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -655,7 +655,7 @@ export const driveV1FileStatisticsGet = {
       file_token: z
         .string()
         .describe(
-          '文件 token。了解如何获取文件 token，参考',
+          '文件 token。了解如何获取文件 token，参考[文件概述]',
         )
         .optional(),
     }),
@@ -669,7 +669,7 @@ export const driveV1FileSubscribe = {
   path: '/open-apis/drive/v1/files/:file_token/subscribe',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-云文档-云空间-事件-订阅云文档事件-该接口用于订阅云文档的各类通知事件。了解事件订阅的配置流程和使用场景，参考。了解云文档支持的事件类型，参考',
+    '[Feishu/Lark]-云文档-云空间-事件-订阅云文档事件-该接口用于订阅云文档的各类通知事件。了解事件订阅的配置流程和使用场景，参考[事件概述]。了解云文档支持的事件类型，参考[事件列表]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -687,7 +687,7 @@ export const driveV1FileSubscribe = {
       file_token: z
         .string()
         .describe(
-          '云文档的 token。了解如何获取各类云文档的 token，参考',
+          '云文档的 token。了解如何获取各类云文档的 token，参考[云空间常见问题]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -768,7 +768,7 @@ export const driveV1FileTaskCheck = {
       task_id: z
         .string()
         .describe(
-          '异步任务的 ID。目前支持查询删除文件夹和移动文件夹的异步任务。可通过调用或获取任务 ID',
+          '异步任务的 ID。目前支持查询删除文件夹和移动文件夹的异步任务。可通过调用[删除文件夹]或[移动文件夹]获取任务 ID',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -781,19 +781,19 @@ export const driveV1FileUploadFinish = {
   path: '/open-apis/drive/v1/files/upload_finish',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-文件-上传文件-分片上传文件-分片上传文件-完成上传-调用接口将分片全部上传完毕后，你需调用本接口触发完成上传。否则将上传失败。了解完整的上传文件流程，参考',
+    '[Feishu/Lark]-文件-上传文件-分片上传文件-分片上传文件-完成上传-调用[上传分片]接口将分片全部上传完毕后，你需调用本接口触发完成上传。否则将上传失败。了解完整的上传文件流程，参考[上传文件概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       upload_id: z
         .string()
         .describe(
-          '分片上传事务 ID。通过调用接口获取',
+          '分片上传事务 ID。通过调用[分片上传文件-预上传]接口获取',
         ),
       block_num: z
         .number()
         .describe(
-          '分片的数量。通过调用接口获取',
+          '分片的数量。通过调用[分片上传文件-预上传]接口获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -806,7 +806,7 @@ export const driveV1FileUploadPrepare = {
   path: '/open-apis/drive/v1/files/upload_prepare',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-文件-上传文件-分片上传文件-分片上传文件-预上传-发送初始化请求，以获取上传事务 ID 和分片策略，为做准备。平台固定以 4MB 的大小对文件进行分片。了解完整的上传文件流程，参考',
+    '[Feishu/Lark]-文件-上传文件-分片上传文件-分片上传文件-预上传-发送初始化请求，以获取上传事务 ID 和分片策略，为[上传分片]做准备。平台固定以 4MB 的大小对文件进行分片。了解完整的上传文件流程，参考[上传文件概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -817,7 +817,7 @@ export const driveV1FileUploadPrepare = {
       parent_node: z
         .string()
         .describe(
-          '云空间中文件夹的 token。了解如何获取文件夹 token，参考',
+          '云空间中文件夹的 token。了解如何获取文件夹 token，参考[文件夹概述]',
         ),
       size: z.number().describe('文件的大小，单位为字节'),
     }),
@@ -853,7 +853,7 @@ export const driveV1FileVersionCreate = {
       file_token: z
         .string()
         .describe(
-          '源文档的 token，获取方式参考 ',
+          '源文档的 token，获取方式参考 [如何获取云文档相关 token]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -876,7 +876,7 @@ export const driveV1FileVersionDelete = {
       file_token: z
         .string()
         .describe(
-          '当前版本对应的源文档的 token。获取方式参考',
+          '当前版本对应的源文档的 token。获取方式参考[如何获取云文档相关 token]',
         ),
       version_id: z.string().describe('版本文档版本标识'),
     }),
@@ -901,7 +901,7 @@ export const driveV1FileVersionGet = {
       file_token: z
         .string()
         .describe(
-          '源文档的 token。获取方式参考 ',
+          '源文档的 token。获取方式参考 [如何获取云文档相关 token]',
         ),
       version_id: z.string().describe('版本文档的版本标识'),
     }),
@@ -932,7 +932,7 @@ export const driveV1FileVersionList = {
       file_token: z
         .string()
         .describe(
-          '源文档的 token。获取方式参考 ',
+          '源文档的 token。获取方式参考 [如何获取云文档相关 token]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -964,7 +964,7 @@ export const driveV1FileViewRecordList = {
       viewer_id_type: z
         .enum(['user_id', 'union_id', 'open_id'])
         .describe(
-          '返回的访问者 ID 的类型。**当值为`user_id`时，字段权限要求**：<md-perm name="contact:user.employee_id:readonly" desc="获取用户 user ID" support_app_types="custom" tags="">获取用户 user ID</md-perm> Options:user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。),open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。)',
+          '返回的访问者 ID 的类型。**当值为`user_id`时，字段权限要求**：<md-perm name="contact:user.employee_id:readonly" desc="获取用户 user ID" support_app_types="custom" tags="">获取用户 user ID</md-perm> Options:user_id(标识一个用户在某个租户内的身份。同一个用户在租户 A 和租户 B 内的 User ID 是不同的。在同一个租户内，一个用户的 User ID 在所有应用（包括商店应用）中都保持一致。User ID 主要用于在不同的应用间打通用户数据。[了解更多：如何获取 User ID？]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID])',
         )
         .optional(),
     }),
@@ -972,7 +972,7 @@ export const driveV1FileViewRecordList = {
       file_token: z
         .string()
         .describe(
-          '文件 token。获取方式参考',
+          '文件 token。获取方式参考[文件概述]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -985,24 +985,24 @@ export const driveV1ImportTaskCreate = {
   path: '/open-apis/drive/v1/import_tasks',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-云空间-文件-导入文件-创建导入任务-该接口用于创建导入文件的任务，并返回导入任务 ID。导入文件指将本地文件如 Word、TXT、Markdown、Excel 等格式的文件导入为某种格式的飞书在线云文档。该接口为异步接口，需要继续调用接口获取导入结果。了解完整的导入文件步骤，参考',
+    '[Feishu/Lark]-云空间-文件-导入文件-创建导入任务-该接口用于创建导入文件的任务，并返回导入任务 ID。导入文件指将本地文件如 Word、TXT、Markdown、Excel 等格式的文件导入为某种格式的飞书在线云文档。该接口为异步接口，需要继续调用[查询导入任务结果]接口获取导入结果。了解完整的导入文件步骤，参考[导入文件概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       file_extension: z
         .string()
         .describe(
-          '要导入的文件的扩展名。了解支持的文件格式，参考。**注意**：此处填写的文件扩展名需与实际文件的后缀名保持严格一致。请注意区分后缀为 “markdown”、“md”、“mark” 的 Markdown 文件，并在填写相关参数时保持后缀名一致。否则将返回 1069910 错误码',
+          '要导入的文件的扩展名。了解支持的文件格式，参考[导入文件概述]。**注意**：此处填写的文件扩展名需与实际文件的后缀名保持严格一致。请注意区分后缀为 “markdown”、“md”、“mark” 的 Markdown 文件，并在填写相关参数时保持后缀名一致。否则将返回 1069910 错误码',
         ),
       file_token: z
         .string()
         .describe(
-          '要导入文件的 token。创建任务前，你需先调用或接口获取源文件的 token。了解更多，参考',
+          '要导入文件的 token。创建任务前，你需先调用[上传素材]或[上传文件]接口获取源文件的 token。了解更多，参考[导入文件概述]',
         ),
       type: z
         .string()
         .describe(
-          '目标云文档格式。不同文件支持的云文档格式不同。详情参考。可选值如下所示：- `docx`：新版文档- `sheet`：电子表格- `bitable`：多维表格',
+          '目标云文档格式。不同文件支持的云文档格式不同。详情参考[导入文件概述]。可选值如下所示：- `docx`：新版文档- `sheet`：电子表格- `bitable`：多维表格',
         ),
       file_name: z.string().describe('导入后的在线云文档名称。参数为空时，使用上传本地文件时的文件名').optional(),
       point: z
@@ -1013,7 +1013,7 @@ export const driveV1ImportTaskCreate = {
           mount_key: z
             .string()
             .describe(
-              '云文档挂载的文件夹的 token，即云空间下文件夹的 token。空表示云空间根目录。了解如何获取文件夹 token，参考',
+              '云文档挂载的文件夹的 token，即云空间下文件夹的 token。空表示云空间根目录。了解如何获取文件夹 token，参考[文件夹概述]',
             ),
         })
         .describe('挂载点（导入后的云文档所在位置）'),
@@ -1028,14 +1028,14 @@ export const driveV1ImportTaskGet = {
   path: '/open-apis/drive/v1/import_tasks/:ticket',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-云空间-文件-导入文件-查询导入任务结果-根据返回的导入任务 ID（ticket）轮询导入结果。了解完整的导入文件步骤，参考',
+    '[Feishu/Lark]-云空间-文件-导入文件-查询导入任务结果-根据[创建导入任务]返回的导入任务 ID（ticket）轮询导入结果。了解完整的导入文件步骤，参考[导入文件概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     path: z.object({
       ticket: z
         .string()
         .describe(
-          '导入任务 ID。调用 获取',
+          '导入任务 ID。调用[创建导入任务] 获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1055,12 +1055,12 @@ export const driveV1MediaBatchGetTmpDownloadUrl = {
       file_tokens: z
         .array(z.string())
         .describe(
-          '素材文件的 token。获取方式如下所示：* 新版文档：通过接口获取指定文件块（File Block）或图片块（Image Block）的 token，即为素材 token。* 电子表格：通过接口获取指定附件的 `fileToken`，即为素材的 token。* 多维表格：通过接口获取指定附件的 `file_token`，即为素材的 token。如需一次获取多个素材的下载链接，可多次传递本参数及素材的 token 值，格式如下：`https://{url}?file_tokens={token1}&file_tokens={token2}`其中：- `file_tokens` 是参数名，可以多次传递- `token1` 和 `token2` 为素材的实际 token 值- 一次最多可传递 5 个素材的 token，但在 API 调试台仅支持传一个 token',
+          '素材文件的 token。获取方式如下所示：* 新版文档：通过[获取文档所有块]接口获取指定文件块（File Block）或图片块（Image Block）的 token，即为素材 token。* 电子表格：通过[读取多个范围]接口获取指定附件的 `fileToken`，即为素材的 token。* 多维表格：通过[列出记录]接口获取指定附件的 `file_token`，即为素材的 token。如需一次获取多个素材的下载链接，可多次传递本参数及素材的 token 值，格式如下：`https://{url}?file_tokens={token1}&file_tokens={token2}`其中：- `file_tokens` 是参数名，可以多次传递- `token1` 和 `token2` 为素材的实际 token 值- 一次最多可传递 5 个素材的 token，但在 API 调试台仅支持传一个 token',
         ),
       extra: z
         .string()
         .describe(
-          '拓展信息，如拥有高级权限的多维表格在下载素材时，需要添加额外的扩展信息作为 URL 查询参数鉴权。详情参考。未正确填写该参数的接口将返回 403 的 HTTP 状态码',
+          '拓展信息，如拥有高级权限的多维表格在下载素材时，需要添加额外的扩展信息作为 URL 查询参数鉴权。详情参考[extra 参数说明]。未正确填写该参数的接口将返回 403 的 HTTP 状态码',
         )
         .optional(),
     }),
@@ -1074,19 +1074,19 @@ export const driveV1MediaUploadFinish = {
   path: '/open-apis/drive/v1/medias/upload_finish',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-云空间-素材-上传素材-分片上传素材-完成上传-调用接口将分片全部上传完毕后，你需调用本接口触发完成上传。了解完整的分片上传素材流程，参考',
+    '[Feishu/Lark]-云空间-素材-上传素材-分片上传素材-完成上传-调用[上传分片]接口将分片全部上传完毕后，你需调用本接口触发完成上传。了解完整的分片上传素材流程，参考[素材概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       upload_id: z
         .string()
         .describe(
-          '分片上传事务 ID。通过调用接口获取',
+          '分片上传事务 ID。通过调用[分片上传素材（预上传）]接口获取',
         ),
       block_num: z
         .number()
         .describe(
-          '分片数量。通过调用接口获取',
+          '分片数量。通过调用[分片上传素材（预上传）]接口获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1099,7 +1099,7 @@ export const driveV1MediaUploadPrepare = {
   path: '/open-apis/drive/v1/medias/upload_prepare',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-云空间-素材-上传素材-分片上传素材-预上传-发送初始化请求，以获取上传事务 ID 和分片策略，为做准备。平台固定以 4MB 的大小对素材进行分片。了解完整的分片上传素材流程，参考',
+    '[Feishu/Lark]-云空间-素材-上传素材-分片上传素材-预上传-发送初始化请求，以获取上传事务 ID 和分片策略，为[上传素材分片]做准备。平台固定以 4MB 的大小对素材进行分片。了解完整的分片上传素材流程，参考[素材概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1124,13 +1124,13 @@ export const driveV1MediaUploadPrepare = {
       parent_node: z
         .string()
         .describe(
-          '上传点的 token，即要上传的云文档的 token，用于指定素材将要上传到的云文档或位置。参考  了解上传点类型与上传点 token 的对应关系',
+          '上传点的 token，即要上传的云文档的 token，用于指定素材将要上传到的云文档或位置。参考 [素材概述] 了解上传点类型与上传点 token 的对应关系',
         ),
       size: z.number().describe('文件的大小，单位为字节'),
       extra: z
         .string()
         .describe(
-          '以下场景的上传点需通过该参数传入素材所在云文档的 token。extra 参数的格式为`"{\\"drive_route_token\\":\\"素材所在云文档的 token\\"}"`。详情参考',
+          '以下场景的上传点需通过该参数传入素材所在云文档的 token。extra 参数的格式为`"{\\"drive_route_token\\":\\"素材所在云文档的 token\\"}"`。详情参考[素材概述-extra 参数说明]',
         )
         .optional(),
     }),
@@ -1154,7 +1154,7 @@ export const driveV1MetaBatchQuery = {
             doc_token: z
               .string()
               .describe(
-                '文件的 token，获取方式见',
+                '文件的 token，获取方式见[文件概述]',
               ),
             doc_type: z
               .enum(['doc', 'sheet', 'bitable', 'mindnote', 'file', 'wiki', 'docx', 'folder', 'synced_block'])
@@ -1260,7 +1260,7 @@ export const driveV1PermissionMemberBatchCreate = {
       token: z
         .string()
         .describe(
-          '云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考 ',
+          '云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考 [如何获取云文档相关 token]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1279,7 +1279,7 @@ export const driveV1PermissionMemberCreate = {
       member_type: z
         .enum(['email', 'openid', 'unionid', 'openchat', 'opendepartmentid', 'userid', 'groupid', 'wikispaceid'])
         .describe(
-          '协作者 ID 类型，与协作者 ID 需要对应 Options:email(飞书邮箱),openid(open_id 应用或用户的 Open ID。 - 获取应用 OpenID，参考 - 获取用户 OpenID，参考),unionid(union_id 开放平台 UnionID),openchat(open_chat 开放平台群组 ID),opendepartmentid(open_department_id 开放平台部门 ID。仅当使用 <md-tag mode="inline" type="token-user">user_access_token</md-tag> 调用时有效),userid(user_id 用户自定义 ID),groupid(group_id 自定义用户组 ID),wikispaceid(wiki_space_id 知识空间 ID。仅知识库文档支持该参数，当需要操作知识库文档里的「知识库成员」类型协作者时传该参数)',
+          '协作者 ID 类型，与协作者 ID 需要对应 Options:email(飞书邮箱),openid(open_id 应用或用户的 Open ID。 - 获取应用 OpenID，参考[如何获取应用 open_id] - 获取用户 OpenID，参考[如何获取不同的用户 ID]),unionid(union_id 开放平台 UnionID),openchat(open_chat 开放平台群组 ID),opendepartmentid(open_department_id 开放平台部门 ID。仅当使用 <md-tag mode="inline" type="token-user">user_access_token</md-tag> 调用时有效),userid(user_id 用户自定义 ID),groupid(group_id 自定义用户组 ID),wikispaceid(wiki_space_id 知识空间 ID。仅知识库文档支持该参数，当需要操作知识库文档里的「知识库成员」类型协作者时传该参数)',
         ),
       member_id: z.string().describe('协作者 ID，与协作者 ID 类型需要对应'),
       perm: z
@@ -1317,7 +1317,7 @@ export const driveV1PermissionMemberCreate = {
       token: z
         .string()
         .describe(
-          '云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考',
+          '云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考[如何获取云文档资源相关 token]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1362,7 +1362,7 @@ export const driveV1PermissionMemberDelete = {
       token: z
         .string()
         .describe(
-          '文件的 token，获取方式见 ',
+          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
         ),
       member_id: z.string().describe('协作者 ID，与协作者 ID 类型需要对应'),
     }),
@@ -1401,7 +1401,7 @@ export const driveV1PermissionMemberList = {
       token: z
         .string()
         .describe(
-          '文件的 token，获取方式见 ',
+          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1495,7 +1495,7 @@ export const driveV1PermissionMemberUpdate = {
       token: z
         .string()
         .describe(
-          '文件的 token，获取方式见 ',
+          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
         ),
       member_id: z.string().describe('协作者 ID，与协作者 ID 类型需要对应'),
     }),
@@ -1522,7 +1522,7 @@ export const driveV1PermissionPublicGet = {
       token: z
         .string()
         .describe(
-          '文件的 token，获取方式见 ',
+          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1548,7 +1548,7 @@ export const driveV1PermissionPublicPasswordCreate = {
       token: z
         .string()
         .describe(
-          '文件的 token，获取方式见 ',
+          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
         )
         .optional(),
     }),
@@ -1575,7 +1575,7 @@ export const driveV1PermissionPublicPasswordDelete = {
       token: z
         .string()
         .describe(
-          '文件的 token，获取方式见 ',
+          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
         )
         .optional(),
     }),
@@ -1602,7 +1602,7 @@ export const driveV1PermissionPublicPasswordUpdate = {
       token: z
         .string()
         .describe(
-          '文件的 token，获取方式见 ',
+          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
         )
         .optional(),
     }),
@@ -1657,7 +1657,7 @@ export const driveV1PermissionPublicPatch = {
       token: z
         .string()
         .describe(
-          '文件的 token，获取方式见 ',
+          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),

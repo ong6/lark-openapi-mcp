@@ -96,7 +96,7 @@ export const applicationV6ApplicationAppUsageDepartmentOverview = {
       department_id: z
         .string()
         .describe(
-          'Queried department ID. For how to obtain it, see .- If the department ID is empty, usage data for the current tenant is returned. If a department ID is specified, usage data for the current department (including sub-department users) and for multiple levels of sub-departments is returned.- If department_id_type in the path parameter is empty or is the open_department_id, this field should be the open_department_id of the department. If department_id_type in the path parameter is the department_id, this field should be the department_id of the department.- If this is not specified, data for the tenant is returned',
+          'Queried department ID. For how to obtain it, see [Department ID overview].- If the department ID is empty, usage data for the current tenant is returned. If a department ID is specified, usage data for the current department (including sub-department users) and for multiple levels of sub-departments is returned.- If department_id_type in the path parameter is empty or is the open_department_id, this field should be the open_department_id of the department. If department_id_type in the path parameter is the department_id, this field should be the department_id of the department.- If this is not specified, data for the tenant is returned',
         )
         .optional(),
       recursion: z
@@ -148,7 +148,7 @@ export const applicationV6ApplicationAppUsageMessagePushOverview = {
       department_id: z
         .string()
         .describe(
-          'Department ID to be queried. For how to obtain it, see .- If the department ID is empty, usage data for the current tenant is returned. If a department ID is specified, usage data for the current department (including sub-department users) is returned. - If department_id_type in the path parameter is empty or is the open_department_id, this field should be the open_department_id of the department. If department_id_type in the path parameter is the department_id, this field should be the department_id of the department. If no department is specified, usage data for the current tenant is returned',
+          'Department ID to be queried. For how to obtain it, see [Department ID overview].- If the department ID is empty, usage data for the current tenant is returned. If a department ID is specified, usage data for the current department (including sub-department users) is returned. - If department_id_type in the path parameter is empty or is the open_department_id, this field should be the open_department_id of the department. If department_id_type in the path parameter is the department_id, this field should be the department_id of the department. If no department is specified, usage data for the current tenant is returned',
         )
         .optional(),
     }),
@@ -187,7 +187,7 @@ export const applicationV6ApplicationAppUsageOverview = {
       department_id: z
         .string()
         .describe(
-          'Queried department ID. For how to obtain it, see .- If the department ID is empty, usage data for the current tenant is returned. If a department ID is specified, usage data for the current department (including sub-department users) is returned. - If department_id_type in the path parameter is empty or is the open_department_id, this field should be the open_department_id of the department. If department_id_type in the path parameter is the department_id, this field should be the department_id of the department',
+          'Queried department ID. For how to obtain it, see [Department ID overview].- If the department ID is empty, usage data for the current tenant is returned. If a department ID is specified, usage data for the current department (including sub-department users) is returned. - If department_id_type in the path parameter is empty or is the open_department_id, this field should be the open_department_id of the department. If department_id_type in the path parameter is the department_id, this field should be the department_id of the department',
         )
         .optional(),
       ability: z
@@ -230,12 +230,12 @@ export const applicationV6ApplicationAppVersionContactsRangeSuggest = {
       app_id: z
         .string()
         .describe(
-          'App\'s app_id, get it from > Credentials & Basic Info.To query the version information of other apps, you must request the<md-perm name="application:application.app_version:readonly" desc="Obtain app version information" support_app_types="custom" tags="">Obtain app version information</md-perm> scope. To only query the version information of this app, enter "me" or the app_id',
+          'App\'s app_id, get it from[Developer Console] > Credentials & Basic Info.To query the version information of other apps, you must request the<md-perm name="application:application.app_version:readonly" desc="Obtain app version information" support_app_types="custom" tags="">Obtain app version information</md-perm> scope. To only query the version information of this app, enter "me" or the app_id',
         ),
       version_id: z
         .string()
         .describe(
-          'ID that uniquely identifies the app version, get it from',
+          'ID that uniquely identifies the app version, get it from[Obtain app version list]',
         ),
     }),
   },
@@ -260,7 +260,7 @@ export const applicationV6ApplicationAppVersionGet = {
       app_id: z
         .string()
         .describe(
-          'App\'s app_id. To query the version information of other apps, you must request the  scope. To only query the version information of this app, enter "me" or the app_id',
+          'App\'s app_id. To query the version information of other apps, you must request the [Obtain app version information] scope. To only query the version information of this app, enter "me" or the app_id',
         ),
       version_id: z.string().describe('ID that uniquely identifies the app version'),
     }),
@@ -297,7 +297,7 @@ export const applicationV6ApplicationAppVersionList = {
       app_id: z
         .string()
         .describe(
-          'App\'s app_id. To query the version information of other apps, you must request the  scope. To only query the version information of this app, enter "me" or the app_id',
+          'App\'s app_id. To query the version information of other apps, you must request the [Obtain app version information] scope. To only query the version information of this app, enter "me" or the app_id',
         ),
     }),
   },
@@ -348,7 +348,7 @@ export const applicationV6ApplicationCollaboratorsGet = {
       app_id: z
         .string()
         .describe(
-          'App ID, for more information on obtaining it, please refer to ',
+          'App ID, for more information on obtaining it, please refer to [app_id]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -383,7 +383,7 @@ export const applicationV6ApplicationCollaboratorsUpdate = {
       app_id: z
         .string()
         .describe(
-          'App ID, for more information on obtaining it, please refer to ',
+          'App ID, for more information on obtaining it, please refer to [app_id]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -419,7 +419,7 @@ export const applicationV6ApplicationContactsRangeConfiguration = {
       app_id: z
         .string()
         .describe(
-          "App's app_id, get it from  > Credentials & Basic Info",
+          "App's app_id, get it from [Developer Console] > Credentials & Basic Info",
         ),
     }),
   },
@@ -486,7 +486,7 @@ export const applicationV6ApplicationContactsRangePatch = {
       app_id: z
         .string()
         .describe(
-          "App's app_id, get it from  > Credentials & Basic Info",
+          "App's app_id, get it from [Developer Console] > Credentials & Basic Info",
         ),
     }),
   },
@@ -585,7 +585,7 @@ export const applicationV6ApplicationGet = {
       app_id: z
         .string()
         .describe(
-          'App\'s app_id. To query the information of other apps, you must request the  scope. To only query the information of this app, enter "me" or the app_id',
+          'App\'s app_id. To query the information of other apps, you must request the [Obtain apps information] scope. To only query the information of this app, enter "me" or the app_id',
         ),
     }),
   },
@@ -659,7 +659,7 @@ export const applicationV6ApplicationOwnerUpdate = {
       app_id: z
         .string()
         .describe(
-          'App ID, for more information on obtaining it, please refer to ',
+          'App ID, for more information on obtaining it, please refer to [app_id]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -725,19 +725,19 @@ export const applicationV6ApplicationVisibilityCheckWhiteBlackList = {
       user_ids: z
         .array(z.string())
         .describe(
-          'The id list of the user you want to query, entered according to user_id_type, up to 100.You can call the  interface to obtain',
+          'The id list of the user you want to query, entered according to user_id_type, up to 100.You can call the [Obtain the list of users directly under a department] interface to obtain',
         )
         .optional(),
       department_ids: z
         .array(z.string())
         .describe(
-          'The id list of the department you want to query, up to 100.You can call the  interface to obtain',
+          'The id list of the department you want to query, up to 100.You can call the [Obtain the list of sub-departments] interface to obtain',
         )
         .optional(),
       group_ids: z
         .array(z.string())
         .describe(
-          'the id list of the user group you want to query, up to 100.You can call the  interface to obtain it',
+          'the id list of the user group you want to query, up to 100.You can call the [Query the list of user groups] interface to obtain it',
         )
         .optional(),
     }),
@@ -854,7 +854,7 @@ export const applicationV6ApplicationVisibilityPatch = {
       app_id: z
         .string()
         .describe(
-          "App's app_id, get it from  > Credentials & Basic Info",
+          "App's app_id, get it from [Developer Console] > Credentials & Basic Info",
         ),
     }),
   },

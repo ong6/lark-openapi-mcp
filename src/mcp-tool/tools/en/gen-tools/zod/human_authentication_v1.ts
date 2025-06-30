@@ -19,7 +19,7 @@ export const humanAuthenticationV1IdentityCreate = {
       user_id: z
         .string()
         .describe(
-          'The unique identifier of the user(For the ID type used, see the next parameter description, the difference and acquisition of different ID types, refer to the document: )',
+          'The unique identifier of the user(For the ID type used, see the next parameter description, the difference and acquisition of different ID types, refer to the document: [How to obtain User ID, Open ID and Union ID?])',
         ),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
     }),

@@ -1,181 +1,73 @@
+import { LoginHandler } from '../src/cli/login-handler';
 import * as server from '../src/mcp-server';
 
-interface MockCommand {
-  options: any[];
-  description: jest.Mock;
-  option: jest.Mock;
-  action: jest.Mock;
-  actionCallback?: (options: any) => void;
-}
-
-// 模拟cli模块
-jest.mock(
-  '../src/cli',
-  () => {
-    // 创建mock程序实例，以便不会调用原始程序逻辑
-    const mockProgram = {
-      parse: jest.fn(),
-      help: jest.fn(),
-      commands: [] as MockCommand[],
-      command: function (name: string) {
-        const cmd: MockCommand = {
-          options: [],
-          description: jest.fn().mockReturnThis(),
-          option: jest.fn().mockReturnThis(),
-          action: jest.fn().mockImplementation((callback) => {
-            // 存储action回调以便测试可以调用它
-            cmd.actionCallback = callback;
-            return cmd;
-          }),
-        };
-        this.commands.push(cmd);
-        return cmd;
-      },
-    };
-
-    return {
-      program: mockProgram,
-    };
+// 模拟 LoginHandler
+jest.mock('../src/cli/login-handler', () => ({
+  LoginHandler: {
+    handleLogin: jest.fn(),
+    handleLogout: jest.fn(),
   },
-  { virtual: true },
-);
+}));
 
 // 模拟server模块
 jest.mock('../src/mcp-server', () => ({
-  initStdioServer: jest.fn(),
-  initSSEServer: jest.fn(),
-  initStreamableHTTPServer: jest.fn(),
+  initMcpServerWithTransport: jest.fn(),
 }));
 
-// 模拟 McpServer
-jest.mock('@modelcontextprotocol/sdk/server/mcp.js', () => ({
-  McpServer: jest.fn().mockImplementation(() => ({
-    connect: jest.fn().mockResolvedValue(undefined),
-    server: {},
-    _registeredResources: {},
-    _registeredResourceTemplates: {},
-    _registeredTools: {},
-  })),
-}));
-
-// 模拟process.exit
-const mockExit = jest.fn();
-process.exit = mockExit as any;
-
-// 模拟console.error
-const originalConsoleError = console.error;
-console.error = jest.fn();
-
-describe('CLI', () => {
-  // 创建模拟的action回调函数
-  const actionCallback = jest.fn((options) => {
-    if (options.mode === 'stdio') {
-      server.initStdioServer(options);
-    } else if (options.mode === 'sse') {
-      // 使用从 @modelcontextprotocol/sdk/server/mcp.js 导入的 McpServer
-      const { McpServer } = require('@modelcontextprotocol/sdk/server/mcp.js');
-      const mockMcpServer = new McpServer();
-      server.initSSEServer(mockMcpServer, options);
-    } else {
-      console.error('Invalid mode:', options.mode);
-      process.exit(1);
-    }
-  });
-
+describe('CLI Commands', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    // 重置console.error模拟
-    (console.error as jest.Mock).mockReset();
-    // 重置process.exit模拟
-    mockExit.mockReset();
-    // 重置action回调
-    actionCallback.mockClear();
   });
 
-  afterAll(() => {
-    // 恢复原始的console.error
-    console.error = originalConsoleError;
-  });
-
-  it('应该初始化stdio服务器', () => {
-    const options = {
-      appId: 'test-app-id',
-      appSecret: 'test-app-secret',
-      mode: 'stdio',
-    };
-
-    // 调用action回调
-    actionCallback(options);
-
-    // 验证
-    expect(server.initStdioServer).toHaveBeenCalledWith(
-      expect.objectContaining({
+  describe('Login Command', () => {
+    it('应该调用 LoginHandler.handleLogin', async () => {
+      const options = {
         appId: 'test-app-id',
         appSecret: 'test-app-secret',
-        mode: 'stdio',
-      }),
-    );
-  });
+        domain: 'https://open.feishu.cn',
+        scope: 'test-scope',
+      };
 
-  it('应该初始化SSE服务器', () => {
-    const options = {
-      appId: 'test-app-id',
-      appSecret: 'test-app-secret',
-      mode: 'sse',
-      port: '3001',
-    };
+      // 模拟login命令的action回调
+      const loginActionCallback = jest.fn(async (options) => {
+        await LoginHandler.handleLogin(options);
+      });
 
-    // 调用action回调
-    actionCallback(options);
+      await loginActionCallback(options);
 
-    // 验证
-    expect(server.initSSEServer).toHaveBeenCalledWith(
-      expect.anything(), // 验证第一个参数（mockServer）是任何值
-      expect.objectContaining({
-        appId: 'test-app-id',
-        appSecret: 'test-app-secret',
-        mode: 'sse',
-        port: '3001',
-      }),
-    );
-  });
-
-  it('应该在模式无效时退出', () => {
-    const options = {
-      appId: 'test-app-id',
-      appSecret: 'test-app-secret',
-      mode: 'invalid',
-    };
-
-    // 调用action回调
-    actionCallback(options);
-
-    // 验证
-    expect(console.error).toHaveBeenCalledWith('Invalid mode:', 'invalid');
-    expect(mockExit).toHaveBeenCalledWith(1);
-  });
-
-  it('应该使用从配置文件加载的选项', () => {
-    const fileOptions = {
-      appId: 'config-app-id',
-      appSecret: 'config-app-secret',
-    };
-
-    // 调用action回调
-    actionCallback({
-      ...fileOptions,
-      mode: 'stdio',
-      config: 'config.json',
+      expect(LoginHandler.handleLogin).toHaveBeenCalledWith(options);
     });
+  });
 
-    // 验证
-    expect(server.initStdioServer).toHaveBeenCalledWith(
-      expect.objectContaining({
-        appId: 'config-app-id',
-        appSecret: 'config-app-secret',
+  describe('Logout Command', () => {
+    it('应该调用 LoginHandler.handleLogout', async () => {
+      // 模拟logout命令的action回调
+      const logoutActionCallback = jest.fn(async () => {
+        await LoginHandler.handleLogout();
+      });
+
+      await logoutActionCallback();
+
+      expect(LoginHandler.handleLogout).toHaveBeenCalledWith();
+    });
+  });
+
+  describe('MCP Command', () => {
+    it('应该调用 initMcpServerWithTransport', async () => {
+      const options = {
+        appId: 'test-app-id',
+        appSecret: 'test-app-secret',
         mode: 'stdio',
-        config: 'config.json',
-      }),
-    );
+      };
+
+      // 模拟mcp命令的action回调
+      const mcpActionCallback = jest.fn(async (options) => {
+        await server.initMcpServerWithTransport('oapi', options);
+      });
+
+      await mcpActionCallback(options);
+
+      expect(server.initMcpServerWithTransport).toHaveBeenCalledWith('oapi', options);
+    });
   });
 });

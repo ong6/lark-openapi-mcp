@@ -36,7 +36,7 @@ export const taskV1TaskBatchDeleteCollaborator = {
       id_list: z
         .array(z.string())
         .describe(
-          '执行者的用户ID列表。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档',
+          '执行者的用户ID列表。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档[如何获取不同的用户 ID]',
         )
         .optional(),
     }),
@@ -74,13 +74,13 @@ export const taskV1TaskCollaboratorCreate = {
       id: z
         .string()
         .describe(
-          '任务执行者的 ID。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档。<md-alert>已经废弃，为了向前兼容早期只支持单次添加一个人的情况而保留，但不再推荐使用，建议使用id_list字段</md-alert>',
+          '任务执行者的 ID。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档[如何获取不同的用户 ID]。<md-alert>已经废弃，为了向前兼容早期只支持单次添加一个人的情况而保留，但不再推荐使用，建议使用id_list字段</md-alert>',
         )
         .optional(),
       id_list: z
         .array(z.string())
         .describe(
-          '执行者的用户ID列表。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档',
+          '执行者的用户ID列表。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档[如何获取不同的用户 ID]',
         )
         .optional(),
     }),
@@ -89,7 +89,7 @@ export const taskV1TaskCollaboratorCreate = {
       task_id: z
         .string()
         .describe(
-          '任务 ID，可通过时响应体中的id字段获取',
+          '任务 ID，可通过[创建任务]时响应体中的id字段获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -156,7 +156,7 @@ export const taskV1TaskCommentCreate = {
       rich_content: z
         .string()
         .describe(
-          '富文本评论内容。语法格式参见',
+          '富文本评论内容。语法格式参见[Markdown模块]',
         )
         .optional(),
     }),
@@ -254,7 +254,7 @@ export const taskV1TaskComplete = {
       task_id: z
         .string()
         .describe(
-          '任务 ID，可通过时响应体中的id字段获取',
+          '任务 ID，可通过[创建任务]时响应体中的id字段获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -295,7 +295,7 @@ export const taskV1TaskCreate = {
           timezone: z
             .string()
             .describe(
-              '截止时间对应的时区。传入值需要符合IANA Time Zone Database标准，规范见',
+              '截止时间对应的时区。传入值需要符合IANA Time Zone Database标准，规范见[Time Zone Database]',
             )
             .optional(),
           is_all_day: z
@@ -312,14 +312,14 @@ export const taskV1TaskCreate = {
           platform_i18n_name: z
             .string()
             .describe(
-              '任务来源的名称。用于在任务中心详情页展示。需要提供一个字典，支持多种语言名称映射。应用在使用不同语言时，导入来源也将展示对应的内容。详细参见：',
+              '任务来源的名称。用于在任务中心详情页展示。需要提供一个字典，支持多种语言名称映射。应用在使用不同语言时，导入来源也将展示对应的内容。详细参见：[任务字段补充说明]',
             ),
           href: z
             .object({
               url: z
                 .string()
                 .describe(
-                  '具体链接地址。URL仅支持解析http、https。详细参见：',
+                  '具体链接地址。URL仅支持解析http、https。详细参见：[任务字段补充说明]',
                 )
                 .optional(),
               title: z.string().describe('链接对应的标题').optional(),
@@ -337,35 +337,35 @@ export const taskV1TaskCreate = {
       custom: z
         .string()
         .describe(
-          '自定义完成配置。此字段用于设置完成任务时的页面跳转，或展示提示语。详细参见：',
+          '自定义完成配置。此字段用于设置完成任务时的页面跳转，或展示提示语。详细参见：[任务字段补充说明]',
         )
         .optional(),
       collaborator_ids: z
         .array(z.string())
         .describe(
-          '创建任务时添加的执行者用户id列表。传入的值为 user_id 或 open_id ，由user_id_type 决定。user_id和open_id的获取可见文档：',
+          '创建任务时添加的执行者用户id列表。传入的值为 user_id 或 open_id ，由user_id_type 决定。user_id和open_id的获取可见文档：[如何获取不同的用户 ID]',
         )
         .optional(),
       follower_ids: z
         .array(z.string())
         .describe(
-          '创建任务时添加的关注者用户id列表。传入的值为 user_id 或 open_id ，由user_id_type 决定。user_id和open_id的获取可见文档：',
+          '创建任务时添加的关注者用户id列表。传入的值为 user_id 或 open_id ，由user_id_type 决定。user_id和open_id的获取可见文档：[如何获取不同的用户 ID]',
         )
         .optional(),
       repeat_rule: z
         .string()
-        .describe('重复任务的规则表达式。语法格式参见 4.3.10小节')
+        .describe('重复任务的规则表达式。语法格式参见[RRule语法规范] 4.3.10小节')
         .optional(),
       rich_summary: z
         .string()
         .describe(
-          '富文本任务标题。语法格式参见。创建任务时，任务标题(summary字段)和任务富文本标题(rich_summary字段)不能同时为空，需要至少填充其中一个字段',
+          '富文本任务标题。语法格式参见[Markdown模块]。创建任务时，任务标题(summary字段)和任务富文本标题(rich_summary字段)不能同时为空，需要至少填充其中一个字段',
         )
         .optional(),
       rich_description: z
         .string()
         .describe(
-          '富文本任务备注。语法格式参见',
+          '富文本任务备注。语法格式参见[Markdown模块]',
         )
         .optional(),
     }),
@@ -534,7 +534,7 @@ export const taskV1TaskPatch = {
               timezone: z
                 .string()
                 .describe(
-                  '截止时间对应的时区。传入值需要符合IANA Time Zone Database标准，规范见',
+                  '截止时间对应的时区。传入值需要符合IANA Time Zone Database标准，规范见[Time Zone Database]',
                 )
                 .optional(),
               is_all_day: z
@@ -551,14 +551,14 @@ export const taskV1TaskPatch = {
               platform_i18n_name: z
                 .string()
                 .describe(
-                  '任务来源的名称。用于在任务中心详情页展示。需要提供一个字典，支持多种语言名称映射。应用在使用不同语言时，导入来源也将展示对应的内容。详细参见：',
+                  '任务来源的名称。用于在任务中心详情页展示。需要提供一个字典，支持多种语言名称映射。应用在使用不同语言时，导入来源也将展示对应的内容。详细参见：[任务字段补充说明]',
                 ),
               href: z
                 .object({
                   url: z
                     .string()
                     .describe(
-                      '具体链接地址。URL仅支持解析http、https。详细参见：',
+                      '具体链接地址。URL仅支持解析http、https。详细参见：[任务字段补充说明]',
                     )
                     .optional(),
                   title: z.string().describe('链接对应的标题').optional(),
@@ -577,7 +577,7 @@ export const taskV1TaskPatch = {
           custom: z
             .string()
             .describe(
-              '自定义完成配置。此字段用于设置完成任务时的页面跳转，或展示提示语。详细参见：',
+              '自定义完成配置。此字段用于设置完成任务时的页面跳转，或展示提示语。详细参见：[任务字段补充说明]',
             )
             .optional(),
           followers: z
@@ -595,13 +595,13 @@ export const taskV1TaskPatch = {
                 id: z
                   .string()
                   .describe(
-                    '任务执行者的 ID。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档。<md-alert>已经废弃，为了向前兼容早期只支持单次添加一个人的情况而保留，但不再推荐使用，建议使用id_list字段</md-alert>',
+                    '任务执行者的 ID。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档[如何获取不同的用户 ID]。<md-alert>已经废弃，为了向前兼容早期只支持单次添加一个人的情况而保留，但不再推荐使用，建议使用id_list字段</md-alert>',
                   )
                   .optional(),
                 id_list: z
                   .array(z.string())
                   .describe(
-                    '执行者的用户ID列表。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档',
+                    '执行者的用户ID列表。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档[如何获取不同的用户 ID]',
                   )
                   .optional(),
               }),
@@ -611,31 +611,31 @@ export const taskV1TaskPatch = {
           collaborator_ids: z
             .array(z.string())
             .describe(
-              '创建任务时添加的执行者用户id列表。传入的值为 user_id 或 open_id ，由user_id_type 决定。user_id和open_id的获取可见文档：',
+              '创建任务时添加的执行者用户id列表。传入的值为 user_id 或 open_id ，由user_id_type 决定。user_id和open_id的获取可见文档：[如何获取不同的用户 ID]',
             )
             .optional(),
           follower_ids: z
             .array(z.string())
             .describe(
-              '创建任务时添加的关注者用户id列表。传入的值为 user_id 或 open_id ，由user_id_type 决定。user_id和open_id的获取可见文档：',
+              '创建任务时添加的关注者用户id列表。传入的值为 user_id 或 open_id ，由user_id_type 决定。user_id和open_id的获取可见文档：[如何获取不同的用户 ID]',
             )
             .optional(),
           repeat_rule: z
             .string()
             .describe(
-              '重复任务的规则表达式。语法格式参见 4.3.10小节',
+              '重复任务的规则表达式。语法格式参见[RRule语法规范] 4.3.10小节',
             )
             .optional(),
           rich_summary: z
             .string()
             .describe(
-              '富文本任务标题。语法格式参见。创建任务时，任务标题(summary字段)和任务富文本标题(rich_summary字段)不能同时为空，需要至少填充其中一个字段',
+              '富文本任务标题。语法格式参见[Markdown模块]。创建任务时，任务标题(summary字段)和任务富文本标题(rich_summary字段)不能同时为空，需要至少填充其中一个字段',
             )
             .optional(),
           rich_description: z
             .string()
             .describe(
-              '富文本任务备注。语法格式参见',
+              '富文本任务备注。语法格式参见[Markdown模块]',
             )
             .optional(),
         })

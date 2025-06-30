@@ -36,7 +36,7 @@ export const ehrV1EmployeeList = {
             ),
         )
         .describe(
-          '人员类型，不传代表查询所有人员类型同时可使用自定义员工类型的 int 值进行查询，可通过下方接口获取到该租户的自定义员工类型的名称，参见 ',
+          '人员类型，不传代表查询所有人员类型同时可使用自定义员工类型的 int 值进行查询，可通过下方接口获取到该租户的自定义员工类型的名称，参见 [获取人员类型]',
         )
         .optional(),
       start_time: z.string().describe('查询开始时间（入职时间 &gt;= 此时间）').optional(),
@@ -45,7 +45,7 @@ export const ehrV1EmployeeList = {
       user_ids: z
         .array(z.string())
         .describe(
-          'user_id、open_id 或 union_id，默认为 open_id。如果传入的值不是 open_id，需要一并传入 user_id_type 参数。可一次查询多个 id 的用户，例如：user_ids=ou_8ebd4f35d7101ffdeb4771d7c8ec517e&user_ids=ou_7abc4f35d7101ffdeb4771dabcde',
+          'user_id、open_id 或 union_id，默认为 open_id。如果传入的值不是 open_id，需要一并传入 user_id_type 参数。可一次查询多个 id 的用户，例如：user_ids=ou_8ebd4f35d7101ffdeb4771d7c8ec517e&user_ids=ou_7abc4f35d7101ffdeb4771dabcde[用户相关的 ID 概念]',
         )
         .optional(),
       page_token: z

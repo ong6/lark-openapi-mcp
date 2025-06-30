@@ -14,9 +14,7 @@ export const minutesV1MinuteGet = {
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      minute_token: z.string().describe('妙记唯一标识。可从妙记链接中获取，一般为链接中最后一串字符').optional(),
-    }),
+    path: z.object({ minute_token: z.string().describe('妙记唯一标识。可从妙记链接中获取，一般为链接中最后一串字符') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -44,9 +42,7 @@ export const minutesV1MinuteStatisticsGet = {
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      minute_token: z.string().describe('妙记唯一标识。可从妙记链接中获取，一般为链接中最后一串字符').optional(),
-    }),
+    path: z.object({ minute_token: z.string().describe('妙记唯一标识。可从妙记链接中获取，一般为链接中最后一串字符') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };

@@ -61,7 +61,7 @@ export const bitableV1AppCopy = {
       folder_token: z
         .string()
         .describe(
-          '了解如何获取文件夹 Token，参考。**注意**：请确保调用身份拥有在该文件夹中的编辑权限。若应用使用的是 `tenant_access_token` 权限，此处仅可指定应用创建的文件夹。详情参考',
+          '了解如何获取文件夹 Token，参考[如何获取云文档资源相关 Token]。**注意**：请确保调用身份拥有在该文件夹中的编辑权限。若应用使用的是 `tenant_access_token` 权限，此处仅可指定应用创建的文件夹。详情参考[如何为应用开通云文档相关资源的权限]',
         )
         .optional(),
       without_content: z
@@ -70,7 +70,7 @@ export const bitableV1AppCopy = {
         .optional(),
       time_zone: z
         .string()
-        .describe('文档时区，详情参考')
+        .describe('文档时区，详情参考[文档时区介绍]')
         .optional(),
     }),
     path: z.object({ app_token: z.string().describe('多维表格 App 的唯一标识') }),
@@ -92,12 +92,12 @@ export const bitableV1AppCreate = {
       folder_token: z
         .string()
         .describe(
-          '多维表格 App 归属文件夹。默认为空，表示多维表格将被创建在云空间根目录。了解如何获取文件夹 Token，参考。**注意**：请确保调用身份拥有在该文件夹中的编辑权限。若应用使用的是 `tenant_access_token` 权限，此处仅可指定应用创建的文件夹。详情参考',
+          '多维表格 App 归属文件夹。默认为空，表示多维表格将被创建在云空间根目录。了解如何获取文件夹 Token，参考[如何获取云文档资源相关 Token]。**注意**：请确保调用身份拥有在该文件夹中的编辑权限。若应用使用的是 `tenant_access_token` 权限，此处仅可指定应用创建的文件夹。详情参考[如何为应用开通云文档相关资源的权限]',
         )
         .optional(),
       time_zone: z
         .string()
-        .describe('文档时区，详情参考')
+        .describe('文档时区，详情参考[文档时区介绍]')
         .optional(),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -118,7 +118,7 @@ export const bitableV1AppDashboardCopy = {
       block_id: z
         .string()
         .describe(
-          '多维表格仪表盘的唯一标识，以 blk 开头。获取方式：- 在多维表格的 URL 地址栏中，`block_id` 是下图中高亮部分：  - 通过接口获取',
+          '多维表格仪表盘的唯一标识，以 blk 开头。获取方式：- 在多维表格的 URL 地址栏中，`block_id` 是下图中高亮部分：  - 通过[列出仪表盘]接口获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -198,7 +198,7 @@ export const bitableV1AppRoleCreate = {
                       value: z
                         .array(z.string())
                         .describe(
-                          '条件的值，可以是单个值或多个值的数组。详情参考',
+                          '条件的值，可以是单个值或多个值的数组。详情参考[字段目标值（value）填写说明]',
                         )
                         .optional(),
                     }),
@@ -236,7 +236,7 @@ export const bitableV1AppRoleCreate = {
             block_id: z
               .string()
               .describe(
-                '多维表格仪表盘的唯一标识，以 blk 开头。获取方式：- 在多维表格的 URL 地址栏中，`block_id` 是下图中高亮部分：  - 通过接口获取',
+                '多维表格仪表盘的唯一标识，以 blk 开头。获取方式：- 在多维表格的 URL 地址栏中，`block_id` 是下图中高亮部分：  - 通过[列出仪表盘]接口获取',
               ),
             block_perm: z.number().describe('仪表盘的权限 Options:0(NoPerm 无权限),1(Read 可阅读)'),
           }),
@@ -262,7 +262,7 @@ export const bitableV1AppRoleDelete = {
       role_id: z
         .string()
         .describe(
-          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过接口获取',
+          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过[列出自定义角色]接口获取',
         )
         .optional(),
     }),
@@ -307,7 +307,7 @@ export const bitableV1AppRoleMemberBatchCreate = {
             type: z
               .enum(['open_id', 'union_id', 'user_id', 'chat_id', 'department_id', 'open_department_id'])
               .describe(
-                '协作者 ID 的类型 Options:open_id(OpenID 以 open_id 来识别协作者。获取方式参考。),union_id(UnionID 以 union_id 来识别协作者。获取方式参考),user_id(UserID 以 user_id 来识别协作者。获取方式参考),chat_id(ChatID 以 chat_id 来识别协作者。获取方式参考),department_id(DepartmentID 以 department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考。获取 department_id 方式参考),open_department_id(OpenDepartmentID 以 open_department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考。获取 open_department_id 方式参考)',
+                '协作者 ID 的类型 Options:open_id(OpenID 以 open_id 来识别协作者。获取方式参考[如何获取不同的用户 ID]。),union_id(UnionID 以 union_id 来识别协作者。获取方式参考[如何获取不同的用户 ID]),user_id(UserID 以 user_id 来识别协作者。获取方式参考[如何获取不同的用户 ID]),chat_id(ChatID 以 chat_id 来识别协作者。获取方式参考[群 ID 说明]),department_id(DepartmentID 以 department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考[配置应用可用范围]。获取 department_id 方式参考[部门资源介绍]),open_department_id(OpenDepartmentID 以 open_department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考[配置应用可用范围]。获取 open_department_id 方式参考[部门资源介绍])',
               )
               .optional(),
             id: z.string().describe('协作者的 ID，需与 type 的类型需一致。获取 ID 方式参考 type 参数描述'),
@@ -320,7 +320,7 @@ export const bitableV1AppRoleMemberBatchCreate = {
       role_id: z
         .string()
         .describe(
-          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过接口获取',
+          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过[列出自定义角色]接口获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -342,7 +342,7 @@ export const bitableV1AppRoleMemberBatchDelete = {
             type: z
               .enum(['open_id', 'union_id', 'user_id', 'chat_id', 'department_id', 'open_department_id'])
               .describe(
-                '协作者 ID 类型 Options:open_id(OpenID 以 open_id 来识别协作者。获取方式参考),union_id(UnionID 以 union_id 来识别协作者。获取方式参考),user_id(UserID 以 user_id 来识别协作者。获取方式参考),chat_id(ChatID 以 chat_id 来识别协作者。获取方式参考),department_id(DepartmentID 以 department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考。获取 department_id 方式参考),open_department_id(OpenDepartmentID 以 open_department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考。获取 open_department_id 方式参考)',
+                '协作者 ID 类型 Options:open_id(OpenID 以 open_id 来识别协作者。获取方式参考[如何获取不同的用户 ID]),union_id(UnionID 以 union_id 来识别协作者。获取方式参考[如何获取不同的用户 ID]),user_id(UserID 以 user_id 来识别协作者。获取方式参考[如何获取不同的用户 ID]),chat_id(ChatID 以 chat_id 来识别协作者。获取方式参考[群 ID 说明]),department_id(DepartmentID 以 department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考[配置应用可用范围]。获取 department_id 方式参考[部门资源介绍]),open_department_id(OpenDepartmentID 以 open_department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考[配置应用可用范围]。获取 open_department_id 方式参考[部门资源介绍])',
               )
               .optional(),
             id: z.string().describe('协作者的 ID，需与 type 的类型需一致。获取 ID 方式参考 type 参数描述'),
@@ -355,7 +355,7 @@ export const bitableV1AppRoleMemberBatchDelete = {
       role_id: z
         .string()
         .describe(
-          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过接口获取',
+          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过[列出自定义角色]接口获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -381,7 +381,7 @@ export const bitableV1AppRoleMemberCreate = {
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'chat_id', 'department_id', 'open_department_id'])
         .describe(
-          '协作者 ID 的类型 Options:open_id(OpenID 以 open_id 来识别协作者。获取方式参考),union_id(UnionID 以 union_id 来识别协作者。获取方式参考),user_id(UserID 以 user_id 来识别协作者。获取方式参考),chat_id(ChatID 以 chat_id 来识别协作者。获取方式参考),department_id(DepartmentID 以 department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考。获取 department_id 方式参考),open_department_id(OpenDepartmentID 以 open_department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考。获取 open_department_id 方式参考)',
+          '协作者 ID 的类型 Options:open_id(OpenID 以 open_id 来识别协作者。获取方式参考[如何获取不同的用户 ID]),union_id(UnionID 以 union_id 来识别协作者。获取方式参考[如何获取不同的用户 ID]),user_id(UserID 以 user_id 来识别协作者。获取方式参考[如何获取不同的用户 ID]),chat_id(ChatID 以 chat_id 来识别协作者。获取方式参考[群 ID 说明]),department_id(DepartmentID 以 department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考[配置应用可用范围]。获取 department_id 方式参考[部门资源介绍]),open_department_id(OpenDepartmentID 以 open_department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考[配置应用可用范围]。获取 open_department_id 方式参考[部门资源介绍])',
         )
         .optional(),
     }),
@@ -390,7 +390,7 @@ export const bitableV1AppRoleMemberCreate = {
       role_id: z
         .string()
         .describe(
-          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过接口获取',
+          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过[列出自定义角色]接口获取',
         )
         .optional(),
     }),
@@ -410,7 +410,7 @@ export const bitableV1AppRoleMemberDelete = {
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'chat_id', 'department_id', 'open_department_id'])
         .describe(
-          '协作者 ID 的类型 Options:open_id(OpenID 以 open_id 来识别协作者。获取方式参考),union_id(UnionID 以 union_id 来识别协作者。获取方式参考),user_id(UserID 以 user_id 来识别协作者。获取方式参考),chat_id(ChatID 以 chat_id 来识别协作者。获取方式参考),department_id(DepartmentID 以 department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考。获取 department_id 方式参考),open_department_id(OpenDepartmentID 以 open_department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考。获取 open_department_id 方式参考)',
+          '协作者 ID 的类型 Options:open_id(OpenID 以 open_id 来识别协作者。获取方式参考[如何获取不同的用户 ID]),union_id(UnionID 以 union_id 来识别协作者。获取方式参考[如何获取不同的用户 ID]),user_id(UserID 以 user_id 来识别协作者。获取方式参考[如何获取不同的用户 ID]),chat_id(ChatID 以 chat_id 来识别协作者。获取方式参考[群 ID 说明]),department_id(DepartmentID 以 department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考[配置应用可用范围]。获取 department_id 方式参考[部门资源介绍]),open_department_id(OpenDepartmentID 以 open_department_id 来识别协作者。调用前，请确保应用有部门的可见性，参考[配置应用可用范围]。获取 open_department_id 方式参考[部门资源介绍])',
         )
         .optional(),
     }),
@@ -419,7 +419,7 @@ export const bitableV1AppRoleMemberDelete = {
       role_id: z
         .string()
         .describe(
-          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过接口获取',
+          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过[列出自定义角色]接口获取',
         )
         .optional(),
       member_id: z
@@ -454,7 +454,7 @@ export const bitableV1AppRoleMemberList = {
       role_id: z
         .string()
         .describe(
-          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过接口获取',
+          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过[列出自定义角色]接口获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -498,7 +498,7 @@ export const bitableV1AppRoleUpdate = {
                       value: z
                         .array(z.string())
                         .describe(
-                          '条件的值，可以是单个值或多个值的数组。详情参考',
+                          '条件的值，可以是单个值或多个值的数组。详情参考[字段目标值（value）填写说明]',
                         )
                         .optional(),
                     }),
@@ -536,7 +536,7 @@ export const bitableV1AppRoleUpdate = {
             block_id: z
               .string()
               .describe(
-                '多维表格仪表盘的唯一标识，以 blk 开头。获取方式：- 在多维表格的 URL 地址栏中，`block_id` 是下图中高亮部分：  - 通过接口获取',
+                '多维表格仪表盘的唯一标识，以 blk 开头。获取方式：- 在多维表格的 URL 地址栏中，`block_id` 是下图中高亮部分：  - 通过[列出仪表盘]接口获取',
               ),
             block_perm: z.number().describe('仪表盘的权限 Options:0(NoPerm 无权限),1(Read 可阅读)'),
           }),
@@ -549,7 +549,7 @@ export const bitableV1AppRoleUpdate = {
       role_id: z
         .string()
         .describe(
-          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过接口获取',
+          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过[列出自定义角色]接口获取',
         )
         .optional(),
     }),
@@ -573,7 +573,7 @@ export const bitableV1AppTableBatchCreate = {
             name: z
               .string()
               .describe(
-                '数据表名称。**注意**：- 名称中的首尾空格将会被默认去除。- 数据表名称不可以包含 `/ \\ ? * : [ ]` 等特殊字符',
+                '数据表名称。该字段必填。**注意**：- 名称中的首尾空格将会被默认去除。- 数据表名称不可以包含 `/ \\ ? * : [ ]` 等特殊字符',
               )
               .optional(),
           }),
@@ -600,7 +600,7 @@ export const bitableV1AppTableBatchDelete = {
       table_ids: z
         .array(z.string())
         .describe(
-          '待删除的数据表的 ID。当前一次操作最多支持 50 个数据表。获取方式：- 你可通过多维表格 URL 获取 `table_id`，下图高亮部分即为当前数据表的 `table_id`。- 也可通过接口获取 `table_id`。 ',
+          '待删除的数据表的 ID。当前一次操作最多支持 50 个数据表。获取方式：- 你可通过多维表格 URL 获取 `table_id`，下图高亮部分即为当前数据表的 `table_id`。- 也可通过[列出数据表]接口获取 `table_id`。 ',
         )
         .optional(),
     }),
@@ -683,7 +683,7 @@ export const bitableV1AppTableCreate = {
                           color: z
                             .number()
                             .describe(
-                              '选项颜色，详情参考',
+                              '选项颜色，详情参考[字段编辑指南]',
                             )
                             .optional(),
                         }),
@@ -693,13 +693,13 @@ export const bitableV1AppTableCreate = {
                     formatter: z
                       .string()
                       .describe(
-                        '数字、公式字段的显示格式。详情参考',
+                        '数字、公式字段的显示格式。详情参考[字段编辑指南]',
                       )
                       .optional(),
                     date_formatter: z
                       .string()
                       .describe(
-                        '日期、创建时间、最后更新时间字段的显示格式。详情参考',
+                        '日期、创建时间、最后更新时间字段的显示格式。详情参考[字段编辑指南]',
                       )
                       .optional(),
                     auto_fill: z.boolean().describe('日期字段中新纪录自动填写创建时间').optional(),
@@ -778,7 +778,7 @@ export const bitableV1AppTableCreate = {
               }),
             )
             .describe(
-              '数据表的初始字段。了解如何填写字段，参考。**注意**：- 如果 `default_view_name` 字段和 `fields` 字段都不填写，将会创建一个仅包含索引字段的空数据表。- 如果指定了本字段，将会创建一个包含初始字段的数据表、且默认第一个字段为索引字段。- 索引字段仅支持以下类型： - 1：多行文本 - 2：数字 - 5：日期 - 13：电话号码 - 15：超链接 - 20：公式 - 22：地理位置',
+              '数据表的初始字段。了解如何填写字段，参考[字段编辑指南]。**注意**：- 如果 `default_view_name` 字段和 `fields` 字段都不填写，将会创建一个仅包含索引字段的空数据表。- 如果指定了本字段，将会创建一个包含初始字段的数据表、且默认第一个字段为索引字段。- 索引字段仅支持以下类型： - 1：多行文本 - 2：数字 - 5：日期 - 13：电话号码 - 15：超链接 - 20：公式 - 22：地理位置',
             )
             .optional(),
         })
@@ -832,7 +832,7 @@ export const bitableV1AppTableFieldCreate = {
                 color: z
                   .number()
                   .describe(
-                    '选项颜色，详情参考',
+                    '选项颜色，详情参考[字段编辑指南]',
                   )
                   .optional(),
               }),
@@ -842,7 +842,7 @@ export const bitableV1AppTableFieldCreate = {
           formatter: z
             .string()
             .describe(
-              '数字和公式字段的显示格式。详情参考',
+              '数字和公式字段的显示格式。详情参考[字段编辑指南]',
             )
             .optional(),
           date_formatter: z
@@ -898,7 +898,7 @@ export const bitableV1AppTableFieldCreate = {
           formula_expression: z
             .string()
             .describe(
-              '公式字段的表达式。参考了解如何设置公式',
+              '公式字段的表达式。参考[飞书帮助中心文档]了解如何设置公式',
             )
             .optional(),
           allowed_edit_modes: z
@@ -911,13 +911,13 @@ export const bitableV1AppTableFieldCreate = {
           min: z
             .number()
             .describe(
-              '进度和评分字段的数据范围最小值。不同字段类型中，该参数的必填属性和取值范围不同，详情参考',
+              '进度和评分字段的数据范围最小值。不同字段类型中，该参数的必填属性和取值范围不同，详情参考[字段编辑指南]',
             )
             .optional(),
           max: z
             .number()
             .describe(
-              '进度和评分字段的数据范围最大值。不同字段类型中，该参数的必填属性和取值范围不同，详情参考',
+              '进度和评分字段的数据范围最大值。不同字段类型中，该参数的必填属性和取值范围不同，详情参考[字段编辑指南]',
             )
             .optional(),
           range_customize: z.boolean().describe('进度字段是否允许自定义进度条值，默认为 false').optional(),
@@ -963,17 +963,17 @@ export const bitableV1AppTableFieldCreate = {
               ui_type: z
                 .enum(['Number', 'Progress', 'Currency', 'Rating', 'DateTime'])
                 .describe(
-                  '公式字段在界面上的展示类型，例如进度字段是数字的一种展示形态。了解更多，参考。 Options:Number(数字),Progress(进度),Currency(货币),Rating(评分),DateTime(日期)',
+                  '公式字段在界面上的展示类型，例如进度字段是数字的一种展示形态。了解更多，参考[字段编辑指南]。 Options:Number(数字),Progress(进度),Currency(货币),Rating(评分),DateTime(日期)',
                 )
                 .optional(),
             })
             .describe(
-              '设置公式字段的数据类型**注意**：非所有多维表格都支持该能力。请参考接口返回的formula_type 判断，当 `formula_type` 等于 2 时，表示需要设置该字段',
+              '设置公式字段的数据类型**注意**：非所有多维表格都支持该能力。请参考[获取多维表格元数据]接口返回的formula_type 判断，当 `formula_type` 等于 2 时，表示需要设置该字段',
             )
             .optional(),
         })
         .describe(
-          '字段属性，了解如何填写字段，参考',
+          '字段属性，了解如何填写字段，参考[字段编辑指南]',
         )
         .optional(),
       description: z
@@ -1017,7 +1017,7 @@ export const bitableV1AppTableFieldCreate = {
           'AutoNumber',
         ])
         .describe(
-          '字段在界面上的展示类型，例如进度字段是数字的一种展示形态。了解更多，参考。 Options:Text(文本),Email(邮箱地址),Barcode(条码),Number(数字),Progress(进度),Currency(货币),Rating(评分),SingleSelect(单选),MultiSelect(多选),DateTime(日期),Checkbox(复选框),User(人员),GroupChat(群组),Phone(电话号码),Url(超链接),Attachment(附件),SingleLink(单向关联),Formula(公式),DuplexLink(双向关联),Location(地理位置),CreatedTime(创建时间),ModifiedTime(最后更新时间),CreatedUser(创建人),ModifiedUser(修改人),AutoNumber(自动编号)',
+          '字段在界面上的展示类型，例如进度字段是数字的一种展示形态。了解更多，参考[字段编辑指南]。 Options:Text(文本),Email(邮箱地址),Barcode(条码),Number(数字),Progress(进度),Currency(货币),Rating(评分),SingleSelect(单选),MultiSelect(多选),DateTime(日期),Checkbox(复选框),User(人员),GroupChat(群组),Phone(电话号码),Url(超链接),Attachment(附件),SingleLink(单向关联),Formula(公式),DuplexLink(双向关联),Location(地理位置),CreatedTime(创建时间),ModifiedTime(最后更新时间),CreatedUser(创建人),ModifiedUser(修改人),AutoNumber(自动编号)',
         )
         .optional(),
     }),
@@ -1112,7 +1112,7 @@ export const bitableV1AppTableFieldUpdate = {
                 color: z
                   .number()
                   .describe(
-                    '选项颜色，详情参考',
+                    '选项颜色，详情参考[字段编辑指南]',
                   )
                   .optional(),
               }),
@@ -1122,13 +1122,13 @@ export const bitableV1AppTableFieldUpdate = {
           formatter: z
             .string()
             .describe(
-              '数字、公式字段的显示格式。详情参考',
+              '数字、公式字段的显示格式。详情参考[字段编辑指南]',
             )
             .optional(),
           date_formatter: z
             .string()
             .describe(
-              '日期、创建时间、最后更新时间字段的显示格式。详情参考',
+              '日期、创建时间、最后更新时间字段的显示格式。详情参考[字段编辑指南]',
             )
             .optional(),
           auto_fill: z.boolean().describe('日期字段中新纪录自动填写创建时间').optional(),
@@ -1215,12 +1215,12 @@ export const bitableV1AppTableFieldUpdate = {
                 .optional(),
             })
             .describe(
-              '设置公式字段的数据类型**注意**：非所有多维表格都支持该能力。请参考接口返回的formula_type 判断，当 `formula_type` 等于 2 时，表示需要设置该字段',
+              '设置公式字段的数据类型**注意**：非所有多维表格都支持该能力。请参考[获取多维表格元数据]接口返回的formula_type 判断，当 `formula_type` 等于 2 时，表示需要设置该字段',
             )
             .optional(),
         })
         .describe(
-          '字段属性，了解如何填写字段，参考',
+          '字段属性，了解如何填写字段，参考[字段编辑指南]',
         )
         .optional(),
       description: z
@@ -1300,7 +1300,7 @@ export const bitableV1AppTableFormFieldList = {
       form_id: z
         .string()
         .describe(
-          '多维表格中表单的唯一标识。表单也是视图的一种，其获取方式与获取 `view_id` 相同：- 在多维表格的 URL 地址栏中，`form_id` 是下图中高亮部分： - 通过接口获取。暂时无法获取到嵌入到云文档中的多维表格的 `form_id`',
+          '多维表格中表单的唯一标识。表单也是视图的一种，其获取方式与获取 `view_id` 相同：- 在多维表格的 URL 地址栏中，`form_id` 是下图中高亮部分： - 通过[列出视图]接口获取。暂时无法获取到嵌入到云文档中的多维表格的 `form_id`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1336,7 +1336,7 @@ export const bitableV1AppTableFormFieldPatch = {
       form_id: z
         .string()
         .describe(
-          '多维表格中表单的唯一标识。表单也是视图的一种，其获取方式与获取 `view_id` 相同：- 在多维表格的 URL 地址栏中，`form_id` 是下图中高亮部分： - 通过接口获取。暂时无法获取到嵌入到云文档中的多维表格的 `form_id`',
+          '多维表格中表单的唯一标识。表单也是视图的一种，其获取方式与获取 `view_id` 相同：- 在多维表格的 URL 地址栏中，`form_id` 是下图中高亮部分： - 通过[列出视图]接口获取。暂时无法获取到嵌入到云文档中的多维表格的 `form_id`',
         ),
       field_id: z.string().describe('多维表格中表单的唯一标识'),
     }),
@@ -1358,7 +1358,7 @@ export const bitableV1AppTableFormGet = {
       form_id: z
         .string()
         .describe(
-          '多维表格中表单的唯一标识。表单也是视图的一种，其获取方式与获取 `view_id` 相同：- 在多维表格的 URL 地址栏中，`form_id` 是下图中高亮部分： - 通过接口获取。暂时无法获取到嵌入到云文档中的多维表格的 `form_id`',
+          '多维表格中表单的唯一标识。表单也是视图的一种，其获取方式与获取 `view_id` 相同：- 在多维表格的 URL 地址栏中，`form_id` 是下图中高亮部分： - 通过[列出视图]接口获取。暂时无法获取到嵌入到云文档中的多维表格的 `form_id`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1398,7 +1398,7 @@ export const bitableV1AppTableFormPatch = {
       form_id: z
         .string()
         .describe(
-          '多维表格中表单的唯一标识。表单也是视图的一种，其获取方式与获取 `view_id` 相同：- 在多维表格的 URL 地址栏中，`form_id` 是下图中高亮部分： - 通过接口获取。暂时无法获取到嵌入到云文档中的多维表格的 `form_id`',
+          '多维表格中表单的唯一标识。表单也是视图的一种，其获取方式与获取 `view_id` 相同：- 在多维表格的 URL 地址栏中，`form_id` 是下图中高亮部分： - 通过[列出视图]接口获取。暂时无法获取到嵌入到云文档中的多维表格的 `form_id`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1468,7 +1468,7 @@ export const bitableV1AppTableRecordBatchCreate = {
               .object({})
               .catchall(z.any())
               .describe(
-                '要新增的记录的数据。你需先指定数据表中的字段（即指定列），再传入正确格式的数据作为一条记录。**注意**：该接口支持的字段类型及其描述如下所示：- 文本：原值展示，不支持 markdown 语法- 数字：填写数字格式的值- 单选：填写选项值，对于新的选项值，将会创建一个新的选项- 多选：填写多个选项值，对于新的选项值，将会创建一个新的选项。如果填写多个相同的新选项值，将会创建多个相同的选项- 日期：填写毫秒级时间戳- 复选框：填写 true 或 false- 条码- 人员：：填写用户的、 或 ，类型需要与 user_id_type 指定的类型一致- 电话号码：填写文本内容- 超链接：参考以下示例，text 为文本值，link 为 URL 链接- 附件：填写附件 token，需要先调用或接口将附件上传至该多维表格中- 单向关联：填写被关联表的记录 ID- 双向关联：填写被关联表的记录 ID- 地理位置：填写经纬度坐标不同类型字段的数据结构请参考',
+                '要新增的记录的数据。你需先指定数据表中的字段（即指定列），再传入正确格式的数据作为一条记录。**注意**：该接口支持的字段类型及其描述如下所示：- 文本：原值展示，不支持 markdown 语法- 数字：填写数字格式的值- 单选：填写选项值，对于新的选项值，将会创建一个新的选项- 多选：填写多个选项值，对于新的选项值，将会创建一个新的选项。如果填写多个相同的新选项值，将会创建多个相同的选项- 日期：填写毫秒级时间戳- 复选框：填写 true 或 false- 条码- 人员：：填写用户的[open_id]、[union_id] 或 [user_id]，类型需要与 user_id_type 指定的类型一致- 电话号码：填写文本内容- 超链接：参考以下示例，text 为文本值，link 为 URL 链接- 附件：填写附件 token，需要先调用[上传素材]或[分片上传素材]接口将附件上传至该多维表格中- 单向关联：填写被关联表的记录 ID- 双向关联：填写被关联表的记录 ID- 地理位置：填写经纬度坐标不同类型字段的数据结构请参考[数据结构概述]',
               ),
             shared_url: z
               .string()
@@ -1515,7 +1515,7 @@ export const bitableV1AppTableRecordBatchDelete = {
       records: z
         .array(z.string())
         .describe(
-          '删除的多条记录 ID 列表。通过接口获取',
+          '删除的多条记录 ID 列表。通过[查询记录]接口获取',
         ),
     }),
     path: z.object({
@@ -1539,7 +1539,7 @@ export const bitableV1AppTableRecordBatchGet = {
       record_ids: z
         .array(z.string())
         .describe(
-          '记录 ID 列表。调用获取',
+          '记录 ID 列表。调用[查询记录]获取',
         ),
       user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('用户ID类型').optional(),
       with_shared_url: z
@@ -1577,7 +1577,7 @@ export const bitableV1AppTableRecordBatchUpdate = {
               .object({})
               .catchall(z.any())
               .describe(
-                '要更新的记录的数据。你需先指定数据表中的字段（即指定列），再传入正确格式的数据作为一条记录。**注意**：该接口支持的字段类型及其描述如下所示：- 文本：原值展示，不支持 markdown 语法- 数字：填写数字格式的值- 单选：填写选项值，对于新的选项值，将会创建一个新的选项- 多选：填写多个选项值，对于新的选项值，将会创建一个新的选项。如果填写多个相同的新选项值，将会创建多个相同的选项- 日期：填写毫秒级时间戳- 复选框：填写 true 或 false- 条码- 人员：填写用户的 open_id、union_id 或 user_id，类型需要与 user_id_type 指定的类型一致- 电话号码：填写文本内容- 超链接：参考以下示例，text 为文本值，link 为 URL 链接- 附件：填写附件 token，需要先调用或接口将附件上传至该多维表格中- 单向关联：填写被关联表的记录 ID- 双向关联：填写被关联表的记录 ID- 地理位置：填写经纬度坐标不同类型字段的数据结构请参考',
+                '要更新的记录的数据。你需先指定数据表中的字段（即指定列），再传入正确格式的数据作为一条记录。**注意**：该接口支持的字段类型及其描述如下所示：- 文本：原值展示，不支持 markdown 语法- 数字：填写数字格式的值- 单选：填写选项值，对于新的选项值，将会创建一个新的选项- 多选：填写多个选项值，对于新的选项值，将会创建一个新的选项。如果填写多个相同的新选项值，将会创建多个相同的选项- 日期：填写毫秒级时间戳- 复选框：填写 true 或 false- 条码- 人员：填写用户的 open_id、union_id 或 user_id，类型需要与 user_id_type 指定的类型一致- 电话号码：填写文本内容- 超链接：参考以下示例，text 为文本值，link 为 URL 链接- 附件：填写附件 token，需要先调用[上传素材]或[分片上传素材]接口将附件上传至该多维表格中- 单向关联：填写被关联表的记录 ID- 双向关联：填写被关联表的记录 ID- 地理位置：填写经纬度坐标不同类型字段的数据结构请参考[数据结构概述]',
               ),
             record_id: z.string().describe('数据表中一条记录的唯一标识').optional(),
             shared_url: z.string().describe('记录分享链接，本接口中该参数无效，请忽略').optional(),
@@ -1616,7 +1616,7 @@ export const bitableV1AppTableRecordCreate = {
         .object({})
         .catchall(z.any())
         .describe(
-          '要新增的记录的数据。你需先指定数据表中的字段（即指定列），再传入正确格式的数据作为一条记录。**注意**：该接口支持的字段类型及其描述如下所示：- 文本： 填写字符串格式的值- 数字：填写数字格式的值- 单选：填写选项值，对于新的选项值，将会创建一个新的选项- 多选：填写多个选项值，对于新的选项值，将会创建一个新的选项。如果填写多个相同的新选项值，将会创建多个相同的选项- 日期：填写毫秒级时间戳- 复选框：填写 true 或 false- 条码- 人员：填写用户的、 或 ，类型需要与 user_id_type 指定的类型一致- 电话号码：填写文本内容- 超链接：参考以下示例，text 为文本值，link 为 URL 链接- 附件：填写附件 token，需要先调用或接口将附件上传至该多维表格中- 单向关联：填写被关联表的记录 ID- 双向关联：填写被关联表的记录 ID- 地理位置：填写经纬度坐标不同类型字段的数据结构请参考',
+          '要新增的记录的数据。你需先指定数据表中的字段（即指定列），再传入正确格式的数据作为一条记录。**注意**：该接口支持的字段类型及其描述如下所示：- 文本： 填写字符串格式的值- 数字：填写数字格式的值- 单选：填写选项值，对于新的选项值，将会创建一个新的选项- 多选：填写多个选项值，对于新的选项值，将会创建一个新的选项。如果填写多个相同的新选项值，将会创建多个相同的选项- 日期：填写毫秒级时间戳- 复选框：填写 true 或 false- 条码- 人员：填写用户的[open_id]、[union_id] 或 [user_id]，类型需要与 user_id_type 指定的类型一致- 电话号码：填写文本内容- 超链接：参考以下示例，text 为文本值，link 为 URL 链接- 附件：填写附件 token，需要先调用[上传素材]或[分片上传素材]接口将附件上传至该多维表格中- 单向关联：填写被关联表的记录 ID- 双向关联：填写被关联表的记录 ID- 地理位置：填写经纬度坐标不同类型字段的数据结构请参考[多维表格记录数据结构]',
         ),
     }),
     params: z.object({
@@ -1711,7 +1711,7 @@ export const bitableV1AppTableRecordList = {
       filter: z
         .string()
         .describe(
-          '筛选参数，用于指定本次查询的筛选条件注意：1.不支持对“人员”以及“关联字段”的属性进行过滤筛选，如人员的 OpenID。2.指定筛选条件时，参数长度不超过2000个字符。详细请参考',
+          '筛选参数，用于指定本次查询的筛选条件注意：1.不支持对“人员”以及“关联字段”的属性进行过滤筛选，如人员的 OpenID。2.指定筛选条件时，参数长度不超过2000个字符。详细请参考[筛选条件支持的公式]',
         )
         .optional(),
       sort: z
@@ -1805,12 +1805,12 @@ export const bitableV1AppTableRecordSearch = {
                     'in',
                   ])
                   .describe(
-                    '条件运算符 Options:is(OperatorIs 等于),isNot(OperatorIsNot 不等于（不支持日期字段，了解如何查询日期字段，参考）),contains(OperatorContains 包含（不支持日期字段）),doesNotContain(OperatorDoesNotContain 不包含（不支持日期字段）),isEmpty(OperatorIsEmpty 为空),isNotEmpty(OperatorIsNotEmpty 不为空),isGreater(OperatorIsGreater 大于),isGreaterEqual(OperatorIsGreaterEqual 大于等于（不支持日期字段）),isLess(OperatorIsLess 小于),isLessEqual(OperatorIsLessEqual 小于等于（不支持日期字段）),like(OperatorLike LIKE 运算符。暂未支持),in(OperatorIn IN 运算符。暂未支持)',
+                    '条件运算符 Options:is(OperatorIs 等于),isNot(OperatorIsNot 不等于（不支持日期字段，了解如何查询日期字段，参考[日期字段填写说明]）),contains(OperatorContains 包含（不支持日期字段）),doesNotContain(OperatorDoesNotContain 不包含（不支持日期字段）),isEmpty(OperatorIsEmpty 为空),isNotEmpty(OperatorIsNotEmpty 不为空),isGreater(OperatorIsGreater 大于),isGreaterEqual(OperatorIsGreaterEqual 大于等于（不支持日期字段）),isLess(OperatorIsLess 小于),isLessEqual(OperatorIsLessEqual 小于等于（不支持日期字段）),like(OperatorLike LIKE 运算符。暂未支持),in(OperatorIn IN 运算符。暂未支持)',
                   ),
                 value: z
                   .array(z.string())
                   .describe(
-                    '条件的值，可以是单个值或多个值的数组。不同字段类型和不同的 operator 可填的值不同。详情参考',
+                    '条件的值，可以是单个值或多个值的数组。不同字段类型和不同的 operator 可填的值不同。详情参考[字段目标值（value）填写说明]',
                   )
                   .optional(),
               }),
@@ -1819,7 +1819,7 @@ export const bitableV1AppTableRecordSearch = {
             .optional(),
         })
         .describe(
-          '包含条件筛选信息的对象。了解 filter 填写指南和使用示例（如怎样同时使用 `and` 和 `or` 逻辑链接词），参考',
+          '包含条件筛选信息的对象。了解 filter 填写指南和使用示例（如怎样同时使用 `and` 和 `or` 逻辑链接词），参考[记录筛选参数填写指南]',
         )
         .optional(),
       automatic_fields: z
@@ -1860,7 +1860,7 @@ export const bitableV1AppTableRecordUpdate = {
         .object({})
         .catchall(z.any())
         .describe(
-          '要更新的记录的数据。你需先指定数据表中的字段（即指定列），再传入正确格式的数据作为一条记录。**注意**：该接口支持的字段类型及其描述如下所示：- 文本：原值展示，不支持 markdown 语法- 数字：填写数字格式的值- 单选：填写选项值，对于新的选项值，将会创建一个新的选项- 多选：填写多个选项值，对于新的选项值，将会创建一个新的选项。如果填写多个相同的新选项值，将会创建多个相同的选项- 日期：填写毫秒级时间戳- 复选框：填写 true 或 false- 条码- 人员：填写用户的 open_id、union_id 或 user_id，类型需要与 user_id_type 指定的类型一致- 电话号码：填写文本内容- 超链接：参考以下示例，text 为文本值，link 为 URL 链接- 附件：填写附件 token，需要先调用或接口将附件上传至该多维表格中- 单向关联：填写被关联表的记录 ID- 双向关联：填写被关联表的记录 ID- 地理位置：填写经纬度坐标不同类型字段的数据结构请参考',
+          '要更新的记录的数据。你需先指定数据表中的字段（即指定列），再传入正确格式的数据作为一条记录。**注意**：该接口支持的字段类型及其描述如下所示：- 文本：原值展示，不支持 markdown 语法- 数字：填写数字格式的值- 单选：填写选项值，对于新的选项值，将会创建一个新的选项- 多选：填写多个选项值，对于新的选项值，将会创建一个新的选项。如果填写多个相同的新选项值，将会创建多个相同的选项- 日期：填写毫秒级时间戳- 复选框：填写 true 或 false- 条码- 人员：填写用户的 open_id、union_id 或 user_id，类型需要与 user_id_type 指定的类型一致- 电话号码：填写文本内容- 超链接：参考以下示例，text 为文本值，link 为 URL 链接- 附件：填写附件 token，需要先调用[上传素材]或[分片上传素材]接口将附件上传至该多维表格中- 单向关联：填写被关联表的记录 ID- 双向关联：填写被关联表的记录 ID- 地理位置：填写经纬度坐标不同类型字段的数据结构请参考[数据结构概述]',
         ),
     }),
     params: z.object({
@@ -2017,7 +2017,7 @@ export const bitableV1AppTableViewPatch = {
                     value: z
                       .string()
                       .describe(
-                        '条件的值，可以是单个值或多个值的数组。不同字段类型和不同的 operator 可填的值不同。详情参考',
+                        '条件的值，可以是单个值或多个值的数组。不同字段类型和不同的 operator 可填的值不同。详情参考[字段目标值（value）填写说明]',
                       )
                       .optional(),
                   }),
@@ -2103,7 +2103,7 @@ export const bitableV1AppWorkflowUpdate = {
       workflow_id: z
         .string()
         .describe(
-          '自动化工作流 ID，通过接口获取',
+          '自动化工作流 ID，通过[列出自动化流程]接口获取',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),

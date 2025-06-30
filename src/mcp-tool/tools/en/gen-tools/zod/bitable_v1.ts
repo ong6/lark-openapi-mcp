@@ -60,7 +60,7 @@ export const bitableV1AppCopy = {
       name: z.string().describe('Base App Name').optional(),
       folder_token: z
         .string()
-        .describe('')
+        .describe('[Base App Folder Token]')
         .optional(),
       without_content: z
         .boolean()
@@ -68,7 +68,7 @@ export const bitableV1AppCopy = {
         .optional(),
       time_zone: z
         .string()
-        .describe('Base App Time Zone, ')
+        .describe('Base App Time Zone, [More Detail]')
         .optional(),
     }),
     path: z.object({ app_token: z.string().describe('Base unique App identifier') }),
@@ -89,12 +89,12 @@ export const bitableV1AppCreate = {
       folder_token: z
         .string()
         .describe(
-          'Base App Folder Token. The default value is empty, which means that the Base App is created at the root folder. For information on how to obtain folder_token, please refer to ',
+          'Base App Folder Token. The default value is empty, which means that the Base App is created at the root folder. For information on how to obtain folder_token, please refer to [How to obtain tokens related to cloud document resources]',
         )
         .optional(),
       time_zone: z
         .string()
-        .describe('Base App Time Zone, ')
+        .describe('Base App Time Zone, [More Detail]')
         .optional(),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -349,7 +349,7 @@ export const bitableV1AppRoleMemberCreate = {
       member_id_type: z
         .enum(['open_id', 'union_id', 'user_id', 'chat_id', 'department_id', 'open_department_id'])
         .describe(
-          'Member id type Options:open_id(OpenID open_id),union_id(UnionID union_id),user_id(UserID user_id),chat_id(ChatID chat_id),department_id(DepartmentID department_id. Before using this parameter, make sure the application has departmental visibility, refer to ),open_department_id(OpenDepartmentID open_department_id. Before using this parameter, make sure the application has departmental visibility, refer to )',
+          'Member id type Options:open_id(OpenID open_id),union_id(UnionID union_id),user_id(UserID user_id),chat_id(ChatID chat_id),department_id(DepartmentID department_id. Before using this parameter, make sure the application has departmental visibility, refer to [configure application availability scope]),open_department_id(OpenDepartmentID open_department_id. Before using this parameter, make sure the application has departmental visibility, refer to [configure application availability scope])',
         )
         .optional(),
     }),
@@ -511,7 +511,7 @@ export const bitableV1AppTableBatchCreate = {
             name: z
               .string()
               .describe(
-                'Name for the table.Please note:1. The first and last spaces in the name will be removed.2. If the name is empty or the same as the old name, the interface will still return success, but the name will not be changed',
+                'Name for the table. This field is required.Please note:1. The first and last spaces in the name will be removed.2. If the name is empty or the same as the old name, the interface will still return success, but the name will not be changed',
               )
               .optional(),
           }),
@@ -537,7 +537,7 @@ export const bitableV1AppTableBatchDelete = {
       table_ids: z
         .array(z.string())
         .describe(
-          'Base data table unique device identifier,Currently supports up to 50 data tables in one operation',
+          'Base data table unique device identifier,Currently supports up to 50 data tables in one operation[table_id description]',
         )
         .optional(),
     }),
@@ -605,7 +605,7 @@ export const bitableV1AppTableCreate = {
                     'AutoNumber',
                   ])
                   .describe(
-                    'Field Property, ref:  Options:Text(multiline text),Barcode(barcode),Number(number),Progress(progress),Currency(currency),Rating(score),SingleSelect(radio),MultiSelect(multiple choice),DateTime(date),Checkbox(checkbox),User(Personnel),GroupChat(group),Phone(Phone number),Url(Hyperlink),Attachment(Attachment),SingleLink(one-way association),Formula(formula),DuplexLink(Two-way link),Location(Geographical location),CreatedTime(Creation time),ModifiedTime(Last update time),CreatedUser(creator),ModifiedUser(Modifier),AutoNumber(Automatic numbering)',
+                    'Field Property, ref: [Field edit development guide] Options:Text(multiline text),Barcode(barcode),Number(number),Progress(progress),Currency(currency),Rating(score),SingleSelect(radio),MultiSelect(multiple choice),DateTime(date),Checkbox(checkbox),User(Personnel),GroupChat(group),Phone(Phone number),Url(Hyperlink),Attachment(Attachment),SingleLink(one-way association),Formula(formula),DuplexLink(Two-way link),Location(Geographical location),CreatedTime(Creation time),ModifiedTime(Last update time),CreatedUser(creator),ModifiedUser(Modifier),AutoNumber(Automatic numbering)',
                   )
                   .optional(),
                 property: z
@@ -877,7 +877,7 @@ export const bitableV1AppTableFieldCreate = {
                     .optional(),
                 })
                 .describe(
-                  'Field Property, ref: ',
+                  'Field Property, ref: [Field edit development guide]',
                 )
                 .optional(),
               ui_type: z
@@ -891,7 +891,7 @@ export const bitableV1AppTableFieldCreate = {
             .optional(),
         })
         .describe(
-          'Field Property, ref: ',
+          'Field Property, ref: [Field edit development guide]',
         )
         .optional(),
       description: z
@@ -1135,7 +1135,7 @@ export const bitableV1AppTableFieldUpdate = {
                     .optional(),
                 })
                 .describe(
-                  'Field Property, ref: ',
+                  'Field Property, ref: [Field edit development guide]',
                 )
                 .optional(),
               ui_type: z
@@ -1149,7 +1149,7 @@ export const bitableV1AppTableFieldUpdate = {
             .optional(),
         })
         .describe(
-          'Field Property, ref: ',
+          'Field Property, ref: [Field edit development guide]',
         )
         .optional(),
       description: z
@@ -1427,7 +1427,7 @@ export const bitableV1AppTableRecordBatchGet = {
       record_ids: z
         .array(z.string())
         .describe(
-          'record id list. See ',
+          'record id list. See [Query records]',
         ),
       user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('User ID type').optional(),
       with_shared_url: z
@@ -1497,7 +1497,7 @@ export const bitableV1AppTableRecordCreate = {
         .object({})
         .catchall(z.any())
         .describe(
-          "To add new records to the data table, you need to first specify the fields in the table (i.e., specify the columns) and then pass the correctly formatted data as a record.**Note**:The supported field types and their descriptions are as follows:- Text: Enter a value in string format- Number: Enter a value in number format- Single choice: Enter an option value; for new option values, a new option will be created- Multiple choices: Enter multiple option values; for new option values, multiple new options will be created if multiple identical new option values are entered- Date: Enter a timestamp in milliseconds- Checkbox: Enter true or false- Barcode- Person: Enter the user's ,  or ; the type must match the type specified by user_id_type- Phone number: Enter text content- Hyperlink: Refer to the following example, text is the text value, link is the URL link- Attachment: Enter the attachment token; you need to first call the  or  interface to upload the attachment to this Base- One-way association: Enter the record ID of the associated table- Two-way association: Enter the record ID of the associated table- Location: Enter the latitude and longitude coordinatesFor the data structure of different types of fields, please refer to the ",
+          "To add new records to the data table, you need to first specify the fields in the table (i.e., specify the columns) and then pass the correctly formatted data as a record.**Note**:The supported field types and their descriptions are as follows:- Text: Enter a value in string format- Number: Enter a value in number format- Single choice: Enter an option value; for new option values, a new option will be created- Multiple choices: Enter multiple option values; for new option values, multiple new options will be created if multiple identical new option values are entered- Date: Enter a timestamp in milliseconds- Checkbox: Enter true or false- Barcode- Person: Enter the user's [open_id], [union_id] or [user_id]; the type must match the type specified by user_id_type- Phone number: Enter text content- Hyperlink: Refer to the following example, text is the text value, link is the URL link- Attachment: Enter the attachment token; you need to first call the [upload material] or [fragmented upload material] interface to upload the attachment to this Base- One-way association: Enter the record ID of the associated table- Two-way association: Enter the record ID of the associated table- Location: Enter the latitude and longitude coordinatesFor the data structure of different types of fields, please refer to the [Base record data structure overview]",
         ),
     }),
     params: z.object({
@@ -1663,12 +1663,12 @@ export const bitableV1AppTableRecordSearch = {
                     'in',
                   ])
                   .describe(
-                    'operator Options:is(OperatorIs is),isNot(OperatorIsNot is not. This value does not support date fields. To learn how to query date fields, refer to .),contains(OperatorContains contains. This value does not support date fields.),doesNotContain(OperatorDoesNotContain does not contain. This value does not support date fields.),isEmpty(OperatorIsEmpty is empty),isNotEmpty(OperatorIsNotEmpty is not empty),isGreater(OperatorIsGreater greater than.),isGreaterEqual(OperatorIsGreaterEqual greater than or equal to. This value does not support date fields.),isLess(OperatorIsLess less than),isLessEqual(OperatorIsLessEqual less than or equal to. This value does not support date fields.),like(OperatorLike LIKE operator. Not supported yet),in(OperatorIn IN operator. Not supported yet)',
+                    'operator Options:is(OperatorIs is),isNot(OperatorIsNot is not. This value does not support date fields. To learn how to query date fields, refer to [Date Field Entry Guide].),contains(OperatorContains contains. This value does not support date fields.),doesNotContain(OperatorDoesNotContain does not contain. This value does not support date fields.),isEmpty(OperatorIsEmpty is empty),isNotEmpty(OperatorIsNotEmpty is not empty),isGreater(OperatorIsGreater greater than.),isGreaterEqual(OperatorIsGreaterEqual greater than or equal to. This value does not support date fields.),isLess(OperatorIsLess less than),isLessEqual(OperatorIsLessEqual less than or equal to. This value does not support date fields.),like(OperatorLike LIKE operator. Not supported yet),in(OperatorIn IN operator. Not supported yet)',
                   ),
                 value: z
                   .array(z.string())
                   .describe(
-                    'value',
+                    'value[Record filter development guide]',
                   )
                   .optional(),
               }),
@@ -1677,7 +1677,7 @@ export const bitableV1AppTableRecordSearch = {
             .optional(),
         })
         .describe(
-          'Refer to the  to learn how to fill in the filter',
+          'Refer to the [Record Filter Parameter Filling Guide] to learn how to fill in the filter',
         )
         .optional(),
       automatic_fields: z

@@ -13,7 +13,7 @@ export const securityAndComplianceV1OpenapiLogListData = {
       api_keys: z
         .array(z.string())
         .describe(
-          '飞书开放平台定义的API，参考：',
+          '飞书开放平台定义的API，参考：[API列表]',
         )
         .optional(),
       start_time: z.number().describe('以秒为单位的起始时间戳').optional(),
@@ -21,7 +21,7 @@ export const securityAndComplianceV1OpenapiLogListData = {
       app_id: z
         .string()
         .describe(
-          '调用OpenAPI的应用唯一标识，可以前往  > 应用详情页 > 凭证与基础信息中获取 app_id',
+          '调用OpenAPI的应用唯一标识，可以前往 [开发者后台] > 应用详情页 > 凭证与基础信息中获取 app_id',
         )
         .optional(),
       page_size: z.number().describe('分页大小').optional(),

@@ -65,7 +65,7 @@ export const taskV2AttachmentDelete = {
       attachment_guid: z
         .string()
         .describe(
-          'GUID of attachment to delete, which can be created by API, or fetched byAPI',
+          'GUID of attachment to delete, which can be created by [Upload Attachment]API, or fetched by[List Attachment]API',
         )
         .optional(),
     }),
@@ -87,7 +87,7 @@ export const taskV2AttachmentGet = {
       attachment_guid: z
         .string()
         .describe(
-          'Attachment GUID, which can be created by API, or fetched byAPI',
+          'Attachment GUID, which can be created by [Upload Attachment]API, or fetched by[List Attachment]API',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -118,7 +118,7 @@ export const taskV2AttachmentList = {
       resource_id: z
         .string()
         .describe(
-          'The id of the attachment home resource, used with resource_type. For example, if you want to get the attachment of the task, you need to set resource_type as task, resource_id as the task GUID. To get task GUID, you can refer to ',
+          'The id of the attachment home resource, used with resource_type. For example, if you want to get the attachment of the task, you need to set resource_type as task, resource_id as the task GUID. To get task GUID, you can refer to [Task Features Overview]',
         ),
       user_id_type: z.string().describe('User ID type').optional(),
     }),
@@ -234,7 +234,7 @@ export const taskV2CommentPatch = {
   path: '/open-apis/task/v2/comments/:comment_id',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Tasks-Comment-Patch Comment-Update a comment.When updating, fill in the field names of all comments to be modified in the \'update_fields \'field, and fill in the new value of the field to be modified in the\'comment\' field. For update api specification, please refer to the "About Resource Update" section in  .Currently only the "conent" field for updating comments is supported',
+    '[Feishu/Lark]-Tasks-Comment-Patch Comment-Update a comment.When updating, fill in the field names of all comments to be modified in the \'update_fields \'field, and fill in the new value of the field to be modified in the\'comment\' field. For update api specification, please refer to the "About Resource Update" section in [Feature Overview] .Currently only the "conent" field for updating comments is supported',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -279,7 +279,7 @@ export const taskV2CustomFieldAdd = {
       custom_field_guid: z
         .string()
         .describe(
-          'custom field GUID, which can be created by, or queried by',
+          'custom field GUID, which can be created by[Create Custom Field], or queried by[List Custom Field]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -432,7 +432,7 @@ export const taskV2CustomFieldGet = {
       custom_field_guid: z
         .string()
         .describe(
-          'custom field GUID, which can be created by, or queried by',
+          'custom field GUID, which can be created by[Create Custom Field], or queried by[List Custom Field]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -534,7 +534,7 @@ export const taskV2CustomFieldPatch = {
   path: '/open-apis/task/v2/custom_fields/:custom_field_guid',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Tasks-Custom Field-Patch Custom Field-Update the name and settings of a custom field. When updating, fill in all the task field names to be updated in the `update_fields`, and fill in the new value in the `custom_field`. Custom field type is not allowed to change. Only their settings can be modified according to the type.`update_fields` supports:* `name`: custom field name* `number_setting`: number type setting (if and only if the custom field type to update is number)* `member_setting`: member setting (if and only if the custom field type to update is member)* `datetime_setting`: datetime type setting (if and only if the custom field type to update is datetime)* `single_select_setting`: single select setting (if and only if the custom field type to update is single select)* `multi_select_setting`: multi_select type setting (if and only if the custom field type to be updated is multi_select)* `text_setting`: text type setting (currently nothing can be set)When updating a setting, if you do not fill in a field, it means that the original setting is not changed. For example, for a number, the original settings are:```json"number_setting": { "format": "normal", "decimal_count": 2, "separator": "none", "custom_symbol": "€", "custom_symbol_position": "right"}```Invoke the API with the following parameters:```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "number_setting": { "decimal_count": 4 } }, "update_fields": ["number_setting"]}```indicates that only the number of decimal places is changed from 2 to 4, and the rest of the settings \'format\', \'separator \',\' custom_symbol\', etc. are unchanged.For custom fields of single/multi_select type, the setting is a list of options. When updated, the usage is just like configure the options in App UI. Instead of passing in all the options for the field, the user only needs to provide the options that eventually want the UI to be visible (is_hidden = false). Options in the original field that do not appear in the input will be set to is_hidden = true and placed after all visible options.For an updated option, if `option_guid` is provided, it will be taken as option updating (in this case guid must exist in the current field, otherwise a 400 error will be returned); if GUID not provided, it will be regarded as creating a new option (the new option option_guid will be returned in reponse).For example, a single_select field originally had 3 options A, B, C, D. Where C is hidden. The user can update the options like this:```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "options": [ { "name": "E", "color_index": 25 }, { "guid": "<option_guid of A>" "name": "A2" }, { "guid": "<option_guid of C>", }, ] } }, "update_fields": ["single_select_setting"]}```After calling, you finally get a new list of options E, A, C, B, D, where:* option E is created and its color_index is set to 25.* option A is updated and its name is changed to "A2". But its color_index remains the same because it is not set;* overall order of options follows the user\'s input order, that is, E, A, C, just as the direct input, and their is_hidden are set to false. Note, C was originally is_hidden = true, it will also be set to is_hidden = false.* options B and D have their is_hidden set to true because the user did not input them, and are placed after all options input in the request.If you simply want to modify the order of options visible to the user, such as changing from the original options A, B, C to C, B, A, you can invoke the API like this:```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "options": [ { "guid": "<option_guid_of_C>" }, { "guid": "<option_guid of B>" }, { "guid": "<option_guid of A>", }, ] } }, "update_fields": ["single_select_setting"]}```If you want to directly mark all options in the field as invisible, you can invoke the API like this:```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "options": [] } }, "update_fields": ["single_select_setting"]}```The option to update the single/multi_select field must meet the "visible option name cannot be duplicated" constraint. Otherwise, an error will be returned. Developers need to ensure that the option names entered contain on duplicated items.If you want to update only one single option, or want to set the is_hidden of an option separately, this API cannot do that. But you can use the  API to do it',
+    '[Feishu/Lark]-Tasks-Custom Field-Patch Custom Field-Update the name and settings of a custom field. When updating, fill in all the task field names to be updated in the `update_fields`, and fill in the new value in the `custom_field`. Custom field type is not allowed to change. Only their settings can be modified according to the type.`update_fields` supports:* `name`: custom field name* `number_setting`: number type setting (if and only if the custom field type to update is number)* `member_setting`: member setting (if and only if the custom field type to update is member)* `datetime_setting`: datetime type setting (if and only if the custom field type to update is datetime)* `single_select_setting`: single select setting (if and only if the custom field type to update is single select)* `multi_select_setting`: multi_select type setting (if and only if the custom field type to be updated is multi_select)* `text_setting`: text type setting (currently nothing can be set)When updating a setting, if you do not fill in a field, it means that the original setting is not changed. For example, for a number, the original settings are:```json"number_setting": { "format": "normal", "decimal_count": 2, "separator": "none", "custom_symbol": "€", "custom_symbol_position": "right"}```Invoke the API with the following parameters:```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "number_setting": { "decimal_count": 4 } }, "update_fields": ["number_setting"]}```indicates that only the number of decimal places is changed from 2 to 4, and the rest of the settings \'format\', \'separator \',\' custom_symbol\', etc. are unchanged.For custom fields of single/multi_select type, the setting is a list of options. When updated, the usage is just like configure the options in App UI. Instead of passing in all the options for the field, the user only needs to provide the options that eventually want the UI to be visible (is_hidden = false). Options in the original field that do not appear in the input will be set to is_hidden = true and placed after all visible options.For an updated option, if `option_guid` is provided, it will be taken as option updating (in this case guid must exist in the current field, otherwise a 400 error will be returned); if GUID not provided, it will be regarded as creating a new option (the new option option_guid will be returned in reponse).For example, a single_select field originally had 3 options A, B, C, D. Where C is hidden. The user can update the options like this:```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "options": [ { "name": "E", "color_index": 25 }, { "guid": "<option_guid of A>" "name": "A2" }, { "guid": "<option_guid of C>", }, ] } }, "update_fields": ["single_select_setting"]}```After calling, you finally get a new list of options E, A, C, B, D, where:* option E is created and its color_index is set to 25.* option A is updated and its name is changed to "A2". But its color_index remains the same because it is not set;* overall order of options follows the user\'s input order, that is, E, A, C, just as the direct input, and their is_hidden are set to false. Note, C was originally is_hidden = true, it will also be set to is_hidden = false.* options B and D have their is_hidden set to true because the user did not input them, and are placed after all options input in the request.If you simply want to modify the order of options visible to the user, such as changing from the original options A, B, C to C, B, A, you can invoke the API like this:```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "options": [ { "guid": "<option_guid_of_C>" }, { "guid": "<option_guid of B>" }, { "guid": "<option_guid of A>", }, ] } }, "update_fields": ["single_select_setting"]}```If you want to directly mark all options in the field as invisible, you can invoke the API like this:```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "options": [] } }, "update_fields": ["single_select_setting"]}```The option to update the single/multi_select field must meet the "visible option name cannot be duplicated" constraint. Otherwise, an error will be returned. Developers need to ensure that the option names entered contain on duplicated items.If you want to update only one single option, or want to set the is_hidden of an option separately, this API cannot do that. But you can use the [Update Custom Field Options] API to do it',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -651,7 +651,7 @@ export const taskV2CustomFieldPatch = {
       custom_field_guid: z
         .string()
         .describe(
-          'custom field GUID, which can be created by, or queried by',
+          'custom field GUID, which can be created by[Create Custom Field], or queried by[List Custom Field]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -681,7 +681,7 @@ export const taskV2CustomFieldRemove = {
       custom_field_guid: z
         .string()
         .describe(
-          'custom field GUID, which can be created by, or queried by',
+          'custom field GUID, which can be created by[Create Custom Field], or queried by[List Custom Field]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -795,7 +795,7 @@ export const taskV2SectionPatch = {
   path: '/open-apis/task/v2/sections/:section_guid',
   httpMethod: 'PATCH',
   description:
-    "[Feishu/Lark]-Tasks-Section-Patch Section-Update a section. you can update section's name and postion.When updating, fill in all the field names to be modified in the 'update_fields 'field, and fill in the new value of the field to be modified in the'section' field. For details of the calling convention, see the \"Updates to Resources\" part in [Function Overview](/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/task-v2/overview).Section fields that currently support updates include:* 'name' - section name;* 'insert_before' - section guid before which the current section will be put.* 'insert_after' -section guid after which the current section will be put.`insert_before` and `insert_after`, if filled in, must be a valid section_guid of the same resource. Note that `insert_before` and `insert_after` cannot be set at the same time",
+    "[Feishu/Lark]-Tasks-Section-Patch Section-Update a section. you can update section's name and postion.When updating, fill in all the field names to be modified in the 'update_fields 'field, and fill in the new value of the field to be modified in the'section' field. For details of the calling convention, see the \"Updates to Resources\" part in [Function Overview].Section fields that currently support updates include:* 'name' - section name;* 'insert_before' - section guid before which the current section will be put.* 'insert_after' -section guid after which the current section will be put.`insert_before` and `insert_after`, if filled in, must be a valid section_guid of the same resource. Note that `insert_before` and `insert_after` cannot be set at the same time",
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -893,7 +893,7 @@ export const taskV2TaskAddMembers = {
   path: '/open-apis/task/v2/tasks/:task_guid/add_members',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Tasks-Task-Add members to task-Add assignees or followers to a task. Multiple members can be added at once. The list of task members after adding is returned in the `task` field of response.* For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in  .* Available member types: "user", "app"* Available member roles: "assigee", "follower"* If the member to be added is already in the task, it is automatically ignored',
+    '[Feishu/Lark]-Tasks-Task-Add members to task-Add assignees or followers to a task. Multiple members can be added at once. The list of task members after adding is returned in the `task` field of response.* For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in [Feature Overview] .* Available member types: "user", "app"* Available member roles: "assigee", "follower"* If the member to be added is already in the task, it is automatically ignored',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -906,12 +906,12 @@ export const taskV2TaskAddMembers = {
           }),
         )
         .describe(
-          'Members to add. Supports up to 50 members per request after de-duplication. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in ',
+          'Members to add. Supports up to 50 members per request after de-duplication. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in [Feature Overview]',
         ),
       client_token: z
         .string()
         .describe(
-          'Idempotent token. If provided, api supports idempotent invocation. Please refer to the "Idempotent Invocation" section in  for details',
+          'Idempotent token. If provided, api supports idempotent invocation. Please refer to the "Idempotent Invocation" section in [Function Overview] for details',
         )
         .optional(),
     }),
@@ -927,7 +927,7 @@ export const taskV2TaskAddReminders = {
   path: '/open-apis/task/v2/tasks/:task_guid/add_reminders',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Tasks-Task-Add reminders to task-Add a reminder for a task. A reminder is a moment calculated based on the task due time. In order to set a reminder, the task must first have a due. You can set the due when , or by  set a deadline.At present, a task can only set 1 reminder. But the form of the interface can be expanded to support multiple reminders for a task in the future.If the current task already has a reminder, to update the settings of the reminder, you need to call the  api to remove the original reminder. Then call this interface to add reminders',
+    '[Feishu/Lark]-Tasks-Task-Add reminders to task-Add a reminder for a task. A reminder is a moment calculated based on the task due time. In order to set a reminder, the task must first have a due. You can set the due when [Create Task], or by [Update Task] set a deadline.At present, a task can only set 1 reminder. But the form of the interface can be expanded to support multiple reminders for a task in the future.If the current task already has a reminder, to update the settings of the reminder, you need to call the [Remove Task Reminder] api to remove the original reminder. Then call this interface to add reminders',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -977,7 +977,7 @@ export const taskV2TaskCreate = {
   path: '/open-apis/task/v2/tasks',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Tasks-Task-Create Task-This API can create a task. When creating a task, it supports filling in the basic information of the task (such as title, description, person in charge, etc.). In addition, it can also set the start time of the task, deadline reminders and other conditions. In addition, you can pass in the tasklists field to add new tasks to multiple lists.When creating a task, "assignees" and "followers" can be added by specifying `members` fields. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in  .When setting task start or due time, you need to follow the specification and constraints of task time. Please refer to the "How to use start and due time?" section in  .This api supports "idempotent invocation" by specifying `client_token` field. Please refer to the "Idempotent Invocation" section in  .To create a subtask of a task, you need to use the  API.Creating tasks allows setting custom field values at the same time. However, according to the authorization model of custom fields, only values of fields associated with tasklists can only be added to tasks. Please refer to  for details',
+    '[Feishu/Lark]-Tasks-Task-Create Task-This API can create a task. When creating a task, it supports filling in the basic information of the task (such as title, description, person in charge, etc.). In addition, it can also set the start time of the task, deadline reminders and other conditions. In addition, you can pass in the tasklists field to add new tasks to multiple lists.When creating a task, "assignees" and "followers" can be added by specifying `members` fields. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in [Feature Overview] .When setting task start or due time, you need to follow the specification and constraints of task time. Please refer to the "How to use start and due time?" section in [Feature Overview] .This api supports "idempotent invocation" by specifying `client_token` field. Please refer to the "Idempotent Invocation" section in [Feature Overview] .To create a subtask of a task, you need to use the [Create Subtask] API.Creating tasks allows setting custom field values at the same time. However, according to the authorization model of custom fields, only values of fields associated with tasklists can only be added to tasks. Please refer to [Custom Field Feature Overview] for details',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1035,7 +1035,7 @@ export const taskV2TaskCreate = {
             .optional(),
         })
         .describe(
-          'The third-party platform source information associated with the task is used to display the source information in the App Task UI. Origin can only be set when task is created and not changable. Please refer to the "How to use origin?" section in ',
+          'The third-party platform source information associated with the task is used to display the source information in the App Task UI. Origin can only be set when task is created and not changable. Please refer to the "How to use origin?" section in [Feature Overview]',
         )
         .optional(),
       extra: z
@@ -1056,16 +1056,17 @@ export const taskV2TaskCreate = {
             id: z.string().describe('Member ID'),
             type: z.string().describe('The type of member, which can be user or app').optional(),
             role: z.string().describe('Member roles, which can be "assignee" or "follower"'),
+            name: z.string().describe('Member name').optional(),
           }),
         )
         .describe(
-          'A list of task members, including assignees and followers. If not filled in, the task has no members. Support up to 50 members per request after de-duplication.Please refer to the " How to represent members of tasks and tasklists?" section in ',
+          'A list of task members, including assignees and followers. If not filled in, the task has no members. Support up to 50 members per request after de-duplication.Please refer to the " How to represent members of tasks and tasklists?" section in [Feature Overview]',
         )
         .optional(),
       repeat_rule: z
         .string()
         .describe(
-          'Task repeat rule. If set, the task is "recurring task". Please refer to the "How to Use Recurring Tasks? " section in ',
+          'Task repeat rule. If set, the task is "recurring task". Please refer to the "How to Use Recurring Tasks? " section in [Task Feature Overview]',
         )
         .optional(),
       custom_complete: z
@@ -1141,7 +1142,7 @@ export const taskV2TaskCreate = {
             .optional(),
         })
         .describe(
-          'Task custom complete configuration. Please refer to the "How to use custom completion?" section in ',
+          'Task custom complete configuration. Please refer to the "How to use custom completion?" section in [Task Feature Overview]',
         )
         .optional(),
       tasklists: z
@@ -1166,7 +1167,7 @@ export const taskV2TaskCreate = {
       client_token: z
         .string()
         .describe(
-          'Idempotent token. If provided triggers the dempotent behavior. Please refer to the "Idempotent Invocation" section in ',
+          'Idempotent token. If provided triggers the dempotent behavior. Please refer to the "Idempotent Invocation" section in [Feature Overview]',
         )
         .optional(),
       start: z
@@ -1185,7 +1186,7 @@ export const taskV2TaskCreate = {
             .optional(),
         })
         .describe(
-          'Task start time (ms). Please refer to the "How to use start and due time?" section in ',
+          'Task start time (ms). Please refer to the "How to use start and due time?" section in [Feature Overview]',
         )
         .optional(),
       reminders: z
@@ -1219,6 +1220,7 @@ export const taskV2TaskCreate = {
                 z.object({
                   id: z.string().describe('Indicates the id of member').optional(),
                   type: z.string().describe('Type of member').optional(),
+                  name: z.string().describe('Member name').optional(),
                 }),
               )
               .describe(
@@ -1251,6 +1253,23 @@ export const taskV2TaskCreate = {
         )
         .describe(
           'Custom field values. One or multiple custom field values can be set at the same time as the task is created. The custom field to set the value must be associated with the tasklist to which the task is added (which is specified by `tasklist`), otherwise it cannot be set.The value needs to be set to the corresponding field according to the field type.* When `type` is "number", the `number_value` field should be used to represent the value of number custom field;* When "type" is "member", the `member_value` field should be used to represent the value of member custom field;* When `type` is "datetime", `datetime_value` field should be used to represent the value of the datetime custom field.* When `type` is "single_select", the `single_select_value` field should be used to represent the value of single_select custom field.* When `type` is "multi_select", the `multi_select_value` field should be used to represent the value of multi_select custom field',
+        )
+        .optional(),
+      docx_source: z
+        .object({
+          token: z
+            .string()
+            .describe(
+              'Token of associated document of the task. Note: if using tenant_access_token request, the requesting bot must have document edit permission; if using user_access_token, the requesting user must have document editi permission',
+            ),
+          block_id: z
+            .string()
+            .describe(
+              'The block_id of the document associated with the task. The block_id must exist in the document corresponding to the token, and the block_id must not be bound to other tasks',
+            ),
+        })
+        .describe(
+          'Set this field if you want to set the task source as a document.- It is mutually exclusive with extra. An error will be reported if they are set at the same time.- It is mutually exclusive with origin. An error is reported when both are set.- It is mutually exclusive with custom_complete. An error is reported if both are set',
         )
         .optional(),
     }),
@@ -1326,7 +1345,7 @@ export const taskV2TaskPatch = {
   path: '/open-apis/task/v2/tasks/:task_guid',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Tasks-Task-Patch Task-This api is used to update the summary, description, due, etc. of a task.To update a task, fill in all the field names to be updated in the `update_fields` field, and fill in the new value of the field to update in the `task` field. If the field name to be changed is included in the `update_fields`, but no new value is set in `task`, the field will be cleaned to empty. For update api specification, please refer to the "About Resource Update" section in  .The updatable fields include:* `summary`: task summary* `description`: task description* `start`: task start time* `due`: task due time* `completed_at`: complete or uncomplete task* `extra`: user data attached to the task* `custom_complete`: task custom complete configration* `repeat_rule`: repeat rule of the task.* `mode`: completion mode of the task.* `is_milestone`: whether the task is a milestone task or not.This api can be used to complete tasks by updating `completed_at` of task to a timestamp and restore tasks to uncompleted by setting `completed_at` to 0 . However, at present, regardless of whether the task itself is a countersign task or a or-sign task, the oapi can only support overall completion" of the task, and does not support individual completion. Besides, cannot complete a task that has bee completed. But a completed task can be restored to uncompleted by setting `completed_at` to "0".If you want to update the repeat_rule of a task, you must not also update the `completed_at` of the task or unset the due. See "How to use recuring rule of task?" section in  .Task member/reminder/tasklist data cannot be updated by this api.* To add/remove task members, use And .* To modify the task reminder, use the  and .* To change the tasklist where the task belongs to, use  and ',
+    '[Feishu/Lark]-Tasks-Task-Patch Task-This api is used to update the summary, description, due, etc. of a task.To update a task, fill in all the field names to be updated in the `update_fields` field, and fill in the new value of the field to update in the `task` field. If the field name to be changed is included in the `update_fields`, but no new value is set in `task`, the field will be cleaned to empty. For update api specification, please refer to the "About Resource Update" section in [Feature Overview] .The updatable fields include:* `summary`: task summary* `description`: task description* `start`: task start time* `due`: task due time* `completed_at`: complete or uncomplete task* `extra`: user data attached to the task* `custom_complete`: task custom complete configration* `repeat_rule`: repeat rule of the task.* `mode`: completion mode of the task.* `is_milestone`: whether the task is a milestone task or not.This api can be used to complete tasks by updating `completed_at` of task to a timestamp and restore tasks to uncompleted by setting `completed_at` to 0 . However, at present, regardless of whether the task itself is a countersign task or a or-sign task, the oapi can only support overall completion" of the task, and does not support individual completion. Besides, cannot complete a task that has bee completed. But a completed task can be restored to uncompleted by setting `completed_at` to "0".If you want to update the repeat_rule of a task, you must not also update the `completed_at` of the task or unset the due. See "How to use recuring rule of task?" section in [Tasklist Features Overview] .Task member/reminder/tasklist data cannot be updated by this api.* To add/remove task members, use [Add Task Member]And [Remove Task Member].* To modify the task reminder, use the [Add Task Reminder] and [Remove Task Reminder].* To change the tasklist where the task belongs to, use [Add Task to Tasklist] and [Remove Task from Tasklist]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1353,7 +1372,7 @@ export const taskV2TaskPatch = {
                 .optional(),
             })
             .describe(
-              'Task due time. Please refer to the "How to use start and due time?" section in ',
+              'Task due time. Please refer to the "How to use start and due time?" section in [Feature Overview]',
             )
             .optional(),
           extra: z
@@ -1366,7 +1385,7 @@ export const taskV2TaskPatch = {
           repeat_rule: z
             .string()
             .describe(
-              'Task repeat rule. If set, the task is "recurring task". Please refer to the "How to Use Recurring Tasks? " section in ',
+              'Task repeat rule. If set, the task is "recurring task". Please refer to the "How to Use Recurring Tasks? " section in [Task Feature Overview]',
             )
             .optional(),
           custom_complete: z
@@ -1442,7 +1461,7 @@ export const taskV2TaskPatch = {
                 .optional(),
             })
             .describe(
-              'Task custom complete configuration. Please refer to the "How to use custom completion?" section in ',
+              'Task custom complete configuration. Please refer to the "How to use custom completion?" section in [Task Feature Overview]',
             )
             .optional(),
           start: z
@@ -1461,7 +1480,7 @@ export const taskV2TaskPatch = {
                 .optional(),
             })
             .describe(
-              'Task start time. Please refer to the "How to use start and due time?" section in ',
+              'Task start time. Please refer to the "How to use start and due time?" section in [Feature Overview]',
             )
             .optional(),
           mode: z.number().describe('The completion mode of the task. 1: countersign task; 2: or-sign task').optional(),
@@ -1615,7 +1634,7 @@ export const taskV2TaskSubtaskCreate = {
   path: '/open-apis/task/v2/tasks/:task_guid/subtasks',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Tasks-Subtask-Create Subtask-Create a subtask for a task.The api function is exactly the same as the  except that the parent task GUID needs to be provided',
+    '[Feishu/Lark]-Tasks-Subtask-Create Subtask-Create a subtask for a task.The api function is exactly the same as the [Create Task] except that the parent task GUID needs to be provided',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1668,7 +1687,7 @@ export const taskV2TaskSubtaskCreate = {
             .optional(),
         })
         .describe(
-          'Task-associated third-party platform source information. See ',
+          'Task-associated third-party platform source information. See [How to use Origin?]',
         )
         .optional(),
       extra: z
@@ -1691,7 +1710,7 @@ export const taskV2TaskSubtaskCreate = {
       repeat_rule: z
         .string()
         .describe(
-          'Task repeat_rule. Please refer to the "How to use recurring task?" section in ',
+          'Task repeat_rule. Please refer to the "How to use recurring task?" section in [Feature Overview]',
         )
         .optional(),
       custom_complete: z
@@ -1767,7 +1786,7 @@ export const taskV2TaskSubtaskCreate = {
             .optional(),
         })
         .describe(
-          'Task custom complete configuration. Please refer to the "How to use custom completion?" section in ',
+          'Task custom complete configuration. Please refer to the "How to use custom completion?" section in [Feature Overview]',
         )
         .optional(),
       tasklists: z
@@ -1789,7 +1808,7 @@ export const taskV2TaskSubtaskCreate = {
       client_token: z
         .string()
         .describe(
-          'Idempotent token. If provided triggers the idempotent behavior.Please refer to the "Idempotent Invocation" section in ',
+          'Idempotent token. If provided triggers the idempotent behavior.Please refer to the "Idempotent Invocation" section in [Feature Overview]',
         )
         .optional(),
       start: z
@@ -1911,12 +1930,12 @@ export const taskV2TasklistActivitySubscriptionDelete = {
       tasklist_guid: z
         .string()
         .describe(
-          'tasklist GUID, which can be created by, or queried by ',
+          'tasklist GUID, which can be created by[Create Tasklist], or queried by [List Tasklist]',
         ),
       activity_subscription_guid: z
         .string()
         .describe(
-          'subscription GUID, which can be created by , or queried by',
+          'subscription GUID, which can be created by [Create Activity Subscription], or queried by[List Activity Subscription]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1937,12 +1956,12 @@ export const taskV2TasklistActivitySubscriptionGet = {
       tasklist_guid: z
         .string()
         .describe(
-          'tasklist GUID, which can be created by, or queried by ',
+          'tasklist GUID, which can be created by[Create Tasklist], or queried by [List Tasklist]',
         ),
       activity_subscription_guid: z
         .string()
         .describe(
-          'subscription GUID, which can be created by , or queried by',
+          'subscription GUID, which can be created by [Create Activity Subscription], or queried by[List Activity Subscription]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -1966,7 +1985,7 @@ export const taskV2TasklistActivitySubscriptionList = {
       tasklist_guid: z
         .string()
         .describe(
-          'Tasklist GUID, which can be created by, or queried by ',
+          'Tasklist GUID, which can be created by[Create Tasklist], or queried by [List Tasklist]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -2019,12 +2038,12 @@ export const taskV2TasklistActivitySubscriptionPatch = {
       tasklist_guid: z
         .string()
         .describe(
-          'tasklist GUID, which can be created by, or queried by ',
+          'tasklist GUID, which can be created by[Create Tasklist], or queried by [List Tasklist]',
         ),
       activity_subscription_guid: z
         .string()
         .describe(
-          'subscription GUID, which can be created by , or queried by',
+          'subscription GUID, which can be created by [Create Activity Subscription], or queried by[List Activity Subscription]',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -2037,7 +2056,7 @@ export const taskV2TasklistAddMembers = {
   path: '/open-apis/task/v2/tasklists/:tasklist_guid/add_members',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Tasks-Tasklist-Add Tasklist Members-Add one or more members to a tasklist. Members can be set by setting `members` fields. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in  .A tasklist member can be a user, app or chat. Each member can as "editor" or "viewer" role. A chat member means that all chatters in chat automatically have the tasklist role of chat memberIf the member to be added is already a member and the role is the same as set in the request, it will be automatically ignored and the api returns success.If the member to be added is already a tasklist member, and the role is not set in the request (for example, the original role is viewer, and the request is set to editor), it is equivalent to updating its role.If the member to be added is already the tasklist owner, it is automatically ignored. In this case api returns success. The role of tasklist owner does not change.This api cannot be used to update the tasklist owner. To do it, you can use the ',
+    '[Feishu/Lark]-Tasks-Tasklist-Add Tasklist Members-Add one or more members to a tasklist. Members can be set by setting `members` fields. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in [Feature Overview] .A tasklist member can be a user, app or chat. Each member can as "editor" or "viewer" role. A chat member means that all chatters in chat automatically have the tasklist role of chat memberIf the member to be added is already a member and the role is the same as set in the request, it will be automatically ignored and the api returns success.If the member to be added is already a tasklist member, and the role is not set in the request (for example, the original role is viewer, and the request is set to editor), it is equivalent to updating its role.If the member to be added is already the tasklist owner, it is automatically ignored. In this case api returns success. The role of tasklist owner does not change.This api cannot be used to update the tasklist owner. To do it, you can use the [Update Tasklist]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -2060,7 +2079,7 @@ export const taskV2TasklistAddMembers = {
           }),
         )
         .describe(
-          'Members to add. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in ',
+          'Members to add. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in [Feature Overview]',
         ),
     }),
     params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
@@ -2075,7 +2094,7 @@ export const taskV2TasklistCreate = {
   path: '/open-apis/task/v2/tasklists',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Tasks-Tasklist-Create Tasklist-Create a tasklist. Tasklist can be used to organize and manage multiple tasks belonging to the same project.When creating, the name of the tasklist must be filled in. At the same time, tasklist member can be set by specifying `members` field. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in  .After the tasklist is created, the creator automatically becomes the tasklist owner. If sets the creator to editor/viewer, the user eventually becomes the tasklist owner and automatically disappears from the member list. This is because the same user can only have one role on the same tasklist',
+    '[Feishu/Lark]-Tasks-Tasklist-Create Tasklist-Create a tasklist. Tasklist can be used to organize and manage multiple tasks belonging to the same project.When creating, the name of the tasklist must be filled in. At the same time, tasklist member can be set by specifying `members` field. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in [Feature Overview] .After the tasklist is created, the creator automatically becomes the tasklist owner. If sets the creator to editor/viewer, the user eventually becomes the tasklist owner and automatically disappears from the member list. This is because the same user can only have one role on the same tasklist',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -2097,7 +2116,7 @@ export const taskV2TasklistCreate = {
           }),
         )
         .describe(
-          'Tasklist member list. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in ',
+          'Tasklist member list. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in [Feature Overview]',
         )
         .optional(),
     }),
@@ -2164,7 +2183,7 @@ export const taskV2TasklistPatch = {
   path: '/open-apis/task/v2/tasklists/:tasklist_guid',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Tasks-Tasklist-Patch Tasklist-Update a tasklist. You can update the name and owner of the tasklist.When updating the tasklist, fill in all the tasklist field names to be modified in the \'update_fields \'field, and fill in the new value of the field to be modified in the\'tasklist\' field. For details of update api specification, please refer to the "About Resource Update" section in  .Updatable fields include:* `name`: tasklist name* `owner`: tasklist ownerWhen updating tasklist owner, if the new owner is already an "editor" or "viewer", it will be directly upgraded to the owner and automatically disappear from the member list. This is because the same user can only have one role in the same tasklist. Meanwhile, you can set the new role of original owner by setting `origin_owner_to_role` field.This api cannot be used to update members of the tasklist and add or delete tasks in the tasklist.* To add or delete members from the tasklist, you can use the  and  api.* To add or delete tasks in the tasklist, you can use the  and  api',
+    '[Feishu/Lark]-Tasks-Tasklist-Patch Tasklist-Update a tasklist. You can update the name and owner of the tasklist.When updating the tasklist, fill in all the tasklist field names to be modified in the \'update_fields \'field, and fill in the new value of the field to be modified in the\'tasklist\' field. For details of update api specification, please refer to the "About Resource Update" section in [Feature Overview] .Updatable fields include:* `name`: tasklist name* `owner`: tasklist ownerWhen updating tasklist owner, if the new owner is already an "editor" or "viewer", it will be directly upgraded to the owner and automatically disappear from the member list. This is because the same user can only have one role in the same tasklist. Meanwhile, you can set the new role of original owner by setting `origin_owner_to_role` field.This api cannot be used to update members of the tasklist and add or delete tasks in the tasklist.* To add or delete members from the tasklist, you can use the [Add Tasklist Member] and [Remove Tasklist Member] api.* To add or delete tasks in the tasklist, you can use the [Add Task to Tasklist] and [Remove Task from Tasklist] api',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -2208,7 +2227,7 @@ export const taskV2TasklistRemoveMembers = {
   path: '/open-apis/task/v2/tasklists/:tasklist_guid/remove_members',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Tasks-Tasklist-Remove Tasklist Members-Removes one or more members of the tasklist. Members to remove can be specified by setting `members` field。For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in  .The "role" field does not need to be filled in for the member to be removed in the request, since the id and type of a member can determine the unique member in the tasklist.If the member to be removed is not in the tasklist, it is automatically ignored and the api returns success.This api cannot be used to remove the tasklist owner. If the member to be removed is the list owner, it will be automatically ignored. To update the tasklist owner, you need to call ',
+    '[Feishu/Lark]-Tasks-Tasklist-Remove Tasklist Members-Removes one or more members of the tasklist. Members to remove can be specified by setting `members` field。For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in [Feature Overview] .The "role" field does not need to be filled in for the member to be removed in the request, since the id and type of a member can determine the unique member in the tasklist.If the member to be removed is not in the tasklist, it is automatically ignored and the api returns success.This api cannot be used to remove the tasklist owner. If the member to be removed is the list owner, it will be automatically ignored. To update the tasklist owner, you need to call [Update Tasklist]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -2226,7 +2245,7 @@ export const taskV2TasklistRemoveMembers = {
           }),
         )
         .describe(
-          'Members to remove. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in ',
+          'Members to remove. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in [Feature Overview]',
         ),
     }),
     params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),

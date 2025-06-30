@@ -15,14 +15,18 @@ export const payrollV1CostAllocationPlanList = {
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
-      page_size: z.number(),
+      page_size: z.number().describe('paging size'),
       page_token: z
         .string()
         .describe(
           'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
         )
         .optional(),
-      pay_period: z.string(),
+      pay_period: z
+        .string()
+        .describe(
+          'During the period, generate the year and month corresponding to the cost allocation report. The format is yyyy-MM',
+        ),
     }),
   },
 };
@@ -46,7 +50,7 @@ export const payrollV1CostAllocationReportList = {
       cost_allocation_plan_id: z
         .string()
         .describe(
-          'Cost-sharing scheme ID, obtained through [Bulk query cost-sharing scheme] (/ssl: ttdoc/uAjLw4CM/ukTMukTMukTM/payroll-v1/cost_allocation_plan/list)',
+          'Cost-sharing scheme ID, obtained through [Bulk query cost-sharing scheme]',
         ),
       pay_period: z
         .string()
@@ -68,7 +72,7 @@ export const payrollV1DatasourceRecordQuery = {
   path: '/open-apis/payroll/v1/datasource_records/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Payroll-datasource_record-query datasource records-1. Support through payroll_period (required), employment_id (optional) these two preset fields, batch query the data record list under the specified data source.2. The data source configuration information can be obtained from the  or "Feishu Personnel Background - Settings - Salary Data Settings - External Data Source Configuration" page',
+    '[Feishu/Lark]-Payroll-datasource_record-query datasource records-1. Support through payroll_period (required), employment_id (optional) these two preset fields, batch query the data record list under the specified data source.2. The data source configuration information can be obtained from the [list datasource configs] or "Feishu Personnel Background - Settings - Salary Data Settings - External Data Source Configuration" page',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -87,7 +91,7 @@ export const payrollV1DatasourceRecordQuery = {
           }),
         )
         .describe(
-          'Query the list of conditions, and the relationship between multiple conditions, only supports the equivalent query of the two preset fields "employment_id" and "payroll_period":1. payroll_period- Required, up to 2 incoming.- Field type: field_type = 4 (date), format "yyyy-mm", example: "2024-01", note that it is not "yyyy-mm-dd"2. employment_id- Not required, up to 100 passes, field_type = 3 (text type).- This id is the basic information id of the employee in Feishu personnel, which can be obtained through ',
+          'List of query conditions, and the relationship between multiple conditions. The supported query conditions are as follows:1. employment_id- Not required, up to 100 passes, field_type = 3 (text type).- This id is the basic information id of the employee in Feishu personnel, which can be obtained through [Search employee information].The query operator only supports IsAnyOf (inclusive).2. The time range condition must be transmitted. According to the different data writing dimensions of the data source, the supported time range query conditions are as follows:- Payroll period dimension. payroll_period field, format: 2024-01,Query method: The IsAnyOf operator enumerates the months to be checked, up to a maximum of 2 months.- Data date dimension (in grey release). occur_day fields, format 2024-01-02,Query method: Query through the InDateRange operator (date range query), occur_day time range is not allowed to exceed 90 days,- Custom data period dimension (in grey release). custom_start, custom_end fields, format: 2024-01-02. Query method: both must be passed, query through InDateRange operator (date range query), the time range is not allowed to exceed 90 days',
         )
         .optional(),
     }),
@@ -117,7 +121,7 @@ export const payrollV1DatasourceRecordSave = {
       source_code: z
         .string()
         .describe(
-          'Data source code. External data source configuration information can be obtained from Or on the "Feishu Personnel Background - Settings - Salary Data Settings - External Data Source Configuration" page, get',
+          'Data source code. External data source configuration information can be obtained from [https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/payroll-v1/datasources/list]Or on the "Feishu Personnel Background - Settings - Salary Data Settings - External Data Source Configuration" page, get',
         ),
       records: z
         .array(
@@ -149,7 +153,7 @@ export const payrollV1DatasourceRecordSave = {
                 }),
               )
               .describe(
-                'List of recorded field values.1. Each record must be passed into the system preset fields "payroll_period", "employment_id".2. Other custom fields are passed in according to the request, and it is necessary to ensure that the written fields exist and are enabled in the configuration. The field code cannot be passed in repeatedly, and the value of the field must meet the constraints corresponding to the following types.3. Description of the two preset field values of "payroll_period" and "employment_id":- payroll_period. Represents the payroll period, accurate to the month, in the format "yyyy-mm" eg: "2024-01"- employment_id. This id is the basic information id of the employee in Feishu personnel, which can be obtained through ',
+                'List of specific field values to create or update records:- Required fields:According to the data of the recorded data source, there are different required fields for writing dimension attributes:1. Dimension of salary calculation period. "payroll_period", "employment_id" fields must be passed, payroll_period format: "2024-01".2. Data date dimension (in grey release). "occur_day", "employment_id" fields must be passed. occur_day format: "2024-01-02".3. Customize the data period dimension (in grey release). "custom_start", "custom_end", "employment_id" fields must be passed. custom_start, custom_end format: "2024-01-02".employment_id is the basic information id of the employee in Feishu personnel, which can be obtained through [search employee information]- Other custom fields can be passed in according to the request, and it is necessary to ensure that the written fields exist and are enabled in the configuration. Field codes cannot be passed in repeatedly, and the value of the field must meet the constraints corresponding to the type',
               ),
           }),
         )

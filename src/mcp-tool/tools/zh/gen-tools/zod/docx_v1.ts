@@ -796,7 +796,7 @@ export const docxV1ChatAnnouncementBlockChildrenBatchDelete = {
       revision_id: z
         .number()
         .describe(
-          '要操作的群公告版本。-1 表示群公告最新版本。群公告创建后，版本为 1。你需确保你已拥有群公告的编辑权限。你可通过调用获取群公告的最新 revision_id',
+          '要操作的群公告版本。-1 表示群公告最新版本。群公告创建后，版本为 1。你需确保你已拥有群公告的编辑权限。你可通过调用[获取群公告基本信息]获取群公告的最新 revision_id',
         )
         .optional(),
       client_token: z
@@ -810,12 +810,12 @@ export const docxV1ChatAnnouncementBlockChildrenBatchDelete = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：单聊（群类型为 `p2p`）不支持获取群公告',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：单聊（群类型为 `p2p`）不支持获取群公告',
         ),
       block_id: z
         .string()
         .describe(
-          '父 Block 的唯一标识。你可通过调用接口获取块的 block_id。**注意**：- 此接口不支持删除表格（Table）的行列和删除分栏（Grid）的分栏列。你需通过接口完成相关操作。- 此接口不支持删除表格单元格（Table Cell）、分栏列（Grid Column）和高亮块（Callout）的全部子块',
+          '父 Block 的唯一标识。你可通过调用[获取群公告所有块]接口获取块的 block_id。**注意**：- 此接口不支持删除表格（Table）的行列和删除分栏（Grid）的分栏列。你需通过[批量更新块的内容]接口完成相关操作。- 此接口不支持删除表格单元格（Table Cell）、分栏列（Grid Column）和高亮块（Callout）的全部子块',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -5936,7 +5936,7 @@ export const docxV1ChatAnnouncementGet = {
       chat_id: z
         .string()
         .describe(
-          '群 ID。获取方式：- ，从返回结果中获取该群的 chat_id。- 调用接口，可以查询用户或机器人所在群的 chat_id。- 调用，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：单聊（群类型为 `p2p`）不支持获取群公告',
+          '群 ID。获取方式：- [创建群]，从返回结果中获取该群的 chat_id。- 调用[获取用户或机器人所在的群列表]接口，可以查询用户或机器人所在群的 chat_id。- 调用[搜索对用户或机器人可见的群列表]，可搜索用户或机器人所在的群、对用户或机器人公开的群的 chat_id。**注意**：单聊（群类型为 `p2p`）不支持获取群公告',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -5989,7 +5989,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6027,7 +6027,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6072,7 +6072,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6114,7 +6114,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6153,7 +6153,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6192,7 +6192,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6234,7 +6234,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6388,7 +6388,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6426,7 +6426,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6471,7 +6471,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6513,7 +6513,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6552,7 +6552,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6591,7 +6591,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6633,7 +6633,7 @@ export const docxV1DocumentBlockBatchUpdate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6701,7 +6701,7 @@ export const docxV1DocumentBlockBatchUpdate = {
       document_id: z
         .string()
         .describe(
-          '文档唯一标识。对应新版文档 Token，',
+          '文档唯一标识。对应新版文档 Token，[点击了解如何获取云文档 Token]',
         )
         .optional(),
     }),
@@ -6740,7 +6740,7 @@ export const docxV1DocumentBlockChildrenBatchDelete = {
       document_id: z
         .string()
         .describe(
-          '文档唯一标识。对应新版文档 Token，',
+          '文档唯一标识。对应新版文档 Token，[点击了解如何获取云文档 Token]',
         ),
       block_id: z.string().describe('父 Block 的唯一标识'),
     }),
@@ -6818,7 +6818,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6856,7 +6856,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6900,7 +6900,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6940,7 +6940,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -6979,7 +6979,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7017,7 +7017,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7059,7 +7059,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7126,7 +7126,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7164,7 +7164,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7208,7 +7208,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7248,7 +7248,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7287,7 +7287,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7325,7 +7325,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7367,7 +7367,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7434,7 +7434,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7472,7 +7472,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7516,7 +7516,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7556,7 +7556,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7595,7 +7595,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7633,7 +7633,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7675,7 +7675,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7742,7 +7742,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7780,7 +7780,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7824,7 +7824,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7864,7 +7864,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7903,7 +7903,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7941,7 +7941,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -7983,7 +7983,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8050,7 +8050,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8088,7 +8088,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8132,7 +8132,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8172,7 +8172,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8211,7 +8211,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8249,7 +8249,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8291,7 +8291,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8358,7 +8358,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8396,7 +8396,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8440,7 +8440,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8480,7 +8480,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8519,7 +8519,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8557,7 +8557,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8599,7 +8599,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8666,7 +8666,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8704,7 +8704,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8748,7 +8748,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8788,7 +8788,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8827,7 +8827,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8865,7 +8865,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8907,7 +8907,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -8974,7 +8974,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9012,7 +9012,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9056,7 +9056,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9096,7 +9096,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9135,7 +9135,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9173,7 +9173,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9215,7 +9215,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9282,7 +9282,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9320,7 +9320,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9364,7 +9364,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9404,7 +9404,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9443,7 +9443,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9481,7 +9481,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9523,7 +9523,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9590,7 +9590,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9628,7 +9628,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9672,7 +9672,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9712,7 +9712,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9751,7 +9751,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9789,7 +9789,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9831,7 +9831,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9898,7 +9898,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9936,7 +9936,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -9980,7 +9980,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10020,7 +10020,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10059,7 +10059,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10097,7 +10097,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10139,7 +10139,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10206,7 +10206,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10244,7 +10244,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10288,7 +10288,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10328,7 +10328,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10367,7 +10367,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10405,7 +10405,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10447,7 +10447,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10514,7 +10514,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10552,7 +10552,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10596,7 +10596,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10636,7 +10636,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10675,7 +10675,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10713,7 +10713,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10755,7 +10755,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10822,7 +10822,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10860,7 +10860,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10904,7 +10904,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10944,7 +10944,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -10983,7 +10983,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11021,7 +11021,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11063,7 +11063,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11130,7 +11130,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11168,7 +11168,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11212,7 +11212,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11252,7 +11252,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11291,7 +11291,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11329,7 +11329,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11371,7 +11371,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11438,7 +11438,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11476,7 +11476,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11520,7 +11520,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11560,7 +11560,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11599,7 +11599,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11637,7 +11637,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11679,7 +11679,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                               comment_ids: z
                                 .array(z.string())
                                 .describe(
-                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                                  '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                                 )
                                 .optional(),
                             })
@@ -11798,7 +11798,7 @@ export const docxV1DocumentBlockChildrenCreate = {
                 okr_id: z
                   .string()
                   .describe(
-                    'OKR ID，获取需要插入的 OKR ID 可见',
+                    'OKR ID，获取需要插入的 OKR ID 可见[获取用户的 OKR 列表]',
                   )
                   .optional(),
                 objectives: z
@@ -11847,7 +11847,7 @@ export const docxV1DocumentBlockChildrenCreate = {
       document_id: z
         .string()
         .describe(
-          '文档唯一标识。对应新版文档 Token，',
+          '文档唯一标识。对应新版文档 Token，[点击了解如何获取云文档 Token]',
         ),
       block_id: z.string().describe('Block 的唯一标识'),
     }),
@@ -11884,7 +11884,7 @@ export const docxV1DocumentBlockChildrenGet = {
       document_id: z
         .string()
         .describe(
-          '文档唯一标识。对应新版文档 Token，',
+          '文档唯一标识。对应新版文档 Token，[点击了解如何获取云文档 Token]',
         ),
       block_id: z.string().describe('Block 的唯一标识'),
     }),
@@ -16484,7 +16484,7 @@ export const docxV1DocumentBlockGet = {
       document_id: z
         .string()
         .describe(
-          '文档唯一标识。对应新版文档 Token，',
+          '文档唯一标识。对应新版文档 Token，[点击了解如何获取云文档 Token]',
         ),
       block_id: z.string().describe('Block 的唯一标识'),
     }),
@@ -16520,7 +16520,7 @@ export const docxV1DocumentBlockList = {
       document_id: z
         .string()
         .describe(
-          '文档的唯一标识。对应新版文档 Token，',
+          '文档的唯一标识。对应新版文档 Token，[点击了解如何获取云文档 Token]',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -16570,7 +16570,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                           )
                           .optional(),
                       })
@@ -16608,7 +16608,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                           )
                           .optional(),
                       })
@@ -16652,7 +16652,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                           )
                           .optional(),
                       })
@@ -16692,7 +16692,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                           )
                           .optional(),
                       })
@@ -16731,7 +16731,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                           )
                           .optional(),
                       })
@@ -16769,7 +16769,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                           )
                           .optional(),
                       })
@@ -16809,7 +16809,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                           )
                           .optional(),
                       })
@@ -16959,7 +16959,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                           )
                           .optional(),
                       })
@@ -16997,7 +16997,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                           )
                           .optional(),
                       })
@@ -17041,7 +17041,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                           )
                           .optional(),
                       })
@@ -17081,7 +17081,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                           )
                           .optional(),
                       })
@@ -17120,7 +17120,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                           )
                           .optional(),
                       })
@@ -17158,7 +17158,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                           )
                           .optional(),
                       })
@@ -17198,7 +17198,7 @@ export const docxV1DocumentBlockPatch = {
                         comment_ids: z
                           .array(z.string())
                           .describe(
-                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「」',
+                            '评论 ID 列表。在创建 Block 时，不支持传入评论 ID；在更新文本 Block 的 Element 时，允许将对应版本已存在的评论 ID 移动到同一个 Block 内的任意 Element 中，但不支持传入新的评论 ID。如需查询评论内容请阅览「[获取评论]」',
                           )
                           .optional(),
                       })
@@ -17263,7 +17263,7 @@ export const docxV1DocumentBlockPatch = {
       document_id: z
         .string()
         .describe(
-          '文档唯一标识。对应新版文档 Token，',
+          '文档唯一标识。对应新版文档 Token，[点击了解如何获取云文档 Token]',
         ),
       block_id: z.string().describe('Block 的唯一标识'),
     }),
@@ -17283,7 +17283,7 @@ export const docxV1DocumentCreate = {
       folder_token: z
         .string()
         .describe(
-          '指定文档所在文件夹 的 Token。不传或传空表示根目录。了解如何获取文件夹 Token，参考。若应用使用的是 `tenant_access_token` 权限，此处仅可指定应用创建的文件夹',
+          '指定文档所在文件夹 的 Token。不传或传空表示根目录。了解如何获取文件夹 Token，参考[如何获取云文档资源相关 Token]。若应用使用的是 `tenant_access_token` 权限，此处仅可指定应用创建的文件夹',
         )
         .optional(),
       title: z.string().describe('文档标题，只支持纯文本').optional(),
@@ -17304,7 +17304,7 @@ export const docxV1DocumentGet = {
       document_id: z
         .string()
         .describe(
-          '文档的唯一标识。你可通过以下方式获取文档的 `document_id`。了解更多，参考。- 若文档存储在云盘中，你可通过 URL 地址或通过 获取其中文档资源的 `document_id`。- 若文档挂载在知识库中，你需通过知识库相关接口获取该节点下挂载的云资源的 `obj_token` 和 `obj_type`。在该情况下，`obj_type` 为 `docx` 时，其对应的 `obj_token` 即为文档的 `document_id`。**注意**：对于知识库（wiki）中的文档，其 URL 地址中的 token 并不是该文档的 `document_id`。使用时请注意区分',
+          '文档的唯一标识。你可通过以下方式获取文档的 `document_id`。了解更多，参考[文档概述]。- 若文档存储在云盘中，你可通过 URL 地址或通过[获取文件夹下文件清单] 获取其中文档资源的 `document_id`。- 若文档挂载在知识库中，你需通过知识库相关接口[获取知识空间节点信息]获取该节点下挂载的云资源的 `obj_token` 和 `obj_type`。在该情况下，`obj_type` 为 `docx` 时，其对应的 `obj_token` 即为文档的 `document_id`。**注意**：对于知识库（wiki）中的文档，其 URL 地址中的 token 并不是该文档的 `document_id`。使用时请注意区分',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -17331,7 +17331,7 @@ export const docxV1DocumentRawContent = {
       document_id: z
         .string()
         .describe(
-          '文档的唯一标识。点击了解如何获取文档的 `document_id`',
+          '文档的唯一标识。点击[这里]了解如何获取文档的 `document_id`',
         ),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
