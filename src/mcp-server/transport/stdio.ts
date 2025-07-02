@@ -5,12 +5,16 @@ import { authStore } from '../../auth';
 import { LarkAuthHandlerLocal } from '../../auth';
 import { logger } from '../../utils/logger';
 
-export const initStdioServer: InitTransportServerFunction = async (getNewServer, options) => {
+export const initStdioServer: InitTransportServerFunction = async (
+  getNewServer,
+  options,
+  { needAuthFlow } = { needAuthFlow: false },
+) => {
   const { userAccessToken, appId } = options;
 
   let authHandler: LarkAuthHandlerLocal | undefined;
 
-  if (!userAccessToken) {
+  if (!userAccessToken && needAuthFlow) {
     const app = express();
     app.use(express.json());
     authHandler = new LarkAuthHandlerLocal(app, options);

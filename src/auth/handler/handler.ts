@@ -36,7 +36,7 @@ export class LarkAuthHandler {
     const { port, host, domain, appId, appSecret } = options;
 
     if (!port || !host || !domain || !appId || !appSecret) {
-      throw new Error('[Lark MCP] Port, host, domain, appId, and appSecret are required');
+      throw new Error('[Lark MCP]  appId, and appSecret are required');
     }
 
     this.options = options as LarkOAuthClientConfig;

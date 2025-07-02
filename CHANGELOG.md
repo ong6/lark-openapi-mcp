@@ -1,3 +1,7 @@
+# 0.4.1
+Fix: 开放平台开发文档检索 MCP 错误需要鉴权流程的问题
+Fix: Fixed authentication process issue in Open Platform Development Documentation Retrieval MCP 
+
 # 0.4.0
 Feat: 新增 StreamableHttp 的传输模式
 Feat: StreamableHttp/SSE 支持 [MCP Auth](https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization)

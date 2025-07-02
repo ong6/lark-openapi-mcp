@@ -88,15 +88,17 @@ export async function initMcpServerWithTransport(serverType: McpServerType, opti
     throw new Error('Invalid server type');
   };
 
+  const needAuthFlow = serverType === 'oapi';
+
   switch (mode) {
     case 'stdio':
-      await initStdioServer(getNewServer, options);
+      await initStdioServer(getNewServer, options, { needAuthFlow });
       break;
     case 'sse':
-      await initSSEServer(getNewServer, options);
+      await initSSEServer(getNewServer, options, { needAuthFlow });
       break;
     case 'streamable':
-      await initStreamableServer(getNewServer, options);
+      await initStreamableServer(getNewServer, options, { needAuthFlow });
       break;
     default:
       throw new Error('Invalid mode:' + mode);

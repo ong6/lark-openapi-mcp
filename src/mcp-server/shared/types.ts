@@ -32,5 +32,6 @@ export interface McpServerOptions {
 
 export type InitTransportServerFunction = (
   getNewServer: (options?: McpServerOptions, authHandler?: LarkAuthHandler) => McpServer,
-  options: McpServerOptions,
+  mcpServerOptions: McpServerOptions,
+  authOptions?: { needAuthFlow: boolean },
 ) => void | Promise<void>;

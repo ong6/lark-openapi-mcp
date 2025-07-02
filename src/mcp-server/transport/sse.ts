@@ -5,8 +5,12 @@ import { LarkAuthHandler } from '../../auth';
 import { parseMCPServerOptionsFromRequest } from './utils';
 import { logger } from '../../utils/logger';
 
-export const initSSEServer: InitTransportServerFunction = (getNewServer, options) => {
-  const { port, host } = options;
+export const initSSEServer: InitTransportServerFunction = (
+  getNewServer,
+  options,
+  { needAuthFlow } = { needAuthFlow: false },
+) => {
+  const { userAccessToken, port, host } = options;
 
   if (!port || !host) {
     throw new Error('[Lark MCP] Port and host are required');
@@ -16,7 +20,8 @@ export const initSSEServer: InitTransportServerFunction = (getNewServer, options
   const transports: Map<string, SSEServerTransport> = new Map();
 
   let authHandler: LarkAuthHandler | undefined;
-  if (options.oauth) {
+
+  if (!userAccessToken && needAuthFlow) {
     authHandler = new LarkAuthHandler(app, options);
   }
 
@@ -26,7 +31,7 @@ export const initSSEServer: InitTransportServerFunction = (getNewServer, options
     } else {
       const authToken = req.headers.authorization?.split(' ')[1];
       if (authToken) {
-        req.auth = { token: authToken, clientId: 'LOCAL', scopes: [] };
+        req.auth = { token: authToken, clientId: 'client_id_for_local_auth', scopes: [] };
       }
       next();
     }
@@ -37,17 +42,17 @@ export const initSSEServer: InitTransportServerFunction = (getNewServer, options
 
     const token = req.auth?.token;
     const { data } = parseMCPServerOptionsFromRequest(req);
-    const mcpServer = getNewServer({ ...data, userAccessToken: data.userAccessToken || token }, authHandler);
+    const server = getNewServer({ ...options, ...data, userAccessToken: data.userAccessToken || token }, authHandler);
     const transport = new SSEServerTransport('/messages', res);
     transports.set(transport.sessionId, transport);
 
     res.on('close', () => {
       transport.close();
-      mcpServer.close();
+      server.close();
       transports.delete(transport.sessionId);
     });
 
-    await mcpServer.connect(transport);
+    await server.connect(transport);
   });
 
   app.post('/messages', authMiddleware, async (req: Request, res: Response) => {
