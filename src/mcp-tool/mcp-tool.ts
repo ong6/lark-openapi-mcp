@@ -136,24 +136,29 @@ export class LarkMcpTool {
   }
 
   getReAuthorizeMessage(authorizeUrl?: string, errorCode?: number, errorText?: string) {
+    const errorMessage =
+      errorCode === OAPI_MCP_ERROR_CODE.USER_ACCESS_TOKEN_UNAUTHORIZED
+        ? 'Current user_access_token lacks required permissions. Please ensure the corresponding permissions are enabled in the developer console, then re-authorize using the following Authorization URL or login command.'
+        : 'Current user_access_token is invalid or expired';
+
+    const instruction = authorizeUrl
+      ? [
+          'Please open the following URL in your browser to complete the authorization:',
+          `Note: Ensure the redirect URL (${this.auth?.callbackUrl}) is configured in your app's security settings.`,
+          `   If not configured, go to: ${this.options.domain}/app/${this.options.appId}/safe`,
+          'Authorization URL:',
+          authorizeUrl,
+          'This authorization link expires in 60 seconds. Generating a new link will immediately invalidate this one.',
+        ]
+          .join('\n')
+          .trim()
+      : '';
+
     const reAuthorizeMessage = {
-      apiError: errorText,
-      errorMessage: errorText || 'UserAccessToken is invalid or expired',
-      instruction: authorizeUrl
-        ? [
-            errorCode === OAPI_MCP_ERROR_CODE.USER_ACCESS_TOKEN_UNAUTHORIZED
-              ? 'UserAccessToken is not authorized to some scopes, make sure the corresponding permissions are enabled in the developer console, then please re-authorize, ensuring the user grants the corresponding permissions.'
-              : 'UserAccessToken is invalid or expired.',
-            'Please open the following URL in your browser to complete the login:',
-            `Note: Please ensure the redirect URL (${this.auth?.callbackUrl}) is configured in your app's security settings.`,
-            `   If not configured yet, go to: ${this.options.domain}/app/${this.options.appId}/safe`,
-            'Authorization URL:',
-            authorizeUrl,
-            'This authorization link expires in 60 seconds. Generating a new link will immediately invalidate this one.',
-          ]
-            .join('\n')
-            .trim()
-        : undefined,
+      errorCode,
+      errorMessage,
+      instruction,
+      rawErrorText: errorText,
     };
 
     return {

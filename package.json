@@ -49,6 +49,7 @@
     "env-paths": "^2.2.1",
     "express": "^5.1.0",
     "keytar": "^7.9.0",
+    "open": "^8.4.2",
     "proxy-agent": "^6.5.0"
   },
   "devDependencies": {

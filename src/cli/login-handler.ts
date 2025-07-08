@@ -2,6 +2,7 @@ import express from 'express';
 import { LarkAuthHandlerLocal } from '../auth/handler/handler-local';
 import { authStore } from '../auth/store';
 import { isTokenExpired } from '../auth/utils';
+import open from 'open';
 
 export interface LoginOptions {
   appId: string;
@@ -58,11 +59,6 @@ export class LoginHandler {
 
       const result = await authHandler.reAuthorize();
 
-      if (result.accessToken) {
-        console.log('✅ Already logged in with valid token');
-        process.exit(0);
-      }
-
       if (result.authorizeUrl) {
         console.log('📱 Please open the following URL in your browser to complete the login:');
         console.log(
@@ -72,6 +68,7 @@ export class LoginHandler {
         console.log('🔗 Authorization URL:');
         console.log(result.authorizeUrl);
         console.log('\n⏳ Waiting for authorization... (timeout in 60 seconds)');
+        open(result.authorizeUrl);
 
         await authStore.removeLocalAccessToken(appId);
         const success = await this.checkTokenWithTimeout(timeout, appId);
