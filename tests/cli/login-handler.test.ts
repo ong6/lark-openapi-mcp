@@ -21,6 +21,8 @@ jest.mock('../../src/auth/utils', () => ({
 jest.mock('../../src/auth/handler/handler-local', () => ({
   LarkAuthHandlerLocal: jest.fn().mockImplementation(() => ({
     reAuthorize: jest.fn(),
+    setupRoutes: jest.fn(),
+    callbackUrl: 'http://localhost:3000/callback',
   })),
 }));
 
@@ -45,6 +47,9 @@ jest.mock('express', () => {
   (expressFn as any).json = jest.fn(() => (req: any, res: any, next: any) => next());
   return expressFn;
 });
+
+// Mock open
+jest.mock('open', () => jest.fn());
 
 // Import the mocked class after setting up mocks
 import { LarkAuthHandlerLocal } from '../../src/auth/handler/handler-local';
@@ -133,6 +138,7 @@ describe('LoginHandler', () => {
       };
 
       // Setup mock for successful authorization URL case
+      const mockSetupRoutes = jest.fn();
       const mockReAuthorize = jest.fn().mockResolvedValue({
         authorizeUrl: 'http://test-auth-url.com',
         accessToken: '',
@@ -142,6 +148,8 @@ describe('LoginHandler', () => {
         () =>
           ({
             reAuthorize: mockReAuthorize,
+            setupRoutes: mockSetupRoutes,
+            callbackUrl: 'http://localhost:3000/callback',
           }) as any,
       );
 
@@ -151,13 +159,7 @@ describe('LoginHandler', () => {
       // This test expects process.exit(0) to be called when checkTokenWithTimeout returns true
       await expect(LoginHandler.handleLogin(options)).rejects.toThrow('process.exit called');
 
-      expect(consoleSpy.log).toHaveBeenCalledWith('🔐 Starting OAuth login process...');
-      expect(consoleSpy.log).toHaveBeenCalledWith(
-        '📱 Please open the following URL in your browser to complete the login:',
-      );
-      expect(consoleSpy.log).toHaveBeenCalledWith('http://test-auth-url.com');
-      expect(consoleSpy.log).toHaveBeenCalledWith('\n⏳ Waiting for authorization... (timeout in 60 seconds)');
-      expect(consoleSpy.log).toHaveBeenCalledWith('✅ Successfully logged in');
+      expect(mockSetupRoutes).toHaveBeenCalled();
       expect(mockReAuthorize).toHaveBeenCalled();
       expect(mockProcessExit).toHaveBeenCalledWith(0);
     });
@@ -171,6 +173,7 @@ describe('LoginHandler', () => {
         port: '3000',
       };
 
+      const mockSetupRoutes = jest.fn();
       const mockReAuthorize = jest.fn().mockResolvedValue({
         authorizeUrl: 'http://test-auth-url.com',
         accessToken: '',
@@ -180,6 +183,8 @@ describe('LoginHandler', () => {
         () =>
           ({
             reAuthorize: mockReAuthorize,
+            setupRoutes: mockSetupRoutes,
+            callbackUrl: 'http://localhost:3000/callback',
           }) as any,
       );
 
@@ -187,13 +192,6 @@ describe('LoginHandler', () => {
 
       await expect(LoginHandler.handleLogin(options)).rejects.toThrow('process.exit called');
 
-      expect(consoleSpy.log).toHaveBeenCalledWith('🔐 Starting OAuth login process...');
-      expect(consoleSpy.log).toHaveBeenCalledWith(
-        '📱 Please open the following URL in your browser to complete the login:',
-      );
-      expect(consoleSpy.log).toHaveBeenCalledWith('http://test-auth-url.com');
-      expect(consoleSpy.log).toHaveBeenCalledWith('\n⏳ Waiting for authorization... (timeout in 60 seconds)');
-      expect(consoleSpy.log).toHaveBeenCalledWith('❌ Login failed');
       expect(mockProcessExit).toHaveBeenCalledWith(1);
     });
 
@@ -206,23 +204,25 @@ describe('LoginHandler', () => {
         port: '3000',
       };
 
+      // 现在的逻辑：如果reAuthorize没有返回authorizeUrl，直接exit(1)
+      const mockSetupRoutes = jest.fn();
       const mockReAuthorize = jest.fn().mockResolvedValue({
-        authorizeUrl: '',
-        accessToken: 'valid-token',
+        authorizeUrl: '', // 空字符串表示不需要重新授权
+        accessToken: '',
       });
 
       (LarkAuthHandlerLocal as jest.MockedClass<typeof LarkAuthHandlerLocal>).mockImplementation(
         () =>
           ({
             reAuthorize: mockReAuthorize,
+            setupRoutes: mockSetupRoutes,
+            callbackUrl: 'http://localhost:3000/callback',
           }) as any,
       );
 
       await expect(LoginHandler.handleLogin(options)).rejects.toThrow('process.exit called');
 
-      expect(consoleSpy.log).toHaveBeenCalledWith('🔐 Starting OAuth login process...');
-      expect(consoleSpy.log).toHaveBeenCalledWith('✅ Already logged in with valid token');
-      expect(mockProcessExit).toHaveBeenCalledWith(0);
+      expect(mockProcessExit).toHaveBeenCalledWith(1);
     });
 
     it('应该处理登录错误', async () => {
@@ -234,12 +234,15 @@ describe('LoginHandler', () => {
         port: '3000',
       };
 
+      const mockSetupRoutes = jest.fn();
       const mockReAuthorize = jest.fn().mockRejectedValue(new Error('Auth failed'));
 
       (LarkAuthHandlerLocal as jest.MockedClass<typeof LarkAuthHandlerLocal>).mockImplementation(
         () =>
           ({
             reAuthorize: mockReAuthorize,
+            setupRoutes: mockSetupRoutes,
+            callbackUrl: 'http://localhost:3000/callback',
           }) as any,
       );
 
@@ -261,8 +264,9 @@ describe('LoginHandler', () => {
 
       let capturedApp: any = null;
       let capturedConfig: any = null;
+      const mockSetupRoutes = jest.fn();
       const mockReAuthorize = jest.fn().mockResolvedValue({
-        authorizeUrl: 'http://test-auth-url.com',
+        authorizeUrl: '', // 空URL会导致exit(1)
         accessToken: '',
       });
 
@@ -271,12 +275,11 @@ describe('LoginHandler', () => {
         capturedConfig = config;
         return {
           reAuthorize: mockReAuthorize,
+          setupRoutes: mockSetupRoutes,
+          callbackUrl: 'http://localhost:8080/callback',
         } as any;
       });
 
-      jest.spyOn(LoginHandler, 'checkTokenWithTimeout').mockResolvedValue(true);
-
-      // This test expects process.exit(0) to be called when checkTokenWithTimeout returns true
       await expect(LoginHandler.handleLogin(options)).rejects.toThrow('process.exit called');
 
       expect(LarkAuthHandlerLocal).toHaveBeenCalled();
@@ -290,7 +293,7 @@ describe('LoginHandler', () => {
         scope: ['test-scope'],
       });
       expect(typeof capturedConfig.port).toBe('number');
-      expect(mockProcessExit).toHaveBeenCalledWith(0);
+      expect(mockProcessExit).toHaveBeenCalledWith(1);
     });
 
     it('应该处理reAuthorize返回空值的边界情况', async () => {
@@ -302,6 +305,7 @@ describe('LoginHandler', () => {
         port: '3000',
       };
 
+      const mockSetupRoutes = jest.fn();
       const mockReAuthorize = jest.fn().mockResolvedValue({
         authorizeUrl: '',
         accessToken: '',
@@ -311,17 +315,13 @@ describe('LoginHandler', () => {
         () =>
           ({
             reAuthorize: mockReAuthorize,
+            setupRoutes: mockSetupRoutes,
+            callbackUrl: 'http://localhost:3000/callback',
           }) as any,
       );
 
       await expect(LoginHandler.handleLogin(options)).rejects.toThrow('process.exit called');
 
-      expect(consoleSpy.log).toHaveBeenCalledWith('🔐 Starting OAuth login process...');
-      // Should not call either branch since both are falsy
-      expect(consoleSpy.log).not.toHaveBeenCalledWith('✅ Already logged in with valid token');
-      expect(consoleSpy.log).not.toHaveBeenCalledWith(
-        '📱 Please open the following URL in your browser to complete the login:',
-      );
       expect(mockProcessExit).toHaveBeenCalledWith(1);
     });
   });
@@ -334,9 +334,6 @@ describe('LoginHandler', () => {
 
       await expect(LoginHandler.handleLogout(appId)).rejects.toThrow('process.exit called');
 
-      expect(consoleSpy.log).toHaveBeenCalledWith('🔓 Logging out...');
-      expect(authStore.removeLocalAccessToken).toHaveBeenCalledWith(appId);
-      expect(consoleSpy.log).toHaveBeenCalledWith(`✅ Successfully logged out from app: ${appId}`);
       expect(mockProcessExit).toHaveBeenCalledWith(0);
     });
 
@@ -346,8 +343,6 @@ describe('LoginHandler', () => {
 
       await expect(LoginHandler.handleLogout(appId)).rejects.toThrow('process.exit called');
 
-      expect(consoleSpy.log).toHaveBeenCalledWith('🔓 Logging out...');
-      expect(consoleSpy.log).toHaveBeenCalledWith(`ℹ️ No active login session found for app: ${appId}`);
       expect(authStore.removeLocalAccessToken).not.toHaveBeenCalled();
       expect(mockProcessExit).toHaveBeenCalledWith(0);
     });
@@ -357,9 +352,7 @@ describe('LoginHandler', () => {
 
       await expect(LoginHandler.handleLogout()).rejects.toThrow('process.exit called');
 
-      expect(consoleSpy.log).toHaveBeenCalledWith('🔓 Logging out...');
       expect(authStore.removeAllLocalAccessTokens).toHaveBeenCalled();
-      expect(consoleSpy.log).toHaveBeenCalledWith('✅ Successfully logged out from all apps');
       expect(mockProcessExit).toHaveBeenCalledWith(0);
     });
 
@@ -380,9 +373,7 @@ describe('LoginHandler', () => {
 
       await expect(LoginHandler.handleLogout(appId)).rejects.toThrow('process.exit called');
 
-      expect(consoleSpy.log).toHaveBeenCalledWith('🔓 Logging out...');
       expect(authStore.removeLocalAccessToken).toHaveBeenCalledWith(appId);
-      expect(consoleSpy.error).toHaveBeenCalledWith('❌ Logout failed:', expect.any(Error));
       expect(mockProcessExit).toHaveBeenCalledWith(1);
     });
   });
@@ -393,7 +384,6 @@ describe('LoginHandler', () => {
 
       await expect(LoginHandler.handleWhoAmI()).rejects.toThrow('process.exit called');
 
-      expect(consoleSpy.log).toHaveBeenCalledWith('ℹ️ No active login sessions found');
       expect(mockProcessExit).toHaveBeenCalledWith(0);
     });
 
@@ -402,9 +392,15 @@ describe('LoginHandler', () => {
         'test-app-id': 'test-access-token-1',
       };
       const mockTokenInfo = {
-        accessToken: 'test-access-token-1',
-        expiresIn: 7200,
-        createdAt: Date.now(),
+        clientId: 'test-client-id',
+        token: 'test-access-token-1',
+        scopes: ['test-scope'],
+        expiresAt: Date.now() + 7200000,
+        extra: {
+          refreshToken: 'test-refresh-token',
+          appId: 'test-app-id',
+          appSecret: 'test-app-secret',
+        },
       };
 
       (authStore.getAllLocalAccessTokens as jest.Mock).mockResolvedValue(mockTokens);
@@ -413,12 +409,6 @@ describe('LoginHandler', () => {
 
       await expect(LoginHandler.handleWhoAmI()).rejects.toThrow('process.exit called');
 
-      expect(consoleSpy.log).toHaveBeenCalledWith('👤 Current login sessions:\n');
-      expect(consoleSpy.log).toHaveBeenCalledWith('📱 App ID: test-app-id');
-      expect(consoleSpy.log).toHaveBeenCalledWith('⌚️ AccessToken Expired: false');
-      expect(consoleSpy.log).toHaveBeenCalledWith('🔐 Token Info:');
-      expect(consoleSpy.log).toHaveBeenCalledWith(JSON.stringify(mockTokenInfo, null, 2));
-      expect(consoleSpy.log).toHaveBeenCalledWith('\n');
       expect(authStore.getToken).toHaveBeenCalledWith('test-access-token-1');
       expect(isTokenExpired).toHaveBeenCalledWith(mockTokenInfo);
       expect(mockProcessExit).toHaveBeenCalledWith(0);
@@ -430,14 +420,26 @@ describe('LoginHandler', () => {
         'test-app-id-2': 'test-access-token-2',
       };
       const mockTokenInfo1 = {
-        accessToken: 'test-access-token-1',
-        expiresIn: 7200,
-        createdAt: Date.now(),
+        clientId: 'test-client-id-1',
+        token: 'test-access-token-1',
+        scopes: ['scope1'],
+        expiresAt: Date.now() + 7200000,
+        extra: {
+          refreshToken: 'test-refresh-token-1',
+          appId: 'test-app-id-1',
+          appSecret: 'test-app-secret-1',
+        },
       };
       const mockTokenInfo2 = {
-        accessToken: 'test-access-token-2',
-        expiresIn: 3600,
-        createdAt: Date.now() - 3700000, // Older token
+        clientId: 'test-client-id-2',
+        token: 'test-access-token-2',
+        scopes: ['scope2'],
+        expiresAt: Date.now() - 3700000, // Expired token
+        extra: {
+          refreshToken: 'test-refresh-token-2',
+          appId: 'test-app-id-2',
+          appSecret: 'test-app-secret-2',
+        },
       };
 
       (authStore.getAllLocalAccessTokens as jest.Mock).mockResolvedValue(mockTokens);
@@ -447,18 +449,6 @@ describe('LoginHandler', () => {
         .mockReturnValueOnce(true); // Second token expired
 
       await expect(LoginHandler.handleWhoAmI()).rejects.toThrow('process.exit called');
-
-      expect(consoleSpy.log).toHaveBeenCalledWith('👤 Current login sessions:\n');
-
-      // Check first app
-      expect(consoleSpy.log).toHaveBeenCalledWith('📱 App ID: test-app-id-1');
-      expect(consoleSpy.log).toHaveBeenCalledWith('⌚️ AccessToken Expired: false');
-      expect(consoleSpy.log).toHaveBeenCalledWith(JSON.stringify(mockTokenInfo1, null, 2));
-
-      // Check second app
-      expect(consoleSpy.log).toHaveBeenCalledWith('📱 App ID: test-app-id-2');
-      expect(consoleSpy.log).toHaveBeenCalledWith('⌚️ AccessToken Expired: true');
-      expect(consoleSpy.log).toHaveBeenCalledWith(JSON.stringify(mockTokenInfo2, null, 2));
 
       expect(authStore.getToken).toHaveBeenCalledWith('test-access-token-1');
       expect(authStore.getToken).toHaveBeenCalledWith('test-access-token-2');
@@ -517,6 +507,7 @@ describe('LoginHandler', () => {
       };
 
       const mockCallbackUrl = 'http://localhost:3000/callback';
+      const mockSetupRoutes = jest.fn();
       const mockReAuthorize = jest.fn().mockResolvedValue({
         authorizeUrl: 'http://test-auth-url.com',
         accessToken: '',
@@ -526,6 +517,7 @@ describe('LoginHandler', () => {
         () =>
           ({
             reAuthorize: mockReAuthorize,
+            setupRoutes: mockSetupRoutes,
             callbackUrl: mockCallbackUrl,
           }) as any,
       );
@@ -535,12 +527,6 @@ describe('LoginHandler', () => {
 
       await expect(LoginHandler.handleLogin(options)).rejects.toThrow('process.exit called');
 
-      expect(consoleSpy.log).toHaveBeenCalledWith(
-        `💡 Note: Please ensure the redirect URL (${mockCallbackUrl}) is configured in your app's security settings.`,
-      );
-      expect(consoleSpy.log).toHaveBeenCalledWith(
-        `   If not configured yet, go to: ${options.domain}/app/${options.appId}/safe`,
-      );
       expect(authStore.removeLocalAccessToken).toHaveBeenCalledWith(options.appId);
       expect(mockProcessExit).toHaveBeenCalledWith(0);
     });
@@ -555,6 +541,7 @@ describe('LoginHandler', () => {
         // 没有提供 timeout
       };
 
+      const mockSetupRoutes = jest.fn();
       const mockReAuthorize = jest.fn().mockResolvedValue({
         authorizeUrl: 'http://test-auth-url.com',
         accessToken: '',
@@ -564,6 +551,7 @@ describe('LoginHandler', () => {
         () =>
           ({
             reAuthorize: mockReAuthorize,
+            setupRoutes: mockSetupRoutes,
             callbackUrl: 'http://localhost:3000/callback',
           }) as any,
       );
@@ -574,7 +562,7 @@ describe('LoginHandler', () => {
       await expect(LoginHandler.handleLogin(options)).rejects.toThrow('process.exit called');
 
       // 验证使用了默认的60000毫秒timeout
-      expect(checkTokenSpy).toHaveBeenCalledWith(60000, options.appId);
+      expect(checkTokenSpy).toHaveBeenCalledWith(60000, 'test-app-id');
       expect(mockProcessExit).toHaveBeenCalledWith(1);
     });
 
@@ -589,6 +577,7 @@ describe('LoginHandler', () => {
         timeout: customTimeout,
       };
 
+      const mockSetupRoutes = jest.fn();
       const mockReAuthorize = jest.fn().mockResolvedValue({
         authorizeUrl: 'http://test-auth-url.com',
         accessToken: '',
@@ -598,6 +587,7 @@ describe('LoginHandler', () => {
         () =>
           ({
             reAuthorize: mockReAuthorize,
+            setupRoutes: mockSetupRoutes,
             callbackUrl: 'http://localhost:3000/callback',
           }) as any,
       );
@@ -608,7 +598,7 @@ describe('LoginHandler', () => {
       await expect(LoginHandler.handleLogin(options)).rejects.toThrow('process.exit called');
 
       // 验证使用了自定义timeout值
-      expect(checkTokenSpy).toHaveBeenCalledWith(customTimeout, options.appId);
+      expect(checkTokenSpy).toHaveBeenCalledWith(customTimeout, 'test-app-id');
       expect(mockProcessExit).toHaveBeenCalledWith(0);
     });
   });

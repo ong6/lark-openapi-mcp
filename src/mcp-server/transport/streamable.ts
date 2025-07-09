@@ -10,7 +10,7 @@ export const initStreamableServer: InitTransportServerFunction = (
   options,
   { needAuthFlow } = { needAuthFlow: false },
 ) => {
-  const { userAccessToken, port, host } = options;
+  const { userAccessToken, oauth, port, host } = options;
 
   if (!port || !host) {
     throw new Error('[Lark MCP] Port and host are required');
@@ -23,10 +23,13 @@ export const initStreamableServer: InitTransportServerFunction = (
 
   if (!userAccessToken && needAuthFlow) {
     authHandler = new LarkAuthHandler(app, options);
+    if (oauth) {
+      authHandler.setupRoutes();
+    }
   }
 
   const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    if (authHandler) {
+    if (authHandler && oauth) {
       authHandler.authenticateRequest(req, res, next);
     } else {
       const authToken = req.headers.authorization?.split(' ')[1];

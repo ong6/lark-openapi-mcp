@@ -78,6 +78,7 @@ jest.mock('../../src/mcp-server/transport/utils', () => {
 // 模拟LarkAuthHandler
 jest.mock('../../src/auth', () => ({
   LarkAuthHandler: jest.fn().mockImplementation(() => ({
+    setupRoutes: jest.fn(),
     authenticateRequest: jest.fn((req, res, next) => next()),
   })),
 }));
@@ -276,7 +277,7 @@ describe('initSSEServer', () => {
     const { McpServer } = require('@modelcontextprotocol/sdk/server/mcp.js');
     const mockServer = new McpServer();
 
-    initSSEServer(() => mockServer, options);
+    initSSEServer(() => mockServer, options, { needAuthFlow: true });
 
     // 验证LarkAuthHandler被创建
     expect(LarkAuthHandler).toHaveBeenCalledWith(mockApp, options);
@@ -468,7 +469,7 @@ describe('initSSEServer', () => {
       // 验证请求对象被正确设置
       expect(mockReq.auth).toEqual({
         token: 'test-token-123',
-        clientId: 'LOCAL',
+        clientId: 'client_id_for_local_auth',
         scopes: [],
       });
       expect(mockNext).toHaveBeenCalled();
@@ -557,10 +558,11 @@ describe('initSSEServer', () => {
       // 创建一个具有authenticateRequest方法的mock LarkAuthHandler
       const mockAuthHandler = {
         authenticateRequest: jest.fn((req, res, next) => next()),
+        setupRoutes: jest.fn(),
       };
       (LarkAuthHandler as jest.Mock).mockImplementation(() => mockAuthHandler);
 
-      initSSEServer(() => mockServer, options);
+      initSSEServer(() => mockServer, options, { needAuthFlow: true });
 
       // 首先设置一个transport
       const mockRes1 = createMockResponse();
@@ -568,6 +570,9 @@ describe('initSSEServer', () => {
 
       // 现在测试POST /messages
       const mockReq = {
+        headers: {
+          authorization: 'Bearer test-token',
+        },
         query: { sessionId: 'test-session-id' },
       };
       const mockRes2 = createMockResponse();

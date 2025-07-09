@@ -10,7 +10,7 @@ export const initSSEServer: InitTransportServerFunction = (
   options,
   { needAuthFlow } = { needAuthFlow: false },
 ) => {
-  const { userAccessToken, port, host } = options;
+  const { userAccessToken, port, host, oauth } = options;
 
   if (!port || !host) {
     throw new Error('[Lark MCP] Port and host are required');
@@ -23,10 +23,13 @@ export const initSSEServer: InitTransportServerFunction = (
 
   if (!userAccessToken && needAuthFlow) {
     authHandler = new LarkAuthHandler(app, options);
+    if (oauth) {
+      authHandler.setupRoutes();
+    }
   }
 
   const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    if (authHandler) {
+    if (authHandler && oauth) {
       authHandler.authenticateRequest(req, res, next);
     } else {
       const authToken = req.headers.authorization?.split(' ')[1];
@@ -67,6 +70,8 @@ export const initSSEServer: InitTransportServerFunction = (
     }
     await transport.handlePostMessage(req, res);
   });
+
+  console.log('⚠️ SSE Mode is deprecated and will be removed in a future version. Please use Streamable mode instead.');
 
   app.listen(port, host, (error) => {
     if (error) {

@@ -84,6 +84,7 @@ export class StorageManager {
       return data ? JSON.parse(this.decrypt(data)) : { tokens: {}, clients: {} };
     } catch (error) {
       logger.error(`[StorageManager] Failed to load storage data: ${error}`);
+      logger.error('[StorageManager] ⚠️ Builtin User Access Token Store will be disabled. but you can still use it without local storage');
       return { tokens: {}, clients: {} };
     }
   }
