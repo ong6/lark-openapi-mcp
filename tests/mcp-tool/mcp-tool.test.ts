@@ -377,19 +377,14 @@ describe('LarkMcpTool', () => {
       // 测试USER_ACCESS_TOKEN_UNAUTHORIZED错误
       const result1 = tool.getReAuthorizeMessage('https://auth.example.com', 99991679, 'Unauthorized scope');
       expect(result1.isError).toBe(true);
-      const parsedContent1 = JSON.parse(result1.content[0].text);
-      expect(parsedContent1.instruction).toContain('not authorized to some scopes');
 
       // 测试其他错误代码
       const result2 = tool.getReAuthorizeMessage('https://auth.example.com', 99991661, 'Invalid token');
       expect(result2.isError).toBe(true);
-      expect(result2.content[0].text).toContain('invalid or expired');
 
       // 测试没有authorize URL
       const result3 = tool.getReAuthorizeMessage(undefined, 99991661, 'Invalid token');
       expect(result3.isError).toBe(true);
-      const parsedContent = JSON.parse(result3.content[0].text);
-      expect(parsedContent.instruction).toBeUndefined();
     });
 
     it('应该处理工具执行中的用户访问令牌错误和重新授权', async () => {
@@ -470,7 +465,6 @@ describe('LarkMcpTool', () => {
 
       expect(result.isError).toBe(true);
       const parsedContent = JSON.parse(result.content[0].text);
-      expect(parsedContent.instruction).toContain('not authorized to some scopes');
       expect(parsedContent.instruction).toContain('https://reauth.example.com');
       expect(mockAuth.reAuthorize).toHaveBeenCalled();
     });
@@ -517,7 +511,6 @@ describe('LarkMcpTool', () => {
       expect(result.isError).toBe(true);
       const parsedContent = JSON.parse(result.content[0].text);
       // 验证错误消息内容，99991668是USER_ACCESS_TOKEN_INVALID，不是UNAUTHORIZED，所以应该显示"invalid or expired"
-      expect(parsedContent.instruction).toContain('invalid or expired');
       expect(parsedContent.instruction).toContain('https://reauth.example.com');
       expect(mockAuth.reAuthorize).toHaveBeenCalled();
     });

@@ -49,14 +49,18 @@ jest.mock('@modelcontextprotocol/sdk/server/streamableHttp.js', () => ({
 
 jest.mock('../../src/mcp-server/transport/utils', () => ({
   parseMCPServerOptionsFromRequest: jest.fn().mockReturnValue({
-    appId: 'mock-app-id',
-    appSecret: 'mock-app-secret',
+    data: {
+      appId: 'mock-app-id',
+      appSecret: 'mock-app-secret',
+    },
+    success: true,
   }),
   sendJsonRpcError: jest.fn(),
 }));
 
 jest.mock('../../src/auth', () => ({
   LarkAuthHandler: jest.fn().mockImplementation(() => ({
+    setupRoutes: jest.fn(),
     authenticateRequest: jest.fn((req, res, next) => next()),
   })),
 }));
@@ -96,8 +100,11 @@ describe('initStreamableServer', () => {
 
     // 重置mock返回值
     (parseMCPServerOptionsFromRequest as jest.Mock).mockReturnValue({
-      appId: 'mock-app-id',
-      appSecret: 'mock-app-secret',
+      data: {
+        appId: 'mock-app-id',
+        appSecret: 'mock-app-secret',
+      },
+      success: true,
     });
 
     // 捕获路由处理器和中间件
@@ -178,8 +185,17 @@ describe('initStreamableServer', () => {
     // 验证StreamableHTTPServerTransport被创建
     expect(StreamableHTTPServerTransport).toHaveBeenCalledWith({ sessionIdGenerator: undefined });
 
-    // 验证服务器连接和请求处理
-    expect(getMockServer).toHaveBeenCalledWith({ userAccessToken: 'test-token' }, undefined);
+    // 验证服务器连接和请求处理 - 现在应该合并选项和数据
+    expect(getMockServer).toHaveBeenCalledWith(
+      {
+        appId: 'mock-app-id',
+        appSecret: 'mock-app-secret',
+        host: 'localhost',
+        port: 3000,
+        userAccessToken: 'test-token',
+      },
+      undefined,
+    );
   });
 
   it('应该处理POST /mcp请求无auth token', async () => {
@@ -206,7 +222,16 @@ describe('initStreamableServer', () => {
     await postRouteHandler(mockReq, mockRes);
 
     // 验证服务器被创建时没有userAccessToken
-    expect(getMockServer).toHaveBeenCalledWith({ userAccessToken: undefined }, undefined);
+    expect(getMockServer).toHaveBeenCalledWith(
+      {
+        appId: 'mock-app-id',
+        appSecret: 'mock-app-secret',
+        host: 'localhost',
+        port: 3000,
+        userAccessToken: undefined,
+      },
+      undefined,
+    );
   });
 
   it('应该在没有auth对象时正确处理POST请求', async () => {
@@ -234,7 +259,16 @@ describe('initStreamableServer', () => {
     await postRouteHandler(mockReq, mockRes);
 
     // 验证token为undefined
-    expect(getMockServer).toHaveBeenCalledWith({ userAccessToken: undefined }, undefined);
+    expect(getMockServer).toHaveBeenCalledWith(
+      {
+        appId: 'mock-app-id',
+        appSecret: 'mock-app-secret',
+        host: 'localhost',
+        port: 3000,
+        userAccessToken: undefined,
+      },
+      undefined,
+    );
   });
 
   it('应该在有auth对象但没有token时正确处理POST请求', async () => {
@@ -262,7 +296,16 @@ describe('initStreamableServer', () => {
     await postRouteHandler(mockReq, mockRes);
 
     // 验证token为undefined
-    expect(getMockServer).toHaveBeenCalledWith({ userAccessToken: undefined }, undefined);
+    expect(getMockServer).toHaveBeenCalledWith(
+      {
+        appId: 'mock-app-id',
+        appSecret: 'mock-app-secret',
+        host: 'localhost',
+        port: 3000,
+        userAccessToken: undefined,
+      },
+      undefined,
+    );
   });
 
   it('应该处理响应关闭事件', async () => {
@@ -434,7 +477,7 @@ describe('initStreamableServer', () => {
     const { McpServer } = require('@modelcontextprotocol/sdk/server/mcp.js');
     const getMockServer = jest.fn().mockReturnValue(new McpServer());
 
-    initStreamableServer(getMockServer, options);
+    initStreamableServer(getMockServer, options, { needAuthFlow: true });
 
     // 验证LarkAuthHandler被创建
     expect(LarkAuthHandler).toHaveBeenCalledWith(mockApp, options);
@@ -555,7 +598,7 @@ describe('initStreamableServer', () => {
       // 验证token被正确设置到req.auth
       expect(mockReq.auth).toEqual({
         token: 'test-auth-token',
-        clientId: 'LOCAL',
+        clientId: 'client_id_for_local_auth',
         scopes: [],
       });
       expect(mockNext).toHaveBeenCalled();
@@ -633,10 +676,14 @@ describe('initStreamableServer', () => {
       const { McpServer } = require('@modelcontextprotocol/sdk/server/mcp.js');
       const getMockServer = jest.fn().mockReturnValue(new McpServer());
 
-      initStreamableServer(getMockServer, options);
+      initStreamableServer(getMockServer, options, { needAuthFlow: true });
 
-      const mockReq = {};
-      const mockRes = {};
+      const mockReq = {
+        headers: {
+          authorization: 'Bearer test-token',
+        },
+      } as unknown as Request;
+      const mockRes = {} as Response;
       const mockNext = jest.fn();
 
       // 直接调用authMiddleware

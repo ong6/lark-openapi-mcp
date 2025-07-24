@@ -10,7 +10,7 @@ export const initStdioServer: InitTransportServerFunction = async (
   options,
   { needAuthFlow } = { needAuthFlow: false },
 ) => {
-  const { userAccessToken, appId } = options;
+  const { userAccessToken, appId, oauth } = options;
 
   let authHandler: LarkAuthHandlerLocal | undefined;
 
@@ -18,6 +18,9 @@ export const initStdioServer: InitTransportServerFunction = async (
     const app = express();
     app.use(express.json());
     authHandler = new LarkAuthHandlerLocal(app, options);
+    if (oauth) {
+      authHandler.setupRoutes();
+    }
   }
 
   const transport = new StdioServerTransport();

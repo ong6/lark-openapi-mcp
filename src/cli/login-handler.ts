@@ -54,6 +54,7 @@ export class LoginHandler {
         appSecret,
         scope,
       });
+      authHandler.setupRoutes();
 
       const result = await authHandler.reAuthorize();
 

@@ -19,7 +19,9 @@ jest.mock('../../src/auth', () => ({
   authStore: {
     getLocalAccessToken: jest.fn().mockResolvedValue('mock-local-token'),
   },
-  LarkAuthHandlerLocal: jest.fn(),
+  LarkAuthHandlerLocal: jest.fn().mockImplementation(() => ({
+    setupRoutes: jest.fn(),
+  })),
 }));
 
 // 模拟 express
@@ -224,32 +226,25 @@ describe('initStdioServer', () => {
     const options: McpServerOptions = {
       appId: 'test-app-id',
       appSecret: 'test-app-secret',
-      host: 'localhost',
-      port: 3000,
-      domain: 'https://open.feishu.cn',
+      domain: 'test.domain.com',
+      oauth: true,
     };
 
-    const mockServer = {
-      connect: jest.fn().mockResolvedValue(undefined),
-      close: jest.fn(),
-    };
+    const { McpServer } = require('@modelcontextprotocol/sdk/server/mcp.js');
+    const getNewServerMock = jest.fn().mockReturnValue(new McpServer());
 
-    const getNewServerMock = jest.fn().mockReturnValue(mockServer);
-
-    // 调用initStdioServer
-    await initStdioServer(getNewServerMock, options);
-
-    // 验证getNewServer被正确调用
-    expect(getNewServerMock).toHaveBeenCalled();
+    // 需要设置needAuthFlow为true
+    await initStdioServer(getNewServerMock, options, { needAuthFlow: true });
 
     // 验证LarkAuthHandlerLocal被创建
     expect(LarkAuthHandlerLocal).toHaveBeenCalled();
 
     // 获取传递给getNewServer的参数
     const calledArgs = getNewServerMock.mock.calls[0];
-    expect(calledArgs).toHaveLength(2);
+    const [serverOptions, authHandler] = calledArgs;
 
-    // 第二个参数应该是authHandler实例
-    expect(calledArgs[1]).toBeDefined();
+    // 验证传递了正确的选项和认证处理器
+    expect(serverOptions).toEqual(expect.objectContaining(options));
+    expect(authHandler).toBeDefined();
   });
 });

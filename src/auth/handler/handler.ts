@@ -55,8 +55,6 @@ export class LarkAuthHandler {
     } else {
       this.provider = new LarkOAuth2OAuthServerProvider(params);
     }
-
-    this.setupRoutes();
   }
 
   protected async callback(req: Request, res: Response) {
@@ -96,7 +94,6 @@ export class LarkAuthHandler {
 
   setupRoutes = (): void => {
     logger.info(`[LarkAuthHandler] setupRoutes: issuerUrl: ${this.issuerUrl}`);
-
     this.app.use(mcpAuthRouter({ provider: this.provider, issuerUrl: new URL(this.issuerUrl) }));
     this.app.get('/callback', (req, res) => this.callback(req, res));
   };
