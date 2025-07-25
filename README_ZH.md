@@ -156,6 +156,8 @@ npx -y @larksuiteoapi/lark-mcp login -a cli_xxxx -s yyyyy --scope offline_access
 lark-mcp mcp -a <your_app_id> -s <your_app_secret> -t im.v1.message.create,im.v1.message.list,im.v1.chat.create,preset.calendar.default
 ```
 
+> **⚠️ 提示**：非预设 API 没有经过兼容性测试，AI在理解使用的过程中可能效果不理想
+
 #### 预设工具集（Preset）详细说明
 
 下表详细列出了每个API工具所属的预设工具集，便于您根据实际需求选择合适的preset：

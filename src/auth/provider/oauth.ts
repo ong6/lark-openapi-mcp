@@ -90,8 +90,12 @@ export class LarkOAuth2OAuthServerProvider implements OAuthServerProvider {
       });
 
       const data = response.data;
-      const token = OAuthTokensSchema.parse(data);
+      const parseResult = OAuthTokensSchema.safeParse(data);
+      if (!parseResult.success) {
+        throw new Error(`Token parse failed: invalid response: ${data?.code}, ${data?.msg}`);
+      }
 
+      const token = parseResult.data;
       const expiresAt = token.expires_in ? token.expires_in + Date.now() / 1000 : undefined;
 
       await authStore.storeToken({
@@ -153,8 +157,13 @@ export class LarkOAuth2OAuthServerProvider implements OAuthServerProvider {
       });
 
       const data = response.data;
-      const token = OAuthTokensSchema.parse(data);
 
+      const parseResult = OAuthTokensSchema.safeParse(data);
+      if (!parseResult.success) {
+        throw new Error(`Token parse failed: invalid response: ${data?.code}, ${data?.msg}`);
+      }
+
+      const token = parseResult.data;
       const expiresAt = token.expires_in ? token.expires_in + Date.now() / 1000 : undefined;
 
       await authStore.storeToken({

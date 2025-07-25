@@ -153,6 +153,8 @@ By default, the MCP service enables common APIs. To enable other tools or only s
 lark-mcp mcp -a <your_app_id> -s <your_app_secret> -t im.v1.message.create,im.v1.message.list,im.v1.chat.create,preset.calendar.default
 ```
 
+> **⚠️ Notice**：Non-preset APIs have not undergone compatibility testing, and the AI may not perform optimally during the process of understanding and using them.
+
 #### Preset Tool Collections in Detail
 
 The following table details each API tool and its inclusion in different preset collections, helping you choose the appropriate preset for your needs:
