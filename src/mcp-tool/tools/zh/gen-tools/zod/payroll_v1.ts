@@ -1,6 +1,7 @@
 import { z } from 'zod';
 export type payrollV1ToolName =
   | 'payroll.v1.acctItem.list'
+  | 'payroll.v1.costAllocationDetail.list'
   | 'payroll.v1.costAllocationPlan.list'
   | 'payroll.v1.costAllocationReport.list'
   | 'payroll.v1.datasourceRecord.query'
@@ -28,6 +29,31 @@ export const payrollV1AcctItemList = {
           '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
         )
         .optional(),
+    }),
+    useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
+  },
+};
+export const payrollV1CostAllocationDetailList = {
+  project: 'payroll',
+  name: 'payroll.v1.costAllocationDetail.list',
+  sdkName: 'payroll.v1.costAllocationDetail.list',
+  path: '/open-apis/payroll/v1/cost_allocation_details',
+  httpMethod: 'GET',
+  description:
+    '[Feishu/Lark]-Payroll-成本分摊明细-查询成本分摊报表明细-根据报表方案、期间、和报表类型获取成本分摊明细数据。调用接口前，需打开「财务过账」开关，并且完成发布成本分摊报表',
+  accessTokens: ['tenant', 'user'],
+  schema: {
+    params: z.object({
+      page_size: z.number().describe('分页大小'),
+      page_token: z
+        .string()
+        .describe(
+          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+        )
+        .optional(),
+      cost_allocation_plan_id: z.string().describe('成本分摊方案ID，通过[批量查询成本分摊方案]获取'),
+      pay_period: z.string().describe('期间，成本分摊报表对应的年月。长度为7个字符'),
+      report_type: z.number().describe('报表类型 Options:0(Default 默认),1(Accrued 计提),2(Paid 实发)'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -72,11 +98,7 @@ export const payrollV1CostAllocationReportList = {
           '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
         )
         .optional(),
-      cost_allocation_plan_id: z
-        .string()
-        .describe(
-          '成本分摊方案ID，通过[批量查询成本分摊方案]获取',
-        ),
+      cost_allocation_plan_id: z.string().describe('成本分摊方案ID，通过[批量查询成本分摊方案]获取'),
       pay_period: z.string().describe('期间，成本分摊数据对应的年月，格式 为yyyy-MM'),
       report_type: z
         .number()
@@ -219,15 +241,17 @@ export const payrollV1PaygroupList = {
     '[Feishu/Lark]-Payroll-薪资组-获取薪资组基本信息-- 薪资组是按薪酬管理的纬度创建的组，组内的员工由相同的HR处理薪酬相关工作，通过薪资组可实现对薪资组人员的管理和在薪酬计算发放等环节的人员权限范围控制- 本接口返回所有薪资组的基本信息，包括薪资组ID、薪资组名称、薪资组编码、薪资组状态等，不含薪资组下的员工信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小，默认值100').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小，默认值100').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const payrollV1PaymentActivityDetailList = {
@@ -243,11 +267,7 @@ export const payrollV1PaymentActivityDetailList = {
     params: z.object({
       page_index: z.number().describe('页码，第一页从 1 开始'),
       page_size: z.number().describe('每页大小，范围为：[1, 100]'),
-      activity_id: z
-        .string()
-        .describe(
-          '发薪活动 ID，调用[查询发薪活动列表]接口后，可以从返回结果中获取到发薪活动 ID',
-        ),
+      activity_id: z.string().describe('发薪活动 ID，调用[查询发薪活动列表]接口后，可以从返回结果中获取到发薪活动 ID'),
       include_segment_data: z
         .boolean()
         .describe(
@@ -274,13 +294,7 @@ export const payrollV1PaymentActivityArchive = {
     '[Feishu/Lark]-Payroll-发薪活动-封存发薪活动-根据发薪活动ID对发薪活动进行封存。注意：仅当发薪活动状态为审批通过时，方可进行封存',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      activity_id: z
-        .string()
-        .describe(
-          '发薪活动ID，可通过[查询发薪活动列表]获取',
-        ),
-    }),
+    data: z.object({ activity_id: z.string().describe('发薪活动ID，可通过[查询发薪活动列表]获取') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -354,9 +368,7 @@ export const payrollV1PaymentDetailQuery = {
         .optional(),
       activity_ids: z
         .array(z.string())
-        .describe(
-          '发薪活动 ID 列表，调用[查询发薪活动列表]接口后，可以从返回结果中获取到发薪活动 ID',
-        )
+        .describe('发薪活动 ID 列表，调用[查询发薪活动列表]接口后，可以从返回结果中获取到发薪活动 ID')
         .optional(),
       include_segment_data: z
         .boolean()
@@ -370,6 +382,7 @@ export const payrollV1PaymentDetailQuery = {
 };
 export const payrollV1Tools = [
   payrollV1AcctItemList,
+  payrollV1CostAllocationDetailList,
   payrollV1CostAllocationPlanList,
   payrollV1CostAllocationReportList,
   payrollV1DatasourceRecordQuery,

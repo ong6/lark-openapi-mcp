@@ -53,7 +53,9 @@ export const applicationV6AppBadgeSet = {
         .describe('Number of mobile end badges')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const applicationV6AppRecommendRuleList = {
@@ -113,14 +115,16 @@ export const applicationV6ApplicationAppUsageDepartmentOverview = {
         )
         .optional(),
     }),
-    params: z.object({
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          'Type of department ID used in the call Options:department_id(DepartmentId Identify the department with the custom department_id),open_department_id(OpenDepartmentId Identify the department with open_department_id)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            'Type of department ID used in the call Options:department_id(DepartmentId Identify the department with the custom department_id),open_department_id(OpenDepartmentId Identify the department with open_department_id)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ app_id: z.string().describe('App ID') }),
   },
 };
@@ -152,14 +156,16 @@ export const applicationV6ApplicationAppUsageMessagePushOverview = {
         )
         .optional(),
     }),
-    params: z.object({
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          'Type of department ID used in the call Options:department_id(DepartmentId Identify the department with the custom department_id),open_department_id(OpenDepartmentId Identify the department with open_department_id)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            'Type of department ID used in the call Options:department_id(DepartmentId Identify the department with the custom department_id),open_department_id(OpenDepartmentId Identify the department with open_department_id)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ app_id: z.string().describe('App ID. Custom apps are supported') }),
   },
 };
@@ -196,14 +202,16 @@ export const applicationV6ApplicationAppUsageOverview = {
           'Capability type. You can filter data by capability type to return corresponding activity data. Options:app(Returns overall app usage. Metric values include: uv: Active users; total_users: Cumulative users; new_users: New users; pv: page views in the app (gadget or web app); lifecycle: number of times the app (gadget or web app) is opened.),mp(Returns gadget data. Metric values include: uv (active users of the gadget), pv (page views by users in the gadget), lifecycle (number of times the gadget was opened).),h5(Returns web app data. Metric values include: uv (active users of web app), pv (page views in the web app), lifecycle (number of times the web app is opened).),bot(Returns bot data. Metric values include: uv (active users of bot).)',
         ),
     }),
-    params: z.object({
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          'Type of department ID used in the call Options:department_id(DepartmentId Identify the department with the custom department_id),open_department_id(OpenDepartmentId Identify the department with open_department_id)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            'Type of department ID used in the call Options:department_id(DepartmentId Identify the department with the custom department_id),open_department_id(OpenDepartmentId Identify the department with open_department_id)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ app_id: z.string().describe('App ID') }),
   },
 };
@@ -217,15 +225,17 @@ export const applicationV6ApplicationAppVersionContactsRangeSuggest = {
     "[Feishu/Lark]-App Information-Application-Get the Range of Contacts Data to Access in an App's Version Release Request-This interface is used to obtain the permission scope of the contact of a certain version of the enterprise's self-built application according to the application's App ID and version ID",
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          'Type of the returned department ID Options:department_id(Identify the department with the custom department_id),open_department_id(Identify the department with open_department_id)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            'Type of the returned department ID Options:department_id(Identify the department with the custom department_id),open_department_id(Identify the department with open_department_id)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({
       app_id: z
         .string()
@@ -234,9 +244,7 @@ export const applicationV6ApplicationAppVersionContactsRangeSuggest = {
         ),
       version_id: z
         .string()
-        .describe(
-          'ID that uniquely identifies the app version, get it from[Obtain app version list]',
-        ),
+        .describe('ID that uniquely identifies the app version, get it from[Obtain app version list]'),
     }),
   },
 };
@@ -311,14 +319,16 @@ export const applicationV6ApplicationAppVersionPatch = {
   description: '[Feishu/Lark]-App Information-Admin-Update version information-Updates the app version review status',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      status: z
-        .number()
-        .describe(
-          'Version status Options:0(unknown Unknown status),1(audited Approved),2(reject Rejected),3(under_audit In review),4(unaudit Not submitted for review)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        status: z
+          .number()
+          .describe(
+            'Version status Options:0(unknown Unknown status),1(audited Approved),2(reject Rejected),3(under_audit In review),4(unaudit Not submitted for review)',
+          )
+          .optional(),
+      })
+      .optional(),
     params: z.object({
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type'),
       operator_id: z.string().describe("Operator's open_id"),
@@ -343,13 +353,11 @@ export const applicationV6ApplicationCollaboratorsGet = {
     '[Feishu/Lark]-App Information-Application-Get a list of app collaborators-Get the collaborator information of the application (including the custom application and the store application) according to the app_id, including the owner, administrator, developer, operator of the application',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
-      app_id: z
-        .string()
-        .describe(
-          'App ID, for more information on obtaining it, please refer to [app_id]',
-        ),
+      app_id: z.string().describe('App ID, for more information on obtaining it, please refer to [app_id]'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -364,27 +372,27 @@ export const applicationV6ApplicationCollaboratorsUpdate = {
     '[Feishu/Lark]-App Information-Application-Update application collaborators-Add/remove an app collaborator from an app (including self-built apps and store apps), and the collaborator will receive an add notification after adding it',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      adds: z
-        .array(
-          z.object({
-            type: z
-              .enum(['administrator', 'developer', 'operator'])
-              .describe('Personnel type Options:administrator(administrator),developer(developer),operator(operate)'),
-            user_id: z.string().describe('User ID, the ID type is consistent with the query parameter user_id_type'),
-          }),
-        )
-        .describe('Add People')
-        .optional(),
-      removes: z.array(z.string()).describe('remove personnel').optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        adds: z
+          .array(
+            z.object({
+              type: z
+                .enum(['administrator', 'developer', 'operator'])
+                .describe('Personnel type Options:administrator(administrator),developer(developer),operator(operate)'),
+              user_id: z.string().describe('User ID, the ID type is consistent with the query parameter user_id_type'),
+            }),
+          )
+          .describe('Add People')
+          .optional(),
+        removes: z.array(z.string()).describe('remove personnel').optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
-      app_id: z
-        .string()
-        .describe(
-          'App ID, for more information on obtaining it, please refer to [app_id]',
-        ),
+      app_id: z.string().describe('App ID, for more information on obtaining it, please refer to [app_id]'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -399,28 +407,26 @@ export const applicationV6ApplicationContactsRangeConfiguration = {
     '[Feishu/Lark]-App Information-Admin-Get the Range of Contacts Data an App Can Access-Get the contacts permissions configuration that is actually effective online for a self-built application in the current enterprise',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('Page size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          'Type of the returned department ID Options:department_id(Identify the department with the custom department_id),open_department_id(Identify the department with open_department_id)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('Page size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            'Type of the returned department ID Options:department_id(Identify the department with the custom department_id),open_department_id(Identify the department with open_department_id)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({
-      app_id: z
-        .string()
-        .describe(
-          "App's app_id, get it from [Developer Console] > Credentials & Basic Info",
-        ),
+      app_id: z.string().describe("App's app_id, get it from [Developer Console] > Credentials & Basic Info"),
     }),
   },
 };
@@ -473,21 +479,19 @@ export const applicationV6ApplicationContactsRangePatch = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'Department ID categories Options:open_department_id(Identify the department with open_department_id),department_id(Identify the department with the custom department_id)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'Department ID categories Options:open_department_id(Identify the department with open_department_id),department_id(Identify the department with the custom department_id)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
-      app_id: z
-        .string()
-        .describe(
-          "App's app_id, get it from [Developer Console] > Credentials & Basic Info",
-        ),
+      app_id: z.string().describe("App's app_id, get it from [Developer Console] > Credentials & Basic Info"),
     }),
   },
 };
@@ -500,38 +504,42 @@ export const applicationV6ApplicationFeedbackList = {
   description: '[Feishu/Lark]-App Information-app feedback-Get the app feedback list-Query application feedback data',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      from_date: z
-        .string()
-        .describe(
-          'The end date of the query is in the format YYYY-MM-DD. Default is the current date.You can query only the data within 180 days',
-        )
-        .optional(),
-      to_date: z
-        .string()
-        .describe('The end date of the query in the format yyyy-mm-dd. Do not fill in the default is the current date')
-        .optional(),
-      feedback_type: z
-        .number()
-        .describe(
-          'Feedback type, do not fill in means that all feedback types are queried. Options:1(Fault Fault feedback),2(Advice Product Suggestions)',
-        )
-        .optional(),
-      status: z
-        .number()
-        .describe(
-          'Feedback processing status, do not fill in the query indicates that all processing types. Options:0(Unmarked Feedback not processed),1(Marked Feedback processed),2(Processing Feedback processing),3(Closed Feedback is closed)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Maximum number of feedback lists in this pull').optional(),
-    }),
+    params: z
+      .object({
+        from_date: z
+          .string()
+          .describe(
+            'The end date of the query is in the format YYYY-MM-DD. Default is the current date.You can query only the data within 180 days',
+          )
+          .optional(),
+        to_date: z
+          .string()
+          .describe(
+            'The end date of the query in the format yyyy-mm-dd. Do not fill in the default is the current date',
+          )
+          .optional(),
+        feedback_type: z
+          .number()
+          .describe(
+            'Feedback type, do not fill in means that all feedback types are queried. Options:1(Fault Fault feedback),2(Advice Product Suggestions)',
+          )
+          .optional(),
+        status: z
+          .number()
+          .describe(
+            'Feedback processing status, do not fill in the query indicates that all processing types. Options:0(Unmarked Feedback not processed),1(Marked Feedback processed),2(Processing Feedback processing),3(Closed Feedback is closed)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Maximum number of feedback lists in this pull').optional(),
+      })
+      .optional(),
     path: z.object({ app_id: z.string().describe('Target Application ID (all applications created by this tenant)') }),
   },
 };
@@ -636,7 +644,7 @@ export const applicationV6ApplicationManagementUpdate = {
     '[Feishu/Lark]-App Information-Admin-Enable or disable application-You can deactivate or enable self-built apps and store apps that have been installed in the enterprise',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({ enable: z.boolean().describe('Enable/Deactivate Apps').optional() }),
+    data: z.object({ enable: z.boolean().describe('Enable/Deactivate Apps').optional() }).optional(),
     path: z.object({ app_id: z.string().describe('App ID') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -654,13 +662,11 @@ export const applicationV6ApplicationOwnerUpdate = {
     data: z.object({
       owner_id: z.string().describe('New owner user ID, type determined by user_id_type in query parameters'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
-      app_id: z
-        .string()
-        .describe(
-          'App ID, for more information on obtaining it, please refer to [app_id]',
-        ),
+      app_id: z.string().describe('App ID, for more information on obtaining it, please refer to [app_id]'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -675,9 +681,11 @@ export const applicationV6ApplicationPatch = {
     '[Feishu/Lark]-App Information-Admin-Update application information-Updates app category information (Category changes can affect app sorting in Workplace, so proceed with caution)',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      common_categories: z.array(z.string()).describe('Internationalized description of categories').optional(),
-    }),
+    data: z
+      .object({
+        common_categories: z.array(z.string()).describe('Internationalized description of categories').optional(),
+      })
+      .optional(),
     params: z.object({
       lang: z
         .enum(['zh_cn', 'en_us', 'ja_jp'])
@@ -721,35 +729,39 @@ export const applicationV6ApplicationVisibilityCheckWhiteBlackList = {
     '[Feishu/Lark]-App Information-Admin-Obtain whether user in app visility white or black list-This api is used to query whether the user, department, or user group is in the white or black list of the application',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      user_ids: z
-        .array(z.string())
-        .describe(
-          'The id list of the user you want to query, entered according to user_id_type, up to 100.You can call the [Obtain the list of users directly under a department] interface to obtain',
-        )
-        .optional(),
-      department_ids: z
-        .array(z.string())
-        .describe(
-          'The id list of the department you want to query, up to 100.You can call the [Obtain the list of sub-departments] interface to obtain',
-        )
-        .optional(),
-      group_ids: z
-        .array(z.string())
-        .describe(
-          'the id list of the user group you want to query, up to 100.You can call the [Query the list of user groups] interface to obtain it',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          'Department id categories Options:department_id(Identifies a department with a custom department_id),open_department_id(Identifies a department with open_department_id)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        user_ids: z
+          .array(z.string())
+          .describe(
+            'The id list of the user you want to query, entered according to user_id_type, up to 100.You can call the [Obtain the list of users directly under a department] interface to obtain',
+          )
+          .optional(),
+        department_ids: z
+          .array(z.string())
+          .describe(
+            'The id list of the department you want to query, up to 100.You can call the [Obtain the list of sub-departments] interface to obtain',
+          )
+          .optional(),
+        group_ids: z
+          .array(z.string())
+          .describe(
+            'the id list of the user group you want to query, up to 100.You can call the [Query the list of user groups] interface to obtain it',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            'Department id categories Options:department_id(Identifies a department with a custom department_id),open_department_id(Identifies a department with open_department_id)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       app_id: z
         .string()
@@ -769,93 +781,101 @@ export const applicationV6ApplicationVisibilityPatch = {
     '[Feishu/Lark]-App Information-Admin-Update app availability-Call this interface to update the available scope of the specified application. It supports updating the available scope of the current enterprise-built application or the available scope of the installed store application, including available personnel and disabled personnel. After the available scope is updated, it will take effect online immediately',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      add_visible_list: z
-        .object({
-          user_ids: z
-            .array(z.string())
-            .describe('ID list of members, the category of ID is indicated by query parameter "user_id_type"')
-            .optional(),
-          department_ids: z
-            .array(z.string())
-            .describe('ID list of departments, the category of ID is indicated by query parameter "department_id_type"')
-            .optional(),
-          group_ids: z.array(z.string()).describe('ID list of groups').optional(),
-        })
-        .describe(
-          'indicate some list which will add to the white list, members within white list can see and use the Appthis parameter will not take effect If the parameter "is_visible_to_all" is not specified and the current range of App avaliablity is all members OR If the parameter "is_visible_to_all" is set to be "true"',
-        )
-        .optional(),
-      del_visible_list: z
-        .object({
-          user_ids: z
-            .array(z.string())
-            .describe('ID list of members, the category of ID is indicated by query parameter "user_id_type"')
-            .optional(),
-          department_ids: z
-            .array(z.string())
-            .describe('ID list of departments, the category of ID is indicated by query parameter "department_id_type"')
-            .optional(),
-          group_ids: z.array(z.string()).describe('ID list of groups').optional(),
-        })
-        .describe(
-          'indicate some list which will be deleted from the white listthis parameter will not take effect If the parameter "is_visible_to_all" is not specified and the current range of App avaliablity is all members OR If the parameter "is_visible_to_all" is set to be "true"',
-        )
-        .optional(),
-      add_invisible_list: z
-        .object({
-          user_ids: z
-            .array(z.string())
-            .describe(
-              'ID list of members, the category of ID is indicated by query parameter "user_id_type"Same members (user_id) can not be added to the block list again within 30 seconds, otherwise it will cause Api call failed',
-            )
-            .optional(),
-          department_ids: z
-            .array(z.string())
-            .describe('ID list of departments, the category of ID is indicated by query parameter "department_id_type"')
-            .optional(),
-          group_ids: z.array(z.string()).describe('ID list of groups').optional(),
-        })
-        .describe(
-          'indicate some list which will add to the block list, members within block list can not see or use the App',
-        )
-        .optional(),
-      del_invisible_list: z
-        .object({
-          user_ids: z
-            .array(z.string())
-            .describe('ID list of members, the category of ID is indicated by query parameter "user_id_type"')
-            .optional(),
-          department_ids: z
-            .array(z.string())
-            .describe('ID list of departments, the category of ID is indicated by query parameter "department_id_type"')
-            .optional(),
-          group_ids: z.array(z.string()).describe('ID list of groups').optional(),
-        })
-        .describe('indicate some list which will be deleted from the block list')
-        .optional(),
-      is_visible_to_all: z
-        .boolean()
-        .describe(
-          'whether the App is available to all members in enterprise true: Yes; false: No; not specified: Maintain current statusparameter "add_visible_list/del_visible_list" will not take effect If this parameter is not specified and the current range of App avaliablity is all members OR If this parameter is set to be "true"',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'Department ID categories Options:open_department_id(Identify the department with open_department_id),department_id(Identify the department with the custom department_id)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    data: z
+      .object({
+        add_visible_list: z
+          .object({
+            user_ids: z
+              .array(z.string())
+              .describe('ID list of members, the category of ID is indicated by query parameter "user_id_type"')
+              .optional(),
+            department_ids: z
+              .array(z.string())
+              .describe(
+                'ID list of departments, the category of ID is indicated by query parameter "department_id_type"',
+              )
+              .optional(),
+            group_ids: z.array(z.string()).describe('ID list of groups').optional(),
+          })
+          .describe(
+            'indicate some list which will add to the white list, members within white list can see and use the Appthis parameter will not take effect If the parameter "is_visible_to_all" is not specified and the current range of App avaliablity is all members OR If the parameter "is_visible_to_all" is set to be "true"',
+          )
+          .optional(),
+        del_visible_list: z
+          .object({
+            user_ids: z
+              .array(z.string())
+              .describe('ID list of members, the category of ID is indicated by query parameter "user_id_type"')
+              .optional(),
+            department_ids: z
+              .array(z.string())
+              .describe(
+                'ID list of departments, the category of ID is indicated by query parameter "department_id_type"',
+              )
+              .optional(),
+            group_ids: z.array(z.string()).describe('ID list of groups').optional(),
+          })
+          .describe(
+            'indicate some list which will be deleted from the white listthis parameter will not take effect If the parameter "is_visible_to_all" is not specified and the current range of App avaliablity is all members OR If the parameter "is_visible_to_all" is set to be "true"',
+          )
+          .optional(),
+        add_invisible_list: z
+          .object({
+            user_ids: z
+              .array(z.string())
+              .describe(
+                'ID list of members, the category of ID is indicated by query parameter "user_id_type"Same members (user_id) can not be added to the block list again within 30 seconds, otherwise it will cause Api call failed',
+              )
+              .optional(),
+            department_ids: z
+              .array(z.string())
+              .describe(
+                'ID list of departments, the category of ID is indicated by query parameter "department_id_type"',
+              )
+              .optional(),
+            group_ids: z.array(z.string()).describe('ID list of groups').optional(),
+          })
+          .describe(
+            'indicate some list which will add to the block list, members within block list can not see or use the App',
+          )
+          .optional(),
+        del_invisible_list: z
+          .object({
+            user_ids: z
+              .array(z.string())
+              .describe('ID list of members, the category of ID is indicated by query parameter "user_id_type"')
+              .optional(),
+            department_ids: z
+              .array(z.string())
+              .describe(
+                'ID list of departments, the category of ID is indicated by query parameter "department_id_type"',
+              )
+              .optional(),
+            group_ids: z.array(z.string()).describe('ID list of groups').optional(),
+          })
+          .describe('indicate some list which will be deleted from the block list')
+          .optional(),
+        is_visible_to_all: z
+          .boolean()
+          .describe(
+            'whether the App is available to all members in enterprise true: Yes false: No; not specified: Maintain current statusparameter "add_visible_list/del_visible_list" will not take effect If this parameter is not specified and the current range of App avaliablity is all members OR If this parameter is set to be "true"',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'Department ID categories Options:open_department_id(Identify the department with open_department_id),department_id(Identify the department with the custom department_id)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({
-      app_id: z
-        .string()
-        .describe(
-          "App's app_id, get it from [Developer Console] > Credentials & Basic Info",
-        ),
+      app_id: z.string().describe("App's app_id, get it from [Developer Console] > Credentials & Basic Info"),
     }),
   },
 };

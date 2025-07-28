@@ -44,21 +44,18 @@ export const performanceV1ReviewDataQuery = {
         )
         .describe('环节状态，填写时按照指定状态获取绩效结果，不填查询所有状态的绩效结果')
         .optional(),
-      semester_id_list: z
-        .array(z.string())
-        .describe(
-          '评估周期 ID 列表，可通过[获取周期]接口获取',
-        )
-        .optional(),
+      semester_id_list: z.array(z.string()).describe('评估周期 ID 列表，可通过[获取周期]接口获取').optional(),
       reviewee_user_id_list: z.array(z.string()).describe('被评估人 ID 列表，与入参 `user_id_type` 类型一致'),
       updated_later_than: z
         .string()
         .describe('环节更新时间最早时间，毫秒时间戳，可筛选出在此时间之后，有内容提交的环节数据')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -69,54 +66,56 @@ export const performanceV1SemesterList = {
   path: '/open-apis/performance/v1/semesters',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-后台配置-周期与项目-周期-获取周期列表-批量获取周期的基本信息，如周期的名称、类型等信息。支持根据时间段、周期年份、周期类型等过滤条件进行筛选',
+    '[Feishu/Lark]-绩效-后台配置-周期与项目-周期-获取周期列表-批量获取周期的基本信息，如周期的名称、类型等信息。支持根据时间段、周期年份、周期类型等过滤条件进行筛选',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      start_time: z.string().describe('周期开始时间最小值，毫秒时间戳，小于该时间开始的周期会被过滤掉').optional(),
-      end_time: z.string().describe('周期结束时间最大值，毫秒时间戳，大于该时间结束的周期会被过滤掉').optional(),
-      year: z.number().describe('周期年份，填写时按照周期年份筛选').optional(),
-      type_group: z
-        .enum(['Annual', 'Semi-annual', 'Quarter', 'Bimonth', 'Month', 'Non-standard'])
-        .describe(
-          '周期类型分组，填写时按照周期类型分组 Options:Annual(年),Semi-annual(SemiAnnual 半年),Quarter(季度),Bimonth(双月),Month(月),Non-standard(NonStandard 非标准周期)',
-        )
-        .optional(),
-      type: z
-        .enum([
-          'Annual',
-          'H1',
-          'H2',
-          'Q1',
-          'Q2',
-          'Q3',
-          'Q4',
-          'January-February',
-          'March-April',
-          'May-June',
-          'July-August',
-          'September-October',
-          'November-December',
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December',
-          'Custom',
-        ])
-        .describe(
-          '周期类型，填写时按照周期类型筛选 Options:Annual(全年),H1(上半年),H2(下半年),Q1(第一季度),Q2(第二季度),Q3(第三季度),Q4(第四季度),January-February(January2February 1-2 双月),March-April(March2April 3-4 双月),May-June(May2June 5-6 双月),July-August(July2August 7-8 双月),September-October(September2October 9-10 双月),November-December(November2December 11-12 双月),January(1月份),February(2月份),March(3月份),April(4月份),May(5月份),June(6月份),July(7月份),August(8月份),September(9月份),October(10月份),November(11月份),December(12月份),Custom(自定义)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        start_time: z.string().describe('周期开始时间最小值，毫秒时间戳，小于该时间开始的周期会被过滤掉').optional(),
+        end_time: z.string().describe('周期结束时间最大值，毫秒时间戳，大于该时间结束的周期会被过滤掉').optional(),
+        year: z.number().describe('周期年份，填写时按照周期年份筛选').optional(),
+        type_group: z
+          .enum(['Annual', 'Semi-annual', 'Quarter', 'Bimonth', 'Month', 'Non-standard'])
+          .describe(
+            '周期类型分组，填写时按照周期类型分组 Options:Annual(年),Semi-annual(SemiAnnual 半年),Quarter(季度),Bimonth(双月),Month(月),Non-standard(NonStandard 非标准周期)',
+          )
+          .optional(),
+        type: z
+          .enum([
+            'Annual',
+            'H1',
+            'H2',
+            'Q1',
+            'Q2',
+            'Q3',
+            'Q4',
+            'January-February',
+            'March-April',
+            'May-June',
+            'July-August',
+            'September-October',
+            'November-December',
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+            'Custom',
+          ])
+          .describe(
+            '周期类型，填写时按照周期类型筛选 Options:Annual(全年),H1(上半年),H2(下半年),Q1(第一季度),Q2(第二季度),Q3(第三季度),Q4(第四季度),January-February(January2February 1-2 双月),March-April(March2April 3-4 双月),May-June(May2June 5-6 双月),July-August(July2August 7-8 双月),September-October(September2October 9-10 双月),November-December(November2December 11-12 双月),January(1月份),February(2月份),March(3月份),April(4月份),May(5月份),June(6月份),July(7月份),August(8月份),September(9月份),October(10月份),November(11月份),December(12月份),Custom(自定义)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV1StageTaskFindByPage = {
@@ -130,9 +129,7 @@ export const performanceV1StageTaskFindByPage = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      semester_id: z
-        .string()
-        .describe('周期 ID，可通过[获取周期]接口获取'),
+      semester_id: z.string().describe('周期 ID，可通过[获取周期]接口获取'),
       task_option_lists: z
         .array(z.number())
         .describe(
@@ -149,9 +146,11 @@ export const performanceV1StageTaskFindByPage = {
         .optional(),
       page_size: z.number().describe('分页大小').optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV1StageTaskFindByUserList = {
@@ -165,9 +164,7 @@ export const performanceV1StageTaskFindByUserList = {
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
-      semester_id: z
-        .string()
-        .describe('周期 ID，可通过[获取周期]接口获取'),
+      semester_id: z.string().describe('周期 ID，可通过[获取周期]接口获取'),
       user_id_lists: z
         .array(z.string())
         .describe(
@@ -182,9 +179,11 @@ export const performanceV1StageTaskFindByUserList = {
       after_time: z.string().describe('任务截止时间最小值，毫秒时间戳，填写则查询在此时间之后截止的任务').optional(),
       before_time: z.string().describe('任务截止时间最大值，毫秒时间戳，填写则查询在此时间之前截止的任务').optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };

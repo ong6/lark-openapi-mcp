@@ -62,15 +62,17 @@ export const okrV1PeriodList = {
   description: '[Feishu/Lark]-OKR-OKR 周期-获取 OKR 周期列表-获取 OKR 周期列表',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小，默认10').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小，默认10').optional(),
+      })
+      .optional(),
   },
 };
 export const okrV1PeriodPatch = {
@@ -103,7 +105,7 @@ export const okrV1ProgressRecordCreate = {
     data: z.object({
       source_title: z.string().describe('进展来源'),
       source_url: z.string().describe('进展来源链接'),
-      target_id: z.string().describe('目标id，与target_type对应'),
+      target_id: z.string().describe('目标 id，与 target_type 对应，可通过 OKR 内容相关接口获取'),
       target_type: z.number().describe('目标类型 Options:2(objective okr的O),3(key_result okr的KR)'),
       content: z
         .object({
@@ -230,8 +232,20 @@ export const okrV1ProgressRecordCreate = {
         .describe('进展详情 富文本格式'),
       source_url_pc: z.string().describe('pc进展来源链接').optional(),
       source_url_mobile: z.string().describe('mobile进展来源链接').optional(),
+      progress_rate: z
+        .object({
+          percent: z.number().describe('进展百分比，保留两位小数').optional(),
+          status: z
+            .number()
+            .describe('进展状态 Options:-1(not_yet 暂无),0(normal 正常),1(risk 风险),2(postpone 延期)')
+            .optional(),
+        })
+        .describe('进展，包括百分比和状态')
+        .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -244,7 +258,11 @@ export const okrV1ProgressRecordDelete = {
   description: '[Feishu/Lark]-OKR-OKR 进展记录-删除 OKR 进展记录-根据 ID 删除 OKR 进展记录',
   accessTokens: ['tenant', 'user'],
   schema: {
-    path: z.object({ progress_id: z.string().describe('待删除的 OKR进展记录 ID') }),
+    path: z.object({
+      progress_id: z
+        .string()
+        .describe('待删除的 OKR进展记录 ID，“创建 OKR 进展记录”接口返回值中会提供，也可以通过 OKR 内容相关接口获取'),
+    }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -254,11 +272,21 @@ export const okrV1ProgressRecordGet = {
   sdkName: 'okr.v1.progressRecord.get',
   path: '/open-apis/okr/v1/progress_records/:progress_id',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-OKR-OKR 进展记录-获取 OKR 进展记录-根据 ID 获取 OKR 进展记录详情',
+  description:
+    '[Feishu/Lark]-OKR-OKR 进展记录-获取 OKR 进展记录-根据 ID 获取 OKR 进展记录详情，接口返回进展记录的内容、更新时间以及进展百分比和状态',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({ progress_id: z.string().describe('待查询的 OKR进展记录 ID').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z
+      .object({
+        progress_id: z
+          .string()
+          .describe('待查询的 OKR进展记录 ，可以通过调用“批量获取 OKR”或“获取用户的 OKR 列表”接口获取')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -395,9 +423,25 @@ export const okrV1ProgressRecordUpdate = {
             .optional(),
         })
         .describe('进展详情 富文本格式'),
+      progress_rate: z
+        .object({
+          percent: z.number().describe('进展百分比，保留两位小数').optional(),
+          status: z
+            .number()
+            .describe('进展状态 Options:-1(not_yet 暂无),0(normal 正常),1(risk 风险),2(postpone 延期)')
+            .optional(),
+        })
+        .describe('进展，包括百分比和状态')
+        .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({ progress_id: z.string().describe('待更新的 OKR进展记录 ID') }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({
+      progress_id: z
+        .string()
+        .describe('待更新的 OKR进展记录 ID，“创建 OKR 进展记录”接口返回值中会提供，也可以通过 OKR 内容相关接口获取'),
+    }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -433,7 +477,7 @@ export const okrV1UserOkrList = {
       lang: z.string().describe('请求OKR的语言版本（比如@的人名），lang=en_us/zh_cn').optional(),
       period_ids: z.array(z.string()).describe('period_id列表，最多10个').optional(),
     }),
-    path: z.object({ user_id: z.string().describe('目标用户id').optional() }),
+    path: z.object({ user_id: z.string().describe('目标用户id').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };

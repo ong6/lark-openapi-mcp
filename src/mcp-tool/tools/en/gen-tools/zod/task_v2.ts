@@ -61,14 +61,16 @@ export const taskV2AttachmentDelete = {
     '[Feishu/Lark]-Tasks-Attachment-Delete Attachment-Providing an attachment GUID, delete the attachment. After deletion, the attachment cannot be recovered',
   accessTokens: ['tenant', 'user'],
   schema: {
-    path: z.object({
-      attachment_guid: z
-        .string()
-        .describe(
-          'GUID of attachment to delete, which can be created by [Upload Attachment]API, or fetched by[List Attachment]API',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        attachment_guid: z
+          .string()
+          .describe(
+            'GUID of attachment to delete, which can be created by [Upload Attachment]API, or fetched by[List Attachment]API',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -82,13 +84,11 @@ export const taskV2AttachmentGet = {
     '[Feishu/Lark]-Tasks-Attachment-Get Attachment-Providing an attachment GUID, get the detail of the attachment, including GUID, name, size, uploaded time, temporary downloadable url, etc',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({
       attachment_guid: z
         .string()
-        .describe(
-          'Attachment GUID, which can be created by [Upload Attachment]API, or fetched by[List Attachment]API',
-        ),
+        .describe('Attachment GUID, which can be created by [Upload Attachment]API, or fetched by[List Attachment]API'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -154,7 +154,7 @@ export const taskV2CommentCreate = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -182,7 +182,7 @@ export const taskV2CommentGet = {
     '[Feishu/Lark]-Tasks-Comment-Get Comment-Given the ID of a comment, return the details of the comment, including information such as content, creator, creation time and update time',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({ comment_id: z.string().describe('Comment ID to get comment details') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -254,7 +254,7 @@ export const taskV2CommentPatch = {
           'Fields to update, support< Md-enum >< md-enum-item key = "content" > Comment content </md-enum-item ></Md-enum >',
         ),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({ comment_id: z.string().describe('Comment ID to update') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -266,7 +266,7 @@ export const taskV2CustomFieldAdd = {
   path: '/open-apis/task/v2/custom_fields/:custom_field_guid/add',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Tasks-Custom Field-Add Custom Field To Resource-Add custom fields to a resource. Currently resource types support tasklist. A custom field can be added to multiple tasklists. After adding, the tasklist can display the value of the custom fields of the task, by which functions such as filtering and grouping based on the field are available.If the settings of the custom field are updated, all fields added by the field can receive the update and display it accordingly',
+    '[Feishu/Lark]-Tasks-Custom Field-Add Custom Field To Resource-Add custom fields to a resource. Currently resource types support tasklist. A custom field can be added to multiple tasklists. After adding, the tasklist can display the value of the custom fields of the task, by which functions such as filtering and grouping based on the field are available.If the settings of the custom field are updated, all resources added by the field can receive the update and display it accordingly',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -278,9 +278,7 @@ export const taskV2CustomFieldAdd = {
     path: z.object({
       custom_field_guid: z
         .string()
-        .describe(
-          'custom field GUID, which can be created by[Create Custom Field], or queried by[List Custom Field]',
-        ),
+        .describe('custom field GUID, which can be created by[Create Custom Field], or queried by[List Custom Field]'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -413,7 +411,9 @@ export const taskV2CustomFieldCreate = {
         .describe('text field setting (currently text_setting has no settable items)')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -427,13 +427,13 @@ export const taskV2CustomFieldGet = {
     '[Feishu/Lark]-Tasks-Custom Field-Get Custom Field-By specifying a custom field GUID, get its detailed information',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       custom_field_guid: z
         .string()
-        .describe(
-          'custom field GUID, which can be created by[Create Custom Field], or queried by[List Custom Field]',
-        ),
+        .describe('custom field GUID, which can be created by[Create Custom Field], or queried by[List Custom Field]'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -448,23 +448,25 @@ export const taskV2CustomFieldList = {
     '[Feishu/Lark]-Tasks-Custom Field-List Custom Field-Get a list of custom fields accessible to the calling identity. If the resource_type and resource_id parameters are not provided, all custom fields accessible to the calling identity are returned.If resource_type and resource_id are provided, the custom fields under that resource are returned. Currently resource_type only supports "tasklist", in which case resource_id should be a tasklist GUID.This API supports paging',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      resource_type: z
-        .string()
-        .describe(
-          'Resource types, such as provide custom fields that indicate that only specific resources are queried. Currently only "tasklist" is supported',
-        )
-        .optional(),
-      resource_id: z.string().describe('To query the attribution resource_id of a custom field').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        resource_type: z
+          .string()
+          .describe(
+            'Resource types, such as provide custom fields that indicate that only specific resources are queried. Currently only "tasklist" is supported',
+          )
+          .optional(),
+        resource_id: z.string().describe('To query the attribution resource_id of a custom field').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -502,24 +504,26 @@ export const taskV2CustomFieldOptionPatch = {
     "[Feishu/Lark]-Tasks-Custom Field Option-Patch Custom Field Option-Update the a custom field option by specifying the field GUID and option GUID. The field to be updated must be of a single or multi-select type, and the option to be updated must belong to that custom field.When updating, fill in the `update_fields` field, and fill in the new values of the field to be updated in the `option` field. Fields supported by update_fields include:* 'name': option name* 'color_index': Color index value of option* 'is_hidden': whether to hide from the interface* 'insert_before': Put the current option in the option_guid before an option in the same field.* 'insert_after': The option_guid that puts the current option after an option in the same field",
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      option: z
-        .object({
-          name: z.string().describe('Option name, up to 50 characters').optional(),
-          color_index: z.number().describe('Color index value, supports a number from 0 to 54').optional(),
-          insert_before: z.string().describe('option_guid to put before an option').optional(),
-          insert_after: z.string().describe('option_guid to put after an option').optional(),
-          is_hidden: z.boolean().describe('Whether to hide').optional(),
-        })
-        .describe('The option data to update')
-        .optional(),
-      update_fields: z
-        .array(z.string())
-        .describe(
-          "Field name to update, support* 'name': option name* 'color_index': color index value of option* 'is_hidden': whether to hide from the interface* 'insert_before': put the current option before an option in the same field.* 'insert_after': put the current option after an option in the same field",
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        option: z
+          .object({
+            name: z.string().describe('Option name, up to 50 characters').optional(),
+            color_index: z.number().describe('Color index value, supports a number from 0 to 54').optional(),
+            insert_before: z.string().describe('option_guid to put before an option').optional(),
+            insert_after: z.string().describe('option_guid to put after an option').optional(),
+            is_hidden: z.boolean().describe('Whether to hide').optional(),
+          })
+          .describe('The option data to update')
+          .optional(),
+        update_fields: z
+          .array(z.string())
+          .describe(
+            "Field name to update, support* 'name': option name* 'color_index': color index value of option* 'is_hidden': whether to hide from the interface* 'insert_before': put the current option before an option in the same field.* 'insert_after': put the current option after an option in the same field",
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       custom_field_guid: z.string().describe('custom field GUID whose option is to update'),
       option_guid: z.string().describe('option GUID to be udpate'),
@@ -537,122 +541,124 @@ export const taskV2CustomFieldPatch = {
     '[Feishu/Lark]-Tasks-Custom Field-Patch Custom Field-Update the name and settings of a custom field. When updating, fill in all the task field names to be updated in the `update_fields`, and fill in the new value in the `custom_field`. Custom field type is not allowed to change. Only their settings can be modified according to the type.`update_fields` supports:* `name`: custom field name* `number_setting`: number type setting (if and only if the custom field type to update is number)* `member_setting`: member setting (if and only if the custom field type to update is member)* `datetime_setting`: datetime type setting (if and only if the custom field type to update is datetime)* `single_select_setting`: single select setting (if and only if the custom field type to update is single select)* `multi_select_setting`: multi_select type setting (if and only if the custom field type to be updated is multi_select)* `text_setting`: text type setting (currently nothing can be set)When updating a setting, if you do not fill in a field, it means that the original setting is not changed. For example, for a number, the original settings are:```json"number_setting": { "format": "normal", "decimal_count": 2, "separator": "none", "custom_symbol": "€", "custom_symbol_position": "right"}```Invoke the API with the following parameters:```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "number_setting": { "decimal_count": 4 } }, "update_fields": ["number_setting"]}```indicates that only the number of decimal places is changed from 2 to 4, and the rest of the settings \'format\', \'separator \',\' custom_symbol\', etc. are unchanged.For custom fields of single/multi_select type, the setting is a list of options. When updated, the usage is just like configure the options in App UI. Instead of passing in all the options for the field, the user only needs to provide the options that eventually want the UI to be visible (is_hidden = false). Options in the original field that do not appear in the input will be set to is_hidden = true and placed after all visible options.For an updated option, if `option_guid` is provided, it will be taken as option updating (in this case guid must exist in the current field, otherwise a 400 error will be returned); if GUID not provided, it will be regarded as creating a new option (the new option option_guid will be returned in reponse).For example, a single_select field originally had 3 options A, B, C, D. Where C is hidden. The user can update the options like this:```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "options": [ { "name": "E", "color_index": 25 }, { "guid": "<option_guid of A>" "name": "A2" }, { "guid": "<option_guid of C>", }, ] } }, "update_fields": ["single_select_setting"]}```After calling, you finally get a new list of options E, A, C, B, D, where:* option E is created and its color_index is set to 25.* option A is updated and its name is changed to "A2". But its color_index remains the same because it is not set;* overall order of options follows the user\'s input order, that is, E, A, C, just as the direct input, and their is_hidden are set to false. Note, C was originally is_hidden = true, it will also be set to is_hidden = false.* options B and D have their is_hidden set to true because the user did not input them, and are placed after all options input in the request.If you simply want to modify the order of options visible to the user, such as changing from the original options A, B, C to C, B, A, you can invoke the API like this:```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "options": [ { "guid": "<option_guid_of_C>" }, { "guid": "<option_guid of B>" }, { "guid": "<option_guid of A>", }, ] } }, "update_fields": ["single_select_setting"]}```If you want to directly mark all options in the field as invisible, you can invoke the API like this:```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "options": [] } }, "update_fields": ["single_select_setting"]}```The option to update the single/multi_select field must meet the "visible option name cannot be duplicated" constraint. Otherwise, an error will be returned. Developers need to ensure that the option names entered contain on duplicated items.If you want to update only one single option, or want to set the is_hidden of an option separately, this API cannot do that. But you can use the [Update Custom Field Options] API to do it',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      custom_field: z
-        .object({
-          name: z.string().describe('field name, up to 50 characters').optional(),
-          number_setting: z
-            .object({
-              format: z
-                .enum(['normal', 'percentage', 'cny', 'usd', 'custom'])
-                .describe(
-                  'number display format Options:normal(regular number),percentage(percentage format),cny(RMB format),usd(USD format),custom(custom symbol format)',
-                )
-                .optional(),
-              custom_symbol: z
-                .string()
-                .describe(
-                  'Custom symbol charaters, supporting up to 4 characters. Only takes effect when `format` is set to "custom"',
-                )
-                .optional(),
-              custom_symbol_position: z
-                .enum(['left', 'right'])
-                .describe(
-                  'Customize where symbols are displayed. Options:left(letf Custom symbols are placed to the left of the numbers),right(Custom symbols are placed to the right of the number)',
-                )
-                .optional(),
-              separator: z
-                .enum(['none', 'thousand'])
-                .describe('separator in the integer part Options:none(no separator),thousand(thousand separator)')
-                .optional(),
-              decimal_count: z
-                .number()
-                .describe(
-                  'The number of decimal places. If the entered number value has more decimal places than this setting, the extra digits will be rounded and discarded. If\'format \'is "percentage", it means the number of decimal places after becoming a percentage',
-                )
-                .optional(),
-            })
-            .describe('field number setting')
-            .optional(),
-          member_setting: z
-            .object({ multi: z.boolean().describe('Whether to support multiple selection').optional() })
-            .describe('member field setting')
-            .optional(),
-          datetime_setting: z
-            .object({
-              format: z
-                .string()
-                .describe(
-                  'Datetime display format, which supports:<md-enum><md-enum-item key ="yyyy-mm-dd">Year, month and day separated by dashes, e.g. 2023-08-24 </md-enum-item><md-enum-item key="yyyy/mm/dd">Year, month and day separated by slashes, e.g. 2023/08/04</md-enum-item><md-enum-item key="mm/dd/yyyy">Months, days and years separated by slashes, e.g. 08/24/2023</md-enum-item><md-enum-item key="dd/mm/yyyy">Day, month and year separated by slashes, e.g. 24/08/2023</md-enum-item></md-enum>',
-                )
-                .optional(),
-            })
-            .describe('datetime field setting')
-            .optional(),
-          single_select_setting: z
-            .object({
-              options: z
-                .array(
-                  z.object({
-                    guid: z
-                      .string()
-                      .describe(
-                        'GUID of the option. If filled in means updating the existing option; if not filled in means creating a new option',
-                      )
-                      .optional(),
-                    name: z.string().describe('Option name, maximum 50 characters').optional(),
-                    color_index: z
-                      .number()
-                      .describe('The color index value of the option, which can be a number from 0 to 54')
-                      .optional(),
-                  }),
-                )
-                .describe('single_select options')
-                .optional(),
-            })
-            .describe('single_select setting')
-            .optional(),
-          multi_select_setting: z
-            .object({
-              options: z
-                .array(
-                  z.object({
-                    guid: z
-                      .string()
-                      .describe(
-                        'GUID of the option. If filled in means updating the existing option; if not filled in means creating a new option',
-                      )
-                      .optional(),
-                    name: z.string().describe('Option name, maximum 50 characters').optional(),
-                    color_index: z
-                      .number()
-                      .describe('The color index value of the option, which can be a number from 0 to 54')
-                      .optional(),
-                  }),
-                )
-                .describe('mult_select options')
-                .optional(),
-            })
-            .describe('mult_select setting')
-            .optional(),
-          text_setting: z.object({}).describe('text field setting').optional(),
-        })
-        .describe('custom field data to update')
-        .optional(),
-      update_fields: z
-        .array(z.string())
-        .describe(
-          'The custom field type to modify supports:* `name`: custom field name.* `number_setting`: number setting (if and only if the custom field type to update is numeric)* `member_setting`: people type setting (if and only if the custom field type to update is member)* `datetime_setting`: Date type setting (if and only if the custom field type to update is date)* `single_select_setting`: single select setting (if and only if the custom field type to update is single_select)* `multi_select_setting`: multi select type setting (if and only if the custom field type to be updated is multi_select)* `text_setting`: text type setting (currently nothing can be set)',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        custom_field: z
+          .object({
+            name: z.string().describe('field name, up to 50 characters').optional(),
+            number_setting: z
+              .object({
+                format: z
+                  .enum(['normal', 'percentage', 'cny', 'usd', 'custom'])
+                  .describe(
+                    'number display format Options:normal(regular number),percentage(percentage format),cny(RMB format),usd(USD format),custom(custom symbol format)',
+                  )
+                  .optional(),
+                custom_symbol: z
+                  .string()
+                  .describe(
+                    'Custom symbol charaters, supporting up to 4 characters. Only takes effect when `format` is set to "custom"',
+                  )
+                  .optional(),
+                custom_symbol_position: z
+                  .enum(['left', 'right'])
+                  .describe(
+                    'Customize where symbols are displayed. Options:left(letf Custom symbols are placed to the left of the numbers),right(Custom symbols are placed to the right of the number)',
+                  )
+                  .optional(),
+                separator: z
+                  .enum(['none', 'thousand'])
+                  .describe('separator in the integer part Options:none(no separator),thousand(thousand separator)')
+                  .optional(),
+                decimal_count: z
+                  .number()
+                  .describe(
+                    'The number of decimal places. If the entered number value has more decimal places than this setting, the extra digits will be rounded and discarded. If\'format \'is "percentage", it means the number of decimal places after becoming a percentage',
+                  )
+                  .optional(),
+              })
+              .describe('field number setting')
+              .optional(),
+            member_setting: z
+              .object({ multi: z.boolean().describe('Whether to support multiple selection').optional() })
+              .describe('member field setting')
+              .optional(),
+            datetime_setting: z
+              .object({
+                format: z
+                  .string()
+                  .describe(
+                    'Datetime display format, which supports:<md-enum><md-enum-item key ="yyyy-mm-dd">Year, month and day separated by dashes, e.g. 2023-08-24 </md-enum-item><md-enum-item key="yyyy/mm/dd">Year, month and day separated by slashes, e.g. 2023/08/04</md-enum-item><md-enum-item key="mm/dd/yyyy">Months, days and years separated by slashes, e.g. 08/24/2023</md-enum-item><md-enum-item key="dd/mm/yyyy">Day, month and year separated by slashes, e.g. 24/08/2023</md-enum-item></md-enum>',
+                  )
+                  .optional(),
+              })
+              .describe('datetime field setting')
+              .optional(),
+            single_select_setting: z
+              .object({
+                options: z
+                  .array(
+                    z.object({
+                      guid: z
+                        .string()
+                        .describe(
+                          'GUID of the option. If filled in means updating the existing option if not filled in means creating a new option',
+                        )
+                        .optional(),
+                      name: z.string().describe('Option name, maximum 50 characters').optional(),
+                      color_index: z
+                        .number()
+                        .describe('The color index value of the option, which can be a number from 0 to 54')
+                        .optional(),
+                    }),
+                  )
+                  .describe('single_select options')
+                  .optional(),
+              })
+              .describe('single_select setting')
+              .optional(),
+            multi_select_setting: z
+              .object({
+                options: z
+                  .array(
+                    z.object({
+                      guid: z
+                        .string()
+                        .describe(
+                          'GUID of the option. If filled in means updating the existing option; if not filled in means creating a new option',
+                        )
+                        .optional(),
+                      name: z.string().describe('Option name, maximum 50 characters').optional(),
+                      color_index: z
+                        .number()
+                        .describe('The color index value of the option, which can be a number from 0 to 54')
+                        .optional(),
+                    }),
+                  )
+                  .describe('mult_select options')
+                  .optional(),
+              })
+              .describe('mult_select setting')
+              .optional(),
+            text_setting: z.object({}).describe('text field setting').optional(),
+          })
+          .describe('custom field data to update')
+          .optional(),
+        update_fields: z
+          .array(z.string())
+          .describe(
+            'The custom field type to modify supports:* `name`: custom field name.* `number_setting`: number setting (if and only if the custom field type to update is numeric)* `member_setting`: people type setting (if and only if the custom field type to update is member)* `datetime_setting`: Date type setting (if and only if the custom field type to update is date)* `single_select_setting`: single select setting (if and only if the custom field type to update is single_select)* `multi_select_setting`: multi select type setting (if and only if the custom field type to be updated is multi_select)* `text_setting`: text type setting (currently nothing can be set)',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       custom_field_guid: z
         .string()
-        .describe(
-          'custom field GUID, which can be created by[Create Custom Field], or queried by[List Custom Field]',
-        ),
+        .describe('custom field GUID, which can be created by[Create Custom Field], or queried by[List Custom Field]'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -680,9 +686,7 @@ export const taskV2CustomFieldRemove = {
     path: z.object({
       custom_field_guid: z
         .string()
-        .describe(
-          'custom field GUID, which can be created by[Create Custom Field], or queried by[List Custom Field]',
-        ),
+        .describe('custom field GUID, which can be created by[Create Custom Field], or queried by[List Custom Field]'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -721,7 +725,7 @@ export const taskV2SectionCreate = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -749,7 +753,7 @@ export const taskV2SectionGet = {
     '[Feishu/Lark]-Tasks-Section-Get Section-Gets the details of a section, including name, creator, etc. If the section belongs to a tasklist, the summary of the tasklist is also returned',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({ section_guid: z.string().describe('Section GUID to get') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -815,7 +819,7 @@ export const taskV2SectionPatch = {
           "The field name to be updated. Currently supports:* `name`: section name;* `insert_before` - The section_guid before which current section will be put.* 'insert_after' - The section_guid after which current section will be put",
         ),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({ section_guid: z.string().describe('section GUID to update') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -830,31 +834,33 @@ export const taskV2SectionTasks = {
     '[Feishu/Lark]-Tasks-Section-List Tasks of Section-List tasks of a section. Paging is supported. Tasks are returned in the order as "custom" order of UI. This API supports simple filtering',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      completed: z
-        .boolean()
-        .describe("Filter by task status. If you don't fill it in, it means you don't filter by completion status")
-        .optional(),
-      created_from: z
-        .string()
-        .describe(
-          'Start timestamp (ms) filtered by creation time. Optional, leaving empty means the creation time of the first task',
-        )
-        .optional(),
-      created_to: z
-        .string()
-        .describe(
-          'The starting timestamp (ms) filtered by the creation time. Optional, leaving empty means the creation time of the first task',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        completed: z
+          .boolean()
+          .describe("Filter by task status. If you don't fill it in, it means you don't filter by completion status")
+          .optional(),
+        created_from: z
+          .string()
+          .describe(
+            'Start timestamp (ms) filtered by creation time. Optional, leaving empty means the creation time of the first task',
+          )
+          .optional(),
+        created_to: z
+          .string()
+          .describe(
+            'The starting timestamp (ms) filtered by the creation time. Optional, leaving empty means the creation time of the first task',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ section_guid: z.string().describe('section GUID of which tasks are listed') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -869,19 +875,21 @@ export const taskV2TaskAddDependencies = {
     '[Feishu/Lark]-Tasks-Task-Add Dependency-Add one or more dependencies to a task. You can add prev-dependencies or next-dependencies of tasks. If a task with dependencies is in the same tasklist, you can show its dependencies through the Gantt View of the tasklist.This API can also be used to modify the type of an existing dependency (prev to next or next to prev).Note: The `task_guid` of added dependencies cannot contain duplicated task_guid, nor can the current task be added as its own dependency. Attempts to add an existing dependency are automatically ignored and will get a successful response',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      dependencies: z
-        .array(
-          z.object({
-            type: z
-              .enum(['prev', 'next'])
-              .describe('dependency type Options:prev(prev-dependency),next(next-dependency)'),
-            task_guid: z.string().describe('GUIDs for dependent tasks'),
-          }),
-        )
-        .describe('Dependencies to add')
-        .optional(),
-    }),
+    data: z
+      .object({
+        dependencies: z
+          .array(
+            z.object({
+              type: z
+                .enum(['prev', 'next'])
+                .describe('dependency type Options:prev(prev-dependency),next(next-dependency)'),
+              task_guid: z.string().describe('GUIDs for dependent tasks'),
+            }),
+          )
+          .describe('Dependencies to add')
+          .optional(),
+      })
+      .optional(),
     path: z.object({ task_guid: z.string().describe('Task GUID') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -901,8 +909,9 @@ export const taskV2TaskAddMembers = {
         .array(
           z.object({
             id: z.string().describe('Indicates the id of member'),
-            type: z.string().describe('Member type').optional(),
-            role: z.string().describe('The role of the member, supporting "assignee" or "follower"'),
+            type: z.string().describe('Member type, optional value as follow* user* app').optional(),
+            role: z.string().describe('The role of the member, optional value as follow* assignee* follower'),
+            name: z.string().describe('Member name').optional(),
           }),
         )
         .describe(
@@ -915,7 +924,7 @@ export const taskV2TaskAddMembers = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('GUID of task to add members') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -943,7 +952,7 @@ export const taskV2TaskAddReminders = {
         )
         .describe('Task reminder list. Currently only 1 reminder is supported per task'),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('GUID of task to add reminder') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -965,7 +974,7 @@ export const taskV2TaskAddTasklist = {
         .describe('The section GUID of tasklist to add, if not filled in, default section GUID will be used')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('GUID of task to add to tasklist') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -1273,7 +1282,7 @@ export const taskV2TaskCreate = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1300,7 +1309,7 @@ export const taskV2TaskGet = {
     '[Feishu/Lark]-Tasks-Task-Get Task Details-This api is used to obtain task details, including task summary, description, time, members and other information',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('GUID of task to get') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -1315,26 +1324,28 @@ export const taskV2TaskList = {
     '[Feishu/Lark]-Tasks-Task-List tasks-List all tasks of a specific type based on the calling identity. Paging is supported.Currently, only tasks of "my_tasks" are supported. The returned task data is in the order in which the tasks are list by "custom" order in the "Owned" in Task Center',
   accessTokens: ['user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('Number of tasks per page').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      completed: z
-        .boolean()
-        .describe(
-          'Whether or not to filter by task completion. Filling in true means only completed tasks are listed; filling in false means only uncompleted tasks are listed. Fill in means no filtering',
-        )
-        .optional(),
-      type: z
-        .string()
-        .describe('The type of column task currently only supports "my_tasks", that is, "Owned" tasks')
-        .optional(),
-      user_id_type: z.string().describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('Number of tasks per page').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        completed: z
+          .boolean()
+          .describe(
+            'Whether or not to filter by task completion. Filling in true means only completed tasks are listed; filling in false means only uncompleted tasks are listed. Fill in means no filtering',
+          )
+          .optional(),
+        type: z
+          .string()
+          .describe('The type of column task currently only supports "my_tasks", that is, "Owned" tasks')
+          .optional(),
+        user_id_type: z.string().describe('User ID type').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1345,7 +1356,7 @@ export const taskV2TaskPatch = {
   path: '/open-apis/task/v2/tasks/:task_guid',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Tasks-Task-Patch Task-This api is used to update the summary, description, due, etc. of a task.To update a task, fill in all the field names to be updated in the `update_fields` field, and fill in the new value of the field to update in the `task` field. If the field name to be changed is included in the `update_fields`, but no new value is set in `task`, the field will be cleaned to empty. For update api specification, please refer to the "About Resource Update" section in [Feature Overview] .The updatable fields include:* `summary`: task summary* `description`: task description* `start`: task start time* `due`: task due time* `completed_at`: complete or uncomplete task* `extra`: user data attached to the task* `custom_complete`: task custom complete configration* `repeat_rule`: repeat rule of the task.* `mode`: completion mode of the task.* `is_milestone`: whether the task is a milestone task or not.This api can be used to complete tasks by updating `completed_at` of task to a timestamp and restore tasks to uncompleted by setting `completed_at` to 0 . However, at present, regardless of whether the task itself is a countersign task or a or-sign task, the oapi can only support overall completion" of the task, and does not support individual completion. Besides, cannot complete a task that has bee completed. But a completed task can be restored to uncompleted by setting `completed_at` to "0".If you want to update the repeat_rule of a task, you must not also update the `completed_at` of the task or unset the due. See "How to use recuring rule of task?" section in [Tasklist Features Overview] .Task member/reminder/tasklist data cannot be updated by this api.* To add/remove task members, use [Add Task Member]And [Remove Task Member].* To modify the task reminder, use the [Add Task Reminder] and [Remove Task Reminder].* To change the tasklist where the task belongs to, use [Add Task to Tasklist] and [Remove Task from Tasklist]',
+    '[Feishu/Lark]-Tasks-Task-Patch Task-This api is used to update the summary, description, due, etc. of a task.To update a task, fill in all the field names to be updated in the `update_fields` field, and fill in the new value of the field to update in the `task` field. If the field name to be changed is included in the `update_fields`, but no new value is set in `task`, the field will be cleaned to empty. For update api specification, please refer to the "About Resource Update" section in [Feature Overview] .This api can be used to complete tasks by updating `completed_at` of task to a timestamp and restore tasks to uncompleted by setting `completed_at` to 0 . However, at present, regardless of whether the task itself is a countersign task or a or-sign task, the oapi can only support overall completion" of the task, and does not support individual completion. Besides, cannot complete a task that has bee completed. But a completed task can be restored to uncompleted by setting `completed_at` to "0".If you want to update the repeat_rule of a task, you must not also update the `completed_at` of the task or unset the due. See "How to use recuring rule of task?" section in [Tasklist Features Overview] .Task member/reminder/tasklist data cannot be updated by this api.* To add/remove task members, use [Add Task Member]And [Remove Task Member].* To modify the task reminder, use the [Add Task Reminder] and [Remove Task Reminder].* To change the tasklist where the task belongs to, use [Add Task to Tasklist] and [Remove Task from Tasklist]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1500,6 +1511,7 @@ export const taskV2TaskPatch = {
                     z.object({
                       id: z.string().describe('Indicates the id of member').optional(),
                       type: z.string().describe('Type of member').optional(),
+                      name: z.string().describe('Member name').optional(),
                     }),
                   )
                   .describe(
@@ -1545,7 +1557,7 @@ export const taskV2TaskPatch = {
           'Set the fields that need to be modified<md-enum><md-enum-item key="summary">Task summary</md-enum-item><md-enum-item key="description">Task description</md-enum-item><md-enum-item key="start">Task start time </md-enum-item><md-enum-item key="due">Task due time </md-enum-item><md-enum-item key = "completed_at">Task completion time</md-enum-item><md-enum-item key="extra">Task attached custom data</md-enum-item><md-enum-item key="custom_complete"> Task custom completion config</md-enum-item><md-enum-item key="repeat_rule">Task repeat rule</md-enum-item ></md-enum>',
         ),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('GUID of task to update') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -1590,7 +1602,7 @@ export const taskV2TaskRemoveMembers = {
         )
         .describe('List of members to remove'),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('GUID of task from where members are removed') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -1606,7 +1618,7 @@ export const taskV2TaskRemoveReminders = {
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({ reminder_ids: z.array(z.string()).describe('IDs of reminders to be removed') }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('GUID of task from which reminder is removed') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -1622,7 +1634,7 @@ export const taskV2TaskRemoveTasklist = {
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({ tasklist_guid: z.string().describe('Tasklist guid to remove from') }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('GUID of task to remove from tasklist') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -1686,9 +1698,7 @@ export const taskV2TaskSubtaskCreate = {
             .describe('Source of task association platform details page link')
             .optional(),
         })
-        .describe(
-          'Task-associated third-party platform source information. See [How to use Origin?]',
-        )
+        .describe('Task-associated third-party platform source information. See [How to use Origin?]')
         .optional(),
       extra: z
         .string()
@@ -1709,9 +1719,7 @@ export const taskV2TaskSubtaskCreate = {
         .optional(),
       repeat_rule: z
         .string()
-        .describe(
-          'Task repeat_rule. Please refer to the "How to use recurring task?" section in [Feature Overview]',
-        )
+        .describe('Task repeat_rule. Please refer to the "How to use recurring task?" section in [Feature Overview]')
         .optional(),
       custom_complete: z
         .object({
@@ -1841,7 +1849,7 @@ export const taskV2TaskSubtaskCreate = {
         .describe('Task reminder')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('Parent task GUID') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -1856,17 +1864,19 @@ export const taskV2TaskSubtaskList = {
     '[Feishu/Lark]-Tasks-Subtask-List Subtask-Get all subtasks of a task.Paging is supported, and data is returned in the order in which subtasks are placed on the Lark App UI',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      user_id_type: z.string().describe('User ID type').optional(),
-    }),
-    path: z.object({ task_guid: z.string().describe('GUID of parent task').optional() }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        user_id_type: z.string().describe('User ID type').optional(),
+      })
+      .optional(),
+    path: z.object({ task_guid: z.string().describe('GUID of parent task').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1911,7 +1921,9 @@ export const taskV2TasklistActivitySubscriptionCreate = {
         ),
       disabled: z.boolean().describe('whether the subscription is disabled').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ tasklist_guid: z.string().describe('tasklist GUID') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -1929,9 +1941,7 @@ export const taskV2TasklistActivitySubscriptionDelete = {
     path: z.object({
       tasklist_guid: z
         .string()
-        .describe(
-          'tasklist GUID, which can be created by[Create Tasklist], or queried by [List Tasklist]',
-        ),
+        .describe('tasklist GUID, which can be created by[Create Tasklist], or queried by [List Tasklist]'),
       activity_subscription_guid: z
         .string()
         .describe(
@@ -1951,13 +1961,13 @@ export const taskV2TasklistActivitySubscriptionGet = {
     "[Feishu/Lark]-Tasks-Tasklist Activity Subscription-Get Activity Subscription-Providing a tasklist GUID and tasklist's subscription GUID, get the details of the subscription data, including name, subscriber, list of event keys that can be notified, etc",
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       tasklist_guid: z
         .string()
-        .describe(
-          'tasklist GUID, which can be created by[Create Tasklist], or queried by [List Tasklist]',
-        ),
+        .describe('tasklist GUID, which can be created by[Create Tasklist], or queried by [List Tasklist]'),
       activity_subscription_guid: z
         .string()
         .describe(
@@ -1977,16 +1987,16 @@ export const taskV2TasklistActivitySubscriptionList = {
     '[Feishu/Lark]-Tasks-Tasklist Activity Subscription-List Activity Subscription-Given the tasklist GUID, list its all activity subscriptions. Results are sorted by subscription create time',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      limit: z.number().describe('Maximum number of results returned').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        limit: z.number().describe('Maximum number of results returned').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({
       tasklist_guid: z
         .string()
-        .describe(
-          'Tasklist GUID, which can be created by[Create Tasklist], or queried by [List Tasklist]',
-        ),
+        .describe('Tasklist GUID, which can be created by[Create Tasklist], or queried by [List Tasklist]'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -2033,13 +2043,13 @@ export const taskV2TasklistActivitySubscriptionPatch = {
         )
         .describe('list of fields to update'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       tasklist_guid: z
         .string()
-        .describe(
-          'tasklist GUID, which can be created by[Create Tasklist], or queried by [List Tasklist]',
-        ),
+        .describe('tasklist GUID, which can be created by[Create Tasklist], or queried by [List Tasklist]'),
       activity_subscription_guid: z
         .string()
         .describe(
@@ -2082,8 +2092,10 @@ export const taskV2TasklistAddMembers = {
           'Members to add. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in [Feature Overview]',
         ),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
-    path: z.object({ tasklist_guid: z.string().describe('GUID of tasklist to which new members is added').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
+    path: z
+      .object({ tasklist_guid: z.string().describe('GUID of tasklist to which new members is added').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -2120,7 +2132,7 @@ export const taskV2TasklistCreate = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -2134,7 +2146,7 @@ export const taskV2TasklistDelete = {
     '[Feishu/Lark]-Tasks-Tasklist-Delete Tasklist-Delete a tasklist.After a tasklist is deleted, no action can be performed on the tasklist and the tasklist can no longer be accessed. A deleted tasklist cannot be recovered',
   accessTokens: ['tenant', 'user'],
   schema: {
-    path: z.object({ tasklist_guid: z.string().describe('GUID of tasklist to delete').optional() }),
+    path: z.object({ tasklist_guid: z.string().describe('GUID of tasklist to delete').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -2148,8 +2160,8 @@ export const taskV2TasklistGet = {
     '[Feishu/Lark]-Tasks-Tasklist-Get Tasklist Details-Get the details of a tasklist, including list name, owner, list members, etc',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
-    path: z.object({ tasklist_guid: z.string().describe('Tasklist GUID').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
+    path: z.object({ tasklist_guid: z.string().describe('Tasklist GUID').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -2163,16 +2175,18 @@ export const taskV2TasklistList = {
     '[Feishu/Lark]-Tasks-Tasklist-List Tasklists-List all the tasklists the calling identity has read permission',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('Number of tasklist returned in one page').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      user_id_type: z.string().describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('Number of tasklist returned in one page').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        user_id_type: z.string().describe('User ID type').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -2215,7 +2229,7 @@ export const taskV2TasklistPatch = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
     path: z.object({ tasklist_guid: z.string().describe('Globally unique GUID of the manifest to update') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -2248,10 +2262,10 @@ export const taskV2TasklistRemoveMembers = {
           'Members to remove. For the format of member, please refer to the " How to represent members of tasks and tasklists?" section in [Feature Overview]',
         ),
     }),
-    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }),
-    path: z.object({
-      tasklist_guid: z.string().describe('GUID of tasklist from which members are removed').optional(),
-    }),
+    params: z.object({ user_id_type: z.string().describe('User ID type').optional() }).optional(),
+    path: z
+      .object({ tasklist_guid: z.string().describe('GUID of tasklist from which members are removed').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -2265,34 +2279,36 @@ export const taskV2TasklistTasks = {
     '[Feishu/Lark]-Tasks-Tasklist-Get Tasks of Tasklist-Gets the summary of tasks belonging to a tasklist. This API supports pagination. Tasks in the tasklist are returned in the "custom" order.This API supports simple filtering by task completion status or task creation time range',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('The number of tasks in one page').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      completed: z
-        .boolean()
-        .describe(
-          'Only return tasks with a specific completion status. Filling in "true" means returning completed tasks; "false" means returning only uncompleted tasks; not filling in means not filtering by completion status',
-        )
-        .optional(),
-      created_from: z
-        .string()
-        .describe(
-          'Task creation start timestamp (ms), inclusive. Default is the timestamp of the first created task int the tasklist',
-        )
-        .optional(),
-      created_to: z
-        .string()
-        .describe(
-          'Task end start timestamp (ms), inclusive. Default is the timestamp of the last created task int the tasklist',
-        )
-        .optional(),
-      user_id_type: z.string().describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('The number of tasks in one page').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        completed: z
+          .boolean()
+          .describe(
+            'Only return tasks with a specific completion status. Filling in "true" means returning completed tasks; "false" means returning only uncompleted tasks; not filling in means not filtering by completion status',
+          )
+          .optional(),
+        created_from: z
+          .string()
+          .describe(
+            'Task creation start timestamp (ms), inclusive. Default is the timestamp of the first created task int the tasklist',
+          )
+          .optional(),
+        created_to: z
+          .string()
+          .describe(
+            'Task end start timestamp (ms), inclusive. Default is the timestamp of the last created task int the tasklist',
+          )
+          .optional(),
+        user_id_type: z.string().describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({ tasklist_guid: z.string().describe('GUID of the tasklist') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },

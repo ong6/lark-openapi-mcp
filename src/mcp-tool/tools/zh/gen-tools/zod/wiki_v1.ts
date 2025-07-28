@@ -17,15 +17,17 @@ export const wikiV1NodeSearch = {
         .describe('wiki token，不为空搜索该节点及其所有子节点，为空搜索所有 wiki（根据 space_id 选择 space）')
         .optional(),
     }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };

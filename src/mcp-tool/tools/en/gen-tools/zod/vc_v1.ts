@@ -90,7 +90,7 @@ export const vcV1ExportGet = {
     '[Feishu/Lark]-Video Conferencing-Export-Query export task results-View the progress of asynchronous export',
   accessTokens: ['tenant', 'user'],
   schema: {
-    path: z.object({ task_id: z.string().describe('Task id').optional() }),
+    path: z.object({ task_id: z.string().describe('Task id').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -123,7 +123,9 @@ export const vcV1ExportMeetingList = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -154,7 +156,9 @@ export const vcV1ExportParticipantList = {
       user_id: z.string().describe('Filter by participating Lark users (up to one filter)').optional(),
       room_id: z.string().describe('Filter by Rooms (maximum one filter)').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -188,7 +192,9 @@ export const vcV1ExportParticipantQualityList = {
         .describe('Fill in when the participant is a Room, and room_id and user_id must be filled in only one')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -267,12 +273,14 @@ export const vcV1MeetingEnd = {
   description: '[Feishu/Lark]-Video Conferencing-Meeting management-End a meeting-Ends an ongoing meeting',
   accessTokens: ['user'],
   schema: {
-    path: z.object({
-      meeting_id: z
-        .string()
-        .describe('Meeting ID (Unique identifier of a video conference, generated after the conference is started)')
-        .optional(),
-    }),
+    path: z
+      .object({
+        meeting_id: z
+          .string()
+          .describe('Meeting ID (Unique identifier of a video conference, generated after the conference is started)')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -286,20 +294,24 @@ export const vcV1MeetingGet = {
     '[Feishu/Lark]-Video Conferencing-Meeting management-Obtain meeting details-Obtains the detailed data of a meeting',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      with_participants: z.boolean().describe('Indicates whether the participant list is required').optional(),
-      with_meeting_ability: z
-        .boolean()
-        .describe('Indicates whether individual statistics is required in the meeting (only for tenant_access_token)')
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
-    path: z.object({
-      meeting_id: z
-        .string()
-        .describe('Meeting ID (Unique identifier of a video conference, generated after the conference is started)')
-        .optional(),
-    }),
+    params: z
+      .object({
+        with_participants: z.boolean().describe('Indicates whether the participant list is required').optional(),
+        with_meeting_ability: z
+          .boolean()
+          .describe('Indicates whether individual statistics is required in the meeting (only for tenant_access_token)')
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
+    path: z
+      .object({
+        meeting_id: z
+          .string()
+          .describe('Meeting ID (Unique identifier of a video conference, generated after the conference is started)')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -328,13 +340,17 @@ export const vcV1MeetingInvite = {
         )
         .describe('List of invited users [Up to 10 people can be invited at one time]'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
-    path: z.object({
-      meeting_id: z
-        .string()
-        .describe('Meeting ID (Unique identifier of a video conference, generated after the conference is started)')
-        .optional(),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
+    path: z
+      .object({
+        meeting_id: z
+          .string()
+          .describe('Meeting ID (Unique identifier of a video conference, generated after the conference is started)')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -363,8 +379,10 @@ export const vcV1MeetingKickout = {
         )
         .describe('List of users to be removed'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
-    path: z.object({ meeting_id: z.string().describe('Meeting ID').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
+    path: z.object({ meeting_id: z.string().describe('Meeting ID').optional() }).optional(),
   },
 };
 export const vcV1MeetingListByNo = {
@@ -402,12 +420,14 @@ export const vcV1MeetingRecordingGet = {
     '[Feishu/Lark]-Video Conferencing-Meeting record-Obtain recording files-Obtain recording files of a meeting.',
   accessTokens: ['tenant', 'user'],
   schema: {
-    path: z.object({
-      meeting_id: z
-        .string()
-        .describe('Meeting ID (Unique identifier of a video conference, generated after the conference is started)')
-        .optional(),
-    }),
+    path: z
+      .object({
+        meeting_id: z
+          .string()
+          .describe('Meeting ID (Unique identifier of a video conference, generated after the conference is started)')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -442,15 +462,19 @@ export const vcV1MeetingRecordingSetPermission = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
-    path: z.object({
-      meeting_id: z
-        .string()
-        .describe(
-          'Meeting ID (unique identifier of the video conference, which will not be generated until the video conference starts)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
+    path: z
+      .object({
+        meeting_id: z
+          .string()
+          .describe(
+            'Meeting ID (unique identifier of the video conference, which will not be generated until the video conference starts)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -463,15 +487,19 @@ export const vcV1MeetingRecordingStart = {
   description: '[Feishu/Lark]-Video Conferencing-Meeting record-Start recording-Start recording in a meeting.',
   accessTokens: ['user'],
   schema: {
-    data: z.object({
-      timezone: z.number().describe('Time zone used for displaying the file recording time [-12,12]').optional(),
-    }),
-    path: z.object({
-      meeting_id: z
-        .string()
-        .describe('Meeting ID (Unique identifier of video conference, generated after the conference is started)')
-        .optional(),
-    }),
+    data: z
+      .object({
+        timezone: z.number().describe('Time zone used for displaying the file recording time [-12,12]').optional(),
+      })
+      .optional(),
+    path: z
+      .object({
+        meeting_id: z
+          .string()
+          .describe('Meeting ID (Unique identifier of video conference, generated after the conference is started)')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -484,12 +512,14 @@ export const vcV1MeetingRecordingStop = {
   description: '[Feishu/Lark]-Video Conferencing-Meeting record-Stop recording-Stop recording in the meeting.',
   accessTokens: ['user'],
   schema: {
-    path: z.object({
-      meeting_id: z
-        .string()
-        .describe('Meeting ID (Unique identifier of a video conference, generated after the conference is started)')
-        .optional(),
-    }),
+    path: z
+      .object({
+        meeting_id: z
+          .string()
+          .describe('Meeting ID (Unique identifier of a video conference, generated after the conference is started)')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -529,13 +559,17 @@ export const vcV1MeetingSetHost = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
-    path: z.object({
-      meeting_id: z
-        .string()
-        .describe('Meeting ID (Unique identifier of a video conference, generated after the conference is started)')
-        .optional(),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
+    path: z
+      .object({
+        meeting_id: z
+          .string()
+          .describe('Meeting ID (Unique identifier of a video conference, generated after the conference is started)')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -682,7 +716,7 @@ export const vcV1ReserveConfigAdminGet = {
       scope_type: z.number().describe('1 means room level, 2 means room'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
     }),
-    path: z.object({ reserve_config_id: z.string().describe('Room ID or room level ID').optional() }),
+    path: z.object({ reserve_config_id: z.string().describe('Room ID or room level ID').optional() }).optional(),
   },
 };
 export const vcV1ReserveConfigAdminPatch = {
@@ -709,8 +743,10 @@ export const vcV1ReserveConfigAdminPatch = {
         })
         .describe('Reserve admin configuration'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
-    path: z.object({ reserve_config_id: z.string().describe('Room level ID or Room ID').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
+    path: z.object({ reserve_config_id: z.string().describe('Room level ID or Room ID').optional() }).optional(),
   },
 };
 export const vcV1ReserveConfigDisableInformGet = {
@@ -761,7 +797,9 @@ export const vcV1ReserveConfigDisableInformPatch = {
         })
         .describe('Configuration for disable status change notifications'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ reserve_config_id: z.string().describe('Room or level ID') }),
   },
 };
@@ -778,7 +816,7 @@ export const vcV1ReserveConfigFormGet = {
       scope_type: z.number().describe('1 means room level, 2 means room'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
     }),
-    path: z.object({ reserve_config_id: z.string().describe('room or room level ID').optional() }),
+    path: z.object({ reserve_config_id: z.string().describe('room or room level ID').optional() }).optional(),
   },
 };
 export const vcV1ReserveConfigFormPatch = {
@@ -810,8 +848,10 @@ export const vcV1ReserveConfigFormPatch = {
         })
         .describe('Reserve form configuration'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
-    path: z.object({ reserve_config_id: z.string().describe('Room ID or room level ID').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
+    path: z.object({ reserve_config_id: z.string().describe('Room ID or room level ID').optional() }).optional(),
   },
 };
 export const vcV1ReserveConfigPatch = {
@@ -911,7 +951,9 @@ export const vcV1ReserveConfigPatch = {
         .describe('reservation range settings')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ reserve_config_id: z.string().describe('room id or room level id') }),
   },
 };
@@ -1052,7 +1094,9 @@ export const vcV1ReserveApply = {
         })
         .describe('Meeting settings'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1065,7 +1109,9 @@ export const vcV1ReserveDelete = {
   description: '[Feishu/Lark]-Video Conferencing-Meeting reservation-Delete a schedule-Deletes a schedule',
   accessTokens: ['tenant', 'user'],
   schema: {
-    path: z.object({ reserve_id: z.string().describe('Schedule ID (unique identifier for a schedule)').optional() }),
+    path: z
+      .object({ reserve_id: z.string().describe('Schedule ID (unique identifier for a schedule)').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1079,8 +1125,12 @@ export const vcV1ReserveGet = {
     '[Feishu/Lark]-Video Conferencing-Meeting reservation-Obtain a schedule-Obtains details about a schedule',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
-    path: z.object({ reserve_id: z.string().describe('Schedule ID (unique identifier of a schedule)').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
+    path: z
+      .object({ reserve_id: z.string().describe('Schedule ID (unique identifier of a schedule)').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1094,14 +1144,18 @@ export const vcV1ReserveGetActiveMeeting = {
     '[Feishu/Lark]-Video Conferencing-Meeting reservation-Obtain an active meeting-Obtains a scheduled meeting that is currently active',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      with_participants: z
-        .boolean()
-        .describe('Whether the participant list is required. The default value is false')
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
-    path: z.object({ reserve_id: z.string().describe('Schedule ID (unique identifier for a schedule)').optional() }),
+    params: z
+      .object({
+        with_participants: z
+          .boolean()
+          .describe('Whether the participant list is required. The default value is false')
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
+    path: z
+      .object({ reserve_id: z.string().describe('Schedule ID (unique identifier for a schedule)').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1114,109 +1168,117 @@ export const vcV1ReserveUpdate = {
   description: '[Feishu/Lark]-Video Conferencing-Meeting reservation-Update a schedule-Updates a schedule',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      end_time: z.string().describe('Expiration time (Unix time in seconds)').optional(),
-      meeting_settings: z
-        .object({
-          topic: z.string().describe('Meeting topic').optional(),
-          action_permissions: z
-            .array(
-              z.object({
-                permission: z
-                  .number()
-                  .describe(
-                    'Permission options Options:1(can_be_host Whether a participant can be a host),2(can_invite Whether a participant can invite other participants),3(can_join Whether a participant can join a meeting)',
-                  ),
-                permission_checkers: z
-                  .array(
-                    z.object({
-                      check_field: z
-                        .number()
-                        .describe(
-                          'Type of the fields to be checked Options:1(user_id User ID (check_list fill in the user ID)),2(user_type User type (check_list optional values are"1": lark user,"2": rooms users,"6": pstn users,"7": sip user)),3(tenant_id Tenant ID (check_list fill in the tenant_key))',
-                        ),
-                      check_mode: z
-                        .number()
-                        .describe(
-                          'Check method Options:1(within Being in the check_list indicates that the participant has the permission (allowlist)),2(without Not being in the check_list indicates that the participant has the permission (blocklist))',
-                        ),
-                      check_list: z
-                        .array(z.string())
-                        .describe(
-                          'Check the list of fields (fill in the corresponding content according to the type of check_field)',
-                        ),
-                    }),
-                  )
-                  .describe(
-                    'List of permission checkers. The relationship between permission checkers is "Logical OR" (that is, the permission is obtained if any one of them is true)',
-                  ),
-              }),
-            )
-            .describe(
-              'List of permission configurations for a meeting. If the same configuration option exists, the relationship between them is "Logical OR" (that is, the permission is obtained if any one of them is true)',
-            )
-            .optional(),
-          meeting_initial_type: z
-            .number()
-            .describe('Initial type of meeting Options:1(group_meeting Multi-person meeting),2(call 1v1 calling)')
-            .optional(),
-          meeting_connect: z
-            .boolean()
-            .describe(
-              'Whether the meeting supports interoperability and does not support updates (Note: This field is in closed beta)',
-            )
-            .optional(),
-          call_setting: z
-            .object({
-              callee: z
-                .object({
-                  id: z.string().describe('User ID').optional(),
-                  user_type: z
+    data: z
+      .object({
+        end_time: z.string().describe('Expiration time (Unix time in seconds)').optional(),
+        meeting_settings: z
+          .object({
+            topic: z.string().describe('Meeting topic').optional(),
+            action_permissions: z
+              .array(
+                z.object({
+                  permission: z
                     .number()
                     .describe(
-                      'User type. Only user type 6 (PSTN user) is supported. Options:1(lark_user Lark user),2(room_user Rooms user),3(doc_user Docs user),4(neo_user neo Feishu Meetings user),5(neo_guest_user neo Feishu Meetings guest),6(pstn_user PSTN user),7(sip_user SIP user)',
+                      'Permission options Options:1(can_be_host Whether a participant can be a host),2(can_invite Whether a participant can invite other participants),3(can_join Whether a participant can join a meeting)',
                     ),
-                  pstn_sip_info: z
-                    .object({
-                      nickname: z.string().describe('Temporary nickname set for a PSTN/SIP user').optional(),
-                      main_address: z
-                        .string()
-                        .describe(
-                          'PSTN/SIP host number, in the format of [International Access Code]-[Area Code][Phone Number]. Only domestic mobile numbers and fixed-line telephone numbers are supported',
-                        ),
-                    })
-                    .describe('PSTN/SIP information')
-                    .optional(),
-                })
-                .describe('User being called'),
-            })
-            .describe('1v1 calling related parameters')
-            .optional(),
-          auto_record: z
-            .boolean()
-            .describe('Whether to enable automatic recording when using Feishu video conference, the default is false')
-            .optional(),
-          assign_host_list: z
-            .array(
-              z.object({
-                user_type: z.number().describe('User type Options:1(lark_user Lark user)').optional(),
-                id: z.string().describe('User ID').optional(),
-              }),
-            )
-            .describe('Assign host list params')
-            .optional(),
-          password: z
-            .string()
-            .describe(
-              "Set the meeting password. If you don't pass it, it will decide whether to use the password and assign a random password according to your personal settings. If you pass it empty, it will not use the password. If you pass 4-9 digits, it will set the password",
-            )
-            .optional(),
-        })
-        .describe('Meeting settings')
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
-    path: z.object({ reserve_id: z.string().describe('Schedule ID (unique identifier of a schedule)').optional() }),
+                  permission_checkers: z
+                    .array(
+                      z.object({
+                        check_field: z
+                          .number()
+                          .describe(
+                            'Type of the fields to be checked Options:1(user_id User ID (check_list fill in the user ID)),2(user_type User type (check_list optional values are"1": lark user,"2": rooms users,"6": pstn users,"7": sip user)),3(tenant_id Tenant ID (check_list fill in the tenant_key))',
+                          ),
+                        check_mode: z
+                          .number()
+                          .describe(
+                            'Check method Options:1(within Being in the check_list indicates that the participant has the permission (allowlist)),2(without Not being in the check_list indicates that the participant has the permission (blocklist))',
+                          ),
+                        check_list: z
+                          .array(z.string())
+                          .describe(
+                            'Check the list of fields (fill in the corresponding content according to the type of check_field)',
+                          ),
+                      }),
+                    )
+                    .describe(
+                      'List of permission checkers. The relationship between permission checkers is "Logical OR" (that is, the permission is obtained if any one of them is true)',
+                    ),
+                }),
+              )
+              .describe(
+                'List of permission configurations for a meeting. If the same configuration option exists, the relationship between them is "Logical OR" (that is, the permission is obtained if any one of them is true)',
+              )
+              .optional(),
+            meeting_initial_type: z
+              .number()
+              .describe('Initial type of meeting Options:1(group_meeting Multi-person meeting),2(call 1v1 calling)')
+              .optional(),
+            meeting_connect: z
+              .boolean()
+              .describe(
+                'Whether the meeting supports interoperability and does not support updates (Note: This field is in closed beta)',
+              )
+              .optional(),
+            call_setting: z
+              .object({
+                callee: z
+                  .object({
+                    id: z.string().describe('User ID').optional(),
+                    user_type: z
+                      .number()
+                      .describe(
+                        'User type. Only user type 6 (PSTN user) is supported. Options:1(lark_user Lark user),2(room_user Rooms user),3(doc_user Docs user),4(neo_user neo Feishu Meetings user),5(neo_guest_user neo Feishu Meetings guest),6(pstn_user PSTN user),7(sip_user SIP user)',
+                      ),
+                    pstn_sip_info: z
+                      .object({
+                        nickname: z.string().describe('Temporary nickname set for a PSTN/SIP user').optional(),
+                        main_address: z
+                          .string()
+                          .describe(
+                            'PSTN/SIP host number, in the format of [International Access Code]-[Area Code][Phone Number]. Only domestic mobile numbers and fixed-line telephone numbers are supported',
+                          ),
+                      })
+                      .describe('PSTN/SIP information')
+                      .optional(),
+                  })
+                  .describe('User being called'),
+              })
+              .describe('1v1 calling related parameters')
+              .optional(),
+            auto_record: z
+              .boolean()
+              .describe(
+                'Whether to enable automatic recording when using Feishu video conference, the default is false',
+              )
+              .optional(),
+            assign_host_list: z
+              .array(
+                z.object({
+                  user_type: z.number().describe('User type Options:1(lark_user Lark user)').optional(),
+                  id: z.string().describe('User ID').optional(),
+                }),
+              )
+              .describe('Assign host list params')
+              .optional(),
+            password: z
+              .string()
+              .describe(
+                "Set the meeting password. If you don't pass it, it will decide whether to use the password and assign a random password according to your personal settings. If you pass it empty, it will not use the password. If you pass 4-9 digits, it will set the password",
+              )
+              .optional(),
+          })
+          .describe('Meeting settings')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
+    path: z
+      .object({ reserve_id: z.string().describe('Schedule ID (unique identifier of a schedule)').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1406,7 +1468,9 @@ export const vcV1RoomConfigSet = {
         })
         .describe('Room settings'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const vcV1RoomConfigSetCheckboardAccessCode = {
@@ -1519,16 +1583,18 @@ export const vcV1RoomLevelList = {
     '[Feishu/Lark]-Video Conferencing-Meeting room level-Query room level list-This API is used to query meeting room level list at a specified meeting room level',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      room_level_id: z.string().describe('Queries the ID of specifed meeting room level').optional(),
-      page_size: z.number().optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        room_level_id: z.string().describe('Queries the ID of specifed meeting room level').optional(),
+        page_size: z.number().optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const vcV1RoomLevelMget = {
@@ -1614,7 +1680,9 @@ export const vcV1RoomCreate = {
         .describe('device information')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const vcV1RoomDelete = {
@@ -1640,7 +1708,9 @@ export const vcV1RoomGet = {
     '[Feishu/Lark]-Video Conferencing-Meeting room management-Query meeting room details-This API is used to query a specified meeting room details by room ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ room_id: z.string().describe('Room ID') }),
   },
 };
@@ -1654,17 +1724,19 @@ export const vcV1RoomList = {
     '[Feishu/Lark]-Video Conferencing-Meeting room management-Query meeting room list-This API is used to query meeting room list at a specified meeting room level',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      room_level_id: z.string().describe('Queries the ID of specifed meeting room level').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        room_level_id: z.string().describe('Queries the ID of specifed meeting room level').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const vcV1RoomMget = {
@@ -1678,7 +1750,9 @@ export const vcV1RoomMget = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ room_ids: z.array(z.string()).describe('Room IDs') }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const vcV1RoomPatch = {
@@ -1691,36 +1765,40 @@ export const vcV1RoomPatch = {
     '[Feishu/Lark]-Video Conferencing-Meeting room management-Update meeting room-This API is used to update a specified meeting room details',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      name: z.string().describe('Room name').optional(),
-      capacity: z.number().describe('Room capacity').optional(),
-      description: z.string().describe('Room description').optional(),
-      custom_room_id: z.string().describe('Custom room ID').optional(),
-      room_level_id: z.string().describe('Parent room level ID').optional(),
-      room_status: z
-        .object({
-          status: z.boolean().describe('Available status of room'),
-          schedule_status: z
-            .boolean()
-            .describe(
-              'Future available status of room(Please ignore, this field is used to query the return value of the interface)',
-            )
-            .optional(),
-          disable_start_time: z.string().describe('Room disable start time').optional(),
-          disable_end_time: z.string().describe('Room disable end time').optional(),
-          disable_reason: z.string().describe('Room disable reason').optional(),
-          contact_ids: z.array(z.string()).describe('Contact user ID').optional(),
-          disable_notice: z.boolean().describe('Notice content sent to users when room disabled').optional(),
-          resume_notice: z.boolean().describe('Notice content sent to contact users when room resumed').optional(),
-        })
-        .describe('Room status')
-        .optional(),
-      device: z
-        .array(z.object({ name: z.string().describe('device name') }))
-        .describe('device information')
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        name: z.string().describe('Room name').optional(),
+        capacity: z.number().describe('Room capacity').optional(),
+        description: z.string().describe('Room description').optional(),
+        custom_room_id: z.string().describe('Custom room ID').optional(),
+        room_level_id: z.string().describe('Parent room level ID').optional(),
+        room_status: z
+          .object({
+            status: z.boolean().describe('Available status of room'),
+            schedule_status: z
+              .boolean()
+              .describe(
+                'Future available status of room(Please ignore, this field is used to query the return value of the interface)',
+              )
+              .optional(),
+            disable_start_time: z.string().describe('Room disable start time').optional(),
+            disable_end_time: z.string().describe('Room disable end time').optional(),
+            disable_reason: z.string().describe('Room disable reason').optional(),
+            contact_ids: z.array(z.string()).describe('Contact user ID').optional(),
+            disable_notice: z.boolean().describe('Notice content sent to users when room disabled').optional(),
+            resume_notice: z.boolean().describe('Notice content sent to contact users when room resumed').optional(),
+          })
+          .describe('Room status')
+          .optional(),
+        device: z
+          .array(z.object({ name: z.string().describe('device name') }))
+          .describe('device information')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ room_id: z.string().describe('Room ID') }),
   },
 };
@@ -1734,28 +1812,32 @@ export const vcV1RoomSearch = {
     '[Feishu/Lark]-Video Conferencing-Meeting room management-Search meeting room-This API is used to search meeting room. Support keyword or custom room ID to search. This API only returned meeting rooms that user has reserve permission',
   accessTokens: ['user'],
   schema: {
-    data: z.object({
-      custom_room_ids: z.array(z.string()).describe('Custom room ID').optional(),
-      keyword: z.string().describe('Search keyword(Used when custom room ID is empty)').optional(),
-      room_level_id: z
-        .string()
-        .describe('Search room at this room level(Used when custom room ID is empty)')
-        .optional(),
-      search_level_name: z
-        .boolean()
-        .describe(
-          'Search room that include room level name(Use keyword Parameter to search when custom room ID is empty）',
-        )
-        .optional(),
-      page_size: z.number().describe('Page size(Used when custom room ID is empty)').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        custom_room_ids: z.array(z.string()).describe('Custom room ID').optional(),
+        keyword: z.string().describe('Search keyword(Used when custom room ID is empty)').optional(),
+        room_level_id: z
+          .string()
+          .describe('Search room at this room level(Used when custom room ID is empty)')
+          .optional(),
+        search_level_name: z
+          .boolean()
+          .describe(
+            'Search room that include room level name(Use keyword Parameter to search when custom room ID is empty）',
+          )
+          .optional(),
+        page_size: z.number().describe('Page size(Used when custom room ID is empty)').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1876,7 +1958,9 @@ export const vcV1ScopeConfigCreate = {
         .describe('Room configuration of a scope')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const vcV1ScopeConfigGet = {

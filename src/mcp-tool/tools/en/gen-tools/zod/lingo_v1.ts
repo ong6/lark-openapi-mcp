@@ -22,16 +22,21 @@ export const lingoV1ClassificationList = {
     '[Feishu/Lark]-Lingo-Classification-Classification list-Get Lingo classification data, Baike currently supports primary classification and sub-classification, temporarily does not support multi-level classification',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      repo_id: z.string().describe('repo id (it will be organization repo by default when not passing it)').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        repo_id: z
+          .string()
+          .describe('repo id (it will be organization repo by default when not passing it)')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -191,15 +196,17 @@ export const lingoV1DraftCreate = {
         .describe('Internationalization of terms')
         .optional(),
     }),
-    params: z.object({
-      repo_id: z
-        .string()
-        .describe(
-          'repo id (you need to pass it in when creating an draft in the specified repo, and it will be created to the organization repo by default when not passing it)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        repo_id: z
+          .string()
+          .describe(
+            'repo id (you need to pass it in when creating an draft in the specified repo, and it will be created to the organization repo by default when not passing it)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -312,7 +319,9 @@ export const lingoV1DraftUpdate = {
         .describe('Internationalization of terms')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ draft_id: z.string().describe('Draft Id') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -441,15 +450,17 @@ export const lingoV1EntityCreate = {
         .describe('Internationalization of terms')
         .optional(),
     }),
-    params: z.object({
-      repo_id: z
-        .string()
-        .describe(
-          'repo id (you need to pass it in when creating an entry in the specified repo, and it will be created to the organization repo by default when not passing it)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        repo_id: z
+          .string()
+          .describe(
+            'repo id (you need to pass it in when creating an entry in the specified repo, and it will be created to the organization repo by default when not passing it)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const lingoV1EntityDelete = {
@@ -462,20 +473,22 @@ export const lingoV1EntityDelete = {
     '[Feishu/Lark]-Lingo-entity-Delete the exemption entry-Delete the existing entries by entity_id, do not need Lingo moderator review, please use carefully [tenant moderator please review carefully]',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      provider: z
-        .string()
-        .describe(
-          'External system (when using, you need to fix the entry ID in the path as: enterprise_0, and the provider and outer_id)',
-        )
-        .optional(),
-      outer_id: z
-        .string()
-        .describe(
-          'The unique ID corresponding to the entry in the external system (when using it, you need to fix the entry ID in the path as: enterprise_0, and the provider and outer_id)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        provider: z
+          .string()
+          .describe(
+            'External system (when using, you need to fix the entry ID in the path as: enterprise_0, and the provider and outer_id)',
+          )
+          .optional(),
+        outer_id: z
+          .string()
+          .describe(
+            'The unique ID corresponding to the entry in the external system (when using it, you need to fix the entry ID in the path as: enterprise_0, and the provider and outer_id)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ entity_id: z.string().describe('Entry ID') }),
   },
 };
@@ -488,12 +501,14 @@ export const lingoV1EntityGet = {
   description: '[Feishu/Lark]-Lingo-entity-Get entity-Pull the corresponding entity details through the entity id',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      provider: z.string().describe('Data provider').optional(),
-      outer_id: z.string().describe('External unique id').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
-    path: z.object({ entity_id: z.string().describe('Entry ID').optional() }),
+    params: z
+      .object({
+        provider: z.string().describe('Data provider').optional(),
+        outer_id: z.string().describe('External unique id').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
+    path: z.object({ entity_id: z.string().describe('Entry ID').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -525,21 +540,23 @@ export const lingoV1EntityList = {
     '[Feishu/Lark]-Lingo-entity-Get entities-Paging entity word data to support all entity word pulling within the tenant',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      provider: z.string().describe('Data provider [can be used to filter data]').optional(),
-      repo_id: z
-        .string()
-        .describe('repo_id (organization repo data is returned by default when not passed)')
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        provider: z.string().describe('Data provider [can be used to filter data]').optional(),
+        repo_id: z
+          .string()
+          .describe('repo_id (organization repo data is returned by default when not passed)')
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -554,9 +571,14 @@ export const lingoV1EntityMatch = {
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({ word: z.string().describe('Entity word main keyword, full name, alias full match') }),
-    params: z.object({
-      repo_id: z.string().describe('repo_id (search in the organization repo by default when not passing)').optional(),
-    }),
+    params: z
+      .object({
+        repo_id: z
+          .string()
+          .describe('repo_id (search in the organization repo by default when not passing)')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -570,34 +592,41 @@ export const lingoV1EntitySearch = {
     '[Feishu/Lark]-Lingo-entity-Search entity-Passing in keywords, performing fuzzy matching to search for corresponding entity words',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      query: z.string().describe('Search keywords').optional(),
-      classification_filter: z
-        .object({
-          include: z.array(z.string()).describe('Classification to be obtained').optional(),
-          exclude: z.array(z.string()).describe('Categories to be excluded').optional(),
-        })
-        .describe('Category Filter')
-        .optional(),
-      sources: z
-        .array(z.number())
-        .describe(
-          'Creation source of the entry, 1: user initiative creation, 2: batch import, 3: official word, 4: OpenAPI creation',
-        )
-        .optional(),
-      creators: z.array(z.string()).describe('creator').optional(),
-    }),
-    params: z.object({
-      page_size: z.number().describe('Number of entries returned per page').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      repo_id: z.string().describe('repo_id (search in the organization repo by default when not passing)').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    data: z
+      .object({
+        query: z.string().describe('Search keywords').optional(),
+        classification_filter: z
+          .object({
+            include: z.array(z.string()).describe('Classification to be obtained').optional(),
+            exclude: z.array(z.string()).describe('Categories to be excluded').optional(),
+          })
+          .describe('Category Filter')
+          .optional(),
+        sources: z
+          .array(z.number())
+          .describe(
+            'Creation source of the entry, 1: user initiative creation, 2: batch import, 3: official word, 4: OpenAPI creation',
+          )
+          .optional(),
+        creators: z.array(z.string()).describe('creator').optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        page_size: z.number().describe('Number of entries returned per page').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        repo_id: z
+          .string()
+          .describe('repo_id (search in the organization repo by default when not passing)')
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -722,8 +751,10 @@ export const lingoV1EntityUpdate = {
         .describe('Internationalization of terms')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
-    path: z.object({ entity_id: z.string().describe('Entry ID').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
+    path: z.object({ entity_id: z.string().describe('Entry ID').optional() }).optional(),
   },
 };
 export const lingoV1RepoList = {

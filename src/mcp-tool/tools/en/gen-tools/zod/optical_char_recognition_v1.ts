@@ -10,7 +10,7 @@ export const opticalCharRecognitionV1ImageBasicRecognize = {
     '[Feishu/Lark]-AI-Optical character recognition-Recognize text in pictures-Basic picture recognition interface, recognize the text in the picture, and return the text list by area.File size must be less than 5M',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({ image: z.string().describe('Picture data after base64').optional() }),
+    data: z.object({ image: z.string().describe('Picture data after base64').optional() }).optional(),
   },
 };
 export const opticalCharRecognitionV1Tools = [opticalCharRecognitionV1ImageBasicRecognize];

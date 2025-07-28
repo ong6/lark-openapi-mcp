@@ -6,7 +6,7 @@ export const baseV2AppRoleCreate = {
   sdkName: 'base.v2.appRole.create',
   path: '/open-apis/base/v2/apps/:app_token/roles',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-多维表格-高级权限-自定义角色-新增自定义角色-新增多维表格高级权限中自定义的角色',
+  description: '[Feishu/Lark]-云文档-多维表格-高级权限-自定义角色-新增自定义角色-新增多维表格高级权限中自定义的角色',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -23,7 +23,7 @@ export const baseV2AppRoleCreate = {
             table_id: z
               .string()
               .describe(
-                '多维表格数据表的唯一标识。（与上方 table_name 至少填写一项）。获取方式：- 你可通过多维表格 URL 获取 `table_id`，下图高亮部分即为当前数据表的 `table_id`- 也可通过[列出数据表]接口获取 `table_id` ',
+                '多维表格数据表的唯一标识。（与上方 table_name 至少填写一项）。获取方式：- 你可通过多维表格 URL 获取 `table_id`，下图高亮部分即为当前数据表的 `table_id`- 也可通过[列出数据表]接口获取 `table_id`',
               )
               .optional(),
             rec_rule: z
@@ -42,9 +42,7 @@ export const baseV2AppRoleCreate = {
                         .optional(),
                       value: z
                         .array(z.string())
-                        .describe(
-                          '条件的值，可以是单个值或多个值的数组。详情参考[字段目标值（value）填写说明]',
-                        )
+                        .describe('条件的值，可以是单个值或多个值的数组。详情参考[字段目标值（value）填写说明]')
                         .optional(),
                     }),
                   )
@@ -76,9 +74,7 @@ export const baseV2AppRoleCreate = {
                         .optional(),
                       value: z
                         .array(z.string())
-                        .describe(
-                          '条件的值，可以是单个值或多个值的数组。详情参考[字段目标值（value）填写说明]',
-                        )
+                        .describe('条件的值，可以是单个值或多个值的数组。详情参考[字段目标值（value）填写说明]')
                         .optional(),
                     }),
                   )
@@ -160,18 +156,21 @@ export const baseV2AppRoleList = {
   sdkName: 'base.v2.appRole.list',
   path: '/open-apis/base/v2/apps/:app_token/roles',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-多维表格-高级权限-自定义角色-列出自定义角色-列出多维表格高级权限中用户自定义的角色',
+  description:
+    '[Feishu/Lark]-云文档-多维表格-高级权限-自定义角色-列出自定义角色-列出多维表格高级权限中用户自定义的角色',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       app_token: z
         .string()
@@ -188,7 +187,7 @@ export const baseV2AppRoleUpdate = {
   sdkName: 'base.v2.appRole.update',
   path: '/open-apis/base/v2/apps/:app_token/roles/:role_id',
   httpMethod: 'PUT',
-  description: '[Feishu/Lark]-多维表格-高级权限-自定义角色-更新自定义角色-更新多维表格高级权限中自定义的角色',
+  description: '[Feishu/Lark]-云文档-多维表格-高级权限-自定义角色-更新自定义角色-更新多维表格高级权限中自定义的角色',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -205,7 +204,7 @@ export const baseV2AppRoleUpdate = {
             table_id: z
               .string()
               .describe(
-                '多维表格数据表的唯一标识。获取方式：- 你可通过多维表格 URL 获取 `table_id`，下图高亮部分即为当前数据表的 `table_id`- 也可通过[列出数据表]接口获取 `table_id` ',
+                '多维表格数据表的唯一标识。获取方式：- 你可通过多维表格 URL 获取 `table_id`，下图高亮部分即为当前数据表的 `table_id`- 也可通过[列出数据表]接口获取 `table_id`',
               )
               .optional(),
             rec_rule: z
@@ -224,9 +223,7 @@ export const baseV2AppRoleUpdate = {
                         .optional(),
                       value: z
                         .array(z.string())
-                        .describe(
-                          '条件的值，可以是单个值或多个值的数组。详情参考[字段目标值（value）填写说明]',
-                        )
+                        .describe('条件的值，可以是单个值或多个值的数组。详情参考[字段目标值（value）填写说明]')
                         .optional(),
                     }),
                   )
@@ -260,9 +257,7 @@ export const baseV2AppRoleUpdate = {
                         .optional(),
                       value: z
                         .array(z.string())
-                        .describe(
-                          '条件的值，可以是单个值或多个值的数组。详情参考[字段目标值（value）填写说明]',
-                        )
+                        .describe('条件的值，可以是单个值或多个值的数组。详情参考[字段目标值（value）填写说明]')
                         .optional(),
                     }),
                   )
@@ -338,9 +333,7 @@ export const baseV2AppRoleUpdate = {
         ),
       role_id: z
         .string()
-        .describe(
-          '多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过[列出自定义角色]接口获取',
-        ),
+        .describe('多维表格高级权限中自定义角色的唯一标识，以 rol 开头。获取方式：通过[列出自定义角色]接口获取'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },

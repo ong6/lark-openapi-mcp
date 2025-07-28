@@ -22,19 +22,22 @@ export const performanceV2ActivityQuery = {
   sdkName: 'performance.v2.activity.query',
   path: '/open-apis/performance/v2/activity/query',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-后台配置-周期与项目-项目-获取项目列表-批量获取项目的配置信息，如项目名称、项目模式等信息',
+  description:
+    '[Feishu/Lark]-绩效-后台配置-周期与项目-项目-获取项目列表-批量获取项目的配置信息，如项目名称、项目模式等信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      semester_ids: z
-        .array(z.string())
-        .describe(
-          '评估周期 ID 列表，可通过[获取周期]获取**注意**：若填写了 `activity_ids` 参数时，此参数无效',
-        )
-        .optional(),
-      activity_ids: z.array(z.string()).describe('项目 ID 列表').optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    data: z
+      .object({
+        semester_ids: z
+          .array(z.string())
+          .describe('评估周期 ID 列表，可通过[获取周期]获取**注意**：若填写了 `activity_ids` 参数时，此参数无效')
+          .optional(),
+        activity_ids: z.array(z.string()).describe('项目 ID 列表').optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const performanceV2AdditionalInformationImport = {
@@ -44,15 +47,11 @@ export const performanceV2AdditionalInformationImport = {
   path: '/open-apis/performance/v2/additional_informations/import',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-后台配置-周期与项目-补充信息-批量导入补充信息-批量导入被评估人的补充信息作为绩效评估的参考，如补充信息的事项、时间以及具体描述等。该接口支持创建和更新补充信息',
+    '[Feishu/Lark]-绩效-后台配置-周期与项目-补充信息-批量导入补充信息-批量导入被评估人的补充信息作为绩效评估的参考，如补充信息的事项、时间以及具体描述等。该接口支持创建和更新补充信息',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      semester_id: z
-        .string()
-        .describe(
-          '评估周期 ID，可通过[获取周期列表]接口获取',
-        ),
+      semester_id: z.string().describe('评估周期 ID，可通过[获取周期列表]接口获取'),
       additional_informations: z
         .array(
           z.object({
@@ -108,7 +107,7 @@ export const performanceV2AdditionalInformationQuery = {
   path: '/open-apis/performance/v2/additional_informations/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-后台配置-周期与项目-补充信息-批量查询补充信息-批量查询被评估人的补充信息，如补充信息的事项、时间以及具体描述等',
+    '[Feishu/Lark]-绩效-后台配置-周期与项目-补充信息-批量查询补充信息-批量查询被评估人的补充信息，如补充信息的事项、时间以及具体描述等',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -136,16 +135,18 @@ export const performanceV2AdditionalInformationQuery = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2AdditionalInformationsBatchDelete = {
@@ -154,22 +155,18 @@ export const performanceV2AdditionalInformationsBatchDelete = {
   sdkName: 'performance.v2.additionalInformationsBatch.delete',
   path: '/open-apis/performance/v2/additional_informations/batch',
   httpMethod: 'DELETE',
-  description: '[Feishu/Lark]-后台配置-周期与项目-补充信息-批量删除补充信息-批量删除被评估人的补充信息',
+  description: '[Feishu/Lark]-绩效-后台配置-周期与项目-补充信息-批量删除补充信息-批量删除被评估人的补充信息',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      semester_id: z
-        .string()
-        .describe(
-          '评估周期 ID，可通过[获取周期列表]接口获取',
-        ),
+      semester_id: z.string().describe('评估周期 ID，可通过[获取周期列表]接口获取'),
       additional_informations: z
         .array(z.string().describe('飞书绩效的事项 ID'))
-        .describe(
-          '补充信息 ID 列表，可通过[批量查询补充信息]接口获取',
-        ),
+        .describe('补充信息 ID 列表，可通过[批量查询补充信息]接口获取'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const performanceV2IndicatorQuery = {
@@ -182,21 +179,25 @@ export const performanceV2IndicatorQuery = {
     '[Feishu/Lark]-绩效-后台配置-评估模板和评估题-获取评估项列表-批量获取评估项信息，如评估项名称、评估项类型、评估项等级配置等信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      indicator_ids: z
-        .array(z.string())
-        .describe('评估项 ID 列表，填写时获取指定的评估项，不填时返回所有评估项')
-        .optional(),
-    }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-    }),
+    data: z
+      .object({
+        indicator_ids: z
+          .array(z.string())
+          .describe('评估项 ID 列表，填写时获取指定的评估项，不填时返回所有评估项')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2MetricDetailImport = {
@@ -209,29 +210,22 @@ export const performanceV2MetricDetailImport = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      semester_id: z
-        .string()
-        .describe('周期 ID，可通过[获取周期]接口获取'),
+      semester_id: z.string().describe('周期 ID，可通过[获取周期]接口获取'),
       import_record_name: z.string().describe('数据源录入人，在录入记录页面可以查看该记录名称').optional(),
       imported_metrics: z
         .array(
           z.object({
             reviewee_user_id: z.string().describe('被评估人 ID，与入参 `user_id_type` 类型一致'),
-            metric_id: z
-              .string()
-              .describe(
-                '指标 ID，可通过[获取指标列表]接口获取',
-              ),
+            metric_id: z.string().describe('指标 ID，可通过[获取指标列表]接口获取'),
             fields: z
               .array(
                 z.object({
-                  field_id: z
-                    .string()
-                    .describe(
-                      '指标字段 ID，可通过[获取指标字段列表]接口获取',
-                    ),
+                  field_id: z.string().describe('指标字段 ID，可通过[获取指标字段列表]接口获取'),
                   field_value: z.string().describe('字段值').optional(),
-                  field_value_person: z.string().describe('字段值，当字段为人员信息时必填').optional(),
+                  field_value_person: z
+                    .string()
+                    .describe('字段值，当字段为人员信息时必填，与入参 `user_id_type` 类型一致')
+                    .optional(),
                 }),
               )
               .describe('指标字段信息'),
@@ -255,16 +249,14 @@ export const performanceV2MetricDetailQuery = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      semester_id: z
-        .string()
-        .describe(
-          '周期 ID，1 次只允许查询 1 个周期，semester_id 可通过【[获取周期]】接口获得',
-        ),
+      semester_id: z.string().describe('周期 ID，1 次只允许查询 1 个周期，semester_id 可通过【[获取周期]】接口获得'),
       reviewee_user_ids: z.array(z.string()).describe('被评估人 ID 列表，与入参 `user_id_type` 类型一致'),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2MetricFieldQuery = {
@@ -277,12 +269,14 @@ export const performanceV2MetricFieldQuery = {
     '[Feishu/Lark]-绩效-后台配置-指标-获取指标字段列表-批量获取指标的字段基础信息，如指标字段名称、指标字段类型等信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      field_ids: z
-        .array(z.string())
-        .describe('指标的字段 ID 列表，填写时获取指定指标字段，不填时获取全部指标字段')
-        .optional(),
-    }),
+    data: z
+      .object({
+        field_ids: z
+          .array(z.string())
+          .describe('指标的字段 ID 列表，填写时获取指定指标字段，不填时获取全部指标字段')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2MetricLibQuery = {
@@ -295,43 +289,45 @@ export const performanceV2MetricLibQuery = {
     '[Feishu/Lark]-绩效-后台配置-指标-获取指标列表-获取指标库中的指标信息，如指标名称、指标类型、指标标签和指标字段等信息。可通过指标启用状态、指标类型、指标可用范围等筛选条件获取指定范围的指标信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      is_active: z.boolean().describe('指标启用状态，填写时根据指定启用状态进行筛选').optional(),
-      tag_ids: z
-        .array(z.string())
-        .describe(
-          '指标标签 ID 列表，可通过[获取指标标签信息]接口获取，填写时筛选拥有指定标签的指标',
-        )
-        .optional(),
-      type_ids: z
-        .array(z.string())
-        .describe(
-          '指标类型 ID 列表，可通过[获取指标模板列表]接口返回结果中的 `data.items.metrics.type_id` 获取，填写时根据指定的指标类型进行筛选',
-        )
-        .optional(),
-      range_of_availability: z
-        .enum(['admins_and_reviewees', 'only_admins'])
-        .describe(
-          '指标可用范围，填写时根据指定可用范围进行筛选 Options:admins_and_reviewees(允许管理员下发和被评估人选用),only_admins(仅允许管理员下发)',
-        )
-        .optional(),
-      scoring_setting_type: z
-        .enum(['score_manually', 'score_by_formula'])
-        .describe(
-          '指标评分类型，填写时根据指定评分类型进行筛选 Options:score_manually(手动评分),score_by_formula(公式评分)',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-    }),
+    data: z
+      .object({
+        is_active: z.boolean().describe('指标启用状态，填写时根据指定启用状态进行筛选').optional(),
+        tag_ids: z
+          .array(z.string())
+          .describe('指标标签 ID 列表，可通过[获取指标标签信息]接口获取，填写时筛选拥有指定标签的指标')
+          .optional(),
+        type_ids: z
+          .array(z.string())
+          .describe(
+            '指标类型 ID 列表，可通过[获取指标模板列表]接口返回结果中的 `data.items.metrics.type_id` 获取，填写时根据指定的指标类型进行筛选，type_ids的长度范围（0～99）',
+          )
+          .optional(),
+        range_of_availability: z
+          .enum(['admins_and_reviewees', 'only_admins'])
+          .describe(
+            '指标可用范围，填写时根据指定可用范围进行筛选 Options:admins_and_reviewees(允许管理员下发和被评估人选用),only_admins(仅允许管理员下发)',
+          )
+          .optional(),
+        scoring_setting_type: z
+          .enum(['score_manually', 'score_by_formula'])
+          .describe(
+            '指标评分类型，填写时根据指定评分类型进行筛选 Options:score_manually(手动评分),score_by_formula(公式评分)',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2MetricTagList = {
@@ -343,19 +339,21 @@ export const performanceV2MetricTagList = {
   description: '[Feishu/Lark]-绩效-后台配置-指标-获取指标标签列表-批量获取指标的标签信息，如标签名称、创建时间等信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小**默认值**：20').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      tag_ids: z
-        .array(z.string())
-        .describe('指标标签 ID 列表，传此参数时不进行分页，不传时分页返回所有数据')
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小**默认值**：20').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        tag_ids: z
+          .array(z.string())
+          .describe('指标标签 ID 列表，传此参数时不进行分页，不传时分页返回所有数据')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2MetricTemplateQuery = {
@@ -367,25 +365,29 @@ export const performanceV2MetricTemplateQuery = {
   description: '[Feishu/Lark]-绩效-后台配置-指标-获取指标模板列表-批量获取指标模板的信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      metrics_template_ids: z.array(z.string()).describe('指标模板 ID 列表，填写时获取指定的指标模版').optional(),
-      status: z
-        .enum(['to_be_configured', 'to_be_activated', 'enabled', 'disabled'])
-        .describe(
-          '指标模版状态 Options:to_be_configured(待完成配置),to_be_activated(待启用),enabled(已启用),disabled(已停用)',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-    }),
+    data: z
+      .object({
+        metrics_template_ids: z.array(z.string()).describe('指标模板 ID 列表，填写时获取指定的指标模版').optional(),
+        status: z
+          .enum(['to_be_configured', 'to_be_activated', 'enabled', 'disabled'])
+          .describe(
+            '指标模版状态 Options:to_be_configured(待完成配置),to_be_activated(待启用),enabled(已启用),disabled(已停用)',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2QuestionQuery = {
@@ -398,21 +400,25 @@ export const performanceV2QuestionQuery = {
     '[Feishu/Lark]-绩效-后台配置-评估模板和评估题-获取标签填写题配置-获取标签填写题配置信息，包括标签填写题名称、标签列表等',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      tag_based_question_ids: z
-        .array(z.string())
-        .describe('标签填写题 ID 列表，获取指定标签填写题的配置数据。如果不传则返回所有')
-        .optional(),
-    }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-    }),
+    data: z
+      .object({
+        tag_based_question_ids: z
+          .array(z.string())
+          .describe('标签填写题 ID 列表，获取指定标签填写题的配置数据。如果不传则返回所有')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2ReviewDataQuery = {
@@ -426,11 +432,7 @@ export const performanceV2ReviewDataQuery = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      semester_ids: z
-        .array(z.string())
-        .describe(
-          '评估周期 ID 列表，semester_id 可通过[【获取周期】]获得',
-        ),
+      semester_ids: z.array(z.string()).describe('评估周期 ID 列表，semester_id 可通过[【获取周期】]获得'),
       reviewee_user_ids: z.array(z.string()).describe('被评估人 ID 列表，ID 类型与user_id_type 的取值一致'),
       stage_types: z
         .array(
@@ -497,9 +499,11 @@ export const performanceV2ReviewDataQuery = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2ReviewTemplateQuery = {
@@ -509,24 +513,28 @@ export const performanceV2ReviewTemplateQuery = {
   path: '/open-apis/performance/v2/review_templates/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-绩效-后台配置-评估模板和评估题-获取评估模板配置-获取评估模板配置信息，包括模版名称、执行角色、填写项类型等',
+    '[Feishu/Lark]-绩效-后台配置-评估模板和评估题-获取绩效模板配置-获取绩效模板信息，包括模版名称、执行角色、填写项类型等',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      review_template_ids: z
-        .array(z.string())
-        .describe('评估模板 ID 列表，获取指定评估模板的配置数据。如果不传则返回所有')
-        .optional(),
-    }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-    }),
+    data: z
+      .object({
+        review_template_ids: z
+          .array(z.string())
+          .describe('绩效模板 ID 列表，获取指定绩效模板的配置数据。如果不传则返回所有')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2RevieweeQuery = {
@@ -536,36 +544,32 @@ export const performanceV2RevieweeQuery = {
   path: '/open-apis/performance/v2/reviewees/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-后台配置-周期与项目-员工信息-获取被评估人信息-获取绩效周期中被圈定到项目中的被评估人信息，包括未启动的项目',
+    '[Feishu/Lark]-绩效-后台配置-周期与项目-员工信息-获取被评估人信息-获取绩效周期中被圈定到项目中的被评估人信息，包括未启动的项目',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      semester_id: z
-        .string()
-        .describe(
-          '周期 ID，可通过[获取周期列表]接口获取',
-        ),
+      semester_id: z.string().describe('周期 ID，可通过[获取周期列表]接口获取'),
       user_ids: z
         .array(z.string())
         .describe('用户 ID，与入参 `user_id_type` 类型一致，查询指定的被评估人信息')
         .optional(),
       activity_ids: z
         .array(z.string())
-        .describe(
-          '项目 ID 列表，可通过[获取项目列表]接口获取，查询指定的项目下的被评估人信息',
-        )
+        .describe('项目 ID 列表，可通过[获取项目列表]接口获取，查询指定的项目下的被评估人信息')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2UserGroupUserRelWrite = {
@@ -574,17 +578,19 @@ export const performanceV2UserGroupUserRelWrite = {
   sdkName: 'performance.v2.userGroupUserRel.write',
   path: '/open-apis/performance/v2/user_group_user_rels/write',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-后台配置-周期与项目-人员组-更新人员组成员-更新指定人员组成员',
+  description: '[Feishu/Lark]-绩效-后台配置-周期与项目-人员组-更新人员组成员-更新指定人员组成员',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      group_id: z.string().describe('人员组 ID').optional(),
-      scope_visible_setting: z
-        .number()
-        .describe('人员组可见性配置 Options:0(not_limit 无限制),1(backend_admin_not_visible 后台管理员不可见)')
-        .optional(),
-      user_ids: z.array(z.string()).describe('人员 ID 列表，ID 类型与查询参数 user_id_type 取值一致').optional(),
-    }),
+    data: z
+      .object({
+        group_id: z.string().describe('人员组 ID').optional(),
+        scope_visible_setting: z
+          .number()
+          .describe('人员组可见性配置 Options:0(not_limit 无限制),1(backend_admin_not_visible 后台管理员不可见)')
+          .optional(),
+        user_ids: z.array(z.string()).describe('人员 ID 列表，ID 类型与查询参数 user_id_type 取值一致').optional(),
+      })
+      .optional(),
     params: z.object({
       client_token: z.string().describe('根据 client_token 是否一致来判断是否为同一请求'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),

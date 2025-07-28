@@ -89,15 +89,17 @@ export const compensationV1ItemCategoryList = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Basic Compensation-Compensation component / metric-Batch query compensation component type-Batch query compensation component type',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const compensationV1ItemList = {

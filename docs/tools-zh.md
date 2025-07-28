@@ -19,7 +19,7 @@
 | --- | --- | --- |
 | admin.v1.adminDeptStat.list | [获取部门维度的用户活跃和功能使用数据](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/admin-v1/admin_dept_stat/list) | 该接口用于获取部门维度的用户活跃和功能使用数据，即IM（即时通讯）、日历、云文档、音视频会议、邮箱功能的使用数据 |
 | admin.v1.adminUserStat.list | [获取用户维度的用户活跃和功能使用数据](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/admin-v1/admin_user_stat/list) | 用于获取用户维度的用户活跃和功能使用数据，即IM（即时通讯）、日历、云文档、音视频会议、邮箱功能的使用数据 |
-| admin.v1.auditInfo.list | [获取行为审计日志数据](https://open.feishu.cn/document/ukTMukTMukTM/uQjM5YjL0ITO24CNykjN/audit_log/audit_data_get) | 用户行为日志搜索 |
+| admin.v1.auditInfo.list | [获取行为审计日志数据](https://open.feishu.cn/document/ukTMukTMukTM/uQjM5YjL0ITO24CNykjN/audit_log/audit_data_get) | 安全合规-行为审计日志-获取行为审计日志数据 |
 | admin.v1.badge.create | [创建勋章](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/admin-v1/badge/create) | 使用该接口可以创建一枚完整的勋章信息，一个租户下最多可创建1000枚勋章 |
 | admin.v1.badge.get | [获取勋章详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/admin-v1/badge/get) | 可以通过该接口查询勋章的详情 |
 | admin.v1.badgeGrant.create | [创建授予名单](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/admin-v1/badge-grant/create) | 通过该接口可以为特定勋章创建一份授予名单，一枚勋章下最多可创建1000份授予名单 |
@@ -34,23 +34,22 @@
 ## 业务域: ailyV1
 | MCP 工具名称 | API | 描述 | 
 | --- | --- | --- |
-| aily.v1.ailySessionAilyMessage.create | [发送智能伙伴消息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session-aily_message/create) | 该 API 用于向某个飞书智能伙伴应用发送一条消息（Message）；每个消息从属于一个活跃的会话（Session） |
-| aily.v1.ailySessionAilyMessage.get | [获取智能伙伴消息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session-aily_message/get) | 该 API 用于获取某个飞书智能伙伴应用的消息（Message）的详细信息；包括消息的内容、发送人等 |
-| aily.v1.ailySessionAilyMessage.list | [列出智能伙伴消息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session-aily_message/list) | 该 API 用于列出某个飞书智能伙伴应用的某个会话（Session）下消息（Message）的详细信息；包括消息的内容、发送人等 |
-| aily.v1.ailySession.create | [创建会话](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session/create) | 该 API 用于创建与某个飞书智能伙伴应用的一次会话（Session）；当创建会话成功后，可以发送消息、创建运行 |
-| aily.v1.ailySession.delete | [删除会话](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session/delete) | 该 API 用于删除与某个飞书智能伙伴应用的一次会话（Session） |
-| aily.v1.ailySession.get | [获取会话](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session/get) | 该 API 用于获取与某个飞书智能伙伴应用的一次会话（Session）的详细信息，包括会话的状态、渠道上下文、创建时间等 |
-| aily.v1.ailySessionRun.cancel | [中止一次运行](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session-run/cancel) | 飞书智能伙伴创建平台-运行-取消运行-该 API 用于中止某个飞书智能伙伴的一次运行 |
-| aily.v1.ailySessionRun.create | [创建运行](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session-run/create) | 该 API 用于在某个飞书智能伙伴应用会话（Session）上创建一次运行（Run） |
-| aily.v1.ailySessionRun.get | [获取运行](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session-run/get) | 该 API 用于获取某个飞书智能伙伴应用的运行（Run）的详细信息；包括运行的状态、结束时间等 |
-| aily.v1.ailySessionRun.list | [列出运行](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session-run/list) | 该 API 用于列出某个飞书智能伙伴应用的运行（Run）的详细信息；包括状态、结束时间等 |
-| aily.v1.ailySession.update | [更新会话](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session/update) | 该 API 用于更新与某个飞书智能伙伴应用的一次会话（Session）的信息 |
-| aily.v1.appDataAssetTag.list | [获取数据知识分类列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/app-data_asset_tag/list) | 获取智能伙伴搭建助手的数据知识分类列表 |
-| aily.v1.appDataAsset.create | [创建数据知识](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/app-data_asset/create) | 在智能伙伴中添加单个数据知识 |
-| aily.v1.appDataAsset.delete | [删除数据知识](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/app-data_asset/delete) | 删除智能伙伴的数据知识 |
+| aily.v1.ailySessionAilyMessage.create | [发送 Aily 消息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session-aily_message/create) | 该 API 用于向某个飞书 Aily 应用发送一条消息（Message）；每个消息从属于一个活跃的会话（Session） |
+| aily.v1.ailySessionAilyMessage.get | [获取 Aily 消息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session-aily_message/get) | 该 API 用于获取某个飞书 Aily 应用的消息（Message）的详细信息；包括消息的内容、发送人等 |
+| aily.v1.ailySessionAilyMessage.list | [列出 Aily 消息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session-aily_message/list) | 该 API 用于列出某个飞书 Aily 应用的某个会话（Session）下消息（Message）的详细信息；包括消息的内容、发送人等 |
+| aily.v1.ailySession.create | [创建会话](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session/create) | 该 API 用于创建与某个飞书 Aily 应用的一次会话（Session）；当创建会话成功后，可以发送消息、创建运行 |
+| aily.v1.ailySession.delete | [删除会话](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session/delete) | 该 API 用于删除与某个飞书 Aily 应用的一次会话（Session） |
+| aily.v1.ailySession.get | [获取会话](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session/get) | 该 API 用于获取与某个飞书 Aily 应用的一次会话（Session）的详细信息，包括会话的状态、渠道上下文、创建时间等 |
+| aily.v1.ailySessionRun.cancel | [取消运行](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session-run/cancel) | 该 API 用于中止某个飞书 Aily 的一次运行 |
+| aily.v1.ailySessionRun.create | [创建运行](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session-run/create) | 该 API 用于在某个飞书 Aily 应用会话（Session）上创建一次运行（Run） |
+| aily.v1.ailySessionRun.get | [获取运行](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session-run/get) | 该 API 用于获取某个飞书 Aily 应用的运行（Run）的详细信息；包括运行的状态、结束时间等 |
+| aily.v1.ailySessionRun.list | [列出运行](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session-run/list) | 该 API 用于列出某个飞书 Aily 应用的运行（Run）的详细信息；包括状态、结束时间等 |
+| aily.v1.ailySession.update | [更新会话](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/aily_session/update) | 该 API 用于更新与某个飞书 Aily 应用的一次会话（Session）的信息 |
+| aily.v1.appDataAssetTag.list | [获取数据知识分类列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/app-data_asset_tag/list) | 获取 Aily 助手的数据知识分类列表 |
+| aily.v1.appDataAsset.create | [创建数据知识](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/app-data_asset/create) | 在 Aily 中添加单个数据知识 |
+| aily.v1.appDataAsset.delete | [删除数据知识](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/app-data_asset/delete) | 删除 Aily 的数据知识 |
 | aily.v1.appDataAsset.get | [获取数据知识](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/app-data_asset/get) | 获取单个数据知识 |
-| aily.v1.appDataAsset.list | [获取数据知识列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/app-data_asset/list) | 飞书智能伙伴创建平台-知识问答-数据知识管理-查询数据知识列表-获取智能伙伴搭建助手的数据知识列表 |
-| aily.v1.appKnowledge.ask | [执行数据知识问答](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/app-knowledge/ask) | 执行飞书智能伙伴的数据知识问答 |
+| aily.v1.appDataAsset.list | [查询数据知识列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/app-data_asset/list) | 获取 Aily 助手的数据知识列表 |
 | aily.v1.appSkill.get | [获取技能信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/app-skill/get) | 该 API 用于查询某个 Aily 应用的特定技能详情 |
 | aily.v1.appSkill.list | [查询技能列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/app-skill/list) | 该 API 用于查询某个 Aily 应用的技能列表> 包括内置的数据分析与问答技能、以及未在对话开启的技能 |
 | aily.v1.appSkill.start | [调用技能](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/aily-v1/app-skill/start) | 该 API 用于调用某个 Aily 应用的特定技能，支持指定技能入参；并同步返回技能执行的结果 |
@@ -58,12 +57,13 @@
 ## 业务域: apaasV1
 | MCP 工具名称 | API | 描述 | 
 | --- | --- | --- |
+| apaas.v1.app.list | [查看应用基本信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/app/list) | 获取企业下应用基本信息，如应用名称 、应用命名空间等 |
 | apaas.v1.applicationAuditLog.auditLogList | [查询审计日志列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-audit_log/audit_log_list) | 根据搜索/筛选条件，查询审计日志列表 |
-| apaas.v1.applicationAuditLog.dataChangeLogDetail | [飞书低代码平台-查询数据变更日志详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-audit_log/data_change_log_detail) | 飞书低代码平台-审计日志-查询数据变更日志详情-根据日志 ID 查询数据变更日志详情 |
-| apaas.v1.applicationAuditLog.dataChangeLogsList | [飞书低代码平台-查询数据变更日志列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-audit_log/data_change_logs_list) | 飞书低代码平台-审计日志-查询数据变更日志列表-根据搜索/筛选条件，查询数据变更日志列表 |
-| apaas.v1.applicationAuditLog.get | [飞书低代码平台-查询审计日志详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-audit_log/get) | 飞书低代码平台-审计日志-查询审计日志详情-根据日志 ID 查询审计日志详情 |
-| apaas.v1.applicationEnvironmentVariable.get | [查询环境变量详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-environment_variable/get) | 查询基于飞书应用引擎开发的应用的环境变量详情，包括名称、描述、变量值等 |
-| apaas.v1.applicationEnvironmentVariable.query | [查询环境变量列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-environment_variable/query) | 查询基于飞书应用引擎开发的应用的环境变量列表 |
+| apaas.v1.applicationAuditLog.dataChangeLogDetail | [查询数据变更日志详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-audit_log/data_change_log_detail) | 根据日志 ID 查询数据变更日志详情 |
+| apaas.v1.applicationAuditLog.dataChangeLogsList | [查询数据变更日志列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-audit_log/data_change_logs_list) | 根据搜索/筛选条件，查询数据变更日志列表 |
+| apaas.v1.applicationAuditLog.get | [查询审计日志详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-audit_log/get) | 根据日志 ID 查询审计日志详情 |
+| apaas.v1.applicationEnvironmentVariable.get | [查询环境变量详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-environment_variable/get) | 查询基于飞书 aPaaS 开发的应用的环境变量详情，包括名称、描述、变量值等 |
+| apaas.v1.applicationEnvironmentVariable.query | [查询环境变量列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-environment_variable/query) | 查询基于飞书 aPaaS 开发的应用的环境变量列表 |
 | apaas.v1.applicationFlow.execute | [发起流程](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-flow/execute) | 执行相应流程 |
 | apaas.v1.applicationFunction.invoke | [执行函数](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-function/invoke) | 执行基于飞书应用引擎开发的应用的自定义函数 |
 | apaas.v1.applicationObject.oqlQuery | [执行 OQL](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-object/oql_query) | 在应用内执行 OQL 语句 |
@@ -76,24 +76,24 @@
 | apaas.v1.applicationObjectRecord.patch | [编辑记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-object-record/patch) | 编辑对象中的指定记录 |
 | apaas.v1.applicationObjectRecord.query | [获取记录详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-object-record/query) | 获取对象中指定的记录详情 |
 | apaas.v1.applicationObject.search | [搜索记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-object/search) | 在应用内搜索记录 |
-| apaas.v1.applicationRecordPermissionMember.batchCreateAuthorization | [批量创建记录权限授权](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-record_permission-member/batch_create_authorization) | 飞书低代码平台-权限-记录权限-批量创建记录权限用户授权-批量创建记录权限授权 |
-| apaas.v1.applicationRecordPermissionMember.batchRemoveAuthorization | [批量删除记录权限授权](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-record_permission-member/batch_remove_authorization) | 飞书低代码平台-权限-记录权限-批量删除记录权限用户授权-批量删除记录权限授权 |
+| apaas.v1.applicationRecordPermissionMember.batchCreateAuthorization | [批量创建记录权限用户授权](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-record_permission-member/batch_create_authorization) | 批量创建记录权限授权 |
+| apaas.v1.applicationRecordPermissionMember.batchRemoveAuthorization | [批量删除记录权限用户授权](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-record_permission-member/batch_remove_authorization) | 批量删除记录权限授权 |
 | apaas.v1.applicationRoleMember.batchCreateAuthorization | [批量创建角色成员授权](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-role-member/batch_create_authorization) | 批量创建角色成员授权 |
 | apaas.v1.applicationRoleMember.batchRemoveAuthorization | [批量删除角色成员授权](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-role-member/batch_remove_authorization) | 批量删除角色成员授权 |
-| apaas.v1.applicationRoleMember.get | [获取角色成员详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-role-member/get) | 飞书低代码平台-权限-角色-查询角色成员信息-获取角色成员详情 |
-| apaas.v1.approvalInstance.cancel | [人工任务 - 撤销](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/approval_instance/cancel) | 飞书低代码平台-流程-人工任务-撤销人工任务-撤销一个人工任务（包括审批任务，填写任务） |
+| apaas.v1.applicationRoleMember.get | [查询角色成员信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/application-role-member/get) | 获取角色成员详情 |
+| apaas.v1.approvalInstance.cancel | [撤销人工任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/approval_instance/cancel) | 撤销一个人工任务（包括审批任务，填写任务） |
 | apaas.v1.approvalTask.addAssignee | [人工任务加签](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/approval_task/add_assignee) | 对于人工任务进行加签操作 |
 | apaas.v1.approvalTask.agree | [同意人工任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/approval_task/agree) | 对于人工任务进行同意操作 |
 | apaas.v1.approvalTask.reject | [拒绝人工任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/approval_task/reject) | 对于人工任务进行拒绝操作 |
 | apaas.v1.approvalTask.transfer | [转交人工任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/approval_task/transfer) | 对于人工任务进行转交操作 |
-| apaas.v1.seatActivity.list | [查询席位活跃详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/seat_activity/list) | 获取租户下用户使用飞书低代码平台席位最近访问应用时间。需要飞书低代码平台系统管理员作为授权人调用当前API |
-| apaas.v1.seatAssignment.list | [查询席位分配详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/seat_assignment/list) | 获取租户下平台席位和应用访问席位分配详情，如用户 ID 、应用命名空间等，需要飞书低代码平台系统管理员作为授权人调用当前 API |
-| apaas.v1.userTask.cc | [人工任务 - 抄送任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/user_task/cc) | 飞书低代码平台-流程-人工任务-抄送人工任务-对当前的任务进行一次抄送 |
-| apaas.v1.userTask.chatGroup | [人工任务 - 发起群聊](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/user_task/chat_group) | 飞书低代码平台-流程-人工任务-基于人工任务发起群聊-基于任务，发起一个飞书群聊 |
-| apaas.v1.userTask.expediting | [人工任务 - 催办任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/user_task/expediting) | 飞书低代码平台-流程-人工任务-催办人工任务-对任务当前的处理人发起一次催办 |
-| apaas.v1.userTask.query | [查询人工任务列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/user_task/query) | 飞书低代码平台-流程-人工任务-查询人工任务-查询人工任务列表 |
-| apaas.v1.userTask.rollback | [人工任务 - 退回](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/user_task/rollback) | 飞书低代码平台-流程-人工任务-退回人工任务-对当前任务进行一次退回 |
-| apaas.v1.userTask.rollbackPoints | [人工任务 - 查询可退回的位置](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/user_task/rollback_points) | 飞书低代码平台-流程-人工任务-查询人工任务可退回的位置-查询当前任务可以退回的位置 |
+| apaas.v1.seatActivity.list | [查询席位活跃详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/seat_activity/list) | 获取租户下用户使用飞书 aPaaS 席位最近访问应用时间。需要飞书 aPaaS 系统管理员作为授权人调用当前API |
+| apaas.v1.seatAssignment.list | [查询席位分配详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/seat_assignment/list) | 获取租户下平台席位和应用访问席位分配详情，如用户 ID 、应用命名空间等，需要飞书 aPaaS 系统管理员作为授权人调用当前 API |
+| apaas.v1.userTask.cc | [抄送人工任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/user_task/cc) | 对当前的任务进行一次抄送 |
+| apaas.v1.userTask.chatGroup | [基于人工任务发起群聊](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/user_task/chat_group) | 基于任务，发起一个飞书群聊 |
+| apaas.v1.userTask.expediting | [催办人工任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/user_task/expediting) | 对任务当前的处理人发起一次催办 |
+| apaas.v1.userTask.query | [查询人工任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/user_task/query) | 查询人工任务列表 |
+| apaas.v1.userTask.rollback | [退回人工任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/user_task/rollback) | 对当前任务进行一次退回 |
+| apaas.v1.userTask.rollbackPoints | [查询人工任务可退回的位置](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/apaas-v1/user_task/rollback_points) | 查询当前任务可以退回的位置 |
 
 ## 业务域: applicationV5
 | MCP 工具名称 | API | 描述 | 
@@ -177,7 +177,7 @@
 | attendance.v1.group.list | [查询所有考勤组](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/group/list) | 翻页获取所有考勤组列表。列表中的数据为考勤组信息，字段包含考勤组名称和考勤组id |
 | attendance.v1.group.listUser | [查询考勤组下所有成员](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/group/list_user) | 查询指定考勤组下的所有成员 |
 | attendance.v1.group.search | [按名称查询考勤组](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/group/search) | 按考勤组名称查询考勤组摘要信息。查询条件支持名称精确匹配和模糊匹配两种方式。查询结果按考勤组修改时间 desc 排序，且最大记录数为 10 条。对应页面设置-假勤设置-[考勤组]的名称搜索功能 |
-| attendance.v1.leaveAccrualRecord.patch | [修改发放记录 ](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/leave_accrual_record/patch) | 考勤打卡-休假发放记录-修改发放记录-更新发放记录的发放数量和失效日期，对应假勤管理-休假管理-[发放记录] |
+| attendance.v1.leaveAccrualRecord.patch | [修改发放记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/leave_accrual_record/patch) | 更新发放记录的发放数量和失效日期，对应假勤管理-休假管理-[发放记录] |
 | attendance.v1.leaveEmployExpireRecord.get | [通过过期时间获取发放记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/leave_employ_expire_record/get) | 只能获取到对应时间段过期的发放记录 |
 | attendance.v1.shift.create | [创建班次](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/shift/create) | 班次是描述一次考勤任务时间规则的统称，比如一天打多少次卡，每次卡的上下班时间，晚到多长时间算迟到，晚到多长时间算缺卡等。在假勤设置-[班次设置]中点击班次名称可以进行班次详情查看。如果入参中传入了班次id，那么支持编辑班次的能力 |
 | attendance.v1.shift.delete | [删除班次](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/shift/delete) | 通过班次 ID 删除班次。对应功能为假勤设置-[班次设置]班次列表中操作栏的删除按钮 |
@@ -187,8 +187,8 @@
 | attendance.v1.userApproval.create | [写入审批结果](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/user_approval/create) | 由于部分企业使用的是自己的审批系统，而不是飞书审批系统，因此员工的请假、加班等数据无法流入到飞书考勤系统中，导致员工在请假时间段内依然收到打卡提醒，并且被记为缺卡。对于这些只使用飞书考勤系统，而未使用飞书审批系统的企业，可以通过考勤开放接口的形式，将三方审批结果数据回写到飞书考勤系统中 |
 | attendance.v1.userApproval.query | [获取审批数据](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/user_approval/query) | 获取员工在某段时间内的请假、加班、外出和出差四种审批数据 |
 | attendance.v1.userDailyShift.batchCreate | [创建或修改排班表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/user_daily_shift/batch_create) | 排班表是用来描述考勤组内人员每天按哪个班次进行上班。目前排班表支持按x月y日对一位或多位人员进行排班。当用户的排班数据不存在时会进行创建，当用户的排班数据存在时会按照入参信息进行修改。注意：每人每天只能在一个考勤组中 |
-| attendance.v1.userDailyShift.batchCreateTemp | [创建或更改临时排班](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/user_daily_shift/batch_create_temp) | 考勤打卡-考勤排班-创建或修改临时排班-可在排班表上创建或修改临时班次，并用于排班。目前支持按日期对一位或多位人员进行排临时班次。临时排班为付费功能，如需使用请联系您的客户经理 |
-| attendance.v1.userDailyShift.query | [查询班表信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/user_daily_shift/query) | 考勤打卡-考勤排班-查询排班表-支持查询多个用户的排班情况，注意此接口返回的是用户维度的排班结果，与页面功能并不对应。可以通过返回结果中的group_id查询考勤组[按 ID 查询考勤组] ，shift_id查询班次[按 ID 查询班次] 。查询的时间跨度不能超过 30 天 |
+| attendance.v1.userDailyShift.batchCreateTemp | [创建或修改临时排班](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/user_daily_shift/batch_create_temp) | 可在排班表上创建或修改临时班次，并用于排班。目前支持按日期对一位或多位人员进行排临时班次。临时排班为付费功能，如需使用请联系您的客户经理 |
+| attendance.v1.userDailyShift.query | [查询排班表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/user_daily_shift/query) | 支持查询多个用户的排班情况，注意此接口返回的是用户维度的排班结果，与页面功能并不对应。可以通过返回结果中的group_id查询考勤组[按 ID 查询考勤组] ，shift_id查询班次[按 ID 查询班次] 。查询的时间跨度不能超过 30 天 |
 | attendance.v1.userFlow.batchCreate | [导入打卡流水](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/user_flow/batch_create) | 导入员工的打卡流水记录。导入后，会根据员工所在的考勤组班次规则，计算最终的打卡状态与结果。可在打卡管理-[打卡记录]中查询 |
 | attendance.v1.userFlow.batchDel | [删除打卡流水](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/user_flow/batch_del) | 删除员工从开放平台导入的打卡记录。删除后会重新计算打卡记录对应考勤任务结果 |
 | attendance.v1.userFlow.get | [查询打卡流水](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/attendance-v1/user_flow/get) | 通过打卡记录 ID 获取用户的打卡流水记录。返回信息主要包含：* 用户id和创建者id* 记录信息* 打卡位置信息、时间信息* 打卡方式信息 * GPS 打卡：location_name（定位地址信息） * Wi-Fi 打卡：ssid（wifi名称）、bssid（mac地址） * 考勤机打卡：device_id（考勤机设备id）对应页面功能打卡管理-[打卡记录] |
@@ -236,9 +236,9 @@
 ## 业务域: baseV2
 | MCP 工具名称 | API | 描述 | 
 | --- | --- | --- |
-| base.v2.appRole.create | [新增自定义角色(新版)](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/advanced-permission/base-v2/app-role/create) | 多维表格-高级权限-自定义角色-新增自定义角色-新增多维表格高级权限中自定义的角色 |
-| base.v2.appRole.list | [列出自定义角色(新版)](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/advanced-permission/base-v2/app-role/list) | 多维表格-高级权限-自定义角色-列出自定义角色-列出多维表格高级权限中用户自定义的角色 |
-| base.v2.appRole.update | [更新自定义角色(新版)](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/advanced-permission/base-v2/app-role/update) | 多维表格-高级权限-自定义角色-更新自定义角色-更新多维表格高级权限中自定义的角色 |
+| base.v2.appRole.create | [新增自定义角色](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/advanced-permission/base-v2/app-role/create) | 新增多维表格高级权限中自定义的角色 |
+| base.v2.appRole.list | [列出自定义角色](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/advanced-permission/base-v2/app-role/list) | 列出多维表格高级权限中用户自定义的角色 |
+| base.v2.appRole.update | [更新自定义角色](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/advanced-permission/base-v2/app-role/update) | 更新多维表格高级权限中自定义的角色 |
 
 ## 业务域: bitableV1
 | MCP 工具名称 | API | 描述 | 
@@ -257,10 +257,10 @@
 | bitable.v1.appRoleMember.delete | [删除协作者](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-role-member/delete) | 删除多维表格高级权限中自定义角色的协作者 |
 | bitable.v1.appRoleMember.list | [列出协作者](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-role-member/list) | 列出多维表格高级权限中自定义角色的协作者 |
 | bitable.v1.appRole.update | [更新自定义角色](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-role/update) | 更新多维表格高级权限中自定义的角色 |
-| bitable.v1.appTable.batchCreate | [新增多个数据表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table/batch_create) | 新增多个数据表，仅可指定数据表名称。最多支持新增 100 个数据表 |
-| bitable.v1.appTable.batchDelete | [删除多个数据表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table/batch_delete) | 删除多个数据表。如果多维表格中只剩最后一张数据表，则不允许被删除 |
-| bitable.v1.appTable.create | [新增一个数据表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table/create) | 新增一个数据表，默认仅包含索引字段，也可以指定更多字段。最多支持新增 100 个数据表 |
-| bitable.v1.appTable.delete | [删除一个数据表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table/delete) | 删除一个数据表，如果多维表格中只剩最后一张数据表，则不允许被删除 |
+| bitable.v1.appTable.batchCreate | [新增多个数据表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table/batch_create) | 新增多个数据表，仅可指定数据表名称 |
+| bitable.v1.appTable.batchDelete | [删除多个数据表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table/batch_delete) | 通过 app_token 和 table_id 删除多个数据表 |
+| bitable.v1.appTable.create | [新增一个数据表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table/create) | 新增一个数据表，支持传入数据表名称、视图名称和字段 |
+| bitable.v1.appTable.delete | [删除一个数据表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table/delete) | 通过 app_token 和 table_id 删除指定的多维表格数据表 |
 | bitable.v1.appTableField.create | [新增字段](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-field/create) | 在多维表格数据表中新增一个字段 |
 | bitable.v1.appTableField.delete | [删除字段](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-field/delete) | 删除多维表格数据表中的一个字段 |
 | bitable.v1.appTableField.list | [列出字段](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-field/list) | 获取多维表格数据表中的的所有字段 |
@@ -272,7 +272,7 @@
 | bitable.v1.appTable.list | [列出数据表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table/list) | 列出多维表格中的所有数据表，包括其 ID、版本号和名称 |
 | bitable.v1.appTable.patch | [更新数据表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table/patch) | 更新数据表的名称 |
 | bitable.v1.appTableRecord.batchCreate | [新增多条记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/batch_create) | 在多维表格数据表中新增多条记录，单次调用最多新增 1,000 条记录 |
-| bitable.v1.appTableRecord.batchDelete | [删除多条记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/batch_delete) | 删除多维表格数据表中现有的多条记录，单次调用中最多删除 500 条记录 |
+| bitable.v1.appTableRecord.batchDelete | [删除多条记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/batch_delete) | 删除多维表格数据表中现有的多条记录 |
 | bitable.v1.appTableRecord.batchGet | [批量获取记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/batch_get) | 通过多个记录 ID 查询记录信息。该接口最多支持查询 100 条记录 |
 | bitable.v1.appTableRecord.batchUpdate | [更新多条记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/batch_update) | 更新数据表中的多条记录，单次调用最多更新 1,000 条记录 |
 | bitable.v1.appTableRecord.create | [新增记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/create) | 在多维表格数据表中新增一条记录 |
@@ -282,7 +282,7 @@
 | bitable.v1.appTableRecord.search | [查询记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/search) | 该接口用于查询数据表中的现有记录，单次最多查询 500 行记录，支持分页获取 |
 | bitable.v1.appTableRecord.update | [更新记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-record/update) | 更新多维表格数据表中的一条记录 |
 | bitable.v1.appTableView.create | [新增视图](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-view/create) | 在多维表格数据表中新增一个视图，可指定视图类型，包括表格视图、看板视图、画册视图、甘特视图和表单视图 |
-| bitable.v1.appTableView.delete | [删除视图](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-view/delete) | 删除多维表格数据表中的指定视图 |
+| bitable.v1.appTableView.delete | [删除视图](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-view/delete) | 通过 app_token、table_id 和 view_id，删除多维表格数据表中的指定视图 |
 | bitable.v1.appTableView.get | [获取视图](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-view/get) | 根据视图 ID 获取现有视图信息，包括视图名称、类型、属性等 |
 | bitable.v1.appTableView.list | [列出视图](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-view/list) | 获取多维表格数据表中的所有视图 |
 | bitable.v1.appTableView.patch | [更新视图](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/bitable-v1/app-table-view/patch) | 增量更新视图信息，包括视图名称、属性等，可设置视图的筛选条件 |
@@ -301,7 +301,7 @@
 | calendar.v4.calendarAcl.create | [创建访问控制](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-acl/create) | 调用该接口以当前身份（应用或用户）为指定日历添加访问控制，即日历成员权限 |
 | calendar.v4.calendarAcl.delete | [删除访问控制](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-acl/delete) | 调用该接口以当前身份（应用或用户）删除指定日历内的某一访问控制，即成员权限 |
 | calendar.v4.calendarAcl.list | [获取访问控制列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-acl/list) | 调用该接口以当前身份（应用或用户）获取指定日历的访问控制列表 |
-| calendar.v4.calendarAcl.subscription | [订阅日历访问控制变更事件 ](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-acl/subscription) | 日历-日历访问控制-订阅日历访问控制变更事件-调用该接口以用户身份订阅指定日历下的访问控制变更事件 |
+| calendar.v4.calendarAcl.subscription | [订阅日历访问控制变更事件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-acl/subscription) | 调用该接口以用户身份订阅指定日历下的访问控制变更事件 |
 | calendar.v4.calendarAcl.unsubscription | [取消订阅日历访问控制变更事件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar-acl/unsubscription) | 调用该接口以用户身份取消订阅指定日历下的访问控制变更事件 |
 | calendar.v4.calendar.create | [创建共享日历](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar/create) | 调用该接口为当前身份（应用或用户）创建一个共享日历 |
 | calendar.v4.calendar.delete | [删除共享日历](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/calendar-v4/calendar/delete) | 调用该接口以当前身份（应用或用户）删除某一指定的共享日历 |
@@ -343,16 +343,16 @@
 ## 业务域: cardkitV1
 | MCP 工具名称 | API | 描述 | 
 | --- | --- | --- |
-| cardkit.v1.card.batchUpdate | [批量更新卡片实体](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card/batch_update) | 更新指定卡片实体局部，包括配置和组件等 |
-| cardkit.v1.card.create | [创建卡片实体](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card/create) | 基于卡片 JSON 代码，创建卡片实体 |
-| cardkit.v1.cardElement.content | [流式更新文本](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card-element/content) | 对卡片中的普通文本元素（tag 为 plain_text 的元素）或富文本组件（tag 为 markdown 的组件）传入全量文本内容，以实现“打字机”式的文字输出效果。参考[流式更新 OpenAPI 调用指南]，了解流式更新文本的完整流程 |
-| cardkit.v1.cardElement.create | [新增组件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card-element/create) | 为指定卡片实体新增组件 |
+| cardkit.v1.card.batchUpdate | [局部更新卡片实体](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card/batch_update) | 更新卡片实体局部内容，包括配置和组件。支持同时对多个组件进行增删改等不同操作 |
+| cardkit.v1.card.create | [创建卡片实体](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card/create) | 基于卡片 JSON 代码或卡片搭建工具搭建的卡片，创建卡片实体。用于后续通过卡片实体 ID（card_id）发送卡片、更新卡片等 |
+| cardkit.v1.cardElement.content | [流式更新文本](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card-element/content) | 对卡片中的普通文本元素（tag 为 plain_text 的元素）或富文本组件（tag 为 markdown 的组件）传入全量文本内容，以实现“打字机”式的文字输出效果 |
+| cardkit.v1.cardElement.create | [新增组件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card-element/create) | 为指定卡片实体新增组件，以扩展卡片内容，如在卡片中添加一个点击按钮 |
 | cardkit.v1.cardElement.delete | [删除组件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card-element/delete) | 删除指定卡片实体中的组件 |
-| cardkit.v1.cardElement.patch | [更新组件属性](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card-element/patch) | 更新卡片实体中指定组件的属性 |
-| cardkit.v1.cardElement.update | [更新组件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card-element/update) | 更新卡片实体中的指定组件为新组件。支持传入多个组件 |
+| cardkit.v1.cardElement.patch | [更新组件属性](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card-element/patch) | 通过传入 `card_id`（卡片实体 ID）和 `element_id`（组件 ID），更新卡片实体中对应组件的属性 |
+| cardkit.v1.cardElement.update | [更新组件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card-element/update) | 更新卡片实体中的指定组件为新组件 |
 | cardkit.v1.card.idConvert | [转换 ID](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card/id_convert) | 将[消息 ID]（ `message_id` ）转换为卡片实体 ID（`card_id`）。用于将由[发送消息]等接口返回的消息 ID 转换为卡片实体 ID，以进一步对卡片进行全量更新、局部更新、或文本流式更新操作 |
-| cardkit.v1.card.settings | [更新卡片配置](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card/settings) | 更新指定卡片实体的配置，支持更新 `config` 和 `card_link` 字段 |
-| cardkit.v1.card.update | [全量更新卡片实体](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card/update) | 传入全新的卡片 JSON 数据，更新指定的卡片实体 |
+| cardkit.v1.card.settings | [更新卡片实体配置](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card/settings) | 更新指定卡片实体的配置，支持卡片配置 `config` 字段和卡片跳转链接 `card_link` 字段 |
+| cardkit.v1.card.update | [全量更新卡片实体](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/cardkit-v1/card/update) | 传入新的卡片 JSON 代码，覆盖更新指定的卡片实体的所有内容 |
 
 ## 业务域: compensationV1
 | MCP 工具名称 | API | 描述 | 
@@ -379,7 +379,7 @@
 | contact.v3.department.search | [搜索部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/department/search) | 调用该接口以用户身份通过部门名称关键词查询可见部门的信息，包括部门的 ID、父部门、负责人以及状态等 |
 | contact.v3.department.unbindDepartmentChat | [部门群转为普通群](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/department/unbind_department_chat) | 调用该接口将指定部门的部门群转为普通群 |
 | contact.v3.department.update | [更新部门所有信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/department/update) | 调用该接口更新指定部门的信息，包括名称、父部门以及负责人等信息 |
-| contact.v3.department.updateDepartmentId | [更新部门ID](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/department/update_department_id) | 通讯录-部门-更新部门 ID-调用该接口可以更新部门的自定义 ID，即 department_id |
+| contact.v3.department.updateDepartmentId | [更新部门 ID](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/department/update_department_id) | 调用该接口可以更新部门的自定义 ID，即 department_id |
 | contact.v3.employeeTypeEnum.create | [新增人员类型](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/employee_type_enum/create) | 调用该接口新增一个自定义的人员类型。人员类型是用户属性之一，用于灵活标记用户的身份类型 |
 | contact.v3.employeeTypeEnum.delete | [删除人员类型](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/employee_type_enum/delete) | 调用该接口删除指定的自定义人员类型 |
 | contact.v3.employeeTypeEnum.list | [查询人员类型](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/employee_type_enum/list) | 调用该接口查询当前租户下所有的人员类型信息，包括选项 ID、类型、编号以及内容等 |
@@ -434,7 +434,7 @@
 | contact.v3.user.patch | [修改用户部分信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/user/patch) | 调用该接口更新通讯录中指定用户的信息，包括名称、邮箱、手机号、所属部门以及自定义字段等信息 |
 | contact.v3.user.resurrect | [恢复已删除用户](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/user/resurrect) | 该接口用于恢复已删除用户（已离职的成员） |
 | contact.v3.user.update | [更新用户所有信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/user/update) | 该接口用于更新通讯录中用户的字段 |
-| contact.v3.user.updateUserId | [更新用户ID](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/user/update_user_id) | 通讯录-用户-更新用户 ID-调用该接口更新用户的 user_id |
+| contact.v3.user.updateUserId | [更新用户 ID](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/user/update_user_id) | 调用该接口更新用户的 user_id |
 | contact.v3.workCity.get | [获取单个工作城市信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/work_city/get) | 调用该接口获取指定工作城市的信息，包括工作城市的 ID、名称、多语言名称以及启用状态 |
 | contact.v3.workCity.list | [获取租户工作城市列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/contact-v3/work_city/list) | 调用该接口获取当前租户下所有工作城市信息，包括工作城市的 ID、名称、多语言名称以及启用状态 |
 
@@ -471,7 +471,7 @@
 | corehr.v1.department.create | [创建部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/department/create) | 支持在单个接口中进行部门信息添加，包括部门基本信息、部门负责人、部门自定义字段信息等 |
 | corehr.v1.department.delete | [删除部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/department/delete) | 可以通过该接口通过部门ID删除一个部门记录 |
 | corehr.v1.department.get | [查询单个部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/department/get) | 该接口支持通过部门id批量查询当天的部门详情信息，包括部门包含的名称、描述、启用状态等 |
-| corehr.v1.department.list | [批量查询部门（不推荐）](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/department/list) | 历史版本（不推荐）-飞书人事-组织管理-批量查询部门-批量查询部门信息，包括部门基本信息、自定义字段信息等 |
+| corehr.v1.department.list | [批量查询部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/department/list) | 批量查询部门信息，包括部门基本信息、自定义字段信息等 |
 | corehr.v1.department.patch | [更新部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/department/patch) | 更新部门信息，包括基础信息、自定义字段信息 |
 | corehr.v1.employeeType.create | [创建人员类型](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/employee_type/create) | 创建人员类型 |
 | corehr.v1.employeeType.delete | [删除人员类型](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/employee_type/delete) | 删除人员类型。删除之后查询接口不能获取到已删除的数据 |
@@ -481,7 +481,7 @@
 | corehr.v1.employment.create | [创建雇佣信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/employment/create) | 创建人员的雇佣信息，需要先[创建个人信息] |
 | corehr.v1.employment.delete | [删除雇佣信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/employment/delete) | 删除人员的雇佣信息 |
 | corehr.v1.employment.patch | [更新雇佣信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/employment/patch) | 更新人事工作信息下的字段，如：工号、工作邮箱、雇佣类型、自定义字段等 |
-| corehr.v1.jobChange.create | [发起员工异动（不推荐）](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_change/create) | 飞书人事（企业版）-异动-发起员工异动(不推荐)-该接口用于发起员工异动（变更员工雇佣信息），若发起成功，会生成一条员工的异动数据，同时产生相应的事件：[异动状态变更事件] |
+| corehr.v1.jobChange.create | [发起员工异动(不推荐)](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_change/create) | 该接口用于发起员工异动（变更员工雇佣信息），若发起成功，会生成一条员工的异动数据，同时产生相应的事件：[异动状态变更事件] |
 | corehr.v1.jobData.create | [创建任职信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_data/create) | 在系统中第一次创建员工任职数据，通常在员工入职或者做数据批量导入的时候使用，【任职原因】只支持填写“onboarding” |
 | corehr.v1.jobData.delete | [删除任职信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_data/delete) | 删除人员的任职信息 |
 | corehr.v1.jobData.get | [查询单个任职信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_data/get) | 根据 ID 查询当前生效的主任职记录。所有主任职记录中只有一条记录版本当前生效 |
@@ -490,8 +490,8 @@
 | corehr.v1.jobFamily.create | [创建序列](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/create) | 可以通过该接口创建单个序列信息，同时该接口会针对该接口的内容做校验 |
 | corehr.v1.jobFamily.delete | [删除序列](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/delete) | 该接口支持通过序列ID删除单个序列信息 |
 | corehr.v1.jobFamily.get | [查询单个序列](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/get) | 该接口支持通过序列ID查询单个序列详情信息 |
-| corehr.v1.jobFamily.list | [查询租户序列信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/list) | 飞书人事（企业版）-岗职务管理-序列-批量查询序列-该接口支持获取租户下的所有序列信息。序列数量过多时，可以通过多次循环调用该接口获取所有序列详情信息，包括序列编码、名称等 |
-| corehr.v1.jobFamily.patch | [更新单个序列](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/patch) | 飞书人事（企业版）-岗职务管理-序列-更新序列-可以通过序列ID更新单个序列详情信息，例如序列名称、上级序列ID等 |
+| corehr.v1.jobFamily.list | [批量查询序列](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/list) | 该接口支持获取租户下的所有序列信息。序列数量过多时，可以通过多次循环调用该接口获取所有序列详情信息，包括序列编码、名称等 |
+| corehr.v1.jobFamily.patch | [更新序列](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_family/patch) | 可以通过序列ID更新单个序列详情信息，例如序列名称、上级序列ID等 |
 | corehr.v1.jobLevel.create | [新建职级](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_level/create) | 使用指定信息创建职级信息，每次调用支持创建1个职级对象，接口内会做相关规则校验 |
 | corehr.v1.jobLevel.delete | [删除职级](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_level/delete) | 可以通过该接口通过职级ID删除一个职级对象。- 删除对象时请确认有无在职员工、待入职单据、职务等关联此对象，如有会导致删除失败 |
 | corehr.v1.jobLevel.get | [查询单个职级](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/job_level/get) | 该接口支持通过职级id 查询单个职级详情信息，包括职级包含的名称、描述、启用状态等 |
@@ -508,7 +508,7 @@
 | corehr.v1.leave.leaveBalances | [批量查询员工假期余额](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/leave/leave_balances) | 批量获取员工各个假期的余额数据。对应页面为假勤管理-休假管理-[假期报表] |
 | corehr.v1.leave.leaveRequestHistory | [批量查询员工请假记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/leave/leave_request_history) | 批量获取员工的请假记录数据。对应页面为假勤管理-休假管理-[请假记录] |
 | corehr.v1.leave.leaveTypes | [获取假期类型列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/leave/leave_types) | 获取休假设置后台配置的假期类型列表（比如年假、事假、婚假等）。对应页面功能为设置-假勤设置-[假期类型] |
-| corehr.v1.leave.workCalendar | [获取工作日历信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/leave/work_calendar) | 飞书人事（企业版）-休假-获取工作日历-获取工作日历信息，如名称，状态等 |
+| corehr.v1.leave.workCalendar | [获取工作日历](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/leave/work_calendar) | 获取工作日历信息，如名称，状态等 |
 | corehr.v1.leave.workCalendarDate | [获取工作日历日期详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/leave/work_calendar_date) | 获取工作日历每一天的日期详情，如日期、日期类型等 |
 | corehr.v1.location.create | [创建地点](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/location/create) | 在系统中第一次创建地点数据 |
 | corehr.v1.location.delete | [删除地点](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/location/delete) | 删除地点信息 |
@@ -526,7 +526,7 @@
 | corehr.v1.person.delete | [删除个人信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/person/delete) | 删除人员的个人信息 |
 | corehr.v1.person.get | [查询单个个人信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/person/get) | 根据 ID 查询单个人员的个人信息 |
 | corehr.v1.person.patch | [更新个人信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/person/patch) | 更新个人信息 |
-| corehr.v1.preHire.delete | [删除待入职人员（不推荐）](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/pre_hire/delete) | 历史版本（不推荐）-飞书人事-入职-删除待入职（不推荐）-删除待入职人员接口，本接口直接删除待入职数据，不会判断入职流程，推荐使用新接口进行删除[【删除待入职】] |
+| corehr.v1.preHire.delete | [删除待入职（不推荐）](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/pre_hire/delete) | 删除待入职人员接口，本接口直接删除待入职数据，不会判断入职流程，推荐使用新接口进行删除[【删除待入职】] |
 | corehr.v1.preHire.get | [查询单个待入职信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/pre_hire/get) | 根据 ID 查询单个待入职人员，本接口不再推荐使用（个人信息相关数据不完整），请使用[查询待入职]接口获取更完整信息 |
 | corehr.v1.preHire.list | [批量查询待入职信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/pre_hire/list) | 可通过本接口批量查询待入职人员信息，本接口不再推荐使用（个人信息相关数据不完整），请使用[查询待入职]接口获取更完整信息 |
 | corehr.v1.preHire.patch | [更新待入职信息（不推荐）](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/pre_hire/patch) | 更新待入职信息接口，本接口只是会更新待入职数据，不会校验数据规则，推荐使用新接口[【更新待入职信息】] |
@@ -549,23 +549,23 @@
 | MCP 工具名称 | API | 描述 | 
 | --- | --- | --- |
 | corehr.v2.approvalGroups.get | [根据流程 ID 查询组织架构调整记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/approval_groups/get) | 用户通过『飞书人事-我的团队-组织架构』 发起一个组织架构调整会根据 审批流配置发起 一个或多个审批。 之后用户可通过流程 process 的单据 ID， 查询到该审批进行的状态， 以及该流程中涉及到的 组织架构信息（包括部门变更、人员变更记录 ID、岗位变更记录 ID）。如需查询具体变更详情：- 部门变更：[批量查询部门变更接口]- 员工变更：[批量查询员工变更接口] |
-| corehr.v2.approvalGroups.openQueryDepartmentChangeListByIds | [批量查询部门调整内容](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/approval_groups/open_query_department_change_list_by_ids) | 根据部门调整记录 ID 批量查询部门调整内容 |
+| corehr.v2.approvalGroups.openQueryDepartmentChangeListByIds | [批量查询部门调整内容](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/approval_groups/open_query_department_change_list_by_ids) | 根据部门调整记录 ID 批量查询部门调整内容，如：部门调整类型、部门调整前后名称、部门调整前后角色信息 等 |
 | corehr.v2.approvalGroups.openQueryJobChangeListByIds | [批量查询人员调整内容](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/approval_groups/open_query_job_change_list_by_ids) | 根据人员异动记录 ID 批量查询人员调整内容 |
-| corehr.v2.approver.list | [获取指定人员审批任务列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/approver/list) | 审批任务依赖于流程节点实例存在，每一个流程节点实例可能包含有一或多个审批任务，每一个任务表明当前节点的审批人是谁，该接口可获取指定人员的审批任务列表 |
+| corehr.v2.approver.list | [获取指定人员审批任务列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/approver/list) | 审批任务依赖于流程节点实例存在，每一个流程节点实例可能包含有一或多个审批任务，每一个任务表明当前节点的审批人是谁，该接口可获取指定人员的审批任务列表（此功能不受数据权限范围控制） |
 | corehr.v2.basicInfoBankBranch.search | [查询支行信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-bank_branch/search) | 根据银行 ID、支行 ID 、支行名称、联行号，支行状态、更新时间 查询银行信息 |
 | corehr.v2.basicInfoBank.search | [查询银行信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-bank/search) | 根据银行 ID 、银行名称，查询银行信息 |
 | corehr.v2.basicInfoCity.search | [查询城市信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-city/search) | 根据城市 ID、上级省份/主要行政区 ID ，查询城市（自治区、地区、县「美」、町、村「日」）信息 |
 | corehr.v2.basicInfoCountryRegionSubdivision.search | [查询省份/主要行政区信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-country_region_subdivision/search) | 根据国家/地区 ID、省份/主要行政区 ID、状态，批量查询国家/地区下辖的一级行政区（如省份、直辖市、自治区、州等）数据 |
-| corehr.v2.basicInfoCountryRegion.search | [查询国家 / 地区信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-country_region/search) | 飞书人事（企业版）-基础数据-地理库信息-查询国家/地区信息-根据国家/地区 ID、状态，批量查询国家/地区信息 |
+| corehr.v2.basicInfoCountryRegion.search | [查询国家/地区信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-country_region/search) | 根据国家/地区 ID、状态，批量查询国家/地区信息 |
 | corehr.v2.basicInfoCurrency.search | [查询货币信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-currency/search) | 根据货币 ID、状态查询货币信息 |
-| corehr.v2.basicInfoDistrict.search | [查询区 / 县信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-district/search) | 飞书人事（企业版）-基础数据-地理库信息-查询区/县信息-根据区/县 ID、上级城市 ID，查询区/县信息 |
+| corehr.v2.basicInfoDistrict.search | [查询区/县信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-district/search) | 根据区/县 ID、上级城市 ID，查询区/县信息 |
 | corehr.v2.basicInfoLanguage.search | [查询语言信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-language/search) | 根据语言 ID、状态，批量查询语言信息 |
 | corehr.v2.basicInfoNationality.search | [查询国籍信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-nationality/search) | 根据国籍 ID、国家 ID，查询国籍信息 |
 | corehr.v2.basicInfoTimeZone.search | [查询时区信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/basic_info-time_zone/search) | 根据时区 ID、状态，批量查询时区信息 |
 | corehr.v2.bp.getByDepartment | [查询部门 HRBP](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/bp/get_by_department) | 查询部门的 HRBP 信息，包括来自上级部门的 HRBP |
 | corehr.v2.bp.list | [获取 HRBP 列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/bp/list) | 获取 HRBP 列表。列表中包含HRBP的ID以及部门ID信息 |
 | corehr.v2.company.active | [启用/停用公司](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/company/active) | 对公司进行启用或停用操作 |
-| corehr.v2.company.batchGet | [通过 ID 批量查询公司信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/company/batch_get) | 飞书人事（企业版）-组织管理-公司-通过公司 ID 批量获取公司信息-通过 ID 批量查询公司信息 |
+| corehr.v2.company.batchGet | [通过公司 ID 批量获取公司信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/company/batch_get) | 通过 ID 批量查询公司信息 |
 | corehr.v2.company.queryRecentChange | [查询当前生效信息变更公司](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/company/query_recent_change) | 查询指定时间范围内当前生效信息发生变更的公司，即只有公司当前生效版本的生效时间在查询时间范围内，才返回该公司id |
 | corehr.v2.contract.search | [搜索合同](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/contract/search) | 该接口可用于搜索合同信息，包括合同开始时间、合同预计结束时间、合同实际结束时间、合同公司主体等信息 |
 | corehr.v2.costAllocation.batchQuery | [查询成本分摊](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/cost_allocation/batch_query) | 查询成本分摊 |
@@ -575,7 +575,7 @@
 | corehr.v2.costCenter.create | [创建成本中心](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/cost_center/create) | 单个创建成本中心；可定义成本中心的名称，父级成本中心，成本中心负责人，生效时间等 |
 | corehr.v2.costCenter.delete | [删除成本中心](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/cost_center/delete) | 删除成本中心记录 |
 | corehr.v2.costCenter.patch | [启用 / 停用成本中心](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/cost_center/patch) | 该接口支持对单个成本中心进行启用和停用操作 |
-| corehr.v2.costCenter.queryRecentChange | [查询当前生效信息变更的成本中心](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/cost_center/query_recent_change) | 飞书人事（企业版）-组织管理-成本中心-查询当前生效信息发生变更的成本中心-查询指定时间范围内当前生效信息发生变更的成本中心，即只有部门当前生效版本的生效时间在查询时间范围内，才返回该成本中心id |
+| corehr.v2.costCenter.queryRecentChange | [查询当前生效信息发生变更的成本中心](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/cost_center/query_recent_change) | 查询指定时间范围内当前生效信息发生变更的成本中心，即只有部门当前生效版本的生效时间在查询时间范围内，才返回该成本中心id |
 | corehr.v2.costCenter.search | [搜索成本中心信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/cost_center/search) | 搜索成本中心信息；支持通过成本中心ID，成本中心名称，成本中心编码，成本中心上级搜索成本中心的信息，有分页功能 |
 | corehr.v2.costCenterVersion.create | [创建成本中心版本](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/cost_center-version/create) | 创建成本中心版本；每次调用可创建一个成本中心版本，可定义成本中心的名称，描述，上级成本，成本中心负责人，版本生效时间等信息，接口内会做相关规则的校验 |
 | corehr.v2.costCenterVersion.delete | [撤销成本中心版本](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/cost_center-version/delete) | 该接口支持通过成本中心的版本ID撤销成本中心版本信息 |
@@ -583,22 +583,22 @@
 | corehr.v2.customOrg.active | [启用/停用自定义组织](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/custom_org/active) | 对自定义组织进行启用或停用操作 |
 | corehr.v2.customOrg.create | [创建自定义组织](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/custom_org/create) | 使用指定信息创建自定义组织，接口内会做相关规则校验 |
 | corehr.v2.customOrg.deleteOrg | [删除自定义组织](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/custom_org/delete_org) | 根据传入的自定义组织 ID 删除相应自定义组织 |
-| corehr.v2.customOrg.patch | [更新自定义组织基础信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/custom_org/patch) | 飞书人事（企业版）-组织管理-自定义组织-更新自定义组织信息-更新一个自定义组织基础信息，不支持更新自动匹配规则，如需更新自动匹配规则请使用[更新匹配规则] |
-| corehr.v2.customOrg.query | [批量查询当前版本的自定义组织信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/custom_org/query) | 飞书人事（企业版）-组织管理-自定义组织-查询自定义组织信息-根据传入的筛选条件批量查询自定义组织信息。不传任何筛选条件，默认获得该租户下所有的自定义组织数据 |
-| corehr.v2.customOrg.queryRecentChange | [查询当前生效信息发生变更的自定义组织](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/custom_org/query_recent_change) | 飞书人事（企业版）-组织管理-自定义组织-查询当前生效信息变更的自定义组织-查询指定时间范围内当前生效信息发生变更的自定义组织，即只有部门当前生效版本的生效时间在查询时间范围内，才返回该自定义组织id |
+| corehr.v2.customOrg.patch | [更新自定义组织信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/custom_org/patch) | 更新一个自定义组织基础信息，不支持更新自动匹配规则，如需更新自动匹配规则请使用[更新匹配规则] |
+| corehr.v2.customOrg.query | [查询自定义组织信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/custom_org/query) | 根据传入的筛选条件批量查询自定义组织信息。不传任何筛选条件，默认获得该租户下所有的自定义组织数据 |
+| corehr.v2.customOrg.queryRecentChange | [查询当前生效信息变更的自定义组织](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/custom_org/query_recent_change) | 查询指定时间范围内当前生效信息发生变更的自定义组织，即只有部门当前生效版本的生效时间在查询时间范围内，才返回该自定义组织id |
 | corehr.v2.customOrg.updateRule | [更新自定义组织的匹配规则](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/custom_org/update_rule) | 更新自定义组织的匹配规则。仅开启了「为组织设置自动匹配规则」的自定义组织类型可用。如需更新自定义组织基本信息可使用[更新自定义组织] |
 | corehr.v2.defaultCostCenter.batchQuery | [查询默认成本中心](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/default_cost_center/batch_query) | 查询默认成本中心 |
 | corehr.v2.defaultCostCenter.createVersion | [添加默认成本中心](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/default_cost_center/create_version) | 添加默认成本中心 |
 | corehr.v2.defaultCostCenter.removeVersion | [删除默认成本中心](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/default_cost_center/remove_version) | 删除默认成本中心 |
 | corehr.v2.defaultCostCenter.updateVersion | [更新默认成本中心](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/default_cost_center/update_version) | 更新默认成本中心 |
 | corehr.v2.department.batchGet | [批量查询部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/department/batch_get) | 批量查询部门信息，**该接口只返回部门当前内容** |
-| corehr.v2.department.delete | [删除部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/department/delete) | 飞书人事（企业版）-组织管理-部门-删除部门 V2-可以通过该接口通过部门ID删除一个部门记录，带数据行权限判权 |
+| corehr.v2.department.delete | [删除部门 V2](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/department/delete) | 可以通过该接口通过部门ID删除一个部门记录，带数据行权限判权 |
 | corehr.v2.department.parents | [获取父部门信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/department/parents) | 该接口用来递归获取部门的父部门信息，并按照由子到父的顺序返回有权限的父部门信息列表 |
 | corehr.v2.department.patch | [更新部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/department/patch) | 更新部门，支持数据行权限判权 |
 | corehr.v2.department.queryMultiTimeline | [批量查询部门版本信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/department/query_multi_timeline) | 根据部门ID列表，批量查询开始结束时间内的所有部门版本信息，含部门名称、部门类型、上级、编码、负责人、是否启用、描述等信息 |
 | corehr.v2.department.queryOperationLogs | [批量查询部门操作日志](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/department/query_operation_logs) | 批量查询指定时间范围内的部门操作日志 |
-| corehr.v2.department.queryRecentChange | [查询指定时间范围内当前生效信息发生变更的部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/department/query_recent_change) | 飞书人事（企业版）-组织管理-部门-查询生效信息变更部门-查询指定时间范围内当前生效信息发生变更的部门，即只有部门当前生效版本的生效时间在查询时间范围内，才返回该部门id |
-| corehr.v2.department.queryTimeline | [查询指定日期的部门基本信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/department/query_timeline) | 飞书人事（企业版）-组织管理-部门-查询指定生效日期的部门基本信息-查询指定生效的部门基本信息，含部门名称、部门类型、上级、编码、负责人、是否启用、描述等信息 |
+| corehr.v2.department.queryRecentChange | [查询生效信息变更部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/department/query_recent_change) | 查询指定时间范围内当前生效信息发生变更的部门，即只有部门当前生效版本的生效时间在查询时间范围内，才返回该部门id |
+| corehr.v2.department.queryTimeline | [查询指定生效日期的部门基本信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/department/query_timeline) | 查询指定生效的部门基本信息，含部门名称、部门类型、上级、编码、负责人、是否启用、描述等信息 |
 | corehr.v2.department.search | [搜索部门信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/department/search) | 该接口支持通过部门id、上级部门ID、部门负责人、名称、编码字段批量搜索当天的部门详情信息，包括部门包含的名称、描述、启用状态等 |
 | corehr.v2.department.tree | [查询指定生效日期的部门架构树](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/department/tree) | 支持传入部门ID（不传默认根部门），任意日期（不传默认当前日期）。从给定部门ID开始广度遍历，每页最多返回2000行数据 |
 | corehr.v2.employee.batchGet | [批量查询员工信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/employee/batch_get) | 通过员工 ID 、个人信息 ID、工作邮箱等筛选项批量查询员工的工作信息、个人信息 |
@@ -609,24 +609,24 @@
 | corehr.v2.employeesAdditionalJob.delete | [删除兼职](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/employees-additional_job/delete) | 删除一条指定的员工兼职 |
 | corehr.v2.employeesAdditionalJob.patch | [更新兼职](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/employees-additional_job/patch) | 更新员工的兼职 |
 | corehr.v2.employeesBp.batchGet | [查询员工 HRBP / 属地 BP](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/employees-bp/batch_get) | 查询员工的 HRBP 和属地 BP，包括来自上级部门的 HRBP 和属地 BP |
-| corehr.v2.employeesInternationalAssignment.create | [创建外派](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/employees-international_assignment/create) | 员工信息-任职信息-外派信息-创建外派信息-为员工添加外派记录，包括外派信息、任职信息 |
-| corehr.v2.employeesInternationalAssignment.delete | [删除外派](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/employees-international_assignment/delete) | 员工信息-任职信息-外派信息-删除外派信息-删除某一条外派信息 |
+| corehr.v2.employeesInternationalAssignment.create | [创建外派信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/employees-international_assignment/create) | 为员工添加外派记录，包括外派信息、任职信息 |
+| corehr.v2.employeesInternationalAssignment.delete | [删除外派信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/employees-international_assignment/delete) | 删除某一条外派信息 |
 | corehr.v2.employeesInternationalAssignment.list | [批量查询外派信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/employees-international_assignment/list) | 查询员工的外派信息：外派类型、外派地点、职务、职级、上级等 |
 | corehr.v2.employeesInternationalAssignment.patch | [更新外派信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/employees-international_assignment/patch) | 更新指定的外派信息 |
 | corehr.v2.employeesJobData.batchGet | [批量查询员工任职信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/employees-job_data/batch_get) | 通过员工雇佣 ID 批量查询任职信息 |
 | corehr.v2.employeesJobData.query | [获取任职信息列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/employees-job_data/query) | 获取任职信息列表 |
 | corehr.v2.enum.search | [查询枚举信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/enum/search) | 根据枚举的APIName查询枚举详细信息，用于BPM等场景获取枚举选项 |
 | corehr.v2.jobChange.create | [发起员工异动](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_change/create) | 该接口用于发起员工异动（变更员工雇佣信息），若发起成功，会生成一条员工的异动数据 |
-| corehr.v2.jobChange.revoke | [撤销员工异动。](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_change/revoke) | 飞书人事（企业版）-异动-撤销异动-该接口用于撤销员工异动，若发起成功，会撤销一条已发起、待生效或已生效的异动数据，同时产生相应的事件：[异动状态变更事件]。该接口无法撤销批量发起的多人异动。使用时需指定操作人，关联了流程的异动需要流程管理员和审批单管理员权限 |
-| corehr.v2.jobChange.search | [搜索异动信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_change/search) | 飞书人事（企业版）-异动-搜索员工异动信息-搜索异动信息，该接口会按照应用拥有的「员工数据」的权限范围返回数据，请确定在「开发者后台 - 权限管理 - 数据权限」中有申请「员工资源」权限范围 |
-| corehr.v2.jobFamily.batchGet | [通过序列 ID 批量查询序列信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_family/batch_get) | 飞书人事（企业版）-岗职务管理-序列-通过序列 ID 批量获取序列信息-通过序列 ID 批量查询序列的详情信息，包括序列名称、启用状态、上级序列等 |
+| corehr.v2.jobChange.revoke | [撤销异动](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_change/revoke) | 该接口用于撤销员工异动，若发起成功，会撤销一条已发起、待生效或已生效的异动数据，同时产生相应的事件：[异动状态变更事件]。该接口无法撤销批量发起的多人异动。使用时需指定操作人，关联了流程的异动需要流程管理员和审批单管理员权限 |
+| corehr.v2.jobChange.search | [搜索员工异动信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_change/search) | 搜索异动信息，该接口会按照应用拥有的「员工数据」的权限范围返回数据，请确定在「开发者后台 - 权限管理 - 数据权限」中有申请「员工资源」权限范围 |
+| corehr.v2.jobFamily.batchGet | [根据条件批量获取序列信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_family/batch_get) | 通过序列 ID 或序列 Code 批量查询当前生效版本序列的详情信息，包括序列名称、启用状态、上级序列等 |
 | corehr.v2.jobFamily.queryRecentChange | [查询当前生效信息发生变更的序列](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_family/query_recent_change) | 查询指定时间范围内当前生效信息发生变更的序列，即只有序列前生效版本的生效时间在查询时间范围内，才返回该序列id |
 | corehr.v2.jobGrade.create | [创建职等](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_grade/create) | 创建职等 |
 | corehr.v2.jobGrade.delete | [删除职等](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_grade/delete) | 删除职等 |
 | corehr.v2.jobGrade.patch | [更新职等](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_grade/patch) | 更新职等 |
-| corehr.v2.jobGrade.query | [查询职等信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_grade/query) | 飞书人事（企业版）-岗职务管理-职等-查询职等-查询职等的详细信息 |
+| corehr.v2.jobGrade.query | [查询职等](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_grade/query) | 查询职等的详细信息 |
 | corehr.v2.jobGrade.queryRecentChange | [查询当前生效信息发生变更的职等](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_grade/query_recent_change) | 查询指定时间范围内当前生效信息发生变更的职等，即只有职等当前生效版本的生效时间在查询时间范围内，才返回该地点id |
-| corehr.v2.jobLevel.batchGet | [通过职级 ID 批量获取职级信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_level/batch_get) | 该接口支持通过职级id批量查询职级详情信息，包括职级包含的名称、描述、启用状态等 |
+| corehr.v2.jobLevel.batchGet | [根据条件批量获取职级信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_level/batch_get) | 该接口支持通过职级ID或职级Code批量查询职级详情信息，包括名称、描述、启用状态等 |
 | corehr.v2.jobLevel.queryRecentChange | [查询当前生效信息发生变更的职级](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job_level/query_recent_change) | 查询指定时间范围内当前生效信息发生变更的职级，即只有地点当前生效版本的生效时间在查询时间范围内，才返回该职级id |
 | corehr.v2.job.get | [查询单个职务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job/get) | 根据 ID 查询单个职务 |
 | corehr.v2.job.list | [批量查询职务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/job/list) | 可以通过该接口查询租户下全部职务ID列表 |
@@ -645,11 +645,11 @@
 | corehr.v2.person.patch | [更新个人信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/person/patch) | 更新员工的个人信息，包括姓名、个人电话、邮箱、联系地址、政治面貌、户口信息等 |
 | corehr.v2.preHire.complete | [操作员工完成入职](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/pre_hire/complete) | 操作待入职员工完成入职，正式入职建立员工和公司/组织的雇佣关系 |
 | corehr.v2.preHire.create | [直接创建待入职](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/pre_hire/create) | 使用指定数据创建一个待入职人员 |
-| corehr.v2.preHire.delete | [删除待入职](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/pre_hire/delete) | 飞书人事（企业版）-入职-删除待入职信息-删除待入职人员，删除后无法搜索到待入职人员信息，请谨慎操作 |
-| corehr.v2.preHire.patch | [更新待入职](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/pre_hire/patch) | 飞书人事（企业版）-入职-更新待入职信息-通过指定系统字段和自定义字段以更新待入职数据 |
-| corehr.v2.preHire.query | [查询待入职](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/pre_hire/query) | 飞书人事（企业版）-入职-查询待入职信息-该接口用于根据待入职人员 ID(支持批量)查询待入职人员信息，信息包含姓名、手机号等个人信息和任职信息。- 延迟说明：数据库主从延迟 2s 以内，即：直接创建待入职后2s内调用此接口可能查询不到数据。- 性能说明：本接口返回数据量较多，查询时请控制每批次数量（<10）和适当减少查询字段数(<50) |
+| corehr.v2.preHire.delete | [删除待入职信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/pre_hire/delete) | 删除待入职人员，删除后无法搜索到待入职人员信息，请谨慎操作 |
+| corehr.v2.preHire.patch | [更新待入职信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/pre_hire/patch) | 通过指定系统字段和自定义字段以更新待入职数据 |
+| corehr.v2.preHire.query | [查询待入职信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/pre_hire/query) | 该接口用于根据待入职人员 ID(支持批量)查询待入职人员信息，信息包含姓名、手机号等个人信息和任职信息。- 延迟说明：数据库主从延迟 2s 以内，即：直接创建待入职后2s内调用此接口可能查询不到数据。- 性能说明：本接口返回数据量较多，查询时请控制每批次数量（<10）和适当减少查询字段数(<50) |
 | corehr.v2.preHire.restoreFlowInstance | [恢复入职](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/pre_hire/restore_flow_instance) | 通过本接口对指定已撤销的待入职员工执行恢复入职操作，对应入职管理页面恢复入职按钮 |
-| corehr.v2.preHire.search | [搜索待入职人员信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/pre_hire/search) | 飞书人事（企业版）-入职-搜索待入职信息-该接口用于根据工号/待入职人员 ID /入职地点等查询条件搜索待入职人员信息。- 查询的待入职数量及字段越多，耗时越久，使用时建议细化指定需要的字段。- 创建待入职后，会有5秒内的数据延迟导致搜索不到数据 |
+| corehr.v2.preHire.search | [搜索待入职信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/pre_hire/search) | 该接口用于根据工号/待入职人员 ID /入职地点等查询条件搜索待入职人员信息。- 查询的待入职数量及字段越多，耗时越久，使用时建议细化指定需要的字段。- 创建待入职后，会有5秒内的数据延迟导致搜索不到数据 |
 | corehr.v2.preHire.transitTask | [流转入职任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/pre_hire/transit_task) | 配置入职流程后，可通过本接口流转进行中的任务 |
 | corehr.v2.preHire.withdrawOnboarding | [撤销入职](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/pre_hire/withdraw_onboarding) | 通过本接口对指定待入职，入职准备就绪的员工执行撤销入职操作，对应入职管理页面撤销入职按钮 |
 | corehr.v2.probationAssessment.create | [新增试用期考核信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/probation-assessment/create) | 新增员工试用期考核结果 |
@@ -664,8 +664,8 @@
 | corehr.v2.processApprover.update | [通过/拒绝审批任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/process-approver/update) | 对于单个审批任务进行通过（提交）或拒绝操作。对于多人或签节点，一个审批任务通过则整个节点通过；对于多人会签节点，所有审批任务通过则节点通过。在通过（提交）时，若表单中有必填字段，支持写入表单字段 |
 | corehr.v2.processExtra.update | [加签审批任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/process-extra/update) | 给单个流程中的节点或审批任务加签，加签方式有前加签、并加签、后加签三种 |
 | corehr.v2.processFormVariableData.get | [获取流程表单数据](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/process-form_variable_data/get) | 根据流程实例 id（process_id）获取流程表单字段数据，包括表单里的业务字段和自定义字段。仅支持飞书人事、假勤相关业务流程。注：[旧版 API] 文档已移动到【历史版本】目录 |
-| corehr.v2.process.get | [获取单个流程详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/process/get) | 根据流程实例 id（process_id）获取单个流程详情。比如流程状态、流程发起人、流程发起时间、流程摘要、流程里的所有待办、已办、抄送任务等 |
-| corehr.v2.process.list | [查询流程实例列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/process/list) | 本接口用于查询流程实例列表，支持通过流程定义 ID 等进行查询，其中：- 流程实例：是指用户在业务功能或者飞书人事的审批中心发起的具体流程，process_id 是其唯一标识。- 流程定义：是指管理员在设置侧配置的流程，类似流程模板，flow_definition_id 是其唯一标识。用户发起的流程是按照对应的流程定义的配置生成 |
+| corehr.v2.process.get | [获取单个流程详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/process/get) | 根据流程实例 id（process_id）获取单个流程详情（此功能不受数据权限范围控制）。比如流程状态、流程发起人、流程发起时间、流程摘要、流程里的所有待办、已办、抄送任务等 |
+| corehr.v2.process.list | [查询流程实例列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/process/list) | 本接口用于查询流程实例列表，支持通过流程定义 ID 等进行查询（此功能不受数据权限范围控制），其中：- 流程实例：是指用户在业务功能或者飞书人事的审批中心发起的具体流程，process_id 是其唯一标识。- 流程定义：是指管理员在设置侧配置的流程，类似流程模板，flow_definition_id 是其唯一标识。用户发起的流程是按照对应的流程定义的配置生成 |
 | corehr.v2.processTransfer.update | [转交审批任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/process-transfer/update) | 对于单个审批任务进行转交操作。转交后审批流程流转给被转交人 |
 | corehr.v2.reportDetailRow.batchDelete | [批量删除填报行](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/report_detail_row/batchDelete) | 批量删除填报行后，可在【设置-编制规划设置-编制规划XXX-集中填报-查看数据】进行查看 |
 | corehr.v2.reportDetailRow.batchSave | [批量创建/更新填报行](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/corehr-v2/report_detail_row/batchSave) | 批量创建/更新填报行后，可在【设置-编制规划设置-编制规划XXX-集中填报-查看数据】进行查看 |
@@ -684,20 +684,20 @@
 | directory.v1.collaborationRule.update | [更新可搜可见规则](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/collaboration_rule/update) | 管理员视角更新可搜可见规则。用户需具备关联组织管理员权限 |
 | directory.v1.collaborationTenant.list | [管理员获取所有关联组织列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/collaboration_tenant/list) | 在创建规则时，需要知道对方组织的tenant key，可通过该接口获取有效的tenant key。只允许关联组织管理员权限调用 |
 | directory.v1.collborationShareEntity.list | [获取关联组织双方共享成员范围](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/collboration_share_entity/list) | 在创建规则时，需要获取本组织以及对方组织人员、部门和用户组的ID，且这些实体都应该在关联组织的共享范围内。本接口可获取关联组织双方的共享范围下的人员、部门和用户组 |
-| directory.v1.department.create | [创建部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/department/create) | 本接口用于在企业下创建部门 |
+| directory.v1.department.create | [创建部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/department/create) | 本接口用于用于在企业通讯录中创建新部门，支持设置部门名称、父部门、负责人等信息 |
 | directory.v1.department.delete | [删除部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/department/delete) | 本接口用于删除部门 |
-| directory.v1.department.filter | [批量获取部门列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/department/filter) | 本接口用于依据指定条件，批量获取符合条件的部门详情列表 |
-| directory.v1.department.mget | [批量获取部门信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/department/mget) | 本接口用于批量根据部门的ID查询部门的详情 |
+| directory.v1.department.filter | [获取部门列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/department/filter) | 本接口用于依据指定条件，批量获取符合条件的部门详情列表 |
+| directory.v1.department.mget | [批量获取部门信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/department/mget) | 该接口支持传入多个部门ID，返回每个部门的详细信息（如名称、负责人、子部门等） |
 | directory.v1.department.patch | [更新部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/department/patch) | 本接口用于更新部门信息。仅更新显式传参的部分 |
-| directory.v1.department.search | [搜索部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/department/search) | 本接口用于搜索部门信息 |
-| directory.v1.employee.create | [创建员工](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/employee/create) | 本接口用于在企业下创建员工，可以理解为员工入职。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」 |
+| directory.v1.department.search | [搜索部门](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/department/search) | 本接口用于搜索部门信息，通过部门名称等关键词搜索部门信息，返回符合条件的部门列表 |
+| directory.v1.employee.create | [创建员工](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/employee/create) | 本接口用于在企业下创建员工。支持传入姓名、手机号等信息，生成在职状态的员工对象。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」 |
 | directory.v1.employee.delete | [离职员工](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/employee/delete) | 本接口用于离职员工 |
 | directory.v1.employee.filter | [批量获取员工列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/employee/filter) | 本接口用于依据指定条件，批量获取符合条件的员工详情列表。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」 |
-| directory.v1.employee.mget | [批量获取员工信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/employee/mget) | 本接口用于批量根据员工的ID查询员工的详情。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」 |
-| directory.v1.employee.patch | [更新员工](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/employee/patch) | 本接口用于更新在职/离职员工的信息、冻结/恢复员工。未传递的参数不会进行更新。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」 |
+| directory.v1.employee.mget | [批量获取员工信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/employee/mget) | 本接口用于批量根据员工的ID查询员工的详情，比如员工姓名，手机号，邮箱，部门等信息。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」 |
+| directory.v1.employee.patch | [更新员工信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/employee/patch) | 本接口用于更新在职/离职员工的信息、冻结/恢复员工。未传递的参数不会进行更新。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」 |
 | directory.v1.employee.regular | [更新待离职成员为在职](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/employee/regular) | 本接口用于为待离职员工取消离职，将其更新为「在职」状态。取消离职时会清空离职信息。使用user_access_token时默认为管理员用户，仅可操作「人事管理模式」的管理员可操作 |
-| directory.v1.employee.resurrect | [恢复离职员工](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/employee/resurrect) | 该接口用于恢复已离职的成员 |
-| directory.v1.employee.search | [搜索员工](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/employee/search) | 本接口用于搜索员工信息。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」 |
+| directory.v1.employee.resurrect | [恢复离职员工](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/employee/resurrect) | 该接口用于恢复已离职的成员，恢复已离职成员至在职状态 |
+| directory.v1.employee.search | [搜索员工信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/employee/search) | 本接口用于搜索员工信息，如通过关键词搜索员工的名称、手机号、邮箱等信息。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」 |
 | directory.v1.employee.toBeResigned | [更新在职员工为待离职](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/directory-v1/employee/to_be_resigned) | 本接口用于为在职员工办理离职，将其更新为「待离职」状态。「待离职」员工不会自动离职，需要使用「离职员工」API操作离职和资源转交。使用user_access_token时默认为管理员用户，仅「人事管理模式」的管理员可操作 |
 
 ## 业务域: docsV1
@@ -709,20 +709,21 @@
 | MCP 工具名称 | API | 描述 | 
 | --- | --- | --- |
 | docx.v1.chatAnnouncementBlock.batchUpdate | [批量更新群公告块的内容](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/chat-announcement-block/batch_update) | 群组-新版群公告-块-批量更新群公告块的内容 |
-| docx.v1.chatAnnouncementBlockChildren.batchDelete | [删除群公告中的块 ](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/chat-announcement-block-children/batch_delete) | 群组-新版群公告-块-删除群公告中的块-指定需要操作的块，删除其指定范围的子块。如果操作成功，接口将返回应用删除操作后的群公告版本号 |
+| docx.v1.chatAnnouncementBlockChildren.batchDelete | [删除群公告中的块](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/chat-announcement-block-children/batch_delete) | 指定需要操作的块，删除其指定范围的子块。如果操作成功，接口将返回应用删除操作后的群公告版本号 |
 | docx.v1.chatAnnouncementBlockChildren.create | [在群公告中创建块](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/chat-announcement-block-children/create) | 群组-新版群公告-块-在群公告中创建块 |
 | docx.v1.chatAnnouncementBlockChildren.get | [获取所有子块](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/chat-announcement-block-children/get) | 群组-新版群公告-块-获取所有子块 |
 | docx.v1.chatAnnouncementBlock.get | [获取群公告块的内容](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/chat-announcement-block/get) | 群组-新版群公告-块-获取群公告块的内容 |
 | docx.v1.chatAnnouncementBlock.list | [获取群公告所有块](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/chat-announcement-block/list) | 群组-新版群公告-群公告-获取群公告所有块 |
-| docx.v1.chatAnnouncement.get | [获取群公告基本信息 ](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/chat-announcement/get) | 群组-新版群公告-群公告-获取群公告基本信息-获取指定群组中的群公告基本信息 |
-| docx.v1.documentBlock.batchUpdate | [批量更新块](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block/batch_update) | 云文档-文档-块-批量更新块的内容-批量更新块的富文本内容 |
+| docx.v1.chatAnnouncement.get | [获取群公告基本信息](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/chat-announcement/get) | 获取指定群组中的群公告基本信息 |
+| docx.v1.documentBlock.batchUpdate | [批量更新块的内容](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block/batch_update) | 批量更新块的富文本内容 |
 | docx.v1.documentBlockChildren.batchDelete | [删除块](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block-children/batch_delete) | 指定需要操作的块，删除其指定范围的子块。如果操作成功，接口将返回应用删除操作后的文档版本号 |
 | docx.v1.documentBlockChildren.create | [创建块](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block-children/create) | 指定需要操作的块，为其创建一批子块，并插入到指定位置。如果操作成功，接口将返回新创建子块的富文本内容 |
 | docx.v1.documentBlockChildren.get | [获取所有子块](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block-children/get) | 给定一个指定版本的文档，并指定需要操作的块，分页遍历其所有子块富文本内容 。如果不指定版本，则会默认查询最新版本 |
 | docx.v1.documentBlockDescendant.create | [创建嵌套块](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block-descendant/create) | 云文档-文档-块-创建嵌套块 |
-| docx.v1.documentBlock.get | [获取块](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block/get) | 云文档-文档-块-获取块的内容-获取指定块的富文本内容 |
+| docx.v1.documentBlock.get | [获取块的内容](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block/get) | 获取指定块的富文本内容 |
 | docx.v1.documentBlock.list | [获取文档所有块](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block/list) | 获取文档所有块的富文本内容并分页返回 |
-| docx.v1.documentBlock.patch | [更新块](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block/patch) | 云文档-文档-块-更新块的内容-更新指定的块 |
+| docx.v1.documentBlock.patch | [更新块的内容](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document-block/patch) | 更新指定的块 |
+| docx.v1.document.convert | [Markdown/HTML 内容转换为文档块](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document/convert) | 将 HTML/Markdown 格式的内容转换为文档块 |
 | docx.v1.document.create | [创建文档](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document/create) | 创建文档类型为 docx 的文档。你可选择传入文档标题和文件夹 |
 | docx.v1.document.get | [获取文档基本信息](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document/get) | 获取文档标题和最新版本 ID |
 | docx.v1.document.rawContent | [获取文档纯文本内容](https://open.feishu.cn/document/ukTMukTMukTM/uUDN04SN0QjL1QDN/document-docx/docx-v1/document/raw_content) | 获取文档的纯文本内容 |
@@ -740,7 +741,7 @@
 | drive.v1.fileCommentReply.delete | [删除回复](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file-comment-reply/delete) | 删除云文档中的某条回复 |
 | drive.v1.fileCommentReply.list | [获取回复信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file-comment-reply/list) | 该接口用于根据评论 ID，获取该条评论对应的回复信息，包括回复 ID、回复内容、回复人的用户 ID 等 |
 | drive.v1.fileCommentReply.update | [更新回复的内容](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file-comment-reply/update) | 更新云文档中的某条回复的内容 |
-| drive.v1.file.copy | [复制文件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/copy) | 该接口用于将用户云空间中的文件复制至其它文件夹下。不支持复制文件夹。该接口为异步接口 |
+| drive.v1.file.copy | [复制文件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/copy) | 将用户云空间中的文件复制至其它文件夹下。该接口为异步接口 |
 | drive.v1.file.createFolder | [新建文件夹](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/create_folder) | 该接口用于在用户云空间指定文件夹中创建一个空文件夹 |
 | drive.v1.file.createShortcut | [创建文件快捷方式](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/create_shortcut) | 创建指定文件的快捷方式到云空间的其它文件夹中 |
 | drive.v1.file.delete | [删除文件或文件夹](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/delete) | 删除用户在云空间内的文件或者文件夹。文件或文件夹被删除后，会进入回收站中 |
@@ -749,7 +750,7 @@
 | drive.v1.file.list | [获取文件夹中的文件清单](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/list) | 该接口用于获取用户云空间指定文件夹中文件信息清单。文件的信息包括名称、类型、token、创建时间、所有者 ID 等 |
 | drive.v1.file.move | [移动文件或文件夹](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/move) | 将文件或者文件夹移动到用户云空间的其他位置 |
 | drive.v1.fileStatistics.get | [获取文件统计信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file-statistics/get) | 此接口用于获取各类文件的流量统计信息和互动信息，包括阅读人数、阅读次数和点赞数 |
-| drive.v1.file.subscribe | [订阅云文档事件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/subscribe) | 该接口用于订阅云文档的各类通知事件。了解事件订阅的配置流程和使用场景，参考[事件概述]。了解云文档支持的事件类型，参考[事件列表] |
+| drive.v1.file.subscribe | [订阅云文档事件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file/subscribe) | 订阅云文档的各类通知事件。调用该接口并在开发者后台添加事件后，当云文档发生指定事件时，系统会向配置的地址发送事件 |
 | drive.v1.fileSubscription.create | [创建订阅](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file-subscription/create) | 订阅文档中的变更事件，当前支持文档评论订阅，订阅后文档评论更新会有“云文档助手”推送给订阅的用户 |
 | drive.v1.fileSubscription.get | [获取订阅状态](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file-subscription/get) | 根据订阅ID获取该订阅的状态 |
 | drive.v1.fileSubscription.patch | [更新订阅状态](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file-subscription/patch) | 根据订阅ID更新订阅状态 |
@@ -762,30 +763,30 @@
 | drive.v1.fileVersion.list | [获取文档版本列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file-version/list) | 获取文档或电子表格的版本列表 |
 | drive.v1.fileViewRecord.list | [获取文件访问记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/file-view_record/list) | 获取文档、电子表格、多维表格等文件的历史访问记录，包括访问者的 ID、姓名、头像和最近访问时间 |
 | drive.v1.importTask.create | [创建导入任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/import_task/create) | 该接口用于创建导入文件的任务，并返回导入任务 ID。导入文件指将本地文件如 Word、TXT、Markdown、Excel 等格式的文件导入为某种格式的飞书在线云文档。该接口为异步接口，需要继续调用[查询导入任务结果]接口获取导入结果。了解完整的导入文件步骤，参考[导入文件概述] |
-| drive.v1.importTask.get | [查询导入结果](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/import_task/get) | 云空间-文件-导入文件-查询导入任务结果-根据[创建导入任务]返回的导入任务 ID（ticket）轮询导入结果。了解完整的导入文件步骤，参考[导入文件概述] |
+| drive.v1.importTask.get | [查询导入任务结果](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/import_task/get) | 根据[创建导入任务]返回的导入任务 ID（ticket）轮询导入结果。了解完整的导入文件步骤，参考[导入文件概述] |
 | drive.v1.media.batchGetTmpDownloadUrl | [获取素材临时下载链接](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/media/batch_get_tmp_download_url) | 该接口用于获取云文档中素材的临时下载链接。链接的有效期为 24 小时，过期失效 |
 | drive.v1.media.uploadFinish | [分片上传素材-完成上传](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/media/upload_finish) | 调用[上传分片]接口将分片全部上传完毕后，你需调用本接口触发完成上传。了解完整的分片上传素材流程，参考[素材概述] |
 | drive.v1.media.uploadPrepare | [分片上传素材-预上传](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/media/upload_prepare) | 发送初始化请求，以获取上传事务 ID 和分片策略，为[上传素材分片]做准备。平台固定以 4MB 的大小对素材进行分片。了解完整的分片上传素材流程，参考[素材概述] |
 | drive.v1.meta.batchQuery | [获取文件元数据](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/meta/batch_query) | 该接口用于根据文件 token 获取其元数据，包括标题、所有者、创建时间、密级、访问链接等数据 |
-| drive.v1.permissionMember.auth | [判断当前用户是否有某权限](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-member/auth) | 该接口用于根据 filetoken 判断当前登录用户是否具有某权限 |
-| drive.v1.permissionMember.batchCreate | [批量增加协作者权限](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-member/batch_create) | 该接口可根据云文档 token 批量将用户添加为云文档的协作者 |
-| drive.v1.permissionMember.create | [增加协作者权限](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-member/create) | 该接口用于根据云文档的 token 给用户增加文档的权限 |
-| drive.v1.permissionMember.delete | [移除协作者权限](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-member/delete) | 该接口用于根据文件的 token 移除文档协作者的权限 |
-| drive.v1.permissionMember.list | [获取协作者列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-member/list) | 该接口用于根据文件的 token 查询协作者 |
-| drive.v1.permissionMember.transferOwner | [转移所有者](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-member/transfer_owner) | 该接口用于根据云文档 token 和用户信息转移文件的所有者 |
-| drive.v1.permissionMember.update | [更新协作者权限](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-member/update) | 该接口用于根据文件的 token 更新文档协作者的权限 |
-| drive.v1.permissionPublic.get | [获取云文档权限设置](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-public/get) | 该接口用于根据 filetoken 获取云文档的权限设置 |
-| drive.v1.permissionPublicPassword.create | [开启密码](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-public-password/create) | 该接口用于根据 filetoken 开启云文档的密码 |
-| drive.v1.permissionPublicPassword.delete | [关闭密码](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-public-password/delete) | 该接口用于根据 filetoken 关闭云文档的密码 |
-| drive.v1.permissionPublicPassword.update | [刷新密码](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-public-password/update) | 该接口用于根据 filetoken 刷新云文档的密码 |
-| drive.v1.permissionPublic.patch | [更新云文档权限设置](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-public/patch) | 该接口用于根据 filetoken 更新云文档的权限设置 |
+| drive.v1.permissionMember.auth | [判断用户云文档权限](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-member/auth) | 判断当前请求的应用或用户是否具有指定云文档的指定权限，权限包括阅读、编辑、分享、评论、导出等权限 |
+| drive.v1.permissionMember.batchCreate | [批量增加协作者权限](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-member/batch_create) | 为指定云文档批量添加多个协作者，协作者可以是用户、群组、部门、用户组等 |
+| drive.v1.permissionMember.create | [增加协作者权限](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-member/create) | 为指定云文档添加协作者，协作者可以是用户、群组、部门、用户组等 |
+| drive.v1.permissionMember.delete | [移除云文档协作者权限](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-member/delete) | 通过云文档 token 和协作者 ID 移除指定云文档协作者的权限 |
+| drive.v1.permissionMember.list | [获取云文档协作者](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-member/list) | 获取指定云文档的协作者，支持查询人、群、组织架构、用户组、知识库成员五种类型的协作者 |
+| drive.v1.permissionMember.transferOwner | [转移云文档所有者](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-member/transfer_owner) | 转移指定云文档的所有者 |
+| drive.v1.permissionMember.update | [更新协作者权限](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-member/update) | 更新指定云文档中指定协作者的权限，包括可阅读、可编辑、可管理权限 |
+| drive.v1.permissionPublic.get | [获取云文档权限设置](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-public/get) | 获取指定云文档的权限设置，包括是否允许内容被分享到组织外、谁可以查看、添加、移除协作者等设置 |
+| drive.v1.permissionPublicPassword.create | [启用云文档密码](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-public-password/create) | 启用指定云文档的密码。密码启用后，组织外用户需要密码访问，组织内用户无需密码可直接访问 |
+| drive.v1.permissionPublicPassword.delete | [停用云文档密码](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-public-password/delete) | 停用指定云文档的密码。密码停用后，组织外用户访问文档将无需输入密码 |
+| drive.v1.permissionPublicPassword.update | [刷新云文档密码](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-public-password/update) | 刷新指定云文档的密码。密码刷新后，旧密码将失效，并生成新密码 |
+| drive.v1.permissionPublic.patch | [更新云文档权限设置](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/drive-v1/permission-public/patch) | 更新指定云文档的权限设置，包括是否允许内容被分享到组织外、谁可以查看、添加、移除协作者、谁可以复制内容等设置 |
 
 ## 业务域: driveV2
 | MCP 工具名称 | API | 描述 | 
 | --- | --- | --- |
 | drive.v2.fileLike.list | [获取云文档的点赞者列表](https://open.feishu.cn/document/ukTMukTMukTM/uIzNzUjLyczM14iM3MTN/drive-v2/file-like/list) | 获取指定云文档的点赞者列表并按点赞时间由近到远分页返回 |
-| drive.v2.permissionPublic.get | [获取云文档权限设置](https://open.feishu.cn/document/ukTMukTMukTM/uIzNzUjLyczM14iM3MTN/drive-v2/permission-public/get) | 该接口用于根据 filetoken 获取云文档的权限设置 |
-| drive.v2.permissionPublic.patch | [更新云文档权限设置](https://open.feishu.cn/document/ukTMukTMukTM/uIzNzUjLyczM14iM3MTN/drive-v2/permission-public/patch) | 该接口用于根据 filetoken 更新云文档的权限设置 |
+| drive.v2.permissionPublic.get | [获取云文档权限设置](https://open.feishu.cn/document/ukTMukTMukTM/uIzNzUjLyczM14iM3MTN/drive-v2/permission-public/get) | 获取指定云文档的权限设置，包括是否允许内容被分享到组织外、谁可以查看、添加、移除协作者、谁可以复制内容等设置 |
+| drive.v2.permissionPublic.patch | [更新云文档权限设置](https://open.feishu.cn/document/ukTMukTMukTM/uIzNzUjLyczM14iM3MTN/drive-v2/permission-public/patch) | 更新指定云文档的权限设置，包括是否允许内容被分享到组织外、谁可以查看、添加、移除协作者、谁可以复制内容等设置 |
 
 ## 业务域: ehrV1
 | MCP 工具名称 | API | 描述 | 
@@ -800,33 +801,6 @@
 ## 业务域: helpdeskV1
 | MCP 工具名称 | API | 描述 | 
 | --- | --- | --- |
-| helpdesk.v1.agentSchedule.create | [创建客服工作日程](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/agent_schedule/create) | 该接口用于创建客服日程 |
-| helpdesk.v1.agentSchedule.list | [查询全部客服工作日程](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/agent_schedule/list) | 该接口用于获取所有客服信息 |
-| helpdesk.v1.agentSkillRule.list | [获取客服技能列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/agent_skill_rule/list) | 该接口用于获取全部客服技能。仅支持自建应用 |
-| helpdesk.v1.agentSkill.create | [创建客服技能](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/agent_skill/create) | 该接口用于创建客服技能 |
-| helpdesk.v1.agentSkill.delete | [删除客服技能](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/agent_skill/delete) | 该接口用于删除客服技能 |
-| helpdesk.v1.agentSkill.get | [查询指定客服技能](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/agent_skill/get) | 该接口用于获取客服技能 |
-| helpdesk.v1.agentSkill.list | [查询全部客服技能](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/agent_skill/list) | 获取全部客服技能 |
-| helpdesk.v1.agentSkill.patch | [更新客服技能](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/agent_skill/patch) | 该接口用于更新客服技能 |
-| helpdesk.v1.agent.agentEmail | [获取客服邮箱](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/agent/agent_email) | 该接口用于获取客服邮箱地址 |
-| helpdesk.v1.agent.patch | [更新客服信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/agent/patch) | 更新客服状态等信息 |
-| helpdesk.v1.agentSchedules.delete | [删除客服工作日程](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/agent-schedules/delete) | 该接口用于删除客服日程 |
-| helpdesk.v1.agentSchedules.get | [查询指定客服工作日程](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/agent-schedules/get) | 该接口用于获取客服信息 |
-| helpdesk.v1.agentSchedules.patch | [更新客服工作日程](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/agent-schedules/patch) | 该接口用于更新客服的日程 |
-| helpdesk.v1.botMessage.create | [服务台机器人向工单绑定的群内发送消息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/bot-message/create) | 通过服务台机器人给指定用户的服务台专属群或私聊发送消息，支持文本、富文本、卡片、图片 |
-| helpdesk.v1.category.create | [创建知识库分类](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/category/create) | 该接口用于创建知识库分类 |
-| helpdesk.v1.category.delete | [删除知识库分类详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/category/delete) | 该接口用于删除知识库分类详情 |
-| helpdesk.v1.category.get | [获取知识库分类](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/category/get) | 该接口用于获取知识库分类 |
-| helpdesk.v1.category.list | [获取全部知识库分类](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/category/list-categories) | list all categories |
-| helpdesk.v1.category.patch | [更新知识库分类详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/category/patch) | 该接口用于更新知识库分类详情 |
-| helpdesk.v1.event.subscribe | [订阅服务台事件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/event/subscribe) | 本接口用于订阅服务台事件 |
-| helpdesk.v1.event.unsubscribe | [取消订阅服务台事件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/event/unsubscribe) | 本接口用于取消订阅服务台事件 |
-| helpdesk.v1.faq.create | [创建知识库](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/faq/create) | 该接口用于创建知识库 |
-| helpdesk.v1.faq.delete | [删除知识库](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/faq/delete) | 该接口用于删除知识库 |
-| helpdesk.v1.faq.get | [获取指定知识库详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/faq/get) | 该接口用于获取服务台知识库详情 |
-| helpdesk.v1.faq.list | [获取全部知识库详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/faq/list) | 该接口用于获取服务台知识库详情 |
-| helpdesk.v1.faq.patch | [修改知识库](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/faq/patch) | 该接口用于修改知识库 |
-| helpdesk.v1.faq.search | [搜索知识库](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/faq/search) | 该接口用于搜索服务台知识库 |
 | helpdesk.v1.notification.cancelApprove | [取消审核](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/notification/cancel_approve) | 提交审核后，如果需要取消审核，则调用此接口 |
 | helpdesk.v1.notification.cancelSend | [取消推送](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/notification/cancel_send) | 取消推送接口，审核通过后待调度可以调用，发送过程中可以调用（会撤回已发送的消息），发送完成后可以需要推送（会撤回所有已发送的消息） |
 | helpdesk.v1.notification.create | [创建推送](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/notification/create) | 调用接口创建推送，创建成功后为草稿状态 |
@@ -835,19 +809,6 @@
 | helpdesk.v1.notification.patch | [更新推送](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/notification/patch) | 更新推送信息，只有在草稿状态下才可以调用此接口进行更新 |
 | helpdesk.v1.notification.preview | [预览推送](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/notification/preview) | 在正式执行推送之前是可以调用此接口预览设置的推送内容 |
 | helpdesk.v1.notification.submitApprove | [提交审核](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/notification/submit_approve) | 正常情况下调用创建推送接口后，就可以调用提交审核接口，如果创建人是服务台owner则会自动审核通过，否则会通知服务台owner审核此推送信息 |
-| helpdesk.v1.ticketCustomizedField.create | [创建工单自定义字段](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/ticket_customized_field/create-ticket-customized-field) | create ticket customized field |
-| helpdesk.v1.ticketCustomizedField.delete | [删除工单自定义字段](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/ticket_customized_field/delete) | 该接口用于删除工单自定义字段 |
-| helpdesk.v1.ticketCustomizedField.get | [获取指定工单自定义字段](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/ticket_customized_field/get-ticket-customized-field) | get ticket customized field |
-| helpdesk.v1.ticketCustomizedField.list | [获取全部工单自定义字段](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/ticket_customized_field/list-ticket-customized-fields) | list the ticket customized fields |
-| helpdesk.v1.ticketCustomizedField.patch | [更新工单自定义字段](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/ticket_customized_field/update-ticket-customized-field) | update the ticket customized field |
-| helpdesk.v1.ticket.answerUserQuery | [回复用户在工单里的提问](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/ticket/answer_user_query) | 该接口用于回复用户提问结果至工单，需要工单仍处于进行中且未接入人工状态。仅支持自建应用 |
-| helpdesk.v1.ticket.customizedFields | [获取服务台自定义字段](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/ticket/customized_fields) | 该接口用于获取服务台自定义字段详情 |
-| helpdesk.v1.ticket.get | [查询指定工单详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/ticket/get) | 该接口用于获取单个服务台工单详情。仅支持自建应用 |
-| helpdesk.v1.ticket.list | [查询全部工单详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/ticket/list) | 该接口用于获取全部工单详情。仅支持自建应用 |
-| helpdesk.v1.ticketMessage.create | [发送工单消息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/ticket-message/create) | 该接口用于发送工单消息 |
-| helpdesk.v1.ticketMessage.list | [获取工单消息详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/ticket-message/list) | 该接口用于获取服务台工单消息详情 |
-| helpdesk.v1.ticket.startService | [创建服务台对话](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/ticket/start_service) | 该接口用于创建服务台对话 |
-| helpdesk.v1.ticket.update | [更新工单详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/helpdesk-v1/ticket/update) | 该接口用于更新服务台工单详情。只会更新数据，不会触发相关操作。如修改工单状态到关单，不会关闭聊天页面。仅支持自建应用。要更新的工单字段必须至少输入一项 |
 
 ## 业务域: hireV1
 | MCP 工具名称 | API | 描述 | 
@@ -858,7 +819,7 @@
 | hire.v1.agency.getAgencyAccount | [查询猎头供应商下猎头列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/agency/get_agency_account) | 根据猎头供应商 ID 查询该猎头供应商下的猎头列表 |
 | hire.v1.agency.operateAgencyAccount | [禁用/取消禁用猎头](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/agency/operate_agency_account) | 可根据猎头 ID 对猎头执行禁用/取消禁用操作。被禁用的猎头，不能推荐候选人与被分配职位 |
 | hire.v1.agency.protect | [设置猎头保护期](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/agency/protect) | 设置指定人才的猎头保护期，当「飞书招聘」内置的保护期功能不满足需求时，客户可通过此接口自定义人才的保护期 |
-| hire.v1.agency.protectSearch | [查询人才猎头保护期信息](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/agency/protect_search) | 招聘-获取候选人-猎头-查询猎头保护期信息-查询指定人才的猎头保护期信息列表，包含保护期起止时间、猎头供应商、猎头顾问信息等。若人才已经入职，还会返回入职时所在的保护期信息 |
+| hire.v1.agency.protectSearch | [查询猎头保护期信息](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/agency/protect_search) | 查询指定人才的猎头保护期信息列表，包含保护期起止时间、猎头供应商、猎头顾问信息等。若人才已经入职，还会返回入职时所在的保护期信息 |
 | hire.v1.agency.query | [查询猎头供应商信息](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/agency/query) | 根据猎头供应商名称查询有合作关系的猎头供应商信息，包含猎头供应商ID、名称、联系人等 |
 | hire.v1.application.cancelOnboard | [取消候选人入职](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/application/cancel_onboard) | 取消待入职状态的候选人入职 |
 | hire.v1.application.create | [创建投递](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/application/create) | 为人才在特定职位上创建投递 |
@@ -872,7 +833,7 @@
 | hire.v1.application.transferOnboard | [操作候选人入职](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/application/transfer_onboard) | 根据投递 ID 操作候选人入职并创建员工，后续可通过 [通过员工 ID 获取入职信息] 接口获取入职信息 |
 | hire.v1.application.transferStage | [转移投递阶段](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/application/transfer_stage) | 根据投递 ID 和投递阶段 ID 转移投递阶段 |
 | hire.v1.attachment.get | [获取附件信息](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/attachment/get) | 根据附件 ID 和附件类型获取招聘系统中附件的信息，比如附件名称、附件创建时间、附件下载地址等 |
-| hire.v1.attachment.preview | [获取人才简历附件 PDF 格式下载链接](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/attachment/preview) | 招聘-附件-获取附件 PDF 格式下载链接-根据人才简历附件 ID 获取该简历附件对应的 PDF 文件的下载地址 |
+| hire.v1.attachment.preview | [获取附件 PDF 格式下载链接](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/attachment/preview) | 根据人才简历附件 ID 获取该简历附件对应的 PDF 文件的下载地址 |
 | hire.v1.backgroundCheckOrder.list | [获取背调信息列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/background_check_order/list) | 根据投递 ID 或背调更新时间批量获取背调订单信息 |
 | hire.v1.diversityInclusion.search | [获取申请表附加信息](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/diversity_inclusion/search) | 获取候选人的申请表附加信息。支持通过投递 ID 或者人才 ID 进行查询 |
 | hire.v1.ecoAccountCustomField.batchDelete | [删除账号自定义字段](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/eco_account_custom_field/batch_delete) | 飞书招聘的背调或笔试服务商，可通过此接口删除账号自定义字段（如客户在服务商处的租户 ID、账号 ID等） |
@@ -939,7 +900,7 @@
 | hire.v1.jobRequirement.delete | [删除招聘需求](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/job_requirement/delete) | 删除指定的招聘需求，请注意：若该招聘需求已经关联到职位上，则需先接触关联后，才能删除招聘需求 |
 | hire.v1.jobRequirement.list | [获取招聘需求列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/job_requirement/list) | 获取招聘需求列表 |
 | hire.v1.jobRequirement.listById | [获取招聘需求信息](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/job_requirement/list_by_id) | 根据「招聘需求ID」获取招聘需求信息，支持批量查询 |
-| hire.v1.jobRequirement.update | [更新招聘需求](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/job_requirement/update) | 更新指定招聘需求的信息，包含招聘需求的名称、状态、需求人数等 |
+| hire.v1.jobRequirement.update | [更新招聘需求](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/job_requirement/update) | 更新指定招聘需求的信息，包含招聘需求的名称、状态、需求人数等。（审批中的招聘需求无法更新） |
 | hire.v1.jobSchema.list | [获取职位模板](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/job_schema/list) | 获取社招、校招职位模板中的职位字段，返回结果包括系统默认字段和自定义字段。招聘管理员可在「飞书招聘」-「设置」-「职位管理」-「职位字段管理」中修改职位模板 |
 | hire.v1.jobType.list | [获取职位类别列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/job_type/list) | 获取招聘系统预置的职位类别列表，可用于操作职位（如[新建职位]），操作招聘需求（如[创建招聘需求]）时回填职位类别字段。返回列表默认按创建时间升序排序，且包含节点的层级关系（节点的父节点 ID），可在获取全量数据后自行构建职位类别树 |
 | hire.v1.job.close | [关闭职位](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/job/close) | 关闭职位后，职位所有的职位广告将同步从官网、内推、猎头渠道下线 |
@@ -975,14 +936,14 @@
 | hire.v1.questionnaire.list | [获取面试满意度问卷列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/questionnaire/list) | 批量获取面试满意度问卷信息，包含问卷完成情况、问卷题目及问卷题目作答内容等信息 |
 | hire.v1.referralAccount.create | [注册内推账户](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/referral_account/create) | 通过内推人的手机号或邮箱注册「内推奖励账户」。注册后，可通过[查询内推账户]接口获取内推账户 ID、积分余额、现金余额等，可通过[「全额提取内推账号余额」]接口提取账户余额，可通过[启动内推账户]、[「停用内推账户」]接口启/停用账户 |
 | hire.v1.referralAccount.deactivate | [停用内推账户](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/referral_account/deactivate) | 停用内推账户，停用后，将不再发送[「内推账户余额变更事件」]，也无法通过[「提取内推账号余额」]提取 |
-| hire.v1.referralAccount.enable | [启用内推账户 ](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/referral_account/enable) | 招聘-内推账户-启用内推账户-根据账户 ID 启用账户，启用后可通过[「内推账户余额变更事件」]监听余额变更、通过[「全额提取内推账户余额」]提取余额 |
+| hire.v1.referralAccount.enable | [启用内推账户](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/referral_account/enable) | 根据账户 ID 启用账户，启用后可通过[「内推账户余额变更事件」]监听余额变更、通过[「全额提取内推账户余额」]提取余额 |
 | hire.v1.referralAccount.getAccountAssets | [查询内推账户](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/referral_account/get_account_assets) | 根据账户 ID 查询内推账户信息 |
 | hire.v1.referralAccount.reconciliation | [内推账户提现数据对账](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/referral_account/reconciliation) | 对一段时间内的内推账户积分提现数据进行对账，调用方需传入调用方系统的内推账户积分变动信息 |
 | hire.v1.referralAccount.withdraw | [全额提取内推账户余额](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/referral_account/withdraw) | 通过账户 ID 全额提取内推账户下的积分/现金。全额提现后，内推人在飞书招聘系统中的积分/现金余额会变为 0，对应的积分/现金奖励状态也会变为「已发放」 |
 | hire.v1.referralWebsiteJobPost.get | [获取内推官网下职位广告详情](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/referral_website-job_post/get) | 根据职位广告 ID 获取内推官网下的职位广告详情，包含职位广告 ID 以及职位信息等 |
 | hire.v1.referralWebsiteJobPost.list | [获取内推官网下职位广告列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/referral_website-job_post/list) | 获取内推官网下的职位列表，包含职位广告ID、职位广告名称、职位信息等 |
 | hire.v1.referral.getByApplication | [获取内推信息](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/referral/get_by_application) | 根据投递 ID 获取内推信息，包含内推人信息、内推创建时间等 |
-| hire.v1.referral.search | [查询内推信息](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/referral/search) | 招聘-获取候选人-内推-查询人才内推信息-根据人才查询内推信息列表，包含内推人信息、内推时间、投递 ID等，按内推投递的`创建时间`从小到大排序返回 |
+| hire.v1.referral.search | [查询人才内推信息](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/referral/search) | 根据人才查询内推信息列表，包含内推人信息、内推时间、投递 ID等，按内推投递的`创建时间`从小到大排序返回 |
 | hire.v1.registrationSchema.list | [获取信息登记表列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/registration_schema/list) | 根据适用场景获取信息登记表列表，可获取到的信息包括登记表名称、登记表模块、登记表字段等 |
 | hire.v1.resumeSource.list | [获取简历来源列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/resume_source/list) | 获取简历来源列表 |
 | hire.v1.role.get | [获取角色详情](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/role/get) | 可通过此接口获取角色详情信息，包括名称、描述、权限列表等 |
@@ -1017,7 +978,7 @@
 | hire.v1.userRole.list | [获取用户角色列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/user_role/list) | 通过用户ID、角色ID等筛选条件获取用户角色列表，可获取的信息包括用户ID、角色ID、角色姓名、业务管理范围等 |
 | hire.v1.websiteChannel.create | [新建招聘官网推广渠道](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-channel/create) | 新建指定官网的推广渠道。每个官网可以新建多个推广渠道，每个推广渠道具有不同的推广链接和推广码 |
 | hire.v1.websiteChannel.delete | [删除招聘官网推广渠道](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-channel/delete) | 根据招聘官网 ID 和推广渠道 ID 删除推广渠道 |
-| hire.v1.websiteChannel.list | [获取官网推广渠道列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-channel/list) | 招聘-获取候选人-官网-获取招聘官网推广渠道列表-根据官网 ID 获取推广渠道列表，支持分页查询 |
+| hire.v1.websiteChannel.list | [获取招聘官网推广渠道列表](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-channel/list) | 根据官网 ID 获取推广渠道列表，支持分页查询 |
 | hire.v1.websiteChannel.update | [更新招聘官网推广渠道](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-channel/update) | 根据招聘官网 ID 和推广渠道 ID 更改推广渠道，仅支持修改推广渠道名称 |
 | hire.v1.websiteDeliveryTask.get | [获取招聘官网投递任务结果](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-delivery_task/get) | 通过[根据简历附件创建招聘官网投递]接口创建的投递任务，可通过本接口获取投递任务结果。如果获取到的数据 data 为空，可继续轮询（正常情况下不会超过1分钟）直到获取到的 data 不为空 |
 | hire.v1.websiteDelivery.createByAttachment | [根据简历附件创建招聘官网投递任务](https://open.feishu.cn/document/ukTMukTMukTM/uMzM1YjLzMTN24yMzUjN/hire-v1/website-delivery/create_by_attachment) | 根据简历附件创建招聘官网投递任务，创建投递的最终结果请通过[获取招聘官网投递任务结果]获取 |
@@ -1031,7 +992,7 @@
 ## 业务域: hireV2
 | MCP 工具名称 | API | 描述 | 
 | --- | --- | --- |
-| hire.v2.interviewRecord.get | [获取面试评价信息（新版）](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/hire-v2/interview_record/get) | 候选人管理-投递流程-面试-获取面试评价详细信息（新版）-获取面试评价详细信息，如面试结论、面试得分和面试官等信息 |
+| hire.v2.interviewRecord.get | [获取面试评价详细信息（新版）](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/hire-v2/interview_record/get) | 获取面试评价详细信息，如面试结论、面试得分和面试官等信息 |
 | hire.v2.interviewRecord.list | [批量获取面试评价详细信息（新版）](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/hire-v2/interview_record/list) | 批量获取面试评价详细信息，如面试结论、面试得分和面试官等信息 |
 | hire.v2.talent.get | [获取人才详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/hire-v2/talent/get) | 根据人才 ID 获取人才详情，包含人才加入文件夹列表、标签、人才库、备注以及屏蔽名单等信息 |
 
@@ -1082,7 +1043,7 @@
 | im.v1.message.get | [获取指定消息的内容](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/get) | 调用该接口通过消息的 `message_id` 查询消息内容 |
 | im.v1.message.list | [获取会话历史消息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/list) | 获取指定会话（包括单聊、群组）内的历史消息（即聊天记录） |
 | im.v1.message.mergeForward | [合并转发消息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/merge_forward) | 将来自同一个会话内的多条消息，合并转发给指定的用户、群聊或话题 |
-| im.v1.message.patch | [更新应用发送的消息卡片](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/patch) | 调用该接口，通过消息 ID（message_id）更新指定的消息卡片内容 |
+| im.v1.message.patch | [更新已发送的消息卡片](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/patch) | 通过消息 ID（message_id）更新已发送的消息卡片的内容 |
 | im.v1.message.pushFollowUp | [添加跟随气泡](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message/push_follow_up) | 调用该接口在最新一条消息下方添加气泡样式的内容，当消息接收者点击气泡或者新消息到达后，气泡消失 |
 | im.v1.messageReaction.create | [添加消息表情回复](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message-reaction/create) | 给指定消息添加指定类型的表情回复 |
 | im.v1.messageReaction.delete | [删除消息表情回复](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/im-v1/message-reaction/delete) | 删除指定消息的某一表情回复 |
@@ -1108,7 +1069,7 @@
 | im.v2.bizEntityTagRelation.get | [查询实体与标签的绑定关系](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/group/im-v2/biz_entity_tag_relation/get) | 查询实体与标签的绑定关系 |
 | im.v2.bizEntityTagRelation.update | [解绑标签与群](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/group/im-v2/biz_entity_tag_relation/update) | 从业务实体上解绑标签 |
 | im.v2.chatButton.update | [更新消息流卡片按钮](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/group/im-v2/chat_button/update) | 为群组消息、机器人消息的消息流卡片添加、更新、删除快捷操作按钮 |
-| im.v2.feedCard.botTimeSentive | [机器人单聊会话即时提醒](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/group/im-v2/feed_card/bot_time_sentive) | 消息流-群聊或机器人消息-机器人单聊即时提醒-可将机器人对话在消息列表中置顶展示，打开飞书首页即可处理重要任务 |
+| im.v2.feedCard.botTimeSentive | [机器人单聊即时提醒](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/group/im-v2/feed_card/bot_time_sentive) | 可将机器人对话在消息列表中置顶展示，打开飞书首页即可处理重要任务 |
 | im.v2.feedCard.patch | [即时提醒](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/group/im-v2/feed_card/patch) | 即时提醒能力是飞书在消息列表中提供的强提醒能力，当有重要通知或任务需要及时触达用户，可将群组或机器人对话在消息列表中置顶展示，打开飞书首页即可处理重要任务 |
 | im.v2.tag.create | [创建标签](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/group/im-v2/tag/create) | 创建标签并返回标签 ID |
 | im.v2.tag.patch | [修改标签](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/group/im-v2/tag/patch) | 修改标签在各个语言下的名称 |
@@ -1210,7 +1171,7 @@
 ## 业务域: mdmV3
 | MCP 工具名称 | API | 描述 | 
 | --- | --- | --- |
-| mdm.v3.batchCountryRegion.get | [通过mdmcode批量查询国家/地区信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/mdm-v3/batch_country_region/get) | 飞书主数据-基础数据-国家/地区-根据主数据编码批量查询国家/地区-通过mdmcode批量查询国家/地区信息。资源介绍请参考[概述] |
+| mdm.v3.batchCountryRegion.get | [根据主数据编码批量查询国家/地区](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/mdm-v3/batch_country_region/get) | 通过mdmcode批量查询国家/地区信息。资源介绍请参考[概述] |
 | mdm.v3.countryRegion.list | [分页批量查询国家/地区](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/mdm-v3/country_region/list) | 分页批量查询国家/地区。资源介绍请参考[概述] |
 
 ## 业务域: minutesV1
@@ -1235,7 +1196,7 @@
 | okr.v1.period.patch | [修改 OKR 周期状态](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/okr-v1/period/patch) | 修改某个 OKR 周期的状态为「正常」、「失效」或「隐藏」，对租户所有人生效，请谨慎操作 |
 | okr.v1.progressRecord.create | [创建 OKR 进展记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/okr-v1/progress_record/create) | 创建 OKR 进展记录 |
 | okr.v1.progressRecord.delete | [删除 OKR 进展记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/okr-v1/progress_record/delete) | 根据 ID 删除 OKR 进展记录 |
-| okr.v1.progressRecord.get | [获取 OKR 进展记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/okr-v1/progress_record/get) | 根据 ID 获取 OKR 进展记录详情 |
+| okr.v1.progressRecord.get | [获取 OKR 进展记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/okr-v1/progress_record/get) | 根据 ID 获取 OKR 进展记录详情，接口返回进展记录的内容、更新时间以及进展百分比和状态 |
 | okr.v1.progressRecord.update | [更新 OKR 进展记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/okr-v1/progress_record/update) | 根据 OKR 进展记录 ID 更新进展详情 |
 | okr.v1.review.query | [查询复盘信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/okr-v1/review/query) | 根据周期和用户查询复盘信息 |
 | okr.v1.userOkr.list | [获取用户的 OKR 列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/okr-v1/user-okr/list) | 根据用户的 id 获取 OKR 列表 |
@@ -1255,6 +1216,7 @@
 | MCP 工具名称 | API | 描述 | 
 | --- | --- | --- |
 | payroll.v1.acctItem.list | [批量查询算薪项](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/payroll-v1/acct_item/list) | 批量查询算薪项 |
+| payroll.v1.costAllocationDetail.list | [查询成本分摊报表明细](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/payroll-v1/cost_allocation_detail/list) | 根据报表方案、期间、和报表类型获取成本分摊明细数据。调用接口前，需打开「财务过账」开关，并且完成发布成本分摊报表 |
 | payroll.v1.costAllocationPlan.list | [批量查询成本分摊方案](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/payroll-v1/cost_allocation_plan/list) | 根据期间分页批量查询成本分摊方案，仅返回期间内生效的方案列表 |
 | payroll.v1.costAllocationReport.list | [查询成本分摊报表汇总数据](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/payroll-v1/cost_allocation_report/list) | 根据算薪期间和成本分摊方案id获取成本分摊汇总数据。调用接口前，需在payroll 系统中打开「财务过账」开关，并且完成发布成本分摊报表 |
 | payroll.v1.datasourceRecord.query | [批量查询外部算薪数据记录](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/payroll-v1/datasource_record/query) | 1. 支持通过payroll_period（必传）、employment_id（可选）这两个预置字段，批量查询指定数据源下的数据记录列表。2. 数据源配置信息可从[获取外部数据源配置信息]或者 「飞书人事后台-设置-算薪数据设置-外部数据源配置」页面 获取 |
@@ -1290,7 +1252,7 @@
 | performance.v2.metricTemplate.query | [获取指标模板列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/performance-v2/metric_template/query) | 批量获取指标模板的信息 |
 | performance.v2.question.query | [获取标签填写题配置](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/performance-v2/question/query) | 获取标签填写题配置信息，包括标签填写题名称、标签列表等 |
 | performance.v2.reviewData.query | [获取绩效详情数据](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/performance-v2/review_data/query) | 获取被评估人各环节的绩效评估详情（不包含校准环节），如环节评估数据、环节提交状态等 |
-| performance.v2.reviewTemplate.query | [获取评估模板配置](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/performance-v2/review_template/query) | 获取评估模板配置信息，包括模版名称、执行角色、填写项类型等 |
+| performance.v2.reviewTemplate.query | [获取绩效模板配置](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/performance-v2/review_template/query) | 获取绩效模板信息，包括模版名称、执行角色、填写项类型等 |
 | performance.v2.reviewee.query | [获取被评估人信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/performance-v2/reviewee/query) | 获取绩效周期中被圈定到项目中的被评估人信息，包括未启动的项目 |
 | performance.v2.userGroupUserRel.write | [更新人员组成员](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/performance-v2/user_group_user_rel/write) | 更新指定人员组成员 |
 
@@ -1368,8 +1330,8 @@
 ## 业务域: speechToTextV1
 | MCP 工具名称 | API | 描述 | 
 | --- | --- | --- |
-| speech_to_text.v1.speech.fileRecognize | [识别语音文件 (ASR)](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/ai/speech_to_text-v1/speech/file_recognize) | AI 能力-语音识别-识别语音文件-语音文件识别接口，上传整段语音文件进行一次性识别。接口适合 60 秒以内音频识别 |
-| speech_to_text.v1.speech.streamRecognize | [识别流式语音 (ASR)](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/ai/speech_to_text-v1/speech/stream_recognize) | AI 能力-语音识别-识别流式语音-语音流式接口，将整个音频文件分片进行传入模型。能够实时返回数据。建议每个音频分片的大小为 100-200ms |
+| speech_to_text.v1.speech.fileRecognize | [识别语音文件](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/ai/speech_to_text-v1/speech/file_recognize) | 语音文件识别接口，上传整段语音文件进行一次性识别。接口适合 60 秒以内音频识别 |
+| speech_to_text.v1.speech.streamRecognize | [识别流式语音](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/ai/speech_to_text-v1/speech/stream_recognize) | 语音流式接口，将整个音频文件分片进行传入模型。能够实时返回数据。建议每个音频分片的大小为 100-200ms |
 
 ## 业务域: taskV1
 | MCP 工具名称 | API | 描述 | 
@@ -1409,11 +1371,11 @@
 | task.v2.comment.get | [获取评论详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/comment/get) | 给定一个评论的ID，返回评论的详情，包括内容，创建人，创建时间和更新时间等信息 |
 | task.v2.comment.list | [获取评论列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/comment/list) | 给定一个资源，返回该资源的评论列表。支持分页。评论可以按照创建时间的正序（asc, 从最老到最新），或者逆序（desc，从最老到最新），返回数据 |
 | task.v2.comment.patch | [更新评论](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/comment/patch) | 更新一条评论。更新时，将`update_fields`字段中填写所有要修改的评论的字段名，同时在`comment`字段中填写要修改的字段的新值即可。更新接口规范详情见[功能概述]中的“ 关于资源的更新”章节。目前只支持更新评论的"conent"字段 |
-| task.v2.customField.add | [将自定义字段加入资源](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/custom_field/add) | 将自定义字段加入一个资源。目前资源类型支持清单tasklist。一个自定义字段可以加入多个清单中。加入后，该清单可以展示任务的该字段的值，同时基于该字段实现筛选，分组等功能。如果自定义字段的设置被更新，字段加入的所有字段都能收到这个更新，并进行相应的展示 |
+| task.v2.customField.add | [将自定义字段加入资源](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/custom_field/add) | 将自定义字段加入一个资源。目前资源类型支持清单tasklist。一个自定义字段可以加入多个清单中。加入后，该清单可以展示任务的该字段的值，同时基于该字段实现筛选，分组等功能。如果自定义字段的设置被更新，字段加入的所有资源都能收到这个更新，并进行相应的展示 |
 | task.v2.customField.create | [创建自定义字段](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/custom_field/create) | 创建一个自定义字段，并将其加入一个资源上（目前资源只支持清单）。创建自定义字段必须提供字段名称，类型和相应类型的设置。目前任务自定义字段支持数字(number)，成员(member)，日期(datetime)，单选(single_select),多选(multi_select), 文本(text)几种类型。分别使用"number_setting", "member_setting", "datetime_setting", "single_select_setting", "multi_select_setting","text_setting"来设置。例如创建一个数字类型的自定义字段，并添加到guid为"ec5ed63d-a4a9-44de-a935-7ba243471c0a"的清单，可以这样发请求。```POST /task/v2/custom_fields{ "name": "价格", "type": "number", "resource_type": "tasklist", "resource_id": "ec5ed63d-a4a9-44de-a935-7ba243471c0a", "number_setting": { "format": "cny", "decimal_count": 2, "separator": "thousand" }}```表示创建一个叫做“价格”的自定义字段，保留两位小数。在界面上显示时采用人民币的格式，并显示千分位分割符。类似的，创建一个单选字段，可以这样调用接口：```POST /task/v2/custom_fields{ "name": "优先级", "type": "single_select", "resource_type": "tasklist", "resource_id": "ec5ed63d-a4a9-44de-a935-7ba243471c0a", "single_select_setting": { "options": [ { "name": "高", "color_index": 1 }, { "name": "中", "color_index": 11 }, { "name": "低", "color_index": 16 } ] }}```表示创建一个叫“优先级”的单选，包含“高”，“中”，“低”三个选项，每个选项设置一个颜色值 |
 | task.v2.customField.get | [获取自定义字段](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/custom_field/get) | 根据一个自定义字段的GUID，获取其详细的设置信息 |
 | task.v2.customField.list | [列取自定义字段](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/custom_field/list) | 列取用户可访问的自定义字段列表。如果不提供`resource_type`和`resource_id`参数，则返回用户可访问的所有自定义字段。如果提供`resource_type`和`resource_id`，则返回该资源下的自定义字段。目前`resource_type`仅支持"tasklist"，此时`resource_id`应为一个清单的tasklist_guid。该接口支持分页 |
-| task.v2.customFieldOption.create | [创建自定义字段选项](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/custom_field-option/create) | 任务-自定义字段选项-创建自定义任务选项-为单选或多选字段添加一个自定义选项。一个单选/多选字段最大支持100个选项。新添加的选项如果不隐藏，其名字不能和已存在的不隐藏选项的名字重复 |
+| task.v2.customFieldOption.create | [创建自定义任务选项](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/custom_field-option/create) | 为单选或多选字段添加一个自定义选项。一个单选/多选字段最大支持100个选项。新添加的选项如果不隐藏，其名字不能和已存在的不隐藏选项的名字重复 |
 | task.v2.customFieldOption.patch | [更新自定义字段选项](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/custom_field-option/patch) | 根据一个自定义字段的GUID和其选项的GUID，更新该选项的数据。要更新的字段必须是单选或者多选类型，且要更新的字段必须归属于该字段。更新时，将`update_fields`字段中填写所有要修改的任务字段名，同时在`option`字段中填写要修改的字段的新值即可。`update_fields`支持的字段包括：* `name`: 选项名称* `color_index`: 选项的颜色索引值* `is_hidden`: 是否从界面上隐藏* `insert_before`: 将当前option放到同字段某个option之前的那个option_guid。* `insert_after`: 将当前option放到同字段某个option之后的那个option_guid |
 | task.v2.customField.patch | [更新自定义字段](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/custom_field/patch) | 更新一个自定义字段的名称和设定。更新时，将`update_fields`字段中填写所有要修改的任务字段名，同时在`custom_field`字段中填写要修改的字段的新值即可。自定义字段不允许修改类型，只能根据类型修改其设置。`update_fields`支持更新的字段包括：* `name`：自定义字段名称* `number_setting` ：数字类型设置（当且仅当要更新的自定义字段类型是数字时)* `member_setting` ：人员类型设置（当且仅当要更新的自定义字段类型是人员时)* `datetime_setting` ：日期类型设置 (当且仅当要更新的自定义字段类型是日期时)* `single_select_setting`：单选类型设置 (当且仅当要更新的自定义字段类型是单选时)* `multi_select_setting`：多选类型设置 (当且仅当要更新的自定义字段类型是多选时)* `text_setting`: 文本类型设置（目前文本类型没有可设置项）当更改某个设置时，如果不填写一个字段，表示不覆盖原有的设定。比如，对于一个数字，原有的setting是:```json"number_setting": { "format": "normal", "decimal_count": 2, "separator": "none", "custom_symbol": "L", "custom_symbol_position": "right"}```使用如下参数调用接口：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "number_setting": { "decimal_count": 4 } }, "update_fields": ["number_setting"]}```表示仅仅将小数位数从2改为4，其余的设置`format`, `separator`, `custom_field`等都不变。对于单选/多选类型的自定义字段，其设定是一个选项列表。更新时，使用方式接近使用App的界面。使用者不必传入字段的所有选项，而是只需要提供最终希望界面可见（is_hidden=false) 的选项。原有字段中的选项如果没有出现在输入中，则被置为`is_hidden=true`并放到所有可见选项之后。对于某一个更新的选项，如果提供了option_guid，将视作更新该选项（此时option_guid必须存在于当前字段，否则会返回错误）；如果不提供，将视作新建一个选项（新的选项的option_guid会在reponse中被返回)。例如，一个单选字段原来有3个选项A，B，C，D。其中C是隐藏的。用户可以这样更新选项：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "optoins": [ { "name": "E", "color_index": 25 }, { "guid": "<option_guid of A>" "name": "A2" }, { "guid": "<option_guid of C>", }, ] } }, "update_fields": ["single_select_setting"]}```调用后最终得到了新的选项列表E, A, C, B, D。其中：* 选项E被新建出来，其`color_index`被设为了25。* 选项A被更新，其名称被改为了"A2"。但其color_index因为没有设置而保持不变；* 选项整体顺序遵循用户的输入顺序，即E，A，C。同时E，A，C作为直接的输入，其is_hidden均被设为了false，其中，C原本是is_hidden=true，也会被设置为is_hidden=false。* 选项B和D因为用户没有输入，其`is_hidden`被置为了true，并且被放到了所有用户输入的选项之后。如果只是单纯的希望修改用户可见的选项的顺序，比如从原本的选项A,B,C修改为C,B,A，可以这样调用接口：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "optoins": [ { "guid": "<option_guid_of_C>" }, { "guid": "<option_guid of B>" }, { "guid": "<option_guid of A>", }, ] } }, "update_fields": ["single_select_setting"]}```如果希望直接将字段里的所有选项都标记为不可见，可以这样调用接口：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "optoins": [] } }, "update_fields": ["single_select_setting"]}```更新单选/多选字段的选项必须满足“可见选项名字不能重复”的约束。否则会返回错误。开发者需要自行保证输入的选项名不可以重复。如希望只更新单个选项，或者希望单独设置某个选项的is_hidden，本接口无法支持，但可以使用[更新自定义字段选项]接口实现 |
 | task.v2.customField.remove | [将自定义字段移出资源](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/custom_field/remove) | 将自定义字段从资源中移出。移除后，该资源将无法再使用该字段。目前资源的类型支持"tasklist"。如果要移除自定义字段本来就不存在于资源，本接口将正常返回。注意自定义字段是通过清单来实现授权的，如果将自定义字段从所有关联的清单中移除，就意味着任何调用身份都无法再访问改自定义字段 |
@@ -1422,7 +1384,7 @@
 | task.v2.section.get | [获取自定义分组详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/section/get) | 获取一个自定义分组详情，包括名称，创建人等信息。如果该自定义分组归属于一个清单，还会返回清单的摘要信息 |
 | task.v2.section.list | [获取自定义分组列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/section/list) | 获取一个资源下所有的自定义分组列表。支持分页。返回结果按照自定义分组在界面上的顺序排序 |
 | task.v2.section.patch | [更新自定义分组](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/section/patch) | 更新自定义分组，可以更新自定义分组的名称和位置。更新时，将`update_fields`字段中填写所有要修改的字段名，同时在`section`字段中填写要修改的字段的新值即可。调用约定详情见[功能概述]中的“ 关于资源的更新”章节。目前支持更新的字段包括：* `name` - 自定义字段名字;* `insert_before` - 要让当前自定义分组放到某个自定义分组前面的secion_guid，用于改变当前自定义分组的位置;* `insert_after` - 要让当前自定义分组放到某个自定义分组后面的secion_guid，用于改变当前自定义分组的位置。`insert_before`和`insert_after`如果填写，必须是同一个资源的合法section_guid。注意不能同时设置`insert_before`和`insert_after` |
-| task.v2.section.tasks | [列取自定义分组中的任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/section/tasks) | 任务-自定义分组-获取自定义分组任务列表-列取一个自定义分组里的所有任务。支持分页。任务按照自定义排序的顺序返回。本接口支持简单的过滤 |
+| task.v2.section.tasks | [获取自定义分组任务列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/section/tasks) | 列取一个自定义分组里的所有任务。支持分页。任务按照自定义排序的顺序返回。本接口支持简单的过滤 |
 | task.v2.task.addDependencies | [添加依赖](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/add_dependencies) | 为一个任务添加一个或多个依赖。可以添加任务的前置依赖和后置依赖。存在依赖关系的任务如果在同一个清单，可以通过清单的甘特图来展示其依赖关系。本接口也可以用于修改一个现有依赖的类型（前置改为后置或者后置改为前置）。注意：添加的依赖的`task_guid`不能重复，也不能添加当前任务为自己的依赖。尝试添加一个已经存在的依赖会被自动忽略 |
 | task.v2.task.addMembers | [添加任务成员](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/add_members) | 添加任务的负责人或者关注人。一次性可以添加多个成员。返回任务的实体中会返回最终任务成员的列表。* 关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节。* 成员的角色支持"assignee"和"follower"。* 成员类型支持"user"和"app"。* 如果要添加的成员已经在任务中，则自动被忽略 |
 | task.v2.task.addReminders | [添加任务提醒](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/add_reminders) | 为一个任务添加提醒。提醒是基于任务的截止时间计算得到的一个时刻。为了设置提醒，任务必须首先拥有截止时间(due)。可以在[创建任务]时设置截止时间，或者通过[更新任务]设置一个截止时间。目前一个任务只能设置1个提醒。但接口的形式可以在未来扩充为一个任务支持多个提醒。如果当前任务已经有提醒了，要更新提醒的设置，需要先调用[移除任务提醒]接口移除原有提醒。再调用本接口添加提醒 |
@@ -1431,7 +1393,7 @@
 | task.v2.task.delete | [删除任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/delete) | 删除一个任务。删除后任务无法再被获取到 |
 | task.v2.task.get | [获取任务详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/get) | 该接口用于获取任务详情，包括任务标题、描述、时间、成员等信息 |
 | task.v2.task.list | [列取任务列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/list) | 基于调用身份，列出特定类型的所有任务。支持分页。目前只支持列取任务界面上“我负责的”任务。返回的任务数据按照任务在”我负责的“界面中”自定义拖拽“的顺序排序 |
-| task.v2.task.patch | [更新任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/patch) | 该接口用于修改任务的标题、描述、截止时间等信息。更新时，将`update_fields`字段中填写所有要修改的任务字段名，同时在`task`字段中填写要修改的字段的新值即可。如果`update_fields`中设置了要变更一个字段的名字，但是task里没设置新的值，则表示将该字段清空。调用约定详情见[功能概述]中的“ 关于资源的更新”章节。目前支持更新的字段包括：* `summary` - 任务标题* `description` - 任务描述* `start` - 任务开始时间* `due` - 任务截止时间* `completed_at` - 用于标记任务完成/未完成* `extra` - 任务附带自定义数据* `custom_complete` - 任务自定义完成配置。* `repeat_rule` - 重复任务规则。* `mode` - 任务完成模式。* `is_milestone` - 是否是里程碑任务。* `custom_fields` - 自定义字段值。该接口可以用于完成任务和将任务恢复至未完成，只需要修改`completed_at`字段即可。但留意，目前不管任务本身是会签任务还是或签任务，oapi对任务进行完成只能实现“整体完成”，不支持个人单独完成。此外，不能对已经完成的任务再次完成，但可以将其恢复到未完成的状态(设置`completed_at`为"0")。如更新自定义字段的值，需要调用身份同时拥有任务的编辑权限和自定义字段的编辑权限。详情见[自定义字段功能概览]。更新时，只有填写在`task.custom_fields`的自定义字段值会被更新，不填写的不会被改变。任务成员/提醒/清单数据不能使用本接口进行更新。* 如要修改任务成员，需要使用[添加任务成员]和[移除任务成员]接口。* 如要修改任务提醒，需要使用[添加任务提醒]和[移除任务提醒]接口。* 如要变更任务所在的清单，需要使用[任务加入清单]和[任务移出清单]接口 |
+| task.v2.task.patch | [更新任务](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/patch) | 该接口用于修改任务的标题、描述、截止时间等信息。更新时，将`update_fields`字段中填写所有要修改的任务字段名，同时在`task`字段中填写要修改的字段的新值即可。如果`update_fields`中设置了要变更一个字段的名字，但是task里没设置新的值，则表示将该字段清空。调用约定详情见[功能概述]中的“ 关于资源的更新”章节。该接口可以用于完成任务和将任务恢复至未完成，只需要修改`completed_at`字段即可。但留意，目前不管任务本身是会签任务还是或签任务，oapi对任务进行完成只能实现“整体完成”，不支持个人单独完成。此外，不能对已经完成的任务再次完成，但可以将其恢复到未完成的状态(设置`completed_at`为"0")。如更新自定义字段的值，需要调用身份同时拥有任务的编辑权限和自定义字段的编辑权限。详情见[自定义字段功能概览]。更新时，只有填写在`task.custom_fields`的自定义字段值会被更新，不填写的不会被改变。任务成员/提醒/清单数据不能使用本接口进行更新。* 如要修改任务成员，需要使用[添加任务成员]和[移除任务成员]接口。* 如要修改任务提醒，需要使用[添加任务提醒]和[移除任务提醒]接口。* 如要变更任务所在的清单，需要使用[任务加入清单]和[任务移出清单]接口 |
 | task.v2.task.removeDependencies | [移除依赖](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/remove_dependencies) | 从一个任务移除一个或者多个依赖。移除时只需要输入要移除的`task_guid`即可。注意，如果要移除的依赖非当前任务的依赖，会被自动忽略。接口会返回成功 |
 | task.v2.task.removeMembers | [移除任务成员](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/remove_members) | 移除任务成员。一次性可以移除多个成员。可以移除任务的负责人或者关注人。移除时，如果要移除的成员不是任务成员，会被自动忽略。本接口返回移除成员后的任务数据，包含移除后的任务成员列表 |
 | task.v2.task.removeReminders | [移除任务提醒](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/task-v2/task/remove_reminders) | 将一个提醒从任务中移除。如果要移除的提醒本来就不存在，本接口将直接返回成功 |
@@ -1456,7 +1418,7 @@
 ## 业务域: tenantV2
 | MCP 工具名称 | API | 描述 | 
 | --- | --- | --- |
-| tenant.v2.tenantProductAssignInfo.query | [获取企业席位信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/tenant-v2/tenant-product_assign_info/query) | 企业信息-企业席位信息-获取企业席位信息接口-获取租户下待分配的席位列表，包含席位名称、席位ID、数量及对应有效期 |
+| tenant.v2.tenantProductAssignInfo.query | [获取企业席位信息接口](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/tenant-v2/tenant-product_assign_info/query) | 获取租户下待分配的席位列表，包含席位名称、席位ID、数量及对应有效期 |
 | tenant.v2.tenant.query | [获取企业信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/tenant-v2/tenant/query) | 获取企业名称、企业编号等企业信息 |
 
 ## 业务域: translationV1
@@ -1472,7 +1434,7 @@
 | trust_party.v1.collaborationTenantCollaborationUser.get | [获取关联组织成员详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/trust_party-v1/collaboration_tenant-collaboration_user/get) | 获取关联组织成员详情，需要对关联组织成员有权限才可以获取 |
 | trust_party.v1.collaborationTenant.get | [获取关联组织详情](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/trust_party-v1/collaboration_tenant/get) | 基于组织tenant key获取关联组织详情，需要对对方组织有可见权限才可以获取 |
 | trust_party.v1.collaborationTenant.list | [获取可见关联组织的列表](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/trust_party-v1/collaboration_tenant/list) | 分页获取用户可见的关联列表 |
-| trust_party.v1.collaborationTenant.visibleOrganization | [获取关联组织的成员信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/trust_party-v1/collaboration_tenant/visible_organization) | 关联组织-关联组织-获取关联组织的部门和成员信息-该接口会返回用户在外部部门下可见的下级部门、用户、用户组 |
+| trust_party.v1.collaborationTenant.visibleOrganization | [获取关联组织的部门和成员信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/trust_party-v1/collaboration_tenant/visible_organization) | 该接口会返回用户在外部部门下可见的下级部门、用户、用户组 |
 
 ## 业务域: vcV1
 | MCP 工具名称 | API | 描述 | 
@@ -1536,7 +1498,7 @@
 ## 业务域: verificationV1
 | MCP 工具名称 | API | 描述 | 
 | --- | --- | --- |
-| verification.v1.verification.get | [获取认证信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/verification-v1/verification/get) | 获取认证状态 |
+| verification.v1.verification.get | [获取认证信息](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/verification-v1/verification/get) | 认证信息-获取认证信息 |
 
 ## 业务域: wikiV1
 | MCP 工具名称 | API | 描述 | 

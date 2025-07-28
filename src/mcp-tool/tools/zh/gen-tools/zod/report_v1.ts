@@ -28,13 +28,17 @@ export const reportV1RuleViewRemove = {
   description: '[Feishu/Lark]-汇报-规则看板-移除规则看板-移除规则看板',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      user_ids: z
-        .array(z.string())
-        .describe('列表为空删除规则下全用户视图，列表不为空删除指定用户视图，大小限制200')
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    data: z
+      .object({
+        user_ids: z
+          .array(z.string())
+          .describe('列表为空删除规则下全用户视图，列表不为空删除指定用户视图，大小限制200')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ rule_id: z.string().describe('汇报规则ID') }),
   },
 };
@@ -59,7 +63,9 @@ export const reportV1TaskQuery = {
         ),
       page_size: z.number().describe('单次分页返回的条数'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };

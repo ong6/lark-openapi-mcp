@@ -141,15 +141,17 @@ export const directoryV1CollaborationTenantList = {
     '[Feishu/Lark]-Trust Party-Collaboraiton Organization-Query the list of trusted parties by Admin-When creating a rule, you need to know the tenant key of the other tenant, and you can get a valid tenant key through this interface. Please use the trusted party administrator role to use this function',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -201,7 +203,7 @@ export const directoryV1DepartmentCreate = {
   path: '/open-apis/directory/v1/departments',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Organization-Department management-Create department-This interface is used to create departments under Enterprise',
+    '[Feishu/Lark]-Organization-Department management-Create department-This interface is used to create a new department in the enterprise address book, supporting the setting of information such as department name, parent department, and department head.',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -245,16 +247,20 @@ export const directoryV1DepartmentCreate = {
             )
             .describe('Department leader')
             .optional(),
-          order_weight: z.string().describe('Ranking weights under parent department').optional(),
+          order_weight: z
+            .string()
+            .describe(
+              'The sorting weight under the superior department, with the returned results sorted in descending order by order_weight',
+            )
+            .optional(),
           enabled_status: z.boolean().describe('Enabled status').optional(),
           custom_field_values: z
             .array(
               z.object({
-                field_key: z.string().describe('Custom field key').optional(),
                 field_type: z
-                  .enum(['1', '2', '3', '4', '10', '11'])
+                  .enum(['1', '2', '3', '4', '9', '10', '11'])
                   .describe(
-                    'Custom field types Options:1(custom_field_value_type_text Text),2(custom_field_value_type_url URL),3(custom_field_value_type_enum Options),4(custom_field_value_type_generic_user Members),10(custom_field_field_type_directory_multi_enum Multiple selection options),11(custom_field_field_type_directory_multi_generic_user Members list)',
+                    'Custom field types Options:1(custom_field_value_type_text Text),2(custom_field_value_type_url URL),3(custom_field_value_type_enum Options),4(custom_field_value_type_generic_user Members),9(custom_field_value_type_phone ),10(custom_field_field_type_directory_multi_enum Multiple selection options),11(custom_field_field_type_directory_multi_generic_user Members list)',
                   )
                   .optional(),
                 text_value: z
@@ -308,6 +314,8 @@ export const directoryV1DepartmentCreate = {
                   )
                   .describe('User Field Values')
                   .optional(),
+                phone_value: z.object({ phone_number: z.string(), extension_number: z.string().optional() }).optional(),
+                field_key: z.string().describe('Custom field key').optional(),
               }),
             )
             .describe('Departmental custom field values')
@@ -315,20 +323,22 @@ export const directoryV1DepartmentCreate = {
         })
         .describe('Create Department'),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          'User ID categories Options:open_id(Identifies the identity of a user in an application. The same user has different Open IDs in different applications. [Learn more: How to get an Open ID]),union_id(Identifies the identity of a user under an application developer. The Union ID of the same user in an application under the same developer is the same, and the Union ID in an application under different developers is different. With Union ID, application developers can associate the identity of the same user in multiple applications. [Learn more: How to get Union ID?]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          'The type of department ID used in this call Options:department_id(Used to identify a unique department within a tenant),open_department_id(Used to identify a department in a specific application, where the open_department_id is different for the same department in different applications.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            'User ID categories Options:open_id(Identifies the identity of a user in an application. The same user has different Open IDs in different applications. [Learn more: How to get an Open ID]),union_id(Identifies the identity of a user under an application developer. The Union ID of the same user in an application under the same developer is the same, and the Union ID in an application under different developers is different. With Union ID, application developers can associate the identity of the same user in multiple applications. [Learn more: How to get Union ID?]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            'The type of department ID used in this call Options:department_id(Used to identify a unique department within a tenant),open_department_id(Used to identify a department in a specific application, where the open_department_id is different for the same department in different applications.)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -342,14 +352,16 @@ export const directoryV1DepartmentDelete = {
     '[Feishu/Lark]-Organization-Department management-Delete department-This interface is used to delete departments',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          'The type of department ID used in this call Options:department_id(Used to identify a unique department within a tenant),open_department_id(It is used to identify a department in a specific application, and the same department has different open_department_id in different applications.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            'The type of department ID used in this call Options:department_id(Used to identify a unique department within a tenant),open_department_id(It is used to identify a department in a specific application, and the same department has different open_department_id in different applications.)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       department_id: z.string().describe('Department ID, consistent with the department_id_type type'),
     }),
@@ -385,15 +397,13 @@ export const directoryV1DepartmentFilter = {
                 value: z
                   .string()
                   .describe(
-                    'The rvalue of the filter. The content is the corresponding value type under the combination of lvalue field type and operator.When using parent_department_id conditions, the ID of the root gate can use "0"',
+                    'The right value of the filter condition, whose content is the corresponding value type under the combination of the left value field type and the operator. Its value type must be consistent with the value of the query parameter department_id_type, with a maximum length of 64 characters, and supports numbers and letters. When using the parent_department_id condition, the ID of the root department can be "0"',
                   ),
               }),
             )
             .describe('List of comparison expressions. Relationships between multiple expressions default to "and"'),
         })
-        .describe(
-          'Query Conditions [Learn more: Query Conditions Usage]',
-        ),
+        .describe('Query Conditions [Learn more: Query Conditions Usage]'),
       required_fields: z
         .array(z.string())
         .describe(
@@ -403,7 +413,9 @@ export const directoryV1DepartmentFilter = {
         .object({
           page_size: z
             .number()
-            .describe('Maximum number of entries returned per page, maximum value is 100**Default value**：20')
+            .describe(
+              'Maximum number of entries returned per page, maximum value is 100**Default value**：20**Minimum Value**: 0',
+            )
             .optional(),
           page_token: z
             .string()
@@ -414,20 +426,22 @@ export const directoryV1DepartmentFilter = {
         })
         .describe('paging information'),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID used in this call Options:open_department_id(Used to identify a department in a specific application, the same department, the same open_department_id in different applications.),department_id(Used to identify a unique department within a tenant)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID used in this call Options:open_department_id(Used to identify a department in a specific application, the same department, the same open_department_id in different applications.),department_id(Used to identify a unique department within a tenant)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -438,31 +452,37 @@ export const directoryV1DepartmentMget = {
   path: '/open-apis/directory/v1/departments/mget',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Organization-Department management-Batch get department info-This interface is used to query the details of the department in batches according to the ID of the department',
+    '[Feishu/Lark]-Organization-Department management-Batch get department info-This interface supports passing in multiple department IDs and returns detailed information for each department (such as name, person in charge, sub-departments, etc.).',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
-      department_ids: z.array(z.string()).describe('Department ID, consistent with the department_id_type type'),
+      department_ids: z
+        .array(z.string())
+        .describe(
+          'Department ID, consistent with the department_id_type. The way to get the ID: you can query it through the management background',
+        ),
       required_fields: z
         .array(z.string())
         .describe(
           'List of fields to query. Permissioned row and column data will be returned according to the passed field list. If not passed, no fields will be returned [Learn more: Field enumeration instructions]',
         ),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          'The type of department ID used in this call Options:department_id(Used to identify a unique department within a tenant),open_department_id(Used to identify a department in a specific application, the same department, the same open_department_id in different applications.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            'The type of department ID used in this call Options:department_id(Used to identify a unique department within a tenant),open_department_id(Used to identify a department in a specific application, the same department, the same open_department_id in different applications.)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -482,7 +502,7 @@ export const directoryV1DepartmentPatch = {
           custom_department_id: z
             .string()
             .describe(
-              'Customize the department ID. Note:1. Except for the need to meet the regular rules, it cannot start with od- at the same time2. Regular check: ^ [a-zA-Z0-9] [a-zA-Z0-9 _\\-@.]{ 0,63} $',
+              'Customize the department ID. Note:1. Except for the need to meet the regular rules, it cannot start with od- at the same time2. Regular check: ^ [a-zA-Z0-9] [a-zA-Z0-9 _\\-@.]{ 0,63} $**Data Validation Rules**:Length range: 1-64 characters',
             )
             .optional(),
           name: z
@@ -513,7 +533,12 @@ export const directoryV1DepartmentPatch = {
             )
             .describe('department head')
             .optional(),
-          order_weight: z.string().describe('Sorting weight under higher authority').optional(),
+          order_weight: z
+            .string()
+            .describe(
+              'The sorting weight under the superior department, and the returned results will be sorted in ascending order according to the value of order_weight.',
+            )
+            .optional(),
           enabled_status: z.boolean().describe('Whether to enable').optional(),
           custom_field_values: z
             .array(
@@ -584,20 +609,22 @@ export const directoryV1DepartmentPatch = {
         })
         .describe('Update department information'),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID used in this call Options:open_department_id(It is used to identify a department in a specific application, and the same department has different open_department_id in different applications.),department_id(Used to identify a unique department within a tenant)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID used in this call Options:open_department_id(It is used to identify a department in a specific application, and the same department has different open_department_id in different applications.),department_id(Used to identify a unique department within a tenant)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       department_id: z.string().describe('Department ID, consistent with the department_id_type type'),
     }),
@@ -611,16 +638,22 @@ export const directoryV1DepartmentSearch = {
   path: '/open-apis/directory/v1/departments/search',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Organization-Department management-Search department-This interface is used to search for department information',
+    '[Feishu/Lark]-Organization-Department management-Search department-This interface is used to search for department information, search for department information through keywords such as department names, and return a list of departments that meet the criteria.',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
-      query: z.string().describe('Search keywords. Support department name search'),
+      query: z
+        .string()
+        .describe(
+          'Search for keywords. Supports searching by department name, with a maximum input of 100 characters.',
+        ),
       page_request: z
         .object({
           page_size: z
             .number()
-            .describe('Maximum number of entries returned per page, maximum value is 100**Default value**：20')
+            .describe(
+              'Maximum number of entries returned per page, maximum value is 100**Default value**：20**Minimum Value**: 0',
+            )
             .optional(),
           page_token: z
             .string()
@@ -636,20 +669,22 @@ export const directoryV1DepartmentSearch = {
           'List of fields to be queried. Permissioned row and column data will be returned according to the passed field list. If not passed, no fields will be returned[Learn more: Field enumeration instructions]',
         ),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID used in this call Options:open_department_id(It is used to identify a department in a specific application, and the same department has different open_department_id in different applications.),department_id(Used to identify a unique department within a tenant)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID used in this call Options:open_department_id(It is used to identify a department in a specific application, and the same department has different open_department_id in different applications.),department_id(Used to identify a unique department within a tenant)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -660,7 +695,7 @@ export const directoryV1EmployeeCreate = {
   path: '/open-apis/directory/v1/employees',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Organization-Employee management-Create employee-This interface is used to create employees in the enterprise, which can be understood as employee onboarding.Employee refers to a member of Feishu\'s enterprise who is identified as "Employee", which is equivalent to "User" in the address book OpenAPI',
+    '[Feishu/Lark]-Organization-Employee management-Create employee-This API is used to create an employee under the enterprise. It supports passing in information such as name and mobile phone number to generate an employee object in the active state. Employees refer to members with the identity of "Employee" in the Feishu enterprise, which is equivalent to the "User" in the address book OpenAPI.',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -670,7 +705,7 @@ export const directoryV1EmployeeCreate = {
             .object({
               name: z
                 .object({
-                  default_value: z.string().describe('default value'),
+                  default_value: z.string().describe('default valueMinimum length: 1 character'),
                   i18n_value: z
                     .object({})
                     .catchall(z.any())
@@ -740,7 +775,7 @@ export const directoryV1EmployeeCreate = {
                 is_main_department: z
                   .boolean()
                   .describe(
-                    "Whether it is the user's main department (the user can only have one main department, and the ranking weight should be the largest. If you don't fill it in, the department with the first ranking will be used as the main department by default)",
+                    "Whether it is the user's main department (a user can only have one main department, and the sorting weight should be the largest. If not filled in, the first department in the sorting will be used as the main department by default), optional values: true/false.",
                   )
                   .optional(),
               }),
@@ -761,9 +796,7 @@ export const directoryV1EmployeeCreate = {
             .optional(),
           work_country_or_region: z
             .string()
-            .describe(
-              'Workplace country code. To obtain the country code, please use [Paging Bulk Query Country]',
-            )
+            .describe('Workplace country code. To obtain the country code, please use [Paging Bulk Query Country]')
             .optional(),
           work_place_id: z.string().describe('Workplace ID').optional(),
           work_station: z
@@ -793,16 +826,15 @@ export const directoryV1EmployeeCreate = {
           custom_field_values: z
             .array(
               z.object({
-                field_key: z.string().describe('Custom field key').optional(),
                 field_type: z
-                  .enum(['1', '2', '3', '4', '10', '11'])
+                  .enum(['1', '2', '3', '4', '9', '10', '11'])
                   .describe(
-                    'Custom field type Options:1(custom_field_value_type_text Text),2(custom_field_value_type_url URL),3(custom_field_value_type_enum Options),4(custom_field_value_type_generic_user Members),10(custom_field_field_type_directory_multi_enum Multiple selection options),11(custom_field_field_type_directory_multi_generic_user Members list)',
+                    'Custom field type Options:1(custom_field_value_type_text Text),2(custom_field_value_type_url URL),3(custom_field_value_type_enum Options),4(custom_field_value_type_generic_user Members),9(custom_field_value_type_phone ),10(custom_field_field_type_directory_multi_enum Multiple selection options),11(custom_field_field_type_directory_multi_generic_user Members list)',
                   )
                   .optional(),
                 text_value: z
                   .object({
-                    default_value: z.string().describe('default'),
+                    default_value: z.string().describe('defaultMinimum length: 1 character'),
                     i18n_value: z
                       .object({})
                       .catchall(z.any())
@@ -813,33 +845,30 @@ export const directoryV1EmployeeCreate = {
                   .optional(),
                 url_value: z
                   .object({
-                    link_text: z
-                      .object({
-                        default_value: z.string().describe('default value'),
-                        i18n_value: z
-                          .object({})
-                          .catchall(z.any())
-                          .describe(
-                            'Internationalized value, key is zh_cn, ja_jp, en_us, value is the corresponding value',
-                          )
-                          .optional(),
-                      })
-                      .describe('link title'),
-                    url: z.string().describe('mobile web link'),
-                    pcurl: z.string().describe('desktop web link'),
+                    link_text: z.object({
+                      default_value: z.string().describe('default valueLength range: 1-40 characters'),
+                      i18n_value: z
+                        .object({})
+                        .catchall(z.any())
+                        .describe(
+                          'Internationalized value, key is zh_cn, ja_jp, en_us, value is the corresponding value',
+                        )
+                        .optional(),
+                    }),
+                    url: z.string(),
+                    pcurl: z.string(),
                   })
-                  .describe('Url field value')
                   .optional(),
                 enum_value: z
                   .object({
-                    enum_ids: z.array(z.string()).describe('enum option id'),
+                    enum_ids: z.array(z.string()).describe('link title'),
                     enum_type: z
                       .enum(['1', '2'])
                       .describe(
-                        'enum type Options:1(custom_field_value_enum_type_text text),2(custom_field_value_enum_type_picture image)',
+                        'mobile web link Options:1(custom_field_value_enum_type_text text),2(custom_field_value_enum_type_picture image)',
                       ),
                   })
-                  .describe('enum field value')
+                  .describe('Url field value')
                   .optional(),
                 user_values: z
                   .array(
@@ -847,8 +876,13 @@ export const directoryV1EmployeeCreate = {
                       ids: z.array(z.string()).describe('employee id，consistent with the employee_id_type type.'),
                     }),
                   )
+                  .describe('enum field value')
+                  .optional(),
+                phone_value: z
+                  .object({ phone_number: z.string(), extension_number: z.string().optional() })
                   .describe('field representing employee')
                   .optional(),
+                field_key: z.string().describe('Custom field key').optional(),
               }),
             )
             .describe('custom field')
@@ -873,20 +907,22 @@ export const directoryV1EmployeeCreate = {
         .describe('api extend options')
         .optional(),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          'User ID categories Options:open_id(Identifies the identity of a user in an application. The same user has different Open IDs in different applications. [Learn more: How to get an Open ID]),union_id(Identifies the identity of a user under an application developer. The Union ID of the same user in an application under the same developer is the same, and the Union ID in an application under different developers is different. With Union ID, application developers can associate the identity of the same user in multiple applications. [Learn more: How to get Union ID?]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          'The type of department ID used in this call Options:department_id(Used to identify a unique department within a tenant),open_department_id(It is used to identify a department in a specific application, and the same department has the same open_department_id in different applications.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            'User ID categories Options:open_id(Identifies the identity of a user in an application. The same user has different Open IDs in different applications. [Learn more: How to get an Open ID]),union_id(Identifies the identity of a user under an application developer. The Union ID of the same user in an application under the same developer is the same, and the Union ID in an application under different developers is different. With Union ID, application developers can associate the identity of the same user in multiple applications. [Learn more: How to get Union ID?]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            'The type of department ID used in this call Options:department_id(Used to identify a unique department within a tenant),open_department_id(It is used to identify a department in a specific application, and the same department has the same open_department_id in different applications.)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -899,87 +935,91 @@ export const directoryV1EmployeeDelete = {
   description: '[Feishu/Lark]-Organization-Employee management-Delete employee-This interface is for resign employees',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      options: z
-        .object({
-          resigned_employee_resource_receiver: z
-            .object({
-              department_chat_acceptor_employee_id: z
-                .string()
-                .describe(
-                  'Department group receiver. The ID value corresponds to the employee_id_type in the query parameter.When the deleted user is the group owner of the department group, the group owner is transferred to the designated recipient, and if the recipient is not specified, it is transferred to the first person in the group by default',
-                )
-                .optional(),
-              external_chat_acceptor_employee_id: z
-                .string()
-                .describe(
-                  'External group receiver. The ID value corresponds to the employee_id_type in the query parameter.When the deleted user is an external group owner, the group owner is transferred to the designated recipient. If the recipient is not specified, it will be transferred to the first person in the group who joins the group in the same organization as the deleted user. If only the user is in the group, the external group will be disbanded',
-                )
-                .optional(),
-              docs_acceptor_employee_id: z
-                .string()
-                .describe(
-                  'Document recipient. The ID value corresponds to the employee_id_type in the query parameter.When a user is deleted, the documents owned by the user are transferred to the recipient. If no recipient is specified, the document resources will be retained under the user name',
-                )
-                .optional(),
-              calendar_acceptor_employee_id: z
-                .string()
-                .describe(
-                  'Schedule recipient. The ID value corresponds to the employee_id_type in the query parameter.When a user is deleted, the schedules owned by the user are transferred to the recipient. If no recipient is specified, the schedule resources will be retained under the user name',
-                )
-                .optional(),
-              application_acceptor_employee_id: z
-                .string()
-                .describe(
-                  'Apply the recipient. The ID value corresponds to the employee_id_type in the query parameter.When a user is deleted, the applications created by the user are transferred to the recipient. If the recipient is not specified, the application will be retained under the user name, but the user cannot log in to the developer backend to manage the application. The administrator can manually transfer the application to other people in the management backend',
-                )
-                .optional(),
-              helpdesk_acceptor_employee_id: z
-                .string()
-                .describe(
-                  "Help desk resource receiver. The ID value corresponds to the employee_id_type in the query parameter.When a user is deleted, the help desk resources they own are transferred to the recipient, and when the recipient is not specified, the help desk resources are retained under the user's name",
-                )
-                .optional(),
-              approval_acceptor_employee_id: z
-                .string()
-                .describe(
-                  "Approval of resource recipients. ID values correspond to employee_id_type in query parameters.When a user is deleted, the approval resources it owns are transferred to the recipient, and the approval resources are retained under the user's name when the recipient is not specified",
-                )
-                .optional(),
-              email_acceptor_employee_id: z
-                .string()
-                .describe(
-                  'User mail resource recipient. The ID value corresponds to the employee_id_type in the query parameter.When a user is deleted, the email resources owned by the user are transferred to the recipient. If the recipient is not specified, the email resources are retained under the user name',
-                )
-                .optional(),
-              minutes_acceptor_employee_id: z
-                .string()
-                .describe(
-                  'Wonder receiver. The ID value corresponds to the employee_id_type in the query parameter.When a user is deleted, the minutes resources owned by him are transferred to the receiver. If the receiver is not specified, the minutes will be retained under the user name',
-                )
-                .optional(),
-              survey_acceptor_employee_id: z
-                .string()
-                .describe(
-                  'Feishu Survey recipient. The ID value corresponds to the employee_id_type in the query parameters.When a user is deleted, the Feishu survey resources owned by him are transferred to the recipient. If no recipient is specified, the Feishu survey resources will be deleted directly',
-                )
-                .optional(),
-              anycross_acceptor_employee_id: z.string().describe('Anycross recipient').optional(),
-            })
-            .describe('Resource transfer methods for departing employees')
-            .optional(),
-        })
-        .describe('interface extension options')
-        .optional(),
-    }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          'User ID categories Options:open_id(Identifies the identity of a user in an application. The same user has different Open IDs in different applications. [Learn more: How to get an Open ID]),union_id(Identifies the identity of a user under an application developer. The Union ID of the same user in an application under the same developer is the same, and the Union ID in an application under different developers is different. With Union ID, application developers can associate the identity of the same user in multiple applications. [Learn more: How to get Union ID?]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        options: z
+          .object({
+            resigned_employee_resource_receiver: z
+              .object({
+                department_chat_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    'Department group receiver. The ID value corresponds to the employee_id_type in the query parameter.When the deleted user is the group owner of the department group, the group owner is transferred to the designated recipient, and if the recipient is not specified, it is transferred to the first person in the group by default',
+                  )
+                  .optional(),
+                external_chat_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    'External group receiver. The ID value corresponds to the employee_id_type in the query parameter.When the deleted user is an external group owner, the group owner is transferred to the designated recipient. If the recipient is not specified, it will be transferred to the first person in the group who joins the group in the same organization as the deleted user. If only the user is in the group, the external group will be disbanded',
+                  )
+                  .optional(),
+                docs_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    'Document recipient. The ID value corresponds to the employee_id_type in the query parameter.When a user is deleted, the documents owned by the user are transferred to the recipient. If no recipient is specified, the document resources will be retained under the user name',
+                  )
+                  .optional(),
+                calendar_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    'Schedule recipient. The ID value corresponds to the employee_id_type in the query parameter.When a user is deleted, the schedules owned by the user are transferred to the recipient. If no recipient is specified, the schedule resources will be retained under the user name',
+                  )
+                  .optional(),
+                application_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    'Apply the recipient. The ID value corresponds to the employee_id_type in the query parameter.When a user is deleted, the applications created by the user are transferred to the recipient. If the recipient is not specified, the application will be retained under the user name, but the user cannot log in to the developer backend to manage the application. The administrator can manually transfer the application to other people in the management backend',
+                  )
+                  .optional(),
+                helpdesk_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    "Help desk resource receiver. The ID value corresponds to the employee_id_type in the query parameter.When a user is deleted, the help desk resources they own are transferred to the recipient, and when the recipient is not specified, the help desk resources are retained under the user's name",
+                  )
+                  .optional(),
+                approval_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    "Approval of resource recipients. ID values correspond to employee_id_type in query parameters.When a user is deleted, the approval resources it owns are transferred to the recipient, and the approval resources are retained under the user's name when the recipient is not specified",
+                  )
+                  .optional(),
+                email_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    'User mail resource recipient. The ID value corresponds to the employee_id_type in the query parameter.When a user is deleted, the email resources owned by the user are transferred to the recipient. If the recipient is not specified, the email resources are retained under the user name',
+                  )
+                  .optional(),
+                minutes_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    'Wonder receiver. The ID value corresponds to the employee_id_type in the query parameter.When a user is deleted, the minutes resources owned by him are transferred to the receiver. If the receiver is not specified, the minutes will be retained under the user name',
+                  )
+                  .optional(),
+                survey_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    'Feishu Survey recipient. The ID value corresponds to the employee_id_type in the query parameters.When a user is deleted, the Feishu survey resources owned by him are transferred to the recipient. If no recipient is specified, the Feishu survey resources will be deleted directly',
+                  )
+                  .optional(),
+                anycross_acceptor_employee_id: z.string().describe('Anycross recipient').optional(),
+              })
+              .describe('Resource transfer methods for departing employees')
+              .optional(),
+          })
+          .describe('interface extension options')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            'User ID categories Options:open_id(Identifies the identity of a user in an application. The same user has different Open IDs in different applications. [Learn more: How to get an Open ID]),union_id(Identifies the identity of a user under an application developer. The Union ID of the same user in an application under the same developer is the same, and the Union ID in an application under different developers is different. With Union ID, application developers can associate the identity of the same user in multiple applications. [Learn more: How to get Union ID?]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       employee_id: z
         .string()
@@ -1027,9 +1067,7 @@ export const directoryV1EmployeeFilter = {
               'A list of comparison expressions, such as the comparison conditions base_info.mobile eq "+ 8613000000001", and the relationship between multiple expressions is and',
             ),
         })
-        .describe(
-          'Query conditions [Learn more: query condition usage]',
-        ),
+        .describe('Query conditions [Learn more: query condition usage]'),
       required_fields: z
         .array(z.string())
         .describe(
@@ -1039,7 +1077,7 @@ export const directoryV1EmployeeFilter = {
         .object({
           page_size: z
             .number()
-            .describe('Maximum number of entries returned per page, maximum value is 100')
+            .describe('The number of requests this time, the minimum is 0 and the maximum is 100')
             .optional(),
           page_token: z
             .string()
@@ -1050,20 +1088,22 @@ export const directoryV1EmployeeFilter = {
         })
         .describe('paging parameter'),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          'User ID categories Options:open_id(Identifies the identity of a user in an application. The same user has different Open IDs in different applications. [Learn more: How to get an Open ID]),union_id(Identifies the identity of a user under an application developer. The Union ID of the same user in an application under the same developer is the same, and the Union ID in an application under different developers is different. With Union ID, application developers can associate the identity of the same user in multiple applications. [Learn more: How to get Union ID?]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          'The type of department ID used in this call Options:department_id(Used to identify a unique department within a tenant),open_department_id(It is used to identify a department in a specific application, and the same department has the same open_department_id in different applications.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            'User ID categories Options:open_id(Identifies the identity of a user in an application. The same user has different Open IDs in different applications. [Learn more: How to get an Open ID]),union_id(Identifies the identity of a user under an application developer. The Union ID of the same user in an application under the same developer is the same, and the Union ID in an application under different developers is different. With Union ID, application developers can associate the identity of the same user in multiple applications. [Learn more: How to get Union ID?]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            'The type of department ID used in this call Options:department_id(Used to identify a unique department within a tenant),open_department_id(It is used to identify a department in a specific application, and the same department has the same open_department_id in different applications.)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1074,31 +1114,29 @@ export const directoryV1EmployeeMget = {
   path: '/open-apis/directory/v1/employees/mget',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Organization-Employee management-Obtain employee information in batches-This interface is used to query the details of employees according to their IDs in batches.Employee refers to a member of Feishu\'s enterprise who is identified as "Employee", which is equivalent to "User" in the contact OpenAPI',
+    '[Feishu/Lark]-Organization-Employee management-Obtain employee information in batches-This interface is used to query the details of employees according to their IDs in batches.Such as employee name, mobile phone number, email, department and other information.Employee refers to a member of Feishu\'s enterprise who is identified as "Employee", which is equivalent to "User" in the contact OpenAPI',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
-      employee_ids: z.array(z.string()).describe('Employee ID'),
-      required_fields: z
-        .array(z.string())
-        .describe(
-          'Field enumeration [Learn more: Field enumeration instructions]',
-        ),
+      employee_ids: z.array(z.string()).describe('Employee ID, consistent with the employee_id_type type'),
+      required_fields: z.array(z.string()).describe('Field enumeration [Learn more: Field enumeration instructions]'),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          'The type of department ID used in this call Options:department_id(Used to identify a unique department within a tenant),open_department_id( open_department_id: used to identify a department in a specific application, the same department, in different applications open_department_id is not the same.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            'The type of department ID used in this call Options:department_id(Used to identify a unique department within a tenant),open_department_id( open_department_id: used to identify a department in a specific application, the same department, in different applications open_department_id is not the same.)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1109,7 +1147,7 @@ export const directoryV1EmployeePatch = {
   path: '/open-apis/directory/v1/employees/:employee_id',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Organization-Employee management-Update employee-This interface is used to update the information of current/former employees, freeze/restore employees. Unpassed parameters will not be updated.Employee refers to a member of Feishu\'s enterprise who is identified as "Employee", which is equivalent to "User" in the address book OpenAPI',
+    '[Feishu/Lark]-Organization-Employee management-Update employee information-This interface is used to update the information of current/former employees, freeze/restore employees. Unpassed parameters will not be updated.Employee refers to a member of Feishu\'s enterprise who is identified as "Employee", which is equivalent to "User" in the address book OpenAPI',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1119,14 +1157,14 @@ export const directoryV1EmployeePatch = {
             .object({
               name: z
                 .object({
-                  default_value: z.string().describe('default value'),
+                  default_value: z.string().describe('default valueLength range: 1 - 64 characters'),
                   i18n_value: z
                     .object({})
                     .catchall(z.any())
                     .describe('Internationalized value, key is zh_cn, ja_jp, en_us, value is the corresponding value')
                     .optional(),
                 })
-                .describe("Employee's name, up to 64 characters"),
+                .describe("Employee's name"),
               another_name: z.string().describe('Alias, up to 64 characters').optional(),
             })
             .describe('Name')
@@ -1176,7 +1214,7 @@ export const directoryV1EmployeePatch = {
                   .optional(),
                 order_weight_in_deparment: z
                   .string()
-                  .describe('The ranking weight of employees within the department')
+                  .describe('Sorting weights of employees within the department **Data verification rules:**')
                   .optional(),
                 order_weight_among_deparments: z
                   .string()
@@ -1215,9 +1253,7 @@ export const directoryV1EmployeePatch = {
             .optional(),
           work_country_or_region: z
             .string()
-            .describe(
-              'Workplace country code. To obtain the country code, please use [Paging Bulk Query Country]',
-            )
+            .describe('Workplace country code. To obtain the country code, please use [Paging Bulk Query Country]')
             .optional(),
           work_place_id: z.string().describe('Workplace ID').optional(),
           work_station: z
@@ -1241,12 +1277,18 @@ export const directoryV1EmployeePatch = {
               'Extension number, up to 99 characters can be entered.. The extension numbers of all employees in the enterprise cannot be repeated',
             )
             .optional(),
-          join_date: z.string().describe('onboard date').optional(),
+          join_date: z
+            .string()
+            .describe("Onboard DateThe fixed format is 'YYYY-MM-DD' and the fixed length is 10")
+            .optional(),
           employment_type: z.number().describe('Employee type').optional(),
           job_title_id: z.string().describe('Job title ID').optional(),
           job_level_id: z.string().describe('Job level ID').optional(),
           job_family_id: z.string().describe('Job family ID').optional(),
-          resign_date: z.string().describe('date of separation').optional(),
+          resign_date: z
+            .string()
+            .describe("date of separationThe fixed format is 'YYYY-MM-DD' and the fixed length is 10")
+            .optional(),
           resign_reason: z
             .enum([
               '0',
@@ -1294,11 +1336,10 @@ export const directoryV1EmployeePatch = {
           custom_field_values: z
             .array(
               z.object({
-                field_key: z.string().describe('Custom field key').optional(),
                 field_type: z
-                  .enum(['1', '2', '3', '4', '10', '11'])
+                  .enum(['1', '2', '3', '4', '9', '10', '11'])
                   .describe(
-                    'Custom field type Options:1(custom_field_value_type_text Text),2(custom_field_value_type_url URL),3(custom_field_value_type_enum Options),4(custom_field_value_type_generic_user Members),10(custom_field_field_type_directory_multi_enum Multiple selection options),11(custom_field_field_type_directory_multi_generic_user Member list)',
+                    'Custom field type Options:1(custom_field_value_type_text Text),2(custom_field_value_type_url URL),3(custom_field_value_type_enum Options),4(custom_field_value_type_generic_user Members),9(custom_field_value_type_phone Phone ),10(custom_field_field_type_directory_multi_enum Multiple selection options),11(custom_field_field_type_directory_multi_generic_user Member list)',
                   )
                   .optional(),
                 text_value: z
@@ -1350,6 +1391,8 @@ export const directoryV1EmployeePatch = {
                   )
                   .describe('Person field value')
                   .optional(),
+                phone_value: z.object({ phone_number: z.string(), extension_number: z.string().optional() }).optional(),
+                field_key: z.string().describe('Custom field key').optional(),
               }),
             )
             .describe('Custom field')
@@ -1357,18 +1400,20 @@ export const directoryV1EmployeePatch = {
         })
         .describe('Update employee object'),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          'User ID categories Options:open_id(Identifies the identity of a user in an application. The same user has different Open IDs in different applications. [Learn more: How to get an Open ID]),union_id(Identifies the identity of a user under an application developer. The Union ID of the same user in an application under the same developer is the same, and the Union ID in an application under different developers is different. With Union ID, application developers can associate the identity of the same user in multiple applications. [Learn more: How to get Union ID?]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe('Department ID type Options:department_id(department_id),open_department_id(open_department_id)')
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            'User ID categories Options:open_id(Identifies the identity of a user in an application. The same user has different Open IDs in different applications. [Learn more: How to get an Open ID]),union_id(Identifies the identity of a user under an application developer. The Union ID of the same user in an application under the same developer is the same, and the Union ID in an application under different developers is different. With Union ID, application developers can associate the identity of the same user in multiple applications. [Learn more: How to get Union ID?]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe('Department ID type Options:department_id(department_id),open_department_id(open_department_id)')
+          .optional(),
+      })
+      .optional(),
     path: z.object({ employee_id: z.string().describe('Employee ID, consistent with the employee_id_type type.') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -1383,20 +1428,22 @@ export const directoryV1EmployeeRegular = {
     '[Feishu/Lark]-Organization-Employee management-Update pre-resigned members to un-resigned employees-This interface is used to cancel the departure of the pending employee and update it to the "on-the-job" status. When canceling the departure, the departure information will be cleared.When using user_access_token, it defaults to an administrator user, and only administrators who can has "CoreHR Management" role can operate it',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          'Department ID type Options:department_id(Used to identify a unique department within the tenant ),open_department_id(Used to identify a department in a specific application. The same department has the same open_department_id in different applications.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            'Department ID type Options:department_id(Used to identify a unique department within the tenant ),open_department_id(Used to identify a department in a specific application. The same department has the same open_department_id in different applications.)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ employee_id: z.string().describe('Employee ID, consistent with the employee_id_type type') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -1408,56 +1455,67 @@ export const directoryV1EmployeeResurrect = {
   path: '/open-apis/directory/v1/employees/:employee_id/resurrect',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Organization-Employee management-Reinstate departed employees-This interface is used to restore resigned members',
+    '[Feishu/Lark]-Organization-Employee management-Reinstate departed employees-This interface is used to restore the members who have left the company and restore them to the working state.',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      employee_order_in_departments: z
-        .array(
-          z.object({
-            department_id: z.string().describe('Department ID, consistent with the department_id_type type').optional(),
-            order_weight_in_deparment: z
-              .string()
-              .describe('The ranking weight of users within the department')
-              .optional(),
-            order_weight_among_deparments: z
-              .string()
-              .describe('User ranking weights across multiple departments')
-              .optional(),
-            is_main_department: z
-              .boolean()
+    data: z
+      .object({
+        employee_order_in_departments: z
+          .array(
+            z.object({
+              department_id: z
+                .string()
+                .describe('Department ID, consistent with the department_id_type type')
+                .optional(),
+              order_weight_in_deparment: z
+                .string()
+                .describe(
+                  'The ranking weight of users within the department**Data verification rules:**Length range: 1 to 3',
+                )
+                .optional(),
+              order_weight_among_deparments: z
+                .string()
+                .describe(
+                  'User ranking weights across multiple departments**Data verification rules:**Length range: 1 to 3',
+                )
+                .optional(),
+              is_main_department: z
+                .boolean()
+                .describe(
+                  "Whether it is the user's main department (the user can only have one main department, and the ranking weight should be the largest. If you don't fill it in, the department with the first ranking will be used as the main department by default)",
+                )
+                .optional(),
+            }),
+          )
+          .describe('Department information')
+          .optional(),
+        options: z
+          .object({
+            subscription_ids: z
+              .array(z.string())
               .describe(
-                "Whether it is the user's main department (the user can only have one main department, and the ranking weight should be the largest. If you don't fill it in, the department with the first ranking will be used as the main department by default)",
+                'List of seat IDs assigned to employees. Available seat IDs for this tenant can be obtained through the interface below, see [Get seat information]. This field is required when in mixed license mode',
               )
               .optional(),
-          }),
-        )
-        .describe('Department information')
-        .optional(),
-      options: z
-        .object({
-          subscription_ids: z
-            .array(z.string())
-            .describe(
-              'List of seat IDs assigned to employees. Available seat IDs for this tenant can be obtained through the interface below, see [Get seat information]. This field is required when in mixed license mode',
-            )
-            .optional(),
-        })
-        .describe('option')
-        .optional(),
-    }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          "User ID categories Options:open_id(Identifies a user's identity in an app. The same user has different Open IDs in different apps. [Learn more: How to get an Open ID]),union_id(Identifies a user's identity under an app developer. The Union ID is the same for the same user in apps under the same developer, and different for apps under different developers. With Union ID, app developers can associate the identities of the same user across multiple apps. [Read more: How do I get a Union ID?]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe('Department ID type Options:department_id(department_id),open_department_id(open_department_id)')
-        .optional(),
-    }),
+          })
+          .describe('option')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            "User ID categories Options:open_id(Identifies a user's identity in an app. The same user has different Open IDs in different apps. [Learn more: How to get an Open ID]),union_id(Identifies a user's identity under an app developer. The Union ID is the same for the same user in apps under the same developer, and different for apps under different developers. With Union ID, app developers can associate the identities of the same user across multiple apps. [Read more: How do I get a Union ID?]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe('Department ID type Options:department_id(department_id),open_department_id(open_department_id)')
+          .optional(),
+      })
+      .optional(),
     path: z.object({ employee_id: z.string().describe('Employee ID, consistent with the employee_id_type type') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -1469,7 +1527,7 @@ export const directoryV1EmployeeSearch = {
   path: '/open-apis/directory/v1/employees/search',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Organization-Employee management-Search employee-This API is used to search for employee information.An employee is a member of Feishu who is an "Employee", which is equivalent to a "User" in the Contacts OpenAPI',
+    '[Feishu/Lark]-Organization-Employee management-Search employee-This interface is used to search for employee information, such as searching for employee names, mobile phone numbers, email addresses and other information through keywords. An employee is a member of Feishu who is an "Employee", which is equivalent to a "User" in the Contacts OpenAPI',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1482,7 +1540,9 @@ export const directoryV1EmployeeSearch = {
         .object({
           page_size: z
             .number()
-            .describe('Maximum number of entries returned per page, maximum value is 100**Default value**: 20')
+            .describe(
+              'The number of requests at this time, the minimum is 0 and the maximum is 100 **Default value**：20',
+            )
             .optional(),
           page_token: z
             .string()
@@ -1498,20 +1558,22 @@ export const directoryV1EmployeeSearch = {
           'List of fields to query. Permissioned row and column data will be returned according to the passed field list. If not passed, no fields will be returned [Learn more: Field enumeration instructions]',
         ),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID used in this call Options:open_department_id(It is used to identify a department in a specific application, and the same department has different open_department_id in different applications.),department_id(Used to identify a unique department within a tenant)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID used in this call Options:open_department_id(It is used to identify a department in a specific application, and the same department has different open_department_id in different applications.),department_id(Used to identify a unique department within a tenant)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1569,20 +1631,22 @@ export const directoryV1EmployeeToBeResigned = {
         })
         .describe('Current employees transfer to pending departure'),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          'Department ID type Options:department_id(Used to identify a unique department within the tenant),open_department_id(Used to identify a department in a specific application. The same department has the same open_department_id in different applications.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps.[How to get Union ID]),employee_id(The unique identifier of an employee within the enterprise. Supports customization, the system automatically generates it if it is not customized. ID supports modification.How to get employee_id: - Enterprise administrators go to the Admin Console > Organizational Structure > Members and Departments page, click Member Details to query employee IDs - Through the interface of [Get employee list in batches], query employee ID by mobile phone number or email.)",
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            'Department ID type Options:department_id(Used to identify a unique department within the tenant),open_department_id(Used to identify a department in a specific application. The same department has the same open_department_id in different applications.)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ employee_id: z.string().describe('Employee ID,consistent with the employee_id_type type') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },

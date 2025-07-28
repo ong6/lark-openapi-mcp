@@ -66,14 +66,14 @@ export const calendarV4CalendarAclCreate = {
             ),
           user_id: z
             .string()
-            .describe(
-              'User ID, for more information, you can refer to the [Concept of User-Related ID]',
-            )
+            .describe('User ID, for more information, you can refer to the [Concept of User-Related ID]')
             .optional(),
         })
         .describe("The scope of the permission's effectiveness"),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       calendar_id: z
         .string()
@@ -119,21 +119,23 @@ export const calendarV4CalendarAclList = {
     '[Feishu/Lark]-Calendar-Calendar access control-Obtain the ACL-Call this interface to get the access control list of the specified calendar as the current identity (application or user)',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z
-        .number()
-        .describe(
-          'Page size, that is, the maximum number of items returned by one request.**Note**: The minimum value is 10, that is, when the value is less than 10, it is uniformly processed as 10',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z
+          .number()
+          .describe(
+            'Page size, that is, the maximum number of items returned by one request.**Note**: The minimum value is 10, that is, when the value is less than 10, it is uniformly processed as 10',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       calendar_id: z
         .string()
@@ -194,28 +196,30 @@ export const calendarV4CalendarCreate = {
     '[Feishu/Lark]-Calendar-Calendar management-Create a shared calendar-Call this interface to create a shared calendar for the current identity (app or user)',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      summary: z.string().describe('Calendar title.**Default value**: Empty').optional(),
-      description: z.string().describe('Calendar description.**Default value**: Empty').optional(),
-      permissions: z
-        .enum(['private', 'show_only_free_busy', 'public'])
-        .describe(
-          'Calendar visibility range.**Default value**: show_only_free_busy Options:private(Private.),show_only_free_busy(ShowOnlyFreeBusy Only availability information is displayed.),public(Public. Event details are visible to other people.)',
-        )
-        .optional(),
-      color: z
-        .number()
-        .describe(
-          'Calendar color, the value is represented by the int32 of the RGB color value, where, 24 ~ 31 bits are transparency, 16 ~ 23 bits are red, 8 ~ 15 bits are green, 0 ~ 7 bits are blue. For example, -11034625 represents the RGB value (87, 159, 255).**Note**:- The value range is -2^31 ~ 2^31-1- The color of the calendar will be mapped to the closest color on the Feishu client palette for display.- This color only applies to the current identity.**Default value**: -14513409',
-        )
-        .optional(),
-      summary_alias: z
-        .string()
-        .describe(
-          'Calendar alias, setting this field (including subsequent modification of this field) only takes effect for the current identity.**Default value**: Empty',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        summary: z.string().describe('Calendar title.**Default value**: Empty').optional(),
+        description: z.string().describe('Calendar description.**Default value**: Empty').optional(),
+        permissions: z
+          .enum(['private', 'show_only_free_busy', 'public'])
+          .describe(
+            'Calendar visibility range.**Default value**: show_only_free_busy Options:private(Private.),show_only_free_busy(ShowOnlyFreeBusy Only availability information is displayed.),public(Public. Event details are visible to other people.)',
+          )
+          .optional(),
+        color: z
+          .number()
+          .describe(
+            'Calendar color, the value is represented by the int32 of the RGB color value, where, 24 ~ 31 bits are transparency, 16 ~ 23 bits are red, 8 ~ 15 bits are green, 0 ~ 7 bits are blue. For example, -11034625 represents the RGB value (87, 159, 255).**Note**:- The value range is -2^31 ~ 2^31-1- The color of the calendar will be mapped to the closest color on the Feishu client palette for display.- This color only applies to the current identity.**Default value**: -14513409',
+          )
+          .optional(),
+        summary_alias: z
+          .string()
+          .describe(
+            'Calendar alias, setting this field (including subsequent modification of this field) only takes effect for the current identity.**Default value**: Empty',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -249,66 +253,64 @@ export const calendarV4CalendarEventAttendeeBatchDelete = {
     '[Feishu/Lark]-Calendar-Event attendee (Including meeting room)-Delete event invitees-Call this interface to delete one or more invitees of the specified event with the current identity (app or user)',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      attendee_ids: z
-        .array(z.string())
-        .describe(
-          'List of invitee IDs that need to be deleted.When adding a event invitee, the invitee ID (attendee_id) will be returned. You can also call [Get event invitee list] Interface to query the invitee ID of the specified event.- Up to 500 attendees can be deleted at a time (counted together with delete_ids)',
-        )
-        .optional(),
-      delete_ids: z
-        .array(
-          z.object({
-            type: z
-              .enum(['user', 'chat', 'resource', 'third_party'])
-              .describe('Invitee type. Options:user(User),chat(Group),resource(Room),third_party(ThirdParty Email)')
-              .optional(),
-            user_id: z
-              .string()
-              .describe(
-                "Event invitee's user ID, which depends on the returned user_id_type parameter. When is_external is true, this field returns the open_id or union_id. For more information, see [User-related IDs]",
-              )
-              .optional(),
-            chat_id: z
-              .string()
-              .describe(
-                'The group chat_id of a chat-type event invitee. For details, see [Group ID description]',
-              )
-              .optional(),
-            room_id: z.string().describe('The room_id of a resource-type event invitee').optional(),
-            third_party_email: z.string().describe('Email of a third_party type event invitee').optional(),
-          }),
-        )
-        .describe(
-          'The ID corresponding to the invitee type, which is a supplementary field to the attendee_ids field.- Up to 500 attendees can be deleted at a time (counted together with attendee_ids)',
-        )
-        .optional(),
-      need_notification: z
-        .boolean()
-        .describe(
-          'Whether to send Bot notifications to invitees when deleting event invitees.**Optional values are**:- true (default): send- false: do not send',
-        )
-        .optional(),
-      instance_start_time_admin: z
-        .string()
-        .describe(
-          'When accessing as an administrator, the instance to be modified (only used to modify one instance of a recurring event, this field does not need to be filled in for non-recurring events)',
-        )
-        .optional(),
-      is_enable_admin: z
-        .boolean()
-        .describe(
-          'Whether to enable the meeting room administrator identity (you need to set someone as the meeting room administrator in the management background first).**Optional values are**:- true: enable- false (default): disable',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        attendee_ids: z
+          .array(z.string())
+          .describe(
+            'List of invitee IDs that need to be deleted.When adding a event invitee, the invitee ID (attendee_id) will be returned. You can also call [Get event invitee list] Interface to query the invitee ID of the specified event.- Up to 500 attendees can be deleted at a time (counted together with delete_ids)',
+          )
+          .optional(),
+        delete_ids: z
+          .array(
+            z.object({
+              type: z
+                .enum(['user', 'chat', 'resource', 'third_party'])
+                .describe('Invitee type. Options:user(User),chat(Group),resource(Room),third_party(ThirdParty Email)')
+                .optional(),
+              user_id: z
+                .string()
+                .describe(
+                  "Event invitee's user ID, which depends on the returned user_id_type parameter. When is_external is true, this field returns the open_id or union_id. For more information, see [User-related IDs]",
+                )
+                .optional(),
+              chat_id: z
+                .string()
+                .describe('The group chat_id of a chat-type event invitee. For details, see [Group ID description]')
+                .optional(),
+              room_id: z.string().describe('The room_id of a resource-type event invitee').optional(),
+              third_party_email: z.string().describe('Email of a third_party type event invitee').optional(),
+            }),
+          )
+          .describe(
+            'The ID corresponding to the invitee type, which is a supplementary field to the attendee_ids field.- Up to 500 attendees can be deleted at a time (counted together with attendee_ids)',
+          )
+          .optional(),
+        need_notification: z
+          .boolean()
+          .describe(
+            'Whether to send Bot notifications to invitees when deleting event invitees.**Optional values are**:- true (default): send- false: do not send',
+          )
+          .optional(),
+        instance_start_time_admin: z
+          .string()
+          .describe(
+            'When accessing as an administrator, the instance to be modified (only used to modify one instance of a recurring event, this field does not need to be filled in for non-recurring events)',
+          )
+          .optional(),
+        is_enable_admin: z
+          .boolean()
+          .describe(
+            'Whether to enable the meeting room administrator identity (you need to set someone as the meeting room administrator in the management background first).**Optional values are**:- true: enable- false (default): disable',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
-      calendar_id: z
-        .string()
-        .describe(
-          'Calendar ID. For details, see [Calendar-related IDs]',
-        ),
+      calendar_id: z.string().describe('Calendar ID. For details, see [Calendar-related IDs]'),
       event_id: z
         .string()
         .describe(
@@ -328,22 +330,20 @@ export const calendarV4CalendarEventAttendeeChatMemberList = {
     '[Feishu/Lark]-Calendar-Event attendee (Including meeting room)-Obtain the list of members of group invitees of an event-Call this interface with the current identity (app or user) to get the group member list of the group type invitees in the event',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('The maximum number of group members returned in one request').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('The maximum number of group members returned in one request').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({
-      calendar_id: z
-        .string()
-        .describe(
-          'Calendar ID. For details, see [Calendar-related IDs]',
-        ),
+      calendar_id: z.string().describe('Calendar ID. For details, see [Calendar-related IDs]'),
       event_id: z
         .string()
         .describe(
@@ -368,122 +368,124 @@ export const calendarV4CalendarEventAttendeeCreate = {
     '[Feishu/Lark]-Calendar-Event attendee (Including meeting room)-Create event invitees-Use this interface to add one or more invitees to a specified event with the current identity (app or user). Invitee types include users, groups, meeting rooms, and emails',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      attendees: z
-        .array(
-          z.object({
-            type: z
-              .enum(['user', 'chat', 'resource', 'third_party'])
-              .describe(
-                'Event invitee type Options:user(User),chat(Group),resource(Room),third_party(ThirdParty Email)',
-              )
-              .optional(),
-            is_optional: z
-              .boolean()
-              .describe(
-                'Whether the invitee is optional.**Optional values are**:- true- false**Note**: This field cannot be edited for room type invitees',
-              )
-              .optional(),
-            user_id: z
-              .string()
-              .describe(
-                'User ID. When selecting a user type invitee (the value of type is user), this parameter needs to be passed in. The user ID type passed in needs to be consistent with the value of user_id_type. For information about user IDs, see [User-related ID concepts]',
-              )
-              .optional(),
-            chat_id: z
-              .string()
-              .describe(
-                'Group ID. When selecting group type invitees (type value is chat), this parameter needs to be passed in. For details about group ID, please refer to [Group ID Description]',
-              )
-              .optional(),
-            room_id: z
-              .string()
-              .describe(
-                'Meeting room ID. When selecting meeting room type invitees (type value is resource), this parameter needs to be passed in.You can obtain the specified meeting room ID through the following interface:- [Query meeting room list]- [Search meeting room]',
-              )
-              .optional(),
-            third_party_email: z
-              .string()
-              .describe(
-                'Email address. When selecting an external mailbox type invitee (type value is third_party), this parameter needs to be passed in',
-              )
-              .optional(),
-            operate_id: z
-              .string()
-              .describe(
-                'Meeting room contact ID. The user ID type passed in needs to be consistent with the value of user_id_type. For information about user IDs, see [User-related ID concepts].**Note**: If the current schedule is created based on the application identity, when adding a meeting room type invitee, you need to specify the contact person of the meeting room through this parameter, and the contact will be displayed in the schedule meeting room information.**Default**: empty',
-              )
-              .optional(),
-            resource_customization: z
-              .array(
-                z.object({
-                  index_key: z.string().describe('Unique ID of each configuration'),
-                  input_content: z
-                    .string()
-                    .describe('This parameter is required when the type field is left empty')
-                    .optional(),
-                  options: z
-                    .array(
-                      z.object({
-                        option_key: z.string().describe('Unique ID of each option').optional(),
-                        others_content: z
-                          .string()
-                          .describe('This parameter is required when the type field is set to other options')
-                          .optional(),
-                      }),
-                    )
-                    .describe('Options of each configuration')
-                    .optional(),
-                }),
-              )
-              .describe(
-                'Personalized configuration of meeting rooms.- When selecting meeting room type invitees, if the meeting room has a reservation form, you can configure the form information through this parameter.- When the currently added invitee does not involve the personalized configuration of the meeting room, there is no need to set this parameter',
-              )
-              .optional(),
-            approval_reason: z
-              .string()
-              .describe(
-                'The reason for requesting reservation approval for the meeting room. Parameter configuration description:- This field takes effect only when booking an approved meeting room using user identity (user_access_token).- For the scenario of applying for reservation and approval of a meeting room, if this value is not passed, the reservation will directly fail.- If you use the application identity (tenant_access_token) to reserve an approval meeting room, it will directly fail.**Default**: empty',
-              )
-              .optional(),
-          }),
-        )
-        .describe(
-          'Add a new invitee list.**Notice**:- The maximum number of invitees (including meeting rooms) that can be set in a single request is 1,000.- The maximum number of meeting rooms that can be set up in a single request is 100',
-        )
-        .optional(),
-      need_notification: z
-        .boolean()
-        .describe(
-          'Whether to send bot notifications to invitees.**Optional values are**:- true (default): send- false: do not send',
-        )
-        .optional(),
-      instance_start_time_admin: z
-        .string()
-        .describe(
-          'The instance to be modified when accessing as an administrator.**Note**:- This parameter is only used to modify a event instance in a repeating event. This field does not need to be filled in for non-repeating events.- You can call the [Get repeating event instance] interface to obtain the event_id of a event instance in the repeating event. The value of this parameter is the timestamp suffix of event_id. For example, the queried event instance ID is `2cf525f0-1e67-4b04-ad4d-30b7f003903c_1713168000`, then the current `instance_start_time_admin` value is `1713168000`.**Default**: empty',
-        )
-        .optional(),
-      is_enable_admin: z
-        .boolean()
-        .describe(
-          'Whether to enable the meeting room administrator status (you need to set a member as the meeting room administrator in the management background first).**Optional values are**:- true: enable- false (default): disable**Note**: After it is turned on, this request will only process meeting room data, and the operations of other invitees will not take effect',
-        )
-        .optional(),
-      add_operator_to_attendee: z
-        .boolean()
-        .describe(
-          'Whether to add the meeting room contact (operate_id) to the schedule invitees.**Optional values are**:- true (default): enabled- false: disable',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        attendees: z
+          .array(
+            z.object({
+              type: z
+                .enum(['user', 'chat', 'resource', 'third_party'])
+                .describe(
+                  'Event invitee type Options:user(User),chat(Group),resource(Room),third_party(ThirdParty Email)',
+                )
+                .optional(),
+              is_optional: z
+                .boolean()
+                .describe(
+                  'Whether the invitee is optional.**Optional values are**:- true- false**Note**: This field cannot be edited for room type invitees',
+                )
+                .optional(),
+              user_id: z
+                .string()
+                .describe(
+                  'User ID. When selecting a user type invitee (the value of type is user), this parameter needs to be passed in. The user ID type passed in needs to be consistent with the value of user_id_type. For information about user IDs, see [User-related ID concepts]',
+                )
+                .optional(),
+              chat_id: z
+                .string()
+                .describe(
+                  'Group ID. When selecting group type invitees (type value is chat), this parameter needs to be passed in. For details about group ID, please refer to [Group ID Description]',
+                )
+                .optional(),
+              room_id: z
+                .string()
+                .describe(
+                  'Meeting room ID. When selecting meeting room type invitees (type value is resource), this parameter needs to be passed in.You can obtain the specified meeting room ID through the following interface:- [Query meeting room list]- [Search meeting room]',
+                )
+                .optional(),
+              third_party_email: z
+                .string()
+                .describe(
+                  'Email address. When selecting an external mailbox type invitee (type value is third_party), this parameter needs to be passed in',
+                )
+                .optional(),
+              operate_id: z
+                .string()
+                .describe(
+                  'Meeting room contact ID. The user ID type passed in needs to be consistent with the value of user_id_type. For information about user IDs, see [User-related ID concepts].**Note**: If the current schedule is created based on the application identity, when adding a meeting room type invitee, you need to specify the contact person of the meeting room through this parameter, and the contact will be displayed in the schedule meeting room information.**Default**: empty',
+                )
+                .optional(),
+              resource_customization: z
+                .array(
+                  z.object({
+                    index_key: z.string().describe('Unique ID of each configuration'),
+                    input_content: z
+                      .string()
+                      .describe('This parameter is required when the type field is left empty')
+                      .optional(),
+                    options: z
+                      .array(
+                        z.object({
+                          option_key: z.string().describe('Unique ID of each option').optional(),
+                          others_content: z
+                            .string()
+                            .describe('This parameter is required when the type field is set to other options')
+                            .optional(),
+                        }),
+                      )
+                      .describe('Options of each configuration')
+                      .optional(),
+                  }),
+                )
+                .describe(
+                  'Personalized configuration of meeting rooms.- When selecting meeting room type invitees, if the meeting room has a reservation form, you can configure the form information through this parameter.- When the currently added invitee does not involve the personalized configuration of the meeting room, there is no need to set this parameter',
+                )
+                .optional(),
+              approval_reason: z
+                .string()
+                .describe(
+                  'The reason for requesting reservation approval for the meeting room. Parameter configuration description:- This field takes effect only when booking an approved meeting room using user identity (user_access_token).- For the scenario of applying for reservation and approval of a meeting room, if this value is not passed, the reservation will directly fail.- If you use the application identity (tenant_access_token) to reserve an approval meeting room, it will directly fail.**Default**: empty',
+                )
+                .optional(),
+            }),
+          )
+          .describe(
+            'Add a new invitee list.**Notice**:- The maximum number of invitees (including meeting rooms) that can be set in a single request is 1,000.- The maximum number of meeting rooms that can be set up in a single request is 100',
+          )
+          .optional(),
+        need_notification: z
+          .boolean()
+          .describe(
+            'Whether to send bot notifications to invitees.**Optional values are**:- true (default): send- false: do not send',
+          )
+          .optional(),
+        instance_start_time_admin: z
+          .string()
+          .describe(
+            'The instance to be modified when accessing as an administrator.**Note**:- This parameter is only used to modify a event instance in a repeating event. This field does not need to be filled in for non-repeating events.- You can call the [Get repeating event instance] interface to obtain the event_id of a event instance in the repeating event. The value of this parameter is the timestamp suffix of event_id. For example, the queried event instance ID is `2cf525f0-1e67-4b04-ad4d-30b7f003903c_1713168000`, then the current `instance_start_time_admin` value is `1713168000`.**Default**: empty',
+          )
+          .optional(),
+        is_enable_admin: z
+          .boolean()
+          .describe(
+            'Whether to enable the meeting room administrator status (you need to set a member as the meeting room administrator in the management background first).**Optional values are**:- true: enable- false (default): disable**Note**: After it is turned on, this request will only process meeting room data, and the operations of other invitees will not take effect',
+          )
+          .optional(),
+        add_operator_to_attendee: z
+          .boolean()
+          .describe(
+            'Whether to add the meeting room contact (operate_id) to the schedule invitees.**Optional values are**:- true (default): enabled- false: disable',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       calendar_id: z
         .string()
-        .describe(
-          'The calendar ID corresponding to the event. To learn more, see [Calendar ID Introduction]',
-        ),
+        .describe('The calendar ID corresponding to the event. To learn more, see [Calendar ID Introduction]'),
       event_id: z
         .string()
         .describe(
@@ -503,33 +505,31 @@ export const calendarV4CalendarEventAttendeeList = {
     '[Feishu/Lark]-Calendar-Event attendee (Including meeting room)-Obtain event invitee list-Call this interface to retrieve the list of invitees for a event with the current identity (app or user)',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      need_resource_customization: z
-        .boolean()
-        .describe(
-          'Whether meeting room form information is required.**Optional values are**:- true: required- false (default): not required**Note**: The current identity needs to have the editing rights of the event to return the meeting room form information, that is, the current identity needs to be the organizer of the event, or a invitee of the event and the event is set to **Invitees can edit the event** permissions. You can call the [Get event] interface to obtain the invitee permissions (attendee_ability) of the event',
-        )
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z
-        .number()
-        .describe(
-          'The maximum number of event invitees returned in one request. The minimum value is 10. If a value less than 10 is passed in, it will default to 10',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        need_resource_customization: z
+          .boolean()
+          .describe(
+            'Whether meeting room form information is required.**Optional values are**:- true: required- false (default): not required**Note**: The current identity needs to have the editing rights of the event to return the meeting room form information, that is, the current identity needs to be the organizer of the event, or a invitee of the event and the event is set to **Invitees can edit the event** permissions. You can call the [Get event] interface to obtain the invitee permissions (attendee_ability) of the event',
+          )
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z
+          .number()
+          .describe(
+            'The maximum number of event invitees returned in one request. The minimum value is 10. If a value less than 10 is passed in, it will default to 10',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
-      calendar_id: z
-        .string()
-        .describe(
-          'Calendar ID. For details, see [Calendar-related IDs]',
-        ),
+      calendar_id: z.string().describe('Calendar ID. For details, see [Calendar-related IDs]'),
       event_id: z
         .string()
         .describe(
@@ -821,15 +821,17 @@ export const calendarV4CalendarEventCreate = {
         .describe('Event check-in settings. If this parameter is empty, check-in Settings are not performed')
         .optional(),
     }),
-    params: z.object({
-      idempotency_key: z
-        .string()
-        .describe(
-          'Create an idempotent key for the event. This key is unique under the application and calendar dimensions and is used to avoid repeated creation of resources. It is recommended to follow the format of the example value',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        idempotency_key: z
+          .string()
+          .describe(
+            'Create an idempotent key for the event. This key is unique under the application and calendar dimensions and is used to avoid repeated creation of resources. It is recommended to follow the format of the example value',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({
       calendar_id: z
         .string()
@@ -850,20 +852,18 @@ export const calendarV4CalendarEventDelete = {
     '[Feishu/Lark]-Calendar-Event management-Delete Event-Call this interface to delete an event on the specified calendar with the current identity (application or user)',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      need_notification: z
-        .enum(['true', 'false'])
-        .describe(
-          'Whether to send Bot notifications to event participants when deleting a event.**Default value**: true Options:true(Send),false(Do not send)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        need_notification: z
+          .enum(['true', 'false'])
+          .describe(
+            'Whether to send Bot notifications to event participants when deleting a event.**Default value**: true Options:true(Send),false(Do not send)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
-      calendar_id: z
-        .string()
-        .describe(
-          'The calendar ID where the event is located. See [Calendar ID Description]',
-        ),
+      calendar_id: z.string().describe('The calendar ID where the event is located. See [Calendar ID Description]'),
       event_id: z
         .string()
         .describe(
@@ -883,25 +883,27 @@ export const calendarV4CalendarEventGet = {
     '[Feishu/Lark]-Calendar-Event management-Get Event-Call this interface with the current identity (app or user) to obtain the event information within a specified calendar, including the title of the event, time period, video conference information, public scope, and invitee rights, etc',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      need_meeting_settings: z
-        .boolean()
-        .describe(
-          'Do you need to return to the pre-meeting settings of Feishu Video Conferencing (VC)? The following conditions must be met to obtain the returned results:- The meeting type (vc_type) of the event needs to be vc.- Requires editing permissions for event.**Optional values are**:- true- false (default)',
-        )
-        .optional(),
-      need_attendee: z
-        .boolean()
-        .describe('Do you need to return invitee information?**Optional values are**:- true- false (default)')
-        .optional(),
-      max_attendee_num: z
-        .number()
-        .describe(
-          'The maximum number of invitees returned. Call [Get event invitee list] to get complete invitee information of the event',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        need_meeting_settings: z
+          .boolean()
+          .describe(
+            'Do you need to return to the pre-meeting settings of Feishu Video Conferencing (VC)? The following conditions must be met to obtain the returned results:- The meeting type (vc_type) of the event needs to be vc.- Requires editing permissions for event.**Optional values are**:- true- false (default)',
+          )
+          .optional(),
+        need_attendee: z
+          .boolean()
+          .describe('Do you need to return invitee information?**Optional values are**:- true- false (default)')
+          .optional(),
+        max_attendee_num: z
+          .number()
+          .describe(
+            'The maximum number of invitees returned. Call [Get event invitee list] to get complete invitee information of the event',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({
       calendar_id: z
         .string()
@@ -943,9 +945,7 @@ export const calendarV4CalendarEventInstanceView = {
     path: z.object({
       calendar_id: z
         .string()
-        .describe(
-          'Calendar ID. For information about calendar ID, please refer to [Calendar ID Description]',
-        ),
+        .describe('Calendar ID. For information about calendar ID, please refer to [Calendar ID Description]'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -982,9 +982,7 @@ export const calendarV4CalendarEventInstances = {
     path: z.object({
       calendar_id: z
         .string()
-        .describe(
-          'Calendar ID. For information about calendar ID, please refer to [Calendar ID Description]',
-        ),
+        .describe('Calendar ID. For information about calendar ID, please refer to [Calendar ID Description]'),
       event_id: z
         .string()
         .describe(
@@ -1004,52 +1002,48 @@ export const calendarV4CalendarEventList = {
     '[Feishu/Lark]-Calendar-Event management-Get Event List-Call this interface with the current identity (app or user) to obtain the event list under a specified calendar',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z
-        .number()
-        .describe(
-          'The maximum number of entries to be returned for one request. The actual number of returned entries may be less than this value, or it may be empty, and you can determine if there are more entries based on the has_more field in the response body',
-        )
-        .optional(),
-      anchor_time: z
-        .string()
-        .describe(
-          'A time anchor represented by a Unix timestamp (in seconds). It is used to set a specific point in time for pulling events, thereby avoiding the need to pull all events. You can use page_token or sync_token for pagination or incremental retrieval of all events after the specified anchor_time.**Instructions**:- For single events, you will receive event information where **the end time of the event is >= anchor_time**.- For recurring events, after setting the anchor_time, all recurring events will be retrieved including those with past occurrences before the anchor_time.- For exceptional events, you will receive event information where **the original_time is >= anchor_time** as well as **the end time of the event is >= anchor_time**. The original_time is extracted from the exceptional event ID, which is structured as `{uid}_{original_time}`.**Notice**: It can not be used together with start_time and end_time.**Default**: empty',
-        )
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      sync_token: z
-        .string()
-        .describe(
-          'Incremental synchronization mark, not filled in for the first request. When the paging query ends (page_token return value is empty), the interface will return the sync_token field, and the sync_token can be used to incrementally obtain calendar change data in the next call.**Default**: empty',
-        )
-        .optional(),
-      start_time: z
-        .string()
-        .describe(
-          'start_time is the start point of a time range, represented by a Unix timestamp (in seconds). It is used in conjunction with end_time to pull events within a specified time range.**Notice**:- This method can only return data once and cannot be paginated. The size of the data returned in a single request is limited by page_size, and any data exceeding this limit will be truncated.- When using start_time and end_time, they cannot be used together with page_token or sync_token.- When using start_time and end_time, it cannot be used with anchor_time.**Default**: empty',
-        )
-        .optional(),
-      end_time: z
-        .string()
-        .describe(
-          'end_time is the end point of a time range, represented by a Unix timestamp (in seconds). It is used in conjunction with start_time to pull events within a specified time range.**Notice**:- This method can only return data once and cannot be paginated. The size of the data returned in a single request is limited by page_size, and any data exceeding this limit will be truncated.- When using start_time and end_time, they cannot be used together with page_token or sync_token.- When using start_time and end_time, it cannot be used with anchor_time.**Default**: empty',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
-    path: z.object({
-      calendar_id: z
-        .string()
-        .describe(
-          'Calendar ID. For details, see [Calendar-related IDs]',
-        ),
-    }),
+    params: z
+      .object({
+        page_size: z
+          .number()
+          .describe(
+            'The maximum number of entries to be returned for one request. The actual number of returned entries may be less than this value, or it may be empty, and you can determine if there are more entries based on the has_more field in the response body',
+          )
+          .optional(),
+        anchor_time: z
+          .string()
+          .describe(
+            'A time anchor represented by a Unix timestamp (in seconds). It is used to set a specific point in time for pulling events, thereby avoiding the need to pull all events. You can use page_token or sync_token for pagination or incremental retrieval of all events after the specified anchor_time.**Instructions**:- For single events, you will receive event information where **the end time of the event is >= anchor_time**.- For recurring events, after setting the anchor_time, all recurring events will be retrieved including those with past occurrences before the anchor_time.- For exceptional events, you will receive event information where **the original_time is >= anchor_time** as well as **the end time of the event is >= anchor_time**. The original_time is extracted from the exceptional event ID, which is structured as `{uid}_{original_time}`.**Notice**: It can not be used together with start_time and end_time.**Default**: empty',
+          )
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        sync_token: z
+          .string()
+          .describe(
+            'Incremental synchronization mark, not filled in for the first request. When the paging query ends (page_token return value is empty), the interface will return the sync_token field, and the sync_token can be used to incrementally obtain calendar change data in the next call.**Default**: empty',
+          )
+          .optional(),
+        start_time: z
+          .string()
+          .describe(
+            'start_time is the start point of a time range, represented by a Unix timestamp (in seconds). It is used in conjunction with end_time to pull events within a specified time range.**Notice**:- This method can only return data once and cannot be paginated. The size of the data returned in a single request is limited by page_size, and any data exceeding this limit will be truncated.- When using start_time and end_time, they cannot be used together with page_token or sync_token.- When using start_time and end_time, it cannot be used with anchor_time.**Default**: empty',
+          )
+          .optional(),
+        end_time: z
+          .string()
+          .describe(
+            'end_time is the end point of a time range, represented by a Unix timestamp (in seconds). It is used in conjunction with start_time to pull events within a specified time range.**Notice**:- This method can only return data once and cannot be paginated. The size of the data returned in a single request is limited by page_size, and any data exceeding this limit will be truncated.- When using start_time and end_time, they cannot be used together with page_token or sync_token.- When using start_time and end_time, it cannot be used with anchor_time.**Default**: empty',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
+    path: z.object({ calendar_id: z.string().describe('Calendar ID. For details, see [Calendar-related IDs]') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1066,9 +1060,7 @@ export const calendarV4CalendarEventMeetingChatCreate = {
     path: z.object({
       calendar_id: z
         .string()
-        .describe(
-          'The calendar ID where the event is located. To learn more, see [Calendar ID Introduction]',
-        ),
+        .describe('The calendar ID where the event is located. To learn more, see [Calendar ID Introduction]'),
       event_id: z
         .string()
         .describe(
@@ -1133,299 +1125,301 @@ export const calendarV4CalendarEventPatch = {
     '[Feishu/Lark]-Calendar-Event management-Update Event-Call this interface with the current identity (app or user) to update a event on a specific calendar, including information such as the event title, description, start and end time, video conference, and event location',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      summary: z
-        .string()
-        .describe('Event title.**Default value**: empty, indicating that the field will not be updated')
-        .optional(),
-      description: z
-        .string()
-        .describe(
-          'Event description.**Note**: The current API method does not support editing rich text descriptions. If the event description is edited as rich text content via the client, updating the description using the API will cause the rich text formatting to be lost.**Default value**: empty, indicating that the field will not be updated',
-        )
-        .optional(),
-      need_notification: z
-        .boolean()
-        .describe(
-          'Whether to send Bot notifications to event invitees when updating the event.**Default value**: empty, indicating that the field will not be updated**Optional values are**:- true: send notification- false: Do not send notifications',
-        )
-        .optional(),
-      start_time: z
-        .object({
-          date: z
-            .string()
-            .describe(
-              'Start time, only use this field for all-day events, [RFC 3339] format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
-            )
-            .optional(),
-          timestamp: z
-            .string()
-            .describe(
-              'Second-level timestamp, used to set a specific start time. For example, 1602504000 means 2020/10/12 20:00:00 (UTC +8 time zone).**Note**: This parameter cannot be specified at the same time as `date`',
-            )
-            .optional(),
-          timezone: z
-            .string()
-            .describe(
-              'Time zone. Use IANA Time Zone Database standards such as Asia/Shanghai.- The all-day event time zone is fixed to UTC +0- The default time zone for non-all-day events is Asia/Shanghai',
-            )
-            .optional(),
-        })
-        .describe('Event start time. It will take effect only when it has a value at the same time as end_time')
-        .optional(),
-      end_time: z
-        .object({
-          date: z
-            .string()
-            .describe(
-              'End time, only use this field for all-day events, [RFC 3339] format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
-            )
-            .optional(),
-          timestamp: z
-            .string()
-            .describe(
-              'Second-level timestamp, used to set a specific end time. For example, 1602504000 means 2020/10/12 20:00:00 (UTC +8 time zone).**Note**: This parameter cannot be specified at the same time as `date`',
-            )
-            .optional(),
-          timezone: z
-            .string()
-            .describe(
-              'Time zone. Use IANA Time Zone Database standards such as Asia/Shanghai.- The all-day event time zone is fixed to UTC +0- The default time zone for non-all-day events is Asia/Shanghai',
-            )
-            .optional(),
-        })
-        .describe('Event end time. It will take effect only when it has a value at the same time as start_time')
-        .optional(),
-      vchat: z
-        .object({
-          vc_type: z
-            .enum(['vc', 'third_party', 'no_meeting', 'lark_live', 'unknown'])
-            .describe(
-              'Video conferencing type. If video conferencing is not required, `no_meeting` must be passed. Options:vc(Feishu video conferencing. When this type is selected, other fields in vchat are invalid.),third_party(ThirdParty Third-party linked video conferencing. When this type is selected, only the icon_type, description, and meeting_url fields in vchat will take effect.),no_meeting(NoMeeting No video conferencing. When this type is selected, other fields in vchat are invalid.),lark_live(LarkLive Feishu Live. This value is for client use, does not support calls via API, and is read-only.),unknown(Unknown type. This value is used for client compatibility, does not support API calls, and is read-only.)',
-            )
-            .optional(),
-          icon_type: z
-            .enum(['vc', 'live', 'default'])
-            .describe(
-              'The icon type for third-party video conferencing.**Default value**: empty, indicating that the field will not be updated Options:vc(Feishu Video Conference icon),live(Livestream video conference icon),default(Default icon)',
-            )
-            .optional(),
-          description: z
-            .string()
-            .describe(
-              'Third-party video conferencing copywriting.**Default value**: empty, indicating that the field will not be updated',
-            )
-            .optional(),
-          meeting_url: z
-            .string()
-            .describe('Video conferencing URL.**Default value**: empty, indicating that the field will not be updated')
-            .optional(),
-          meeting_settings: z
-            .object({
-              owner_id: z
-                .string()
-                .describe(
-                  'Set the user ID of the conference owner. The ID type must be consistent with user_id_type.This parameter must meet all of the following conditions to take effect:- Apply identity (tenant_access_token) request and operate event on the application calendar.- The owner can only be set when the event is set to a VC meeting for the first time.- owner cannot be a non-user identity.- owner cannot be an external tenant user identity',
-                )
-                .optional(),
-              join_meeting_permission: z
-                .enum(['anyone_can_join', 'only_organization_employees', 'only_event_attendees'])
-                .describe(
-                  'Determine who can join the meeting. Options:anyone_can_join(AnyOne Any user can join the meeting),only_organization_employees(OnlySameOrganization Only users that from the same organization can join the meeting),only_event_attendees(OnlyEventAttendees Only event attendees can join the meeting)',
-                )
-                .optional(),
-              assign_hosts: z
-                .array(z.string())
-                .describe(
-                  'Specify the moderator by user ID, the ID type needs to be the same as user_id_type remains consistent.**Note**:- Only the event organizer can designate a host.- Moderator cannot be a non-user.- The host cannot be an external tenant user identity.- When operating events on the app calendar, specifying a host is not allowed',
-                )
-                .optional(),
-              auto_record: z
-                .boolean()
-                .describe(
-                  'Whether to enable automatic recording.**Optional values are**:- true: enable- false: disable**Default value**: empty, indicating that the field will not be updated',
-                )
-                .optional(),
-              open_lobby: z
-                .boolean()
-                .describe(
-                  'Whether to enable the waiting room.**Optional values are**:- true: enable- false: disable**Default value**: empty, indicating that the field will not be updated',
-                )
-                .optional(),
-              allow_attendees_start: z
-                .boolean()
-                .describe(
-                  'Whether to allow event invitees to initiate meetings.**Note**: When operating event on the application calendar, this field must be true, otherwise no one can initiate a meeting.**Optional values are**:- true: allow- false: not allowed**Default value**: empty, indicating that the field will not be updated',
-                )
-                .optional(),
-            })
-            .describe(
-              'The pre-meeting settings of Feishu Video Conference (VC) must meet all the following conditions:- Valid when `vc_type` is `vc`.- Requires editing permissions for event.Not passing a value means that the field will not be updated',
-            )
-            .optional(),
-        })
-        .describe('Video conferencing information. Not passing a value means that the field will not be updated')
-        .optional(),
-      visibility: z
-        .enum(['default', 'public', 'private'])
-        .describe(
-          'Event visibility.**Note**: If the parameter value is modified when updating the event, it will only take effect for the current identity.**Default value**: empty, indicating that the field will not be updated Options:default(Default range, which depends on the calendar visibility. Only the availability status is visible to other people by default.),public(Public. Event details are displayed.),private(Private. Details are visible only to the current identity.)',
-        )
-        .optional(),
-      attendee_ability: z
-        .enum(['none', 'can_see_others', 'can_invite_others', 'can_modify_event'])
-        .describe(
-          'Invitee permissions.**Default value**: empty, indicating that the field will not be updated Options:none(Cannot edit events, cannot invite others, and cannot view event invitee list),can_see_others(CanSeeOthers Cannot edit events, cannot invite others, and can view event invitee list),can_invite_others(CanInviteOthers Cannot edit events, can invite others, and can view event invitee list),can_modify_event(CanModifyEvent Can edit events, can invite others, and can view event invitee list)',
-        )
-        .optional(),
-      free_busy_status: z
-        .enum(['busy', 'free'])
-        .describe(
-          'Busy status occupied by the event. The default for new events is `busy`.**Note**: If the parameter value is modified when updating the event, it will only take effect for the current identity.**Default value**: empty, indicating that the field will not be updated Options:busy(Busy),free(Free)',
-        )
-        .optional(),
-      location: z
-        .object({
-          name: z.string().describe('Name of the location').optional(),
-          address: z.string().describe('Address of the location').optional(),
-          latitude: z
-            .number()
-            .describe(
-              'Latitude coordinate of the location. Locations within China Mainland should comply with the GCJ-02 standard, and locations outside China Mainland should comply with the WGS84 standard',
-            )
-            .optional(),
-          longitude: z
-            .number()
-            .describe(
-              'Longitude coordinate of the location. Locations within China Mainland should comply with the GCJ-02 standard, and locations outside China Mainland should comply with the WGS84 standard',
-            )
-            .optional(),
-        })
-        .describe('Event location. Not passing a value means that the field will not be updated')
-        .optional(),
-      color: z
-        .number()
-        .describe(
-          'Event color, the value is represented by an int32 color RGB value.**Notice**:- This parameter only takes effect for the current identity.- When displayed on the client, it will be mapped to the closest color on the color palette.- When the value is 0 or -1, the calendar color will be followed by default.**Default value**: empty, indicating that the field will not be updated',
-        )
-        .optional(),
-      reminders: z
-        .array(
-          z.object({
-            minutes: z
+    data: z
+      .object({
+        summary: z
+          .string()
+          .describe('Event title.**Default value**: empty, indicating that the field will not be updated')
+          .optional(),
+        description: z
+          .string()
+          .describe(
+            'Event description.**Note**: The current API method does not support editing rich text descriptions. If the event description is edited as rich text content via the client, updating the description using the API will cause the rich text formatting to be lost.**Default value**: empty, indicating that the field will not be updated',
+          )
+          .optional(),
+        need_notification: z
+          .boolean()
+          .describe(
+            'Whether to send Bot notifications to event invitees when updating the event.**Default value**: empty, indicating that the field will not be updated**Optional values are**:- true: send notification- false: Do not send notifications',
+          )
+          .optional(),
+        start_time: z
+          .object({
+            date: z
+              .string()
+              .describe(
+                'Start time, only use this field for all-day events, [RFC 3339] format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
+              )
+              .optional(),
+            timestamp: z
+              .string()
+              .describe(
+                'Second-level timestamp, used to set a specific start time. For example, 1602504000 means 2020/10/12 20:00:00 (UTC +8 time zone).**Note**: This parameter cannot be specified at the same time as `date`',
+              )
+              .optional(),
+            timezone: z
+              .string()
+              .describe(
+                'Time zone. Use IANA Time Zone Database standards such as Asia/Shanghai.- The all-day event time zone is fixed to UTC +0- The default time zone for non-all-day events is Asia/Shanghai',
+              )
+              .optional(),
+          })
+          .describe('Event start time. It will take effect only when it has a value at the same time as end_time')
+          .optional(),
+        end_time: z
+          .object({
+            date: z
+              .string()
+              .describe(
+                'End time, only use this field for all-day events, [RFC 3339] format, for example, 2018-09-01.**Note**: This parameter cannot be specified at the same time as `timestamp`',
+              )
+              .optional(),
+            timestamp: z
+              .string()
+              .describe(
+                'Second-level timestamp, used to set a specific end time. For example, 1602504000 means 2020/10/12 20:00:00 (UTC +8 time zone).**Note**: This parameter cannot be specified at the same time as `date`',
+              )
+              .optional(),
+            timezone: z
+              .string()
+              .describe(
+                'Time zone. Use IANA Time Zone Database standards such as Asia/Shanghai.- The all-day event time zone is fixed to UTC +0- The default time zone for non-all-day events is Asia/Shanghai',
+              )
+              .optional(),
+          })
+          .describe('Event end time. It will take effect only when it has a value at the same time as start_time')
+          .optional(),
+        vchat: z
+          .object({
+            vc_type: z
+              .enum(['vc', 'third_party', 'no_meeting', 'lark_live', 'unknown'])
+              .describe(
+                'Video conferencing type. If video conferencing is not required, `no_meeting` must be passed. Options:vc(Feishu video conferencing. When this type is selected, other fields in vchat are invalid.),third_party(ThirdParty Third-party linked video conferencing. When this type is selected, only the icon_type, description, and meeting_url fields in vchat will take effect.),no_meeting(NoMeeting No video conferencing. When this type is selected, other fields in vchat are invalid.),lark_live(LarkLive Feishu Live. This value is for client use, does not support calls via API, and is read-only.),unknown(Unknown type. This value is used for client compatibility, does not support API calls, and is read-only.)',
+              )
+              .optional(),
+            icon_type: z
+              .enum(['vc', 'live', 'default'])
+              .describe(
+                'The icon type for third-party video conferencing.**Default value**: empty, indicating that the field will not be updated Options:vc(Feishu Video Conference icon),live(Livestream video conference icon),default(Default icon)',
+              )
+              .optional(),
+            description: z
+              .string()
+              .describe(
+                'Third-party video conferencing copywriting.**Default value**: empty, indicating that the field will not be updated',
+              )
+              .optional(),
+            meeting_url: z
+              .string()
+              .describe(
+                'Video conferencing URL.**Default value**: empty, indicating that the field will not be updated',
+              )
+              .optional(),
+            meeting_settings: z
+              .object({
+                owner_id: z
+                  .string()
+                  .describe(
+                    'Set the user ID of the conference owner. The ID type must be consistent with user_id_type.This parameter must meet all of the following conditions to take effect:- Apply identity (tenant_access_token) request and operate event on the application calendar.- The owner can only be set when the event is set to a VC meeting for the first time.- owner cannot be a non-user identity.- owner cannot be an external tenant user identity',
+                  )
+                  .optional(),
+                join_meeting_permission: z
+                  .enum(['anyone_can_join', 'only_organization_employees', 'only_event_attendees'])
+                  .describe(
+                    'Determine who can join the meeting. Options:anyone_can_join(AnyOne Any user can join the meeting),only_organization_employees(OnlySameOrganization Only users that from the same organization can join the meeting),only_event_attendees(OnlyEventAttendees Only event attendees can join the meeting)',
+                  )
+                  .optional(),
+                assign_hosts: z
+                  .array(z.string())
+                  .describe(
+                    'Specify the moderator by user ID, the ID type needs to be the same as user_id_type remains consistent.**Note**:- Only the event organizer can designate a host.- Moderator cannot be a non-user.- The host cannot be an external tenant user identity.- When operating events on the app calendar, specifying a host is not allowed',
+                  )
+                  .optional(),
+                auto_record: z
+                  .boolean()
+                  .describe(
+                    'Whether to enable automatic recording.**Optional values are**:- true: enable- false: disable**Default value**: empty, indicating that the field will not be updated',
+                  )
+                  .optional(),
+                open_lobby: z
+                  .boolean()
+                  .describe(
+                    'Whether to enable the waiting room.**Optional values are**:- true: enable- false: disable**Default value**: empty, indicating that the field will not be updated',
+                  )
+                  .optional(),
+                allow_attendees_start: z
+                  .boolean()
+                  .describe(
+                    'Whether to allow event invitees to initiate meetings.**Note**: When operating event on the application calendar, this field must be true, otherwise no one can initiate a meeting.**Optional values are**:- true: allow- false: not allowed**Default value**: empty, indicating that the field will not be updated',
+                  )
+                  .optional(),
+              })
+              .describe(
+                'The pre-meeting settings of Feishu Video Conference (VC) must meet all the following conditions:- Valid when `vc_type` is `vc`.- Requires editing permissions for event.Not passing a value means that the field will not be updated',
+              )
+              .optional(),
+          })
+          .describe('Video conferencing information. Not passing a value means that the field will not be updated')
+          .optional(),
+        visibility: z
+          .enum(['default', 'public', 'private'])
+          .describe(
+            'Event visibility.**Note**: If the parameter value is modified when updating the event, it will only take effect for the current identity.**Default value**: empty, indicating that the field will not be updated Options:default(Default range, which depends on the calendar visibility. Only the availability status is visible to other people by default.),public(Public. Event details are displayed.),private(Private. Details are visible only to the current identity.)',
+          )
+          .optional(),
+        attendee_ability: z
+          .enum(['none', 'can_see_others', 'can_invite_others', 'can_modify_event'])
+          .describe(
+            'Invitee permissions.**Default value**: empty, indicating that the field will not be updated Options:none(Cannot edit events, cannot invite others, and cannot view event invitee list),can_see_others(CanSeeOthers Cannot edit events, cannot invite others, and can view event invitee list),can_invite_others(CanInviteOthers Cannot edit events, can invite others, and can view event invitee list),can_modify_event(CanModifyEvent Can edit events, can invite others, and can view event invitee list)',
+          )
+          .optional(),
+        free_busy_status: z
+          .enum(['busy', 'free'])
+          .describe(
+            'Busy status occupied by the event. The default for new events is `busy`.**Note**: If the parameter value is modified when updating the event, it will only take effect for the current identity.**Default value**: empty, indicating that the field will not be updated Options:busy(Busy),free(Free)',
+          )
+          .optional(),
+        location: z
+          .object({
+            name: z.string().describe('Name of the location').optional(),
+            address: z.string().describe('Address of the location').optional(),
+            latitude: z
               .number()
               .describe(
-                'Offset of the event reminder time. A positive value means the reminder is triggered X minutes before the event starts, and a negative value means the reminder is triggered X minutes after the event starts.This field is specified when an event is created or updated, and only valid for the current identity, not for other invitees in the event',
+                'Latitude coordinate of the location. Locations within China Mainland should comply with the GCJ-02 standard, and locations outside China Mainland should comply with the WGS84 standard',
               )
               .optional(),
-          }),
-        )
-        .describe('Event reminder list. Not passing a value means that the field will not be updated')
-        .optional(),
-      recurrence: z
-        .string()
-        .describe(
-          'Recurrence rule for recurring events. For details, see [RFC 5545].**Note**:- COUNT and UNTIL cannot coexist;- The length of a scheduled recurring event in a room cannot exceed two years.**Default value**: empty, indicating that the field will not be updated',
-        )
-        .optional(),
-      schemas: z
-        .array(
-          z.object({
-            ui_name: z
-              .string()
+            longitude: z
+              .number()
               .describe(
-                'UI name. **Valid values**: - ForwardIcon: Event forwarding button - MeetingChatIcon: Meeting group chat button - MeetingMinutesIcon: Meeting minutes button - MeetingVideo: Video conference area - RSVP: Accept/decline/pending area - Attendee: Event invitees area - OrganizerOrCreator: Organizer/creator area',
+                'Longitude coordinate of the location. Locations within China Mainland should comply with the GCJ-02 standard, and locations outside China Mainland should comply with the WGS84 standard',
               )
               .optional(),
-            ui_status: z
-              .enum(['hide', 'readonly', 'editable', 'unknown'])
+          })
+          .describe('Event location. Not passing a value means that the field will not be updated')
+          .optional(),
+        color: z
+          .number()
+          .describe(
+            'Event color, the value is represented by an int32 color RGB value.**Notice**:- This parameter only takes effect for the current identity.- When displayed on the client, it will be mapped to the closest color on the color palette.- When the value is 0 or -1, the calendar color will be followed by default.**Default value**: empty, indicating that the field will not be updated',
+          )
+          .optional(),
+        reminders: z
+          .array(
+            z.object({
+              minutes: z
+                .number()
+                .describe(
+                  'Offset of the event reminder time. A positive value means the reminder is triggered X minutes before the event starts, and a negative value means the reminder is triggered X minutes after the event starts.This field is specified when an event is created or updated, and only valid for the current identity, not for other invitees in the event',
+                )
+                .optional(),
+            }),
+          )
+          .describe('Event reminder list. Not passing a value means that the field will not be updated')
+          .optional(),
+        recurrence: z
+          .string()
+          .describe(
+            'Recurrence rule for recurring events. For details, see [RFC 5545].**Note**:- COUNT and UNTIL cannot coexist- The length of a scheduled recurring event in a room cannot exceed two years.**Default value**: empty, indicating that the field will not be updated',
+          )
+          .optional(),
+        schemas: z
+          .array(
+            z.object({
+              ui_name: z
+                .string()
+                .describe(
+                  'UI name. **Valid values**: - ForwardIcon: Event forwarding button - MeetingChatIcon: Meeting group chat button - MeetingMinutesIcon: Meeting minutes button - MeetingVideo: Video conference area - RSVP: Accept/decline/pending area - Attendee: Event invitees area - OrganizerOrCreator: Organizer/creator area',
+                )
+                .optional(),
+              ui_status: z
+                .enum(['hide', 'readonly', 'editable', 'unknown'])
+                .describe(
+                  'Custom status of UI items. Only "hide" is supported. Options:hide(Hidden),readonly(Read-only),editable(Editable),unknown(Unknown. This is only used for compatibility in reading.)',
+                )
+                .optional(),
+              app_link: z
+                .string()
+                .describe(
+                  'The link that jumps after clicking the button.**Note**: The compatibility parameter is read-only, so passing in this request parameter is not supported yet',
+                )
+                .optional(),
+            }),
+          )
+          .describe(
+            'Event custom information controls the UI display of the event details page. Not passing a value means that the field will not be updated',
+          )
+          .optional(),
+        attachments: z
+          .array(
+            z.object({
+              file_token: z
+                .string()
+                .describe(
+                  'Attachment token. Call the [Upload Material] interface to obtain the file_token of the attachment. When calling the upload material interface, please note:- `parent_type` needs to pass in a fixed value `calender`.- `parent_node` needs to pass in a calendar ID that is consistent with the current interface.**Attachment verification rule**: The total size of the attachment does not exceed 25 MB',
+                )
+                .optional(),
+              is_deleted: z
+                .boolean()
+                .describe('Whether to delete the attachment.**Optional values**:- true- false**Default value**: false')
+                .optional(),
+            }),
+          )
+          .describe('Event attachment')
+          .optional(),
+        event_check_in: z
+          .object({
+            enable_check_in: z.boolean().describe('Whether to enable event check-in'),
+            check_in_start_time: z
+              .object({
+                time_type: z
+                  .enum(['before_event_start', 'after_event_start', 'after_event_end'])
+                  .describe(
+                    'Check-in time type, duration calculates the final time according to it. Options:before_event_start(BeforeEventStart Before the start of event),after_event_start(AfterEventStart After the start of event),after_event_end(AfterEventEnd After the end of event)',
+                  ),
+                duration: z
+                  .number()
+                  .describe(
+                    'The offset (in minutes) relative to the beginning or end of the event.- Currently, the value can only be one of the lists [0, 5, 15, 30, 60], where 0 indicates immediate start.- When time_type is before_event_start, duration cannot be set to 0',
+                  ),
+              })
               .describe(
-                'Custom status of UI items. Only "hide" is supported. Options:hide(Hidden),readonly(Read-only),editable(Editable),unknown(Unknown. This is only used for compatibility in reading.)',
+                'Event check-in start time.**Note**: The check-in start time cannot be greater than or equal to the check-in end time',
               )
               .optional(),
-            app_link: z
-              .string()
+            check_in_end_time: z
+              .object({
+                time_type: z
+                  .enum(['before_event_start', 'after_event_start', 'after_event_end'])
+                  .describe(
+                    'Check-in time type, duration calculates the final time according to it. Options:before_event_start(BeforeEventStart Before the start of event),after_event_start(AfterEventStart After the start of event),after_event_end(AfterEventEnd After the end of event)',
+                  ),
+                duration: z
+                  .number()
+                  .describe(
+                    'The offset (in minutes) relative to the beginning or end of the event.- Currently, the value can only be one of the lists [0, 5, 15, 30, 60], where 0 indicates immediate start.- When time_type is before_event_start, duration cannot be set to 0',
+                  ),
+              })
               .describe(
-                'The link that jumps after clicking the button.**Note**: The compatibility parameter is read-only, so passing in this request parameter is not supported yet',
+                'Event check-in end time.**Note**: The check-in start time cannot be greater than or equal to the check-in end time',
               )
               .optional(),
-          }),
-        )
-        .describe(
-          'Event custom information controls the UI display of the event details page. Not passing a value means that the field will not be updated',
-        )
-        .optional(),
-      attachments: z
-        .array(
-          z.object({
-            file_token: z
-              .string()
-              .describe(
-                'Attachment token. Call the [Upload Material] interface to obtain the file_token of the attachment. When calling the upload material interface, please note:- `parent_type` needs to pass in a fixed value `calender`.- `parent_node` needs to pass in a calendar ID that is consistent with the current interface.**Attachment verification rule**: The total size of the attachment does not exceed 25 MB',
-              )
-              .optional(),
-            is_deleted: z
+            need_notify_attendees: z
               .boolean()
-              .describe('Whether to delete the attachment.**Optional values**:- true- false**Default value**: false')
+              .describe(
+                'Whether a check-in notification is automatically sent to the participant at the start of the check-in',
+              )
               .optional(),
-          }),
-        )
-        .describe('Event attachment')
-        .optional(),
-      event_check_in: z
-        .object({
-          enable_check_in: z.boolean().describe('Whether to enable event check-in'),
-          check_in_start_time: z
-            .object({
-              time_type: z
-                .enum(['before_event_start', 'after_event_start', 'after_event_end'])
-                .describe(
-                  'Check-in time type, duration calculates the final time according to it. Options:before_event_start(BeforeEventStart Before the start of event),after_event_start(AfterEventStart After the start of event),after_event_end(AfterEventEnd After the end of event)',
-                ),
-              duration: z
-                .number()
-                .describe(
-                  'The offset (in minutes) relative to the beginning or end of the event.- Currently, the value can only be one of the lists [0, 5, 15, 30, 60], where 0 indicates immediate start.- When time_type is before_event_start, duration cannot be set to 0',
-                ),
-            })
-            .describe(
-              'Event check-in start time.**Note**: The check-in start time cannot be greater than or equal to the check-in end time',
-            )
-            .optional(),
-          check_in_end_time: z
-            .object({
-              time_type: z
-                .enum(['before_event_start', 'after_event_start', 'after_event_end'])
-                .describe(
-                  'Check-in time type, duration calculates the final time according to it. Options:before_event_start(BeforeEventStart Before the start of event),after_event_start(AfterEventStart After the start of event),after_event_end(AfterEventEnd After the end of event)',
-                ),
-              duration: z
-                .number()
-                .describe(
-                  'The offset (in minutes) relative to the beginning or end of the event.- Currently, the value can only be one of the lists [0, 5, 15, 30, 60], where 0 indicates immediate start.- When time_type is before_event_start, duration cannot be set to 0',
-                ),
-            })
-            .describe(
-              'Event check-in end time.**Note**: The check-in start time cannot be greater than or equal to the check-in end time',
-            )
-            .optional(),
-          need_notify_attendees: z
-            .boolean()
-            .describe(
-              'Whether a check-in notification is automatically sent to the participant at the start of the check-in',
-            )
-            .optional(),
-        })
-        .describe('Event check-in settings. If this parameter is empty, check-in Settings are not performed')
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+          })
+          .describe('Event check-in settings. If this parameter is empty, check-in Settings are not performed')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
-      calendar_id: z
-        .string()
-        .describe(
-          'Calendar ID. For details, see [Calendar-related IDs]',
-        ),
+      calendar_id: z.string().describe('Calendar ID. For details, see [Calendar-related IDs]'),
       event_id: z
         .string()
         .describe(
@@ -1455,9 +1449,7 @@ export const calendarV4CalendarEventReply = {
     path: z.object({
       calendar_id: z
         .string()
-        .describe(
-          'The calendar ID where the event is located. To learn more, see [Calendar ID Introduction]',
-        ),
+        .describe('The calendar ID where the event is located. To learn more, see [Calendar ID Introduction]'),
       event_id: z
         .string()
         .describe(
@@ -1557,28 +1549,24 @@ export const calendarV4CalendarEventSearch = {
         .describe('Search filter')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z
-        .number()
-        .describe(
-          'The maximum number of events returned in one call. The minimum value is 10, and if fewer than 10, defaults to 10',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      calendar_id: z
-        .string()
-        .describe(
-          'Calendar ID. For details, see [Calendar-related IDs]',
-        ),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z
+          .number()
+          .describe(
+            'The maximum number of events returned in one call. The minimum value is 10, and if fewer than 10, defaults to 10',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ calendar_id: z.string().describe('Calendar ID. For details, see [Calendar-related IDs]') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1592,13 +1580,7 @@ export const calendarV4CalendarEventSubscription = {
     '[Feishu/Lark]-Calendar-Event management-Subscribe Event Changes-Call this interface with user identity to subscribe to event change events under a specified calendar',
   accessTokens: ['user'],
   schema: {
-    path: z.object({
-      calendar_id: z
-        .string()
-        .describe(
-          'Calendar ID. For details, see [Calendar-related IDs]',
-        ),
-    }),
+    path: z.object({ calendar_id: z.string().describe('Calendar ID. For details, see [Calendar-related IDs]') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1612,13 +1594,7 @@ export const calendarV4CalendarEventUnsubscription = {
     '[Feishu/Lark]-Calendar-Event management-Unsubscribe Event Changes-Call this interface to unsubscribe from event change events in the specified calendar as a user',
   accessTokens: ['user'],
   schema: {
-    path: z.object({
-      calendar_id: z
-        .string()
-        .describe(
-          'Calendar ID. For details, see [Calendar-related IDs]',
-        ),
-    }),
+    path: z.object({ calendar_id: z.string().describe('Calendar ID. For details, see [Calendar-related IDs]') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1652,26 +1628,28 @@ export const calendarV4CalendarList = {
     '[Feishu/Lark]-Calendar-Calendar management-Query the calendar list-Call this interface to page through and query the calendar list of the current identity (application or user)',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z
-        .number()
-        .describe(
-          'The maximum number of calendars to be returned for one request. The actual number of calendars returned may be less than this value, or it may be empty, and you can determine if there are more calendars based on the has_more field in the response body',
-        )
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      sync_token: z
-        .string()
-        .describe(
-          'Incremental synchronization mark, no need to fill in for the first request. When the page query ends (the returned value of page_token is empty), the interface will return the sync_token field. The next call can use this sync_token to incrementally obtain calendar change data',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z
+          .number()
+          .describe(
+            'The maximum number of calendars to be returned for one request. The actual number of calendars returned may be less than this value, or it may be empty, and you can determine if there are more calendars based on the has_more field in the response body',
+          )
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        sync_token: z
+          .string()
+          .describe(
+            'Incremental synchronization mark, no need to fill in for the first request. When the page query ends (the returned value of page_token is empty), the interface will return the sync_token field. The next call can use this sync_token to incrementally obtain calendar change data',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1685,31 +1663,36 @@ export const calendarV4CalendarPatch = {
     '[Feishu/Lark]-Calendar-Calendar management-Update calendar information-Call this interface with the current identity (application or user) to modify the title, description, public range, and other information of the specified calendar',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      summary: z.string().describe('Calendar title.- Not providing this field means it will not be updated').optional(),
-      description: z
-        .string()
-        .describe('Calendar description.- Not providing this field means it will not be updated')
-        .optional(),
-      permissions: z
-        .enum(['private', 'show_only_free_busy', 'public'])
-        .describe(
-          'Calendar visibility range.- Not providing this field means it will not be updated. Options:private(Private),show_only_free_busy(ShowOnlyFreeBusy Only availability information is displayed.),public(Public. Event details are visible to other people)',
-        )
-        .optional(),
-      color: z
-        .number()
-        .describe(
-          'Calendar color, the value is represented by the int32 of the RGB color value, where, 24 ~ 31 bits are transparency, 16 ~ 23 bits are red, 8 ~ 15 bits are green, 0 ~ 7 bits are blue. For example, -11034625 represents the RGB value (87, 159, 255).- Not providing this field means it will not be updated.**Note**:- The value range is -2^31 ~ 2^31-1- The color of the calendar will be mapped to the closest color on the Feishu client palette for display.- This color only applies to the current identity',
-        )
-        .optional(),
-      summary_alias: z
-        .string()
-        .describe(
-          'Calendar alias, setting this field (including subsequent modification of this field) only takes effect for the current identity.- Not providing this field means it will not be updated',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        summary: z
+          .string()
+          .describe('Calendar title.- Not providing this field means it will not be updated')
+          .optional(),
+        description: z
+          .string()
+          .describe('Calendar description.- Not providing this field means it will not be updated')
+          .optional(),
+        permissions: z
+          .enum(['private', 'show_only_free_busy', 'public'])
+          .describe(
+            'Calendar visibility range.- Not providing this field means it will not be updated. Options:private(Private),show_only_free_busy(ShowOnlyFreeBusy Only availability information is displayed.),public(Public. Event details are visible to other people)',
+          )
+          .optional(),
+        color: z
+          .number()
+          .describe(
+            'Calendar color, the value is represented by the int32 of the RGB color value, where, 24 ~ 31 bits are transparency, 16 ~ 23 bits are red, 8 ~ 15 bits are green, 0 ~ 7 bits are blue. For example, -11034625 represents the RGB value (87, 159, 255).- Not providing this field means it will not be updated.**Note**:- The value range is -2^31 ~ 2^31-1- The color of the calendar will be mapped to the closest color on the Feishu client palette for display.- This color only applies to the current identity',
+          )
+          .optional(),
+        summary_alias: z
+          .string()
+          .describe(
+            'Calendar alias, setting this field (including subsequent modification of this field) only takes effect for the current identity.- Not providing this field means it will not be updated',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       calendar_id: z
         .string()
@@ -1730,7 +1713,9 @@ export const calendarV4CalendarPrimary = {
     '[Feishu/Lark]-Calendar-Calendar management-Query primary calendar information-Call this interface to get the main calendar information of the current identity (application or user)',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1751,15 +1736,17 @@ export const calendarV4CalendarSearch = {
           "Search keyword. The interface will search public calendars or the user's main calendar where the title or description contains this keyword",
         ),
     }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('The maximum number of calendars returned in a single request').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('The maximum number of calendars returned in a single request').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1839,17 +1826,21 @@ export const calendarV4ExchangeBindingCreate = {
     '[Feishu/Lark]-Calendar-Synchronize Exchange calendar information-Bind Exchange account to Feishu account-Call this interface to bind the Exchange account to the Feishu account, thereby supporting the import of the Exchange calendar',
   accessTokens: ['user'],
   schema: {
-    data: z.object({
-      admin_account: z.string().describe('The admin account of Exchange').optional(),
-      exchange_account: z.string().describe('The Exchange account that needs to be bound').optional(),
-      user_id: z
-        .string()
-        .describe(
-          'User ID, that is, the Feishu account ID bound to the Exchange account. For more information, see [User-related IDs]',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        admin_account: z.string().describe('The admin account of Exchange').optional(),
+        exchange_account: z.string().describe('The Exchange account that needs to be bound').optional(),
+        user_id: z
+          .string()
+          .describe(
+            'User ID, that is, the Feishu account ID bound to the Exchange account. For more information, see [User-related IDs]',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1883,7 +1874,9 @@ export const calendarV4ExchangeBindingGet = {
     '[Feishu/Lark]-Calendar-Synchronize Exchange calendar information-Query the binding status of the Exchange account-Call this interface to obtain the binding status of the Exchange account, including the synchronization status of the Exchange calendar',
   accessTokens: ['user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       exchange_binding_id: z
         .string()
@@ -1940,7 +1933,9 @@ export const calendarV4FreebusyList = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1954,14 +1949,16 @@ export const calendarV4SettingGenerateCaldavConf = {
     '[Feishu/Lark]-Calendar-Sync to local calendar-Generate CalDAV configuration-Call this interface to generate a CalDAV account password for the current user, which is used to synchronize Feishu calendar information to the local device calendar',
   accessTokens: ['user'],
   schema: {
-    data: z.object({
-      device_name: z
-        .string()
-        .describe(
-          'The name of the device that needs to synchronize the calendar, which is used for display in the calendar.**Default**: empty',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        device_name: z
+          .string()
+          .describe(
+            'The name of the device that needs to synchronize the calendar, which is used for display in the calendar.**Default**: empty',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1998,7 +1995,9 @@ export const calendarV4TimeoffEventCreate = {
         .describe('Customize leave event description.**Default**: empty, use default description')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const calendarV4TimeoffEventDelete = {

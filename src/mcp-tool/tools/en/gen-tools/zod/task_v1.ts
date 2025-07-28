@@ -33,15 +33,19 @@ export const taskV1TaskBatchDeleteCollaborator = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Collaborator-Batch delete collaborator-This API is to delete multiple collaborators from a task',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      id_list: z
-        .array(z.string())
-        .describe(
-          'List of collaborator ids added when creating the task. The value passed in is user_id or open_id, determined by user_id_type. For details, see: [How to get ID]',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        id_list: z
+          .array(z.string())
+          .describe(
+            'List of collaborator ids added when creating the task. The value passed in is user_id or open_id, determined by user_id_type. For details, see: [How to get ID]',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('Task ID') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -56,8 +60,12 @@ export const taskV1TaskBatchDeleteFollower = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Follower-Batch delete followers-This API is to delete multiple followers from a task',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({ id_list: z.array(z.string()).describe('Multiple follower ids to be deleted').optional() }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({ id_list: z.array(z.string()).describe('Multiple follower ids to be deleted').optional() })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('Task ID') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -72,21 +80,25 @@ export const taskV1TaskCollaboratorCreate = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Collaborator-Add collaborators-This API is used to add collaborators for a task. Multiple collaborators can be added by one request. Only the creator and collaborator of the task can add executors, and followers do not have permission to add them',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      id: z
-        .string()
-        .describe(
-          'The ID of the task collaborator. The value passed in is user_id or open_id, determined by user_id_type. For details, see: [How to get ID]<md-alert>Deprecated, reserved for forward compatibility in the early days when only one person was added at a time, but it is no longer recommended, it is recommended to use the id_list field</md-alert>',
-        )
-        .optional(),
-      id_list: z
-        .array(z.string())
-        .describe(
-          'List of collaborator ids added when creating the task. The value passed in is user_id or open_id, determined by user_id_type. For details, see: [How to get ID]',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        id: z
+          .string()
+          .describe(
+            'The ID of the task collaborator. The value passed in is user_id or open_id, determined by user_id_type. For details, see: [How to get ID]<md-alert>Deprecated, reserved for forward compatibility in the early days when only one person was added at a time, but it is no longer recommended, it is recommended to use the id_list field</md-alert>',
+          )
+          .optional(),
+        id_list: z
+          .array(z.string())
+          .describe(
+            'List of collaborator ids added when creating the task. The value passed in is user_id or open_id, determined by user_id_type. For details, see: [How to get ID]',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       task_id: z
         .string()
@@ -107,7 +119,9 @@ export const taskV1TaskCollaboratorDelete = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Collaborator-Delete a collaborator-This API is used to delete a task collaborator',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       task_id: z.string().describe('Task ID'),
       collaborator_id: z.string().describe('Open ID or User ID of the task collaborator(specified by user_id_type)'),
@@ -125,17 +139,19 @@ export const taskV1TaskCollaboratorList = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Collaborator-Obtain a collaborator list-This API is used to obtain a task list. The result can be displayed by pages. A maximum of 50 entries are supported',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
-    path: z.object({ task_id: z.string().describe('Task ID').optional() }),
+    params: z
+      .object({
+        page_size: z.number().optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
+    path: z.object({ task_id: z.string().describe('Task ID').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -149,33 +165,32 @@ export const taskV1TaskCommentCreate = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Comment-Create a comment-This API is used to create and reply to a task comment. When the value of the parent_id field is 0, this API is used to create a comment. When the value of the parent_id field is not 0, this API is used to reply to a comment',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      content: z
-        .string()
-        .describe(
-          'Content of the comment<md-alert>If specify `content` and `rich_content` simutaneously, only rich_content will be used.</md-alert>',
-        )
-        .optional(),
-      parent_id: z
-        .string()
-        .describe(
-          'Parent ID of the comment. If this field is specified when a comment is created, the comment is a reply to a comment. If this field is not specified when a comment is created, the comment is not a reply, but is a comment',
-        )
-        .optional(),
-      create_milli_time: z
-        .string()
-        .describe(
-          'Timestamp when the comment was created, in milliseconds, for display, do not need to be filled in when it is created',
-        )
-        .optional(),
-      rich_content: z
-        .string()
-        .describe(
-          'Rich text comment content. See [Markdown module]',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        content: z
+          .string()
+          .describe(
+            'Content of the comment<md-alert>If specify `content` and `rich_content` simutaneously, only rich_content will be used.</md-alert>',
+          )
+          .optional(),
+        parent_id: z
+          .string()
+          .describe(
+            'Parent ID of the comment. If this field is specified when a comment is created, the comment is a reply to a comment. If this field is not specified when a comment is created, the comment is not a reply, but is a comment',
+          )
+          .optional(),
+        create_milli_time: z
+          .string()
+          .describe(
+            'Timestamp when the comment was created, in milliseconds, for display, do not need to be filled in when it is created',
+          )
+          .optional(),
+        rich_content: z.string().describe('Rich text comment content. See [Markdown module]').optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('Task ID') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -204,7 +219,9 @@ export const taskV1TaskCommentGet = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Comment-Obtain comment details-This API is used to obtain the details about a comment based on a comment ID',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('Task ID'), comment_id: z.string().describe('Comment ID') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -219,23 +236,25 @@ export const taskV1TaskCommentList = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Comment-Get comment list-This API is used to query the task comment list, supports paging, and the maximum value is 100',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      list_direction: z
-        .number()
-        .describe(
-          'Comment sorting mark, which can be queried according to the comment time. If left blank, sort in desending order defaultly. Options:0(Down Sort by comment time in ascending order),1(Up Sort by comment time in descending order)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
-    path: z.object({ task_id: z.string().describe('Task id').optional() }),
+    params: z
+      .object({
+        page_size: z.number().optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        list_direction: z
+          .number()
+          .describe(
+            'Comment sorting mark, which can be queried according to the comment time. If left blank, sort in desending order defaultly. Options:0(Down Sort by comment time in ascending order),1(Up Sort by comment time in descending order)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
+    path: z.object({ task_id: z.string().describe('Task id').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -249,11 +268,15 @@ export const taskV1TaskCommentUpdate = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Comment-Update a comment-This API is used to update the content of a comment',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      content: z.string().describe('New comment content').optional(),
-      rich_content: z.string().describe('New rich text review content (preferred)').optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        content: z.string().describe('New comment content').optional(),
+        rich_content: z.string().describe('New rich text review content (preferred)').optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('Task ID'), comment_id: z.string().describe('Comment ID') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -384,12 +407,12 @@ export const taskV1TaskCreate = {
         .optional(),
       rich_description: z
         .string()
-        .describe(
-          'Rich-text task description. For syntax format see: [Markdown module]',
-        )
+        .describe('Rich-text task description. For syntax format see: [Markdown module]')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -417,11 +440,15 @@ export const taskV1TaskFollowerCreate = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Follower-Add followers to a task-This API is used to add followers for a task. Multiple followers can be added in one request. The followers specified in the request must be the IDs that represent users',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      id: z.string().describe('ID of the task follower (to be deprecated, use id_list)').optional(),
-      id_list: z.array(z.string()).describe('Multiple follower ids to be deleted').optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        id: z.string().describe('ID of the task follower (to be deprecated, use id_list)').optional(),
+        id_list: z.array(z.string()).describe('Multiple follower ids to be deleted').optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('Task ID') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -436,7 +463,9 @@ export const taskV1TaskFollowerDelete = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Follower-Delete a follower-This API is used to delete a follower from a task',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       task_id: z.string().describe('Task ID'),
       follower_id: z.string().describe('Open ID or User ID of the task follower(specified by user_id_type)'),
@@ -453,11 +482,13 @@ export const taskV1TaskFollowerList = {
   description: '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Follower-Obtain a follower list',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().optional(),
-      page_token: z.string().optional(),
-      user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().optional(),
+        page_token: z.string().optional(),
+        user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({ task_id: z.string().describe('Task ID') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -472,7 +503,9 @@ export const taskV1TaskGet = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Task management-Obtain task details-This API is used to obtain task details, including the title, description, time, source, and other information of a task',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('Task ID') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -487,34 +520,36 @@ export const taskV1TaskList = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Task management-Get task list-The interface obtains all tasks related to the user by parsing the user_access_token in the header. And supports filtering tasks by task creation time and task completion status',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      start_create_time: z
-        .string()
-        .describe(
-          'The start time of the query. If left blank, the default start time is the creation time of the first task',
-        )
-        .optional(),
-      end_create_time: z
-        .string()
-        .describe(
-          'The end time of the query. If left blank, the default end time is the creation time of the last task',
-        )
-        .optional(),
-      task_completed: z
-        .boolean()
-        .describe(
-          'Used to filter task completion status when querying. True indicates that only completed tasks are returned, and false indicates that only uncompleted tasks are returned. When left blank, it means tasks of both status shall be returned',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        start_create_time: z
+          .string()
+          .describe(
+            'The start time of the query. If left blank, the default start time is the creation time of the first task',
+          )
+          .optional(),
+        end_create_time: z
+          .string()
+          .describe(
+            'The end time of the query. If left blank, the default end time is the creation time of the last task',
+          )
+          .optional(),
+        task_completed: z
+          .boolean()
+          .describe(
+            'Used to filter task completion status when querying. True indicates that only completed tasks are returned, and false indicates that only uncompleted tasks are returned. When left blank, it means tasks of both status shall be returned',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -655,9 +690,7 @@ export const taskV1TaskPatch = {
             .optional(),
           rich_description: z
             .string()
-            .describe(
-              'Rich-text task description. For syntax format see: [Markdown module]',
-            )
+            .describe('Rich-text task description. For syntax format see: [Markdown module]')
             .optional(),
         })
         .describe('Basic information of the updated task entity'),
@@ -667,7 +700,9 @@ export const taskV1TaskPatch = {
           'Specifies the field that needs to be updated. Fields that can be updated are:<md-enum><md-enum-item key="summary" >task summary(plain text)</md-enum-item><md-enum-item key="rich_summary" >task summary(rich content)</md-enum-item><md-enum-item key="description" >task description(plain text)</md-enum-item><md-enum-item key="rich_description" >task description(rich content)</md-enum-item><md-enum-item key="due" >task due time</md-enum-item><md-enum-item key="extra" >task extra info</md-enum-item><md-enum-item key="custom" >task customize complete rule</md-enum-item><md-enum-item key="follower_ids" >task follower id list</md-enum-item><md-enum-item key="collaborator_ids" >task collaborator id list</md-enum-item><md-enum-item key="repeat_rule" >task repeat rule</md-enum-item></md-enum>',
         ),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('Task ID') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -720,16 +755,18 @@ export const taskV1TaskReminderList = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Tasks-Remind-Query reminder time list-Returns a reminder time list. The result can be displayed by pages. A maximum of 50 entries are supported',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
-    path: z.object({ task_id: z.string().describe('Task ID').optional() }),
+    params: z
+      .object({
+        page_size: z.number().optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ task_id: z.string().describe('Task ID').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };

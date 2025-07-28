@@ -10,11 +10,7 @@ export const docsV1ContentGet = {
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
-      doc_token: z
-        .string()
-        .describe(
-          '云文档的唯一标识。点击[这里]了解如何获取文档的 `doc_token`',
-        ),
+      doc_token: z.string().describe('云文档的唯一标识。点击[这里]了解如何获取文档的 `doc_token`'),
       doc_type: z.literal('docx').describe('云文档类型 Options:docx(新版文档)'),
       content_type: z.literal('markdown').describe('内容类型 Options:markdown(Markdown 格式)'),
       lang: z

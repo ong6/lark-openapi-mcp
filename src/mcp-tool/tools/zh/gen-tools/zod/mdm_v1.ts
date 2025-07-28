@@ -16,7 +16,9 @@ export const mdmV1UserAuthDataRelationBind = {
       authorized_user_ids: z.array(z.string()).describe('授权人的lark id'),
       uams_app_id: z.string().describe('uams系统中应用id'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const mdmV1UserAuthDataRelationUnbind = {
@@ -35,7 +37,9 @@ export const mdmV1UserAuthDataRelationUnbind = {
       authorized_user_ids: z.array(z.string()).describe('授权人的lark id'),
       uams_app_id: z.string().describe('uams系统中应用id'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const mdmV1Tools = [mdmV1UserAuthDataRelationBind, mdmV1UserAuthDataRelationUnbind];

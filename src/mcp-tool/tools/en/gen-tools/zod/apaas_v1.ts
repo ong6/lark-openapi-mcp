@@ -1,5 +1,6 @@
 import { z } from 'zod';
 export type apaasV1ToolName =
+  | 'apaas.v1.app.list'
   | 'apaas.v1.applicationAuditLog.auditLogList'
   | 'apaas.v1.applicationAuditLog.dataChangeLogDetail'
   | 'apaas.v1.applicationAuditLog.dataChangeLogsList'
@@ -36,13 +37,37 @@ export type apaasV1ToolName =
   | 'apaas.v1.userTask.query'
   | 'apaas.v1.userTask.rollback'
   | 'apaas.v1.userTask.rollbackPoints';
+export const apaasV1AppList = {
+  project: 'apaas',
+  name: 'apaas.v1.app.list',
+  sdkName: 'apaas.v1.app.list',
+  path: '/open-apis/apaas/v1/apps',
+  httpMethod: 'GET',
+  description:
+    '[Feishu/Lark]-Feishu aPaaS-Application-Query application basic information-Query basic information of applications under a tenant, such as application name and application namespace',
+  accessTokens: ['user'],
+  schema: {
+    params: z
+      .object({
+        page_size: z.string().describe('Page size, required, range: [0,50]').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
+    useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
+  },
+};
 export const apaasV1ApplicationAuditLogAuditLogList = {
   project: 'apaas',
   name: 'apaas.v1.applicationAuditLog.auditLogList',
   sdkName: 'apaas.v1.applicationAuditLog.auditLogList',
   path: '/open-apis/apaas/v1/applications/:namespace/audit_log/audit_log_list',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-audit log-Query audit log list-Query the audit log list',
+  description: '[Feishu/Lark]-Feishu aPaaS-audit log-Query audit log list-Query the audit log list',
   accessTokens: ['user'],
   schema: {
     params: z.object({
@@ -80,8 +105,7 @@ export const apaasV1ApplicationAuditLogDataChangeLogDetail = {
   sdkName: 'apaas.v1.applicationAuditLog.dataChangeLogDetail',
   path: '/open-apis/apaas/v1/applications/:namespace/audit_log/data_change_log_detail',
   httpMethod: 'GET',
-  description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-audit log-Data Change Log Detail-Query data change log details by log ID',
+  description: '[Feishu/Lark]-Feishu aPaaS-audit log-Data Change Log Detail-Query data change log details by log ID',
   accessTokens: ['user'],
   schema: {
     params: z.object({ log_id: z.string().describe('Data changelog ID information') }),
@@ -96,7 +120,7 @@ export const apaasV1ApplicationAuditLogDataChangeLogsList = {
   path: '/open-apis/apaas/v1/applications/:namespace/audit_log/data_change_logs_list',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-audit log-Data Change Logs List-Query the data changelog list based on search/filter criteria',
+    '[Feishu/Lark]-Feishu aPaaS-audit log-Data Change Logs List-Query the data changelog list based on search/filter criteria',
   accessTokens: ['user'],
   schema: {
     params: z.object({
@@ -127,16 +151,11 @@ export const apaasV1ApplicationAuditLogGet = {
   sdkName: 'apaas.v1.applicationAuditLog.get',
   path: '/open-apis/apaas/v1/applications/:namespace/audit_log',
   httpMethod: 'GET',
-  description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-audit log-Query The Audit Log detail-Query log details based on Log ID',
+  description: '[Feishu/Lark]-Feishu aPaaS-audit log-Query The Audit Log detail-Query log details based on Log ID',
   accessTokens: ['user'],
   schema: {
     params: z.object({
-      log_id: z
-        .string()
-        .describe(
-          'Audit log ID information (obtain a single log ID by [Query audit log list])',
-        ),
+      log_id: z.string().describe('Audit log ID information (obtain a single log ID by [Query audit log list])'),
     }),
     path: z.object({ namespace: z.string().describe('Application namespace') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -149,7 +168,7 @@ export const apaasV1ApplicationEnvironmentVariableGet = {
   path: '/open-apis/apaas/v1/applications/:namespace/environment_variables/:environment_variable_api_name',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Environment Variable-Query Environment Variable Details-Query details of a specified environment variable in an app built on Feishu App Engine, including label, description, value, etc',
+    '[Feishu/Lark]-Feishu aPaaS-Environment Variable-Query Environment Variable Details-Query details of a specified environment variable in an app built on Feishu aPaaS, including label, description, value, etc',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
@@ -165,25 +184,27 @@ export const apaasV1ApplicationEnvironmentVariableQuery = {
   path: '/open-apis/apaas/v1/applications/:namespace/environment_variables/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Environment Variable-Query Environment Variables List-Query a list of environment variables in an app built on Feishu App Engine',
+    '[Feishu/Lark]-Feishu aPaaS-Environment Variable-Query Environment Variables List-Query a list of environment variables in an app built on Feishu aPaaS',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      filter: z
-        .object({ quick_query: z.string().describe('Fuzzy search by keyword').optional() })
-        .describe('Filter')
-        .optional(),
-      limit: z
-        .number()
-        .describe('Limit for the number of records. The default is 500, and the upper limit is 500')
-        .optional(),
-      offset: z
-        .number()
-        .describe(
-          'Offset of returned records. The default is 0, which means data will be returned beginning from the first record found',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        filter: z
+          .object({ quick_query: z.string().describe('Fuzzy search by keyword').optional() })
+          .describe('Filter')
+          .optional(),
+        limit: z
+          .number()
+          .describe('Limit for the number of records. The default is 500, and the upper limit is 500')
+          .optional(),
+        offset: z
+          .number()
+          .describe(
+            'Offset of returned records. The default is 0, which means data will be returned beginning from the first record found',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ namespace: z.string() }),
   },
 };
@@ -193,7 +214,7 @@ export const apaasV1ApplicationFlowExecute = {
   sdkName: 'apaas.v1.applicationFlow.execute',
   path: '/open-apis/apaas/v1/applications/:namespace/flows/:flow_id/execute',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-Flow-operator flow-Execute flow-Execute the corresponding flow',
+  description: '[Feishu/Lark]-Feishu aPaaS-Flow-operator flow-Execute flow-Execute the corresponding flow',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -237,12 +258,12 @@ export const apaasV1ApplicationFunctionInvoke = {
   path: '/open-apis/apaas/v1/applications/:namespace/functions/:function_api_name/invoke',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Function-Execution Function-execute the custom functions in an app built on Feishu App Engine',
+    '[Feishu/Lark]-Feishu aPaaS-Function-Execution Function-execute the custom functions in an app built on Feishu App Engine',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      params: z.string().describe('Function input parameters (a string after JSON marshal)').optional(),
-    }),
+    data: z
+      .object({ params: z.string().describe('Function input parameters (a string after JSON marshal)').optional() })
+      .optional(),
     path: z.object({
       namespace: z.string().describe('Application namespace'),
       function_api_name: z.string().describe('Function API name'),
@@ -255,7 +276,7 @@ export const apaasV1ApplicationObjectOqlQuery = {
   sdkName: 'apaas.v1.applicationObject.oqlQuery',
   path: '/open-apis/apaas/v1/applications/:namespace/objects/oql_query',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-Object-Execute OQL-Execute OQL statement in an app',
+  description: '[Feishu/Lark]-Feishu aPaaS-Object-Execute OQL-Execute OQL statement in an app',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -272,7 +293,7 @@ export const apaasV1ApplicationObjectRecordBatchCreate = {
   sdkName: 'apaas.v1.applicationObjectRecord.batchCreate',
   path: '/open-apis/apaas/v1/applications/:namespace/objects/:object_api_name/records/batch_create',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-Object-Batch Create Records-Creates multiple records',
+  description: '[Feishu/Lark]-Feishu aPaaS-Object-Batch Create Records-Creates multiple records',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ records: z.string().describe('The list to be created, create up to 500 records at a time') }),
@@ -285,7 +306,7 @@ export const apaasV1ApplicationObjectRecordBatchDelete = {
   sdkName: 'apaas.v1.applicationObjectRecord.batchDelete',
   path: '/open-apis/apaas/v1/applications/:namespace/objects/:object_api_name/records/batch_delete',
   httpMethod: 'DELETE',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-Object-Batch Delete Records-Deletes multiple records',
+  description: '[Feishu/Lark]-Feishu aPaaS-Object-Batch Delete Records-Deletes multiple records',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -301,7 +322,7 @@ export const apaasV1ApplicationObjectRecordBatchQuery = {
   path: '/open-apis/apaas/v1/applications/:namespace/objects/:object_api_name/records/batch_query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Object-Query Record List-Get the record list that meets specified conditions',
+    '[Feishu/Lark]-Feishu aPaaS-Object-Query Record List-Get the record list that meets specified conditions',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -406,7 +427,7 @@ export const apaasV1ApplicationObjectRecordBatchUpdate = {
   sdkName: 'apaas.v1.applicationObjectRecord.batchUpdate',
   path: '/open-apis/apaas/v1/applications/:namespace/objects/:object_api_name/records/batch_update',
   httpMethod: 'PATCH',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-Object-Batch Update Records-Edits multiple records',
+  description: '[Feishu/Lark]-Feishu aPaaS-Object-Batch Update Records-Edits multiple records',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ records: z.string().describe('The list to be updated, up to 500 updates at a time') }),
@@ -419,7 +440,7 @@ export const apaasV1ApplicationObjectRecordCreate = {
   sdkName: 'apaas.v1.applicationObjectRecord.create',
   path: '/open-apis/apaas/v1/applications/:namespace/objects/:object_api_name/records',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-Object-Create Record-Creates record',
+  description: '[Feishu/Lark]-Feishu aPaaS-Object-Create Record-Creates record',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ record: z.string().describe('Record details') }),
@@ -432,7 +453,7 @@ export const apaasV1ApplicationObjectRecordDelete = {
   sdkName: 'apaas.v1.applicationObjectRecord.delete',
   path: '/open-apis/apaas/v1/applications/:namespace/objects/:object_api_name/records/:id',
   httpMethod: 'DELETE',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-Object-Delete Record-Deletes specified record',
+  description: '[Feishu/Lark]-Feishu aPaaS-Object-Delete Record-Deletes specified record',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({ namespace: z.string(), object_api_name: z.string(), id: z.string() }),
@@ -444,7 +465,7 @@ export const apaasV1ApplicationObjectRecordPatch = {
   sdkName: 'apaas.v1.applicationObjectRecord.patch',
   path: '/open-apis/apaas/v1/applications/:namespace/objects/:object_api_name/records/:id',
   httpMethod: 'PATCH',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-Object-Edit Record-Edits specified record',
+  description: '[Feishu/Lark]-Feishu aPaaS-Object-Edit Record-Edits specified record',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ record: z.string().describe('Record details') }),
@@ -457,17 +478,19 @@ export const apaasV1ApplicationObjectRecordQuery = {
   sdkName: 'apaas.v1.applicationObjectRecord.query',
   path: '/open-apis/apaas/v1/applications/:namespace/objects/:object_api_name/records/:id/query',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-Object-Get Record Details-Get specified record details',
+  description: '[Feishu/Lark]-Feishu aPaaS-Object-Get Record Details-Get specified record details',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      select: z
-        .array(z.string())
-        .describe(
-          'Field to get. Using the unique identifier of field to query. Joined fields can be drilled down by "."',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        select: z
+          .array(z.string())
+          .describe(
+            'Field to get. Using the unique identifier of field to query. Joined fields can be drilled down by "."',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ namespace: z.string(), object_api_name: z.string(), id: z.string() }),
   },
 };
@@ -477,102 +500,104 @@ export const apaasV1ApplicationObjectSearch = {
   sdkName: 'apaas.v1.applicationObject.search',
   path: '/open-apis/apaas/v1/applications/:namespace/objects/search',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-Object-Search Record-Searches recourds in app',
+  description: '[Feishu/Lark]-Feishu aPaaS-Object-Search Record-Searches recourds in app',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      q: z.string().describe('Keyword').optional(),
-      search_objects: z
-        .array(
-          z.object({
-            api_name: z
-              .string()
-              .describe('Indicates the objects to be searched, where the API name of the object is the value')
-              .optional(),
-            search_fields: z
-              .array(z.string())
-              .describe('List of return field searched, only _id will be returned by default')
-              .optional(),
-            select: z
-              .array(z.string())
-              .describe(
-                'List of search field, only searchable fields set in the object are valid, search all searchable fields if left blank',
-              )
-              .optional(),
-            filter: z
-              .object({
-                conditions: z
-                  .array(
-                    z.object({
-                      index: z.string().describe('The index of the current condition. Used in logic').optional(),
-                      left: z
-                        .object({
-                          type: z
-                            .string()
-                            .describe('Type: The left value contains the following options: 1. metadataVariable')
-                            .optional(),
-                          settings: z
-                            .string()
-                            .describe('Configuration of left or right value in JSON format')
-                            .optional(),
-                        })
-                        .describe('Left value of filter condition')
-                        .optional(),
-                      right: z
-                        .object({
-                          type: z
-                            .string()
-                            .describe('Type: The right value contains the following options: 1. constant')
-                            .optional(),
-                          settings: z
-                            .string()
-                            .describe('Configuration of left or right value in JSON format')
-                            .optional(),
-                        })
-                        .describe('Right value of filter condition')
-                        .optional(),
-                      operator: z.string().describe('Operator for linking left and right values').optional(),
-                    }),
-                  )
-                  .describe('Filter condition')
-                  .optional(),
-                logic_expression: z
-                  .string()
-                  .describe('The logical relationship between multiple conditions')
-                  .optional(),
-              })
-              .describe('Filter conditions, please use the standard Criterion structure')
-              .optional(),
-            order_by: z
-              .object({
-                field: z.string().describe('Sorting parameter: API name of sorting field').optional(),
-                order_type: z
-                  .enum(['asc', 'desc'])
-                  .describe(
-                    'Sorting parameter: sort direction, contains the following options: 1. asc, which stands for ascending order 2. desc, which stands for descending order Options:asc(OrderTypeASC ascending order),desc(OrderTypeDESC descending order)',
-                  )
-                  .optional(),
-              })
-              .describe('Sorting field. Multiple fields can be designated for sorting')
-              .optional(),
-          }),
-        )
-        .describe('Range of search object, no more than 5 objects')
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.string().describe('Number of search record, 20 by default, up to 200 only').optional(),
-      metadata: z
-        .enum(['Label', 'SearchLayout'])
-        .describe(
-          'Control the metadata returned: Label, returns the Label value when searching the corresponding entity metadata; SearchLayout, returns search layout info, corresponding field values, and Label values Options:Label(MetadataOptionLabel returns the Label value when searching the corresponding entity metadata),SearchLayout(MetadataOptionSearchLayout returns search layout info, corresponding field values, and Label values)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        q: z.string().describe('Keyword').optional(),
+        search_objects: z
+          .array(
+            z.object({
+              api_name: z
+                .string()
+                .describe('Indicates the objects to be searched, where the API name of the object is the value')
+                .optional(),
+              search_fields: z
+                .array(z.string())
+                .describe('List of return field searched, only _id will be returned by default')
+                .optional(),
+              select: z
+                .array(z.string())
+                .describe(
+                  'List of search field, only searchable fields set in the object are valid, search all searchable fields if left blank',
+                )
+                .optional(),
+              filter: z
+                .object({
+                  conditions: z
+                    .array(
+                      z.object({
+                        index: z.string().describe('The index of the current condition. Used in logic').optional(),
+                        left: z
+                          .object({
+                            type: z
+                              .string()
+                              .describe('Type: The left value contains the following options: 1. metadataVariable')
+                              .optional(),
+                            settings: z
+                              .string()
+                              .describe('Configuration of left or right value in JSON format')
+                              .optional(),
+                          })
+                          .describe('Left value of filter condition')
+                          .optional(),
+                        right: z
+                          .object({
+                            type: z
+                              .string()
+                              .describe('Type: The right value contains the following options: 1. constant')
+                              .optional(),
+                            settings: z
+                              .string()
+                              .describe('Configuration of left or right value in JSON format')
+                              .optional(),
+                          })
+                          .describe('Right value of filter condition')
+                          .optional(),
+                        operator: z.string().describe('Operator for linking left and right values').optional(),
+                      }),
+                    )
+                    .describe('Filter condition')
+                    .optional(),
+                  logic_expression: z
+                    .string()
+                    .describe('The logical relationship between multiple conditions')
+                    .optional(),
+                })
+                .describe('Filter conditions, please use the standard Criterion structure')
+                .optional(),
+              order_by: z
+                .object({
+                  field: z.string().describe('Sorting parameter: API name of sorting field').optional(),
+                  order_type: z
+                    .enum(['asc', 'desc'])
+                    .describe(
+                      'Sorting parameter: sort direction, contains the following options: 1. asc, which stands for ascending order 2. desc, which stands for descending order Options:asc(OrderTypeASC ascending order),desc(OrderTypeDESC descending order)',
+                    )
+                    .optional(),
+                })
+                .describe('Sorting field. Multiple fields can be designated for sorting')
+                .optional(),
+            }),
+          )
+          .describe('Range of search object, no more than 5 objects')
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.string().describe('Number of search record, 20 by default, up to 200 only').optional(),
+        metadata: z
+          .enum(['Label', 'SearchLayout'])
+          .describe(
+            'Control the metadata returned: Label, returns the Label value when searching the corresponding entity metadata; SearchLayout, returns search layout info, corresponding field values, and Label values Options:Label(MetadataOptionLabel returns the Label value when searching the corresponding entity metadata),SearchLayout(MetadataOptionSearchLayout returns search layout info, corresponding field values, and Label values)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ namespace: z.string() }),
   },
 };
@@ -583,15 +608,17 @@ export const apaasV1ApplicationRecordPermissionMemberBatchCreateAuthorization = 
   path: '/open-apis/apaas/v1/applications/:namespace/record_permissions/:record_permission_api_name/member/batch_create_authorization',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Permission-Record Permission-Batch Create Record Permission Member Authorizations-Batch create record permission user authorizations',
+    '[Feishu/Lark]-Feishu aPaaS-Permission-Record Permission-Batch Create Record Permission Member Authorizations-Batch create record permission user authorizations',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      user_ids: z
-        .array(z.string())
-        .describe('List of user IDs to be added, using user IDs of the Feishu Low-Code Platform')
-        .optional(),
-    }),
+    data: z
+      .object({
+        user_ids: z
+          .array(z.string())
+          .describe('List of user IDs to be added, using user IDs of the Feishu aPaaS')
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       namespace: z.string().describe('namespace'),
       record_permission_api_name: z.string().describe('Record permission API name'),
@@ -605,15 +632,17 @@ export const apaasV1ApplicationRecordPermissionMemberBatchRemoveAuthorization = 
   path: '/open-apis/apaas/v1/applications/:namespace/record_permissions/:record_permission_api_name/member/batch_remove_authorization',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Permission-Record Permission-Batch Delete Record Permission Member Authorizations-Batch delete record permission user authorizations',
+    '[Feishu/Lark]-Feishu aPaaS-Permission-Record Permission-Batch Delete Record Permission Member Authorizations-Batch delete record permission user authorizations',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      user_ids: z
-        .array(z.string())
-        .describe('List of user IDs to be deleted, using user IDs of the Feishu Low-Code Platform')
-        .optional(),
-    }),
+    data: z
+      .object({
+        user_ids: z
+          .array(z.string())
+          .describe('List of user IDs to be deleted, using user IDs of the Feishu aPaaS')
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       namespace: z.string().describe('namespace'),
       record_permission_api_name: z.string().describe('Record permission API name'),
@@ -627,19 +656,21 @@ export const apaasV1ApplicationRoleMemberBatchCreateAuthorization = {
   path: '/open-apis/apaas/v1/applications/:namespace/roles/:role_api_name/member/batch_create_authorization',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Permission-Role-Batch Create Role Member Authorizations-Batch create role member authorizations',
+    '[Feishu/Lark]-Feishu aPaaS-Permission-Role-Batch Create Role Member Authorizations-Batch create role member authorizations',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      user_ids: z
-        .array(z.string())
-        .describe('List of user IDs to be added, using user IDs of the Feishu Low-Code Platform')
-        .optional(),
-      department_ids: z
-        .array(z.string())
-        .describe('List of department IDs to be added, using department IDs of the Feishu Low-Code Platform')
-        .optional(),
-    }),
+    data: z
+      .object({
+        user_ids: z
+          .array(z.string())
+          .describe('List of user IDs to be added, using user IDs of the Feishu aPaaS')
+          .optional(),
+        department_ids: z
+          .array(z.string())
+          .describe('List of department IDs to be added, using department IDs of the Feishu aPaaS')
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       namespace: z.string().describe('namespace'),
       role_api_name: z.string().describe('Role API name'),
@@ -653,19 +684,21 @@ export const apaasV1ApplicationRoleMemberBatchRemoveAuthorization = {
   path: '/open-apis/apaas/v1/applications/:namespace/roles/:role_api_name/member/batch_remove_authorization',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Permission-Role-Batch Delete Role Member Authorizations-Batch delete role member authorizations',
+    '[Feishu/Lark]-Feishu aPaaS-Permission-Role-Batch Delete Role Member Authorizations-Batch delete role member authorizations',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      user_ids: z
-        .array(z.string())
-        .describe('List of user IDs to be deleted, using user IDs of the Feishu Low-Code Platform')
-        .optional(),
-      department_ids: z
-        .array(z.string())
-        .describe('List of department IDs to be deleted, using department IDs of the Feishu Low-Code Platform')
-        .optional(),
-    }),
+    data: z
+      .object({
+        user_ids: z
+          .array(z.string())
+          .describe('List of user IDs to be deleted, using user IDs of the Feishu aPaaS')
+          .optional(),
+        department_ids: z
+          .array(z.string())
+          .describe('List of department IDs to be deleted, using department IDs of the Feishu aPaaS')
+          .optional(),
+      })
+      .optional(),
     path: z.object({ namespace: z.string(), role_api_name: z.string().describe('Role API name') }),
   },
 };
@@ -675,21 +708,23 @@ export const apaasV1ApplicationRoleMemberGet = {
   sdkName: 'apaas.v1.applicationRoleMember.get',
   path: '/open-apis/apaas/v1/applications/:namespace/roles/:role_api_name/member',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-Permission-Role-Query Role Member-Query Role Member',
+  description: '[Feishu/Lark]-Feishu aPaaS-Permission-Role-Query Role Member-Query Role Member',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      need_display_name: z
-        .boolean()
-        .describe(
-          'Whether a display name is required for formula (so that it can be easily understood and displayed in the user interface)',
-        )
-        .optional(),
-      use_api_id: z
-        .boolean()
-        .describe('Whether to use the APIID field as an request and response parameter, the default value is false')
-        .optional(),
-    }),
+    params: z
+      .object({
+        need_display_name: z
+          .boolean()
+          .describe(
+            'Whether a display name is required for formula (so that it can be easily understood and displayed in the user interface)',
+          )
+          .optional(),
+        use_api_id: z
+          .boolean()
+          .describe('Whether to use the APIID field as an request and response parameter, the default value is false')
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       namespace: z.string().describe('namespace'),
       role_api_name: z.string().describe('Role API name'),
@@ -703,7 +738,7 @@ export const apaasV1ApprovalInstanceCancel = {
   path: '/open-apis/apaas/v1/approval_instances/:approval_instance_id/cancel',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Flow-User task-Cancel User Task-Cancel a human task (including approval tasks, fill in tasks)',
+    '[Feishu/Lark]-Feishu aPaaS-Flow-User task-Cancel User Task-Cancel a human task (including approval tasks, fill in tasks)',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -728,7 +763,7 @@ export const apaasV1ApprovalTaskAddAssignee = {
   path: '/open-apis/apaas/v1/approval_tasks/:approval_task_id/add_assignee',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Flow-User task-Add approver for user task-Perform the action of adding approver for user task',
+    '[Feishu/Lark]-Feishu aPaaS-Flow-User task-Add approver for user task-Perform the action of adding approver for user task',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -751,8 +786,7 @@ export const apaasV1ApprovalTaskAgree = {
   sdkName: 'apaas.v1.approvalTask.agree',
   path: '/open-apis/apaas/v1/approval_tasks/:approval_task_id/agree',
   httpMethod: 'POST',
-  description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Flow-User task-Approve user task-Perform approval actions for user task',
+  description: '[Feishu/Lark]-Feishu aPaaS-Flow-User task-Approve user task-Perform approval actions for user task',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -768,8 +802,7 @@ export const apaasV1ApprovalTaskReject = {
   sdkName: 'apaas.v1.approvalTask.reject',
   path: '/open-apis/apaas/v1/approval_tasks/:approval_task_id/reject',
   httpMethod: 'POST',
-  description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Flow-User task-Reject user task-Perform rejection actions for user task',
+  description: '[Feishu/Lark]-Feishu aPaaS-Flow-User task-Reject user task-Perform rejection actions for user task',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -785,8 +818,7 @@ export const apaasV1ApprovalTaskTransfer = {
   sdkName: 'apaas.v1.approvalTask.transfer',
   path: '/open-apis/apaas/v1/approval_tasks/:approval_task_id/transfer',
   httpMethod: 'POST',
-  description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Flow-User task-Transfer user task-Perform transfer actions for user task',
+  description: '[Feishu/Lark]-Feishu aPaaS-Flow-User task-Transfer user task-Perform transfer actions for user task',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -805,7 +837,7 @@ export const apaasV1SeatActivityList = {
   path: '/open-apis/apaas/v1/seat_activities',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Seat Activity-Query Seat Activities Details-Gets the most recent active time for a user under a tenant to access an application using a per_user seat or a per_user_per_app seat. a low code platform system administrator is required to invoke the current API as an authorized person',
+    '[Feishu/Lark]-Feishu aPaaS-Seat Activity-Query Seat Activities Details-Gets the most recent active time for a user under a tenant to access an application using a per_user seat or a per_user_per_app seat. Feishu aPaaS system administrator is required to invoke the current API as an authorized person',
   accessTokens: ['user'],
   schema: {
     params: z.object({
@@ -830,7 +862,7 @@ export const apaasV1SeatAssignmentList = {
   path: '/open-apis/apaas/v1/seat_assignments',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Seat Assignment-Query seat assignments details-Get details about the assignments of per_user seats and per_user_per_app seats under the tenant, such as user ID, app namespace, etc. a low code platform system administrator is required to invoke the current API as an authorized person',
+    '[Feishu/Lark]-Feishu aPaaS-Seat Assignment-Query seat assignments details-Get details about the assignments of per_user seats and per_user_per_app seats under the tenant, such as user ID, app namespace, etc. Feishu aPaaS system administrator is required to invoke the current API as an authorized person',
   accessTokens: ['user'],
   schema: {
     params: z.object({
@@ -854,7 +886,7 @@ export const apaasV1UserTaskCc = {
   sdkName: 'apaas.v1.userTask.cc',
   path: '/open-apis/apaas/v1/user_tasks/:task_id/cc',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-Flow-User task-CC User Task-Make a CC of the current task',
+  description: '[Feishu/Lark]-Feishu aPaaS-Flow-User task-CC User Task-Make a CC of the current task',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -878,8 +910,7 @@ export const apaasV1UserTaskChatGroup = {
   sdkName: 'apaas.v1.userTask.chatGroup',
   path: '/open-apis/apaas/v1/user_tasks/:task_id/chat_group',
   httpMethod: 'POST',
-  description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Flow-User task-Chat User Task-Start a Feishu group chat based on the task',
+  description: '[Feishu/Lark]-Feishu aPaaS-Flow-User task-Chat User Task-Start a Feishu group chat based on the task',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -910,7 +941,7 @@ export const apaasV1UserTaskExpediting = {
   path: '/open-apis/apaas/v1/user_tasks/:task_id/expediting',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Flow-User task-Expedition User Task-Initiate a reminder for the current handler of the task',
+    '[Feishu/Lark]-Feishu aPaaS-Flow-User task-Expedition User Task-Initiate a reminder for the current handler of the task',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -935,7 +966,7 @@ export const apaasV1UserTaskQuery = {
   sdkName: 'apaas.v1.userTask.query',
   path: '/open-apis/apaas/v1/user_task/query',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-Flow-User task-Query User Task-Query the human task list',
+  description: '[Feishu/Lark]-Feishu aPaaS-Flow-User task-Query User Task-Query the human task list',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -959,7 +990,7 @@ export const apaasV1UserTaskRollback = {
   sdkName: 'apaas.v1.userTask.rollback',
   path: '/open-apis/apaas/v1/user_tasks/:task_id/rollback',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-Feishu Low-Code Platform-Flow-User task-Rollback User Task-Return the current task once',
+  description: '[Feishu/Lark]-Feishu aPaaS-Flow-User task-Rollback User Task-Return the current task once',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -987,7 +1018,7 @@ export const apaasV1UserTaskRollbackPoints = {
   path: '/open-apis/apaas/v1/user_tasks/:task_id/rollback_points',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Feishu Low-Code Platform-Flow-User task-Query User Task Rollback Point-Query the location where the current task can be returned',
+    '[Feishu/Lark]-Feishu aPaaS-Flow-User task-Query User Task Rollback Point-Query the location where the current task can be returned',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1003,6 +1034,7 @@ export const apaasV1UserTaskRollbackPoints = {
   },
 };
 export const apaasV1Tools = [
+  apaasV1AppList,
   apaasV1ApplicationAuditLogAuditLogList,
   apaasV1ApplicationAuditLogDataChangeLogDetail,
   apaasV1ApplicationAuditLogDataChangeLogsList,

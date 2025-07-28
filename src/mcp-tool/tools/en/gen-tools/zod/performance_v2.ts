@@ -23,24 +23,28 @@ export const performanceV2ActivityQuery = {
   path: '/open-apis/performance/v2/activity/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Admin configuration-Cycles and projects-Projects-Get information about the project-Obtain project information, such as project name, project model, etc',
+    '[Feishu/Lark]-Performance-Admin configuration-Cycles and projects-Projects-Get information about the project-Obtain project information, such as project name, project model, etc',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      semester_ids: z
-        .array(z.string())
-        .describe(
-          'List of evaluation period IDs, get the project ID of the specified evaluation period, semester_id can be obtained by [[Get Period]. If "activity_ids" is passed at the same time, it is preferentially queried with "activity_ids". When "semester_ids" and "activity_ids" are not passed, empty data is returned',
-        )
-        .optional(),
-      activity_ids: z
-        .array(z.string())
-        .describe(
-          'Item ID list. If "semester_ids" is passed at the same time, the query is preferentially "activity_ids". When "semester_ids" and "activity_ids" are not passed, empty data is returned',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        semester_ids: z
+          .array(z.string())
+          .describe(
+            'List of evaluation period IDs, get the project ID of the specified evaluation period, semester_id can be obtained by [[Get Period]. If "activity_ids" is passed at the same time, it is preferentially queried with "activity_ids". When "semester_ids" and "activity_ids" are not passed, empty data is returned',
+          )
+          .optional(),
+        activity_ids: z
+          .array(z.string())
+          .describe(
+            'Item ID list. If "semester_ids" is passed at the same time, the query is preferentially "activity_ids". When "semester_ids" and "activity_ids" are not passed, empty data is returned',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const performanceV2AdditionalInformationImport = {
@@ -50,15 +54,13 @@ export const performanceV2AdditionalInformationImport = {
   path: '/open-apis/performance/v2/additional_informations/import',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Admin configuration-Cycles and projects-Supplementary Information-Batch Import Supplementary Information-Supplementary information of the reviewees can be imported in batches for review reference (including both new additions and updates)',
+    '[Feishu/Lark]-Performance-Admin configuration-Cycles and projects-Supplementary Information-Batch Import Supplementary Information-Supplementary information of the reviewees can be imported in batches for review reference (including both new additions and updates)',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       semester_id: z
         .string()
-        .describe(
-          'The evaluation period ID can be obtained through the [Get Period List] interface',
-        ),
+        .describe('The evaluation period ID can be obtained through the [Get Period List] interface'),
       additional_informations: z
         .array(
           z.object({
@@ -122,7 +124,7 @@ export const performanceV2AdditionalInformationQuery = {
   path: '/open-apis/performance/v2/additional_informations/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Admin configuration-Cycles and projects-Supplementary Information-Batch Query Supplementary Information-Supplementary information of the reviewees can be queried in batches',
+    '[Feishu/Lark]-Performance-Admin configuration-Cycles and projects-Supplementary Information-Batch Query Supplementary Information-Supplementary information of the reviewees can be queried in batches',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -148,16 +150,18 @@ export const performanceV2AdditionalInformationQuery = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2AdditionalInformationsBatchDelete = {
@@ -167,22 +171,22 @@ export const performanceV2AdditionalInformationsBatchDelete = {
   path: '/open-apis/performance/v2/additional_informations/batch',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-Admin configuration-Cycles and projects-Supplementary Information-Batch Delete Supplementary Information-Supplementary information of the reviewees can be deleted in batches',
+    '[Feishu/Lark]-Performance-Admin configuration-Cycles and projects-Supplementary Information-Batch Delete Supplementary Information-Supplementary information of the reviewees can be deleted in batches',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       semester_id: z
         .string()
-        .describe(
-          'The evaluation period ID can be obtained through the [Get Period List] interface',
-        ),
+        .describe('The evaluation period ID can be obtained through the [Get Period List] interface'),
       additional_informations: z
         .array(z.string())
         .describe(
           'The list of supplementary information IDs can be obtained through the [Batch Query Supplementary Information] interface',
         ),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const performanceV2IndicatorQuery = {
@@ -195,21 +199,25 @@ export const performanceV2IndicatorQuery = {
     '[Feishu/Lark]-Performance-Admin configuration-Review templates and questions-Get the evaluation question configuration-Get scoring queations',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      indicator_ids: z
-        .array(z.string())
-        .describe('Evaluation item ID list, get the configuration data of the specified evaluation item')
-        .optional(),
-    }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('paging size').optional(),
-    }),
+    data: z
+      .object({
+        indicator_ids: z
+          .array(z.string())
+          .describe('Evaluation item ID list, get the configuration data of the specified evaluation item')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('paging size').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2MetricDetailImport = {
@@ -223,11 +231,7 @@ export const performanceV2MetricDetailImport = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      semester_id: z
-        .string()
-        .describe(
-          'Period ID, which can be obtained through the [Get Period] interface',
-        ),
+      semester_id: z.string().describe('Period ID, which can be obtained through the [Get Period] interface'),
       import_record_name: z
         .string()
         .describe('Data source input person, you can view the record name on the input record page')
@@ -238,9 +242,7 @@ export const performanceV2MetricDetailImport = {
             reviewee_user_id: z.string().describe('Assessor ID, the same type as imported parameter user_id_type'),
             metric_id: z
               .string()
-              .describe(
-                'The indicator ID can be obtained through the [Get indicator library information] interface',
-              ),
+              .describe('The indicator ID can be obtained through the [Get indicator library information] interface'),
             fields: z
               .array(
                 z.object({
@@ -252,7 +254,9 @@ export const performanceV2MetricDetailImport = {
                   field_value: z.string().describe('field value').optional(),
                   field_value_person: z
                     .string()
-                    .describe('Field value, required when the field is personnel information')
+                    .describe(
+                      'Field value, required when the field is personnel information, the same type as imported parameter user_id_type',
+                    )
                     .optional(),
                 }),
               )
@@ -291,9 +295,11 @@ export const performanceV2MetricDetailQuery = {
           'List of assessee IDs. If not passed on, return key metric details of all participating assessees for the period',
         ),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2MetricFieldQuery = {
@@ -306,14 +312,16 @@ export const performanceV2MetricFieldQuery = {
     '[Feishu/Lark]-Performance-Admin configuration-Metric-Get indicator field information-Get the field base information of the indicator',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      field_ids: z
-        .array(z.string())
-        .describe(
-          'The field ID of the indicator, if it is not passed, all field information will be obtained by default',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        field_ids: z
+          .array(z.string())
+          .describe(
+            'The field ID of the indicator, if it is not passed, all field information will be obtained by default',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2MetricLibQuery = {
@@ -326,41 +334,45 @@ export const performanceV2MetricLibQuery = {
     '[Feishu/Lark]-Performance-Admin configuration-Metric-Get indicator library information-Get information on the indicator library',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      is_active: z.boolean().describe('Whether the status is enabled, not specified to get all states').optional(),
-      tag_ids: z
-        .array(z.string())
-        .describe(
-          'The label ID to which the indicator belongs can be obtained through the [[Get indicator label information] ] interface, and all labels are not specified',
-        )
-        .optional(),
-      type_ids: z
-        .array(z.string())
-        .describe('The indicator type ID to which it belongs, not specified Get all types')
-        .optional(),
-      range_of_availability: z
-        .enum(['admins_and_reviewees', 'only_admins'])
-        .describe(
-          'Available ranges, not specified Get all ranges Options:admins_and_reviewees(Allow administrators to issue and evaluates to choose),only_admins(Only administrators are allowed to issue)',
-        )
-        .optional(),
-      scoring_setting_type: z
-        .enum(['score_manually', 'score_by_formula'])
-        .describe(
-          'Rating setting type, do not specify Get all types Options:score_manually(manual grading),score_by_formula(formula scoring)',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('paging size').optional(),
-    }),
+    data: z
+      .object({
+        is_active: z.boolean().describe('Whether the status is enabled, not specified to get all states').optional(),
+        tag_ids: z
+          .array(z.string())
+          .describe(
+            'The label ID to which the indicator belongs can be obtained through the [[Get indicator label information] ] interface, and all labels are not specified',
+          )
+          .optional(),
+        type_ids: z
+          .array(z.string())
+          .describe('The indicator type ID to which it belongs, not specified Get all types')
+          .optional(),
+        range_of_availability: z
+          .enum(['admins_and_reviewees', 'only_admins'])
+          .describe(
+            'Available ranges, not specified Get all ranges Options:admins_and_reviewees(Allow administrators to issue and evaluates to choose),only_admins(Only administrators are allowed to issue)',
+          )
+          .optional(),
+        scoring_setting_type: z
+          .enum(['score_manually', 'score_by_formula'])
+          .describe(
+            'Rating setting type, do not specify Get all types Options:score_manually(manual grading),score_by_formula(formula scoring)',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('paging size').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2MetricTagList = {
@@ -373,19 +385,21 @@ export const performanceV2MetricTagList = {
     '[Feishu/Lark]-Performance-Admin configuration-Metric-Get metric tag information-Get metric tag information. Such as the name of the metric tag, the create time of metric tag',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size**Default value**: 20').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      tag_ids: z
-        .array(z.string())
-        .describe('List of indicator label IDs, no longer paginated when using this parameter')
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size**Default value**: 20').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        tag_ids: z
+          .array(z.string())
+          .describe('List of indicator label IDs, no longer paginated when using this parameter')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2MetricTemplateQuery = {
@@ -398,30 +412,34 @@ export const performanceV2MetricTemplateQuery = {
     '[Feishu/Lark]-Performance-Admin configuration-Metric-Get indicator template information-Get information on the indicator template',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      metrics_template_ids: z
-        .array(z.string())
-        .describe(
-          "The list of indicator template IDs, metrics_template_id can be obtained through the url of the background configuration details page of the indicator template, or through the return value of this interface. If you don't fill it in, all indicator templates will be returned by default",
-        )
-        .optional(),
-      status: z
-        .enum(['to_be_configured', 'to_be_activated', 'enabled', 'disabled'])
-        .describe(
-          'state Options:to_be_configured(Configuration to be completed),to_be_activated(To be enabled),enabled(Enabled),disabled(Deactivated)',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('paging size').optional(),
-    }),
+    data: z
+      .object({
+        metrics_template_ids: z
+          .array(z.string())
+          .describe(
+            "The list of indicator template IDs, metrics_template_id can be obtained through the url of the background configuration details page of the indicator template, or through the return value of this interface. If you don't fill it in, all indicator templates will be returned by default",
+          )
+          .optional(),
+        status: z
+          .enum(['to_be_configured', 'to_be_activated', 'enabled', 'disabled'])
+          .describe(
+            'state Options:to_be_configured(Configuration to be completed),to_be_activated(To be enabled),enabled(Enabled),disabled(Deactivated)',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('paging size').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2QuestionQuery = {
@@ -434,23 +452,27 @@ export const performanceV2QuestionQuery = {
     '[Feishu/Lark]-Performance-Admin configuration-Review templates and questions-Get evaluation template configuration-Get tag-based questions',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      tag_based_question_ids: z
-        .array(z.string())
-        .describe(
-          'Tag fill in question ID list, get the configuration data of the specified tag fill in question. If not passed, return all',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('paging size').optional(),
-    }),
+    data: z
+      .object({
+        tag_based_question_ids: z
+          .array(z.string())
+          .describe(
+            'Tag fill in question ID list, get the configuration data of the specified tag fill in question. If not passed, return all',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('paging size').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2ReviewDataQuery = {
@@ -466,9 +488,7 @@ export const performanceV2ReviewDataQuery = {
     data: z.object({
       semester_ids: z
         .array(z.string())
-        .describe(
-          'Evaluation period ID list, semester_id can be obtained through [Acquisition Period]',
-        ),
+        .describe('Evaluation period ID list, semester_id can be obtained through [Acquisition Period]'),
       reviewee_user_ids: z.array(z.string()).describe('List of assessee IDs'),
       stage_types: z
         .array(
@@ -533,9 +553,11 @@ export const performanceV2ReviewDataQuery = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2ReviewTemplateQuery = {
@@ -548,23 +570,27 @@ export const performanceV2ReviewTemplateQuery = {
     '[Feishu/Lark]-Performance-Admin configuration-Review templates and questions-Get label fill in question configuration-Get review templates',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      review_template_ids: z
-        .array(z.string())
-        .describe(
-          'Evaluation template ID list, get the configuration data of the specified evaluation template. If not passed, return all',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('paging size').optional(),
-    }),
+    data: z
+      .object({
+        review_template_ids: z
+          .array(z.string())
+          .describe(
+            'Evaluation template ID list, get the configuration data of the specified evaluation template. If not passed, return all',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('paging size').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2RevieweeQuery = {
@@ -574,7 +600,7 @@ export const performanceV2RevieweeQuery = {
   path: '/open-apis/performance/v2/reviewees/query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Admin configuration-Cycles and projects-Reviewee Information-Obtain information of reviewees-Obtain information of individuals selected for projects (including uninitiated projects) during the performance cycle',
+    '[Feishu/Lark]-Performance-Admin configuration-Cycles and projects-Reviewee Information-Obtain information of reviewees-Obtain information of individuals selected for projects (including uninitiated projects) during the performance cycle',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -596,16 +622,18 @@ export const performanceV2RevieweeQuery = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('paging size').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('paging size').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV2UserGroupUserRelWrite = {
@@ -615,22 +643,24 @@ export const performanceV2UserGroupUserRelWrite = {
   path: '/open-apis/performance/v2/user_group_user_rels/write',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Admin configuration-Cycles and projects-Individual Group-Write member scope of individual group-Write member scope of individual group',
+    '[Feishu/Lark]-Performance-Admin configuration-Cycles and projects-Individual Group-Write member scope of individual group-Write member scope of individual group',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      group_id: z.string().describe('Individual group ID').optional(),
-      scope_visible_setting: z
-        .number()
-        .describe(
-          'Individual group visibility configuration for list of individuals Options:0(not_limit No restrictions),1(backend_admin_not_visible Not visible to back-end admins)',
-        )
-        .optional(),
-      user_ids: z
-        .array(z.string())
-        .describe('List of individuals. The ID type is consistent with the value of the query parameter user_id_type')
-        .optional(),
-    }),
+    data: z
+      .object({
+        group_id: z.string().describe('Individual group ID').optional(),
+        scope_visible_setting: z
+          .number()
+          .describe(
+            'Individual group visibility configuration for list of individuals Options:0(not_limit No restrictions),1(backend_admin_not_visible Not visible to back-end admins)',
+          )
+          .optional(),
+        user_ids: z
+          .array(z.string())
+          .describe('List of individuals. The ID type is consistent with the value of the query parameter user_id_type')
+          .optional(),
+      })
+      .optional(),
     params: z.object({
       client_token: z
         .string()

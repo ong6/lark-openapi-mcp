@@ -69,11 +69,7 @@ export const directoryV1CollaborationRuleCreate = {
         .describe('实体数量之和需要小于100'),
     }),
     params: z.object({
-      target_tenant_key: z
-        .string()
-        .describe(
-          '对方组织的tenant key，可通过[管理员获取所有关联组织列表]获取',
-        ),
+      target_tenant_key: z.string().describe('对方组织的tenant key，可通过[管理员获取所有关联组织列表]获取'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -89,19 +85,9 @@ export const directoryV1CollaborationRuleDelete = {
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
-      target_tenant_key: z
-        .string()
-        .describe(
-          '对方组织的tenant key，可通过[管理员获取所有关联组织列表]获取',
-        ),
+      target_tenant_key: z.string().describe('对方组织的tenant key，可通过[管理员获取所有关联组织列表]获取'),
     }),
-    path: z.object({
-      collaboration_rule_id: z
-        .string()
-        .describe(
-          '规则ID，可通过[查询可搜可见规则]获得',
-        ),
-    }),
+    path: z.object({ collaboration_rule_id: z.string().describe('规则ID，可通过[查询可搜可见规则]获得') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -123,11 +109,7 @@ export const directoryV1CollaborationRuleList = {
           '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
         )
         .optional(),
-      target_tenant_key: z
-        .string()
-        .describe(
-          '对方组织的tenant key，可通过[管理员获取所有关联组织列表]获取',
-        ),
+      target_tenant_key: z.string().describe('对方组织的tenant key，可通过[管理员获取所有关联组织列表]获取'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -180,19 +162,9 @@ export const directoryV1CollaborationRuleUpdate = {
         .describe('实体数量之和需要小于100'),
     }),
     params: z.object({
-      target_tenant_key: z
-        .string()
-        .describe(
-          '对方组织的tenant key，可通过[管理员获取所有关联组织列表]获取',
-        ),
+      target_tenant_key: z.string().describe('对方组织的tenant key，可通过[管理员获取所有关联组织列表]获取'),
     }),
-    path: z.object({
-      collaboration_rule_id: z
-        .string()
-        .describe(
-          '规则ID，可通过[查询可搜可见规则]获得',
-        ),
-    }),
+    path: z.object({ collaboration_rule_id: z.string().describe('规则ID，可通过[查询可搜可见规则]获得') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -206,15 +178,17 @@ export const directoryV1CollaborationTenantList = {
     '[Feishu/Lark]-关联组织-关联组织-管理员获取所有关联组织列表-在创建规则时，需要知道对方组织的tenant key，可通过该接口获取有效的tenant key。只允许关联组织管理员权限调用',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -229,11 +203,7 @@ export const directoryV1CollborationShareEntityList = {
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
-      target_tenant_key: z
-        .string()
-        .describe(
-          '对方组织的tenant key，可通过[管理员获取所有关联组织列表]获取',
-        ),
+      target_tenant_key: z.string().describe('对方组织的tenant key，可通过[管理员获取所有关联组织列表]获取'),
       target_department_id: z
         .string()
         .describe(
@@ -264,7 +234,8 @@ export const directoryV1DepartmentCreate = {
   sdkName: 'directory.v1.department.create',
   path: '/open-apis/directory/v1/departments',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-组织架构-部门管理-创建部门-本接口用于在企业下创建部门',
+  description:
+    '[Feishu/Lark]-组织架构-部门管理-创建部门-本接口用于用于在企业通讯录中创建新部门，支持设置部门名称、父部门、负责人等信息',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -304,16 +275,15 @@ export const directoryV1DepartmentCreate = {
             )
             .describe('部门负责人')
             .optional(),
-          order_weight: z.string().describe('在上级部门下的排序权重').optional(),
+          order_weight: z.string().describe('在上级部门下的排序权重，返回结果按order_weight降序排列').optional(),
           enabled_status: z.boolean().describe('是否启用').optional(),
           custom_field_values: z
             .array(
               z.object({
-                field_key: z.string().describe('自定义字段key').optional(),
                 field_type: z
-                  .enum(['1', '2', '3', '4', '10', '11'])
+                  .enum(['1', '2', '3', '4', '9', '10', '11'])
                   .describe(
-                    '自定义字段类型 Options:1(custom_field_value_type_text 多行文本),2(custom_field_value_type_url 网页链接),3(custom_field_value_type_enum 枚举选项),4(custom_field_value_type_generic_user 人员),10(custom_field_field_type_directory_multi_enum 多选枚举类型(目前仅支持文本类型)),11(custom_field_field_type_directory_multi_generic_user 人员列表)',
+                    '自定义字段类型 Options:1(custom_field_value_type_text 多行文本),2(custom_field_value_type_url 网页链接),3(custom_field_value_type_enum 枚举选项),4(custom_field_value_type_generic_user 人员),9(custom_field_value_type_phone 电话),10(custom_field_field_type_directory_multi_enum 多选枚举类型(目前仅支持文本类型)),11(custom_field_field_type_directory_multi_generic_user 人员列表)',
                   )
                   .optional(),
                 text_value: z
@@ -356,16 +326,17 @@ export const directoryV1DepartmentCreate = {
                   .describe('枚举字段值')
                   .optional(),
                 user_values: z
-                  .array(
-                    z.object({
-                      ids: z.array(z.string()).describe('人员ID，与employee_id_type类型保持一致'),
-                      user_type: z
-                        .literal('1')
-                        .describe('人员类型 Options:1(custom_field_value_user_type_employee 员工)'),
-                    }),
-                  )
+                  .array(z.object({ ids: z.array(z.string()).describe('人员ID，与employee_id_type类型保持一致') }))
                   .describe('人员字段值')
                   .optional(),
+                phone_value: z
+                  .object({
+                    phone_number: z.string().describe('电话号'),
+                    extension_number: z.string().describe('分机号').optional(),
+                  })
+                  .describe('电话字段值')
+                  .optional(),
+                field_key: z.string().describe('自定义字段key').optional(),
               }),
             )
             .describe('部门自定义字段值')
@@ -373,20 +344,22 @@ export const directoryV1DepartmentCreate = {
         })
         .describe('创建部门'),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 不相同。)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 不相同。)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -399,14 +372,16 @@ export const directoryV1DepartmentDelete = {
   description: '[Feishu/Lark]-组织架构-部门管理-删除部门-本接口用于删除部门',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 不相同。)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 不相同。)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ department_id: z.string().describe('部门ID，与department_id_type类型保持一致') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -417,8 +392,7 @@ export const directoryV1DepartmentFilter = {
   sdkName: 'directory.v1.department.filter',
   path: '/open-apis/directory/v1/departments/filter',
   httpMethod: 'POST',
-  description:
-    '[Feishu/Lark]-组织架构-部门管理-批量获取部门列表-本接口用于依据指定条件，批量获取符合条件的部门详情列表',
+  description: '[Feishu/Lark]-组织架构-部门管理-获取部门列表-本接口用于依据指定条件，批量获取符合条件的部门详情列表',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -438,7 +412,7 @@ export const directoryV1DepartmentFilter = {
                 value: z
                   .string()
                   .describe(
-                    '筛选条件的右值。内容为左值字段类型及操作符组合下，对应的值类型。使用parent_department_id条件时，根部门的ID可使用"0"',
+                    '筛选条件的右值，内容为左值字段类型及操作符组合下，对应的值类型。其取值类型需与查询参数department_id_type的取值一致，最大长度为64字符，支持数字和字母。使用parent_department_id条件时，根部门的ID可使用"0"',
                   ),
               }),
             )
@@ -452,7 +426,7 @@ export const directoryV1DepartmentFilter = {
         ),
       page_request: z
         .object({
-          page_size: z.number().describe('本次请求条数，最大100条**默认值**：20').optional(),
+          page_size: z.number().describe('本次请求条数，最大100条**默认值**：20**最小值**：0').optional(),
           page_token: z
             .string()
             .describe(
@@ -462,20 +436,22 @@ export const directoryV1DepartmentFilter = {
         })
         .describe('分页信息'),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'employee_id', 'union_id'])
-        .describe(
-          '此次调用中使用的用户ID的类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？])',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 相同。),department_id(用来标识租户内一个唯一的部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 相同。),department_id(用来标识租户内一个唯一的部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -485,31 +461,36 @@ export const directoryV1DepartmentMget = {
   sdkName: 'directory.v1.department.mget',
   path: '/open-apis/directory/v1/departments/mget',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-组织架构-部门管理-批量获取部门信息-本接口用于批量根据部门的ID查询部门的详情',
+  description:
+    '[Feishu/Lark]-组织架构-部门管理-批量获取部门信息-该接口支持传入多个部门ID，返回每个部门的详细信息（如名称、负责人、子部门等）',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
-      department_ids: z.array(z.string()).describe('部门ID，与department_id_type类型保持一致'),
+      department_ids: z
+        .array(z.string())
+        .describe('部门ID，与department_id_type类型保持一致。id获取方式：可通过管理后台查询'),
       required_fields: z
         .array(z.string())
         .describe(
           '需要查询的字段列表。将按照传递的字段列表返回有权限的行、列数据。不传则不会返回任何字段[了解更多：字段枚举说明]',
         ),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'employee_id', 'union_id'])
-        .describe(
-          '此次调用中使用的用户ID的类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？])',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 相同。)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 相同。)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -528,7 +509,7 @@ export const directoryV1DepartmentPatch = {
           custom_department_id: z
             .string()
             .describe(
-              '自定义部门ID。注意：1. 除需要满足正则规则外，同时不能以od-开头2. 正则校验：^[a-zA-Z0-9][a-zA-Z0-9_\\-@.]{0,63}$',
+              '自定义部门ID。注意：1. 除需要满足正则规则外，同时不能以od-开头2. 正则校验：^[a-zA-Z0-9][a-zA-Z0-9_\\-@.]{0,63}$**数据校验规则**：长度范围：1-64字符',
             )
             .optional(),
           name: z
@@ -556,16 +537,18 @@ export const directoryV1DepartmentPatch = {
             )
             .describe('部门负责人')
             .optional(),
-          order_weight: z.string().describe('在上级部门下的排序权重').optional(),
+          order_weight: z
+            .string()
+            .describe('在上级部门下的排序权重，返回结果将按照order_weight的值进行升序排列')
+            .optional(),
           enabled_status: z.boolean().describe('是否启用').optional(),
           custom_field_values: z
             .array(
               z.object({
-                field_key: z.string().describe('自定义字段key').optional(),
                 field_type: z
-                  .enum(['1', '2', '3', '4', '10', '11'])
+                  .enum(['1', '2', '3', '4', '9', '10', '11'])
                   .describe(
-                    '自定义字段类型 Options:1(custom_field_value_type_text 多行文本),2(custom_field_value_type_url 网页链接),3(custom_field_value_type_enum 枚举选项),4(custom_field_value_type_generic_user 人员),10(custom_field_field_type_directory_multi_enum 多选枚举类型(目前仅支持文本类型)),11(custom_field_field_type_directory_multi_generic_user 人员列表)',
+                    '自定义字段类型 Options:1(custom_field_value_type_text 多行文本),2(custom_field_value_type_url 网页链接),3(custom_field_value_type_enum 枚举选项),4(custom_field_value_type_generic_user 人员),9(custom_field_value_type_phone 电话),10(custom_field_field_type_directory_multi_enum 多选枚举类型(目前仅支持文本类型)),11(custom_field_field_type_directory_multi_generic_user 人员列表)',
                   )
                   .optional(),
                 text_value: z
@@ -608,16 +591,17 @@ export const directoryV1DepartmentPatch = {
                   .describe('枚举字段值')
                   .optional(),
                 user_values: z
-                  .array(
-                    z.object({
-                      ids: z.array(z.string()).describe('人员ID，与employee_id_type类型保持一致'),
-                      user_type: z
-                        .literal('1')
-                        .describe('人员类型 Options:1(custom_field_value_user_type_employee 员工)'),
-                    }),
-                  )
+                  .array(z.object({ ids: z.array(z.string()).describe('人员ID，与employee_id_type类型保持一致') }))
                   .describe('人员字段值')
                   .optional(),
+                phone_value: z
+                  .object({
+                    phone_number: z.string().describe('电话号'),
+                    extension_number: z.string().describe('分机号长度范围：0-99字符').optional(),
+                  })
+                  .describe('电话字段值')
+                  .optional(),
+                field_key: z.string().describe('自定义字段key').optional(),
               }),
             )
             .describe('部门自定义字段值')
@@ -625,20 +609,22 @@ export const directoryV1DepartmentPatch = {
         })
         .describe('更新部门信息'),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 不相同。),department_id(用来标识租户内一个唯一的部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 不相同。),department_id(用来标识租户内一个唯一的部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ department_id: z.string().describe('部门ID，与department_id_type类型保持一致') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -649,14 +635,15 @@ export const directoryV1DepartmentSearch = {
   sdkName: 'directory.v1.department.search',
   path: '/open-apis/directory/v1/departments/search',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-组织架构-部门管理-搜索部门-本接口用于搜索部门信息',
+  description:
+    '[Feishu/Lark]-组织架构-部门管理-搜索部门-本接口用于搜索部门信息，通过部门名称等关键词搜索部门信息，返回符合条件的部门列表',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
-      query: z.string().describe('搜索关键词。支持部门名称的搜索'),
+      query: z.string().describe('搜索关键词。支持部门名称的搜索，最多可输入 100 字'),
       page_request: z
         .object({
-          page_size: z.number().describe('本次请求条数，最大100条**默认值**：20').optional(),
+          page_size: z.number().describe('本次请求条数，最大100条**默认值**：20**最小值**：0').optional(),
           page_token: z
             .string()
             .describe(
@@ -671,20 +658,22 @@ export const directoryV1DepartmentSearch = {
           '需要查询的字段列表。将按照传递的字段列表返回有权限的行、列数据。不传则不会返回任何字段[了解更多：字段枚举说明]',
         ),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 不相同。),department_id(用来标识租户内一个唯一的部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 不相同。),department_id(用来标识租户内一个唯一的部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -695,7 +684,7 @@ export const directoryV1EmployeeCreate = {
   path: '/open-apis/directory/v1/employees',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-组织架构-员工管理-创建员工-本接口用于在企业下创建员工，可以理解为员工入职。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」',
+    '[Feishu/Lark]-组织架构-员工管理-创建员工-本接口用于在企业下创建员工。支持传入姓名、手机号等信息，生成在职状态的员工对象。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -705,7 +694,7 @@ export const directoryV1EmployeeCreate = {
             .object({
               name: z
                 .object({
-                  default_value: z.string().describe('默认值'),
+                  default_value: z.string().describe('默认值最小长度：1字符'),
                   i18n_value: z
                     .object({})
                     .catchall(z.any())
@@ -765,7 +754,7 @@ export const directoryV1EmployeeCreate = {
                 is_main_department: z
                   .boolean()
                   .describe(
-                    '是否为用户的主部门（用户只能有一个主部门，且排序权重应最大，不填则默认使用排序第一的部门作为主部门)',
+                    '是否为用户的主部门（用户只能有一个主部门，且排序权重应最大，不填则默认使用排序第一的部门作为主部门),可选值:true/false',
                   )
                   .optional(),
               }),
@@ -786,9 +775,7 @@ export const directoryV1EmployeeCreate = {
             .optional(),
           work_country_or_region: z
             .string()
-            .describe(
-              '工作地国家/地区码。获取国家/地区的编码请使用 [分页批量查询国家/地区]',
-            )
+            .describe('工作地国家/地区码。获取国家/地区的编码请使用 [分页批量查询国家/地区]')
             .optional(),
           work_place_id: z.string().describe('工作地点ID').optional(),
           work_station: z
@@ -810,16 +797,15 @@ export const directoryV1EmployeeCreate = {
           custom_field_values: z
             .array(
               z.object({
-                field_key: z.string().describe('自定义字段key').optional(),
                 field_type: z
-                  .enum(['1', '2', '3', '4', '10', '11'])
+                  .enum(['1', '2', '3', '4', '9', '10', '11'])
                   .describe(
-                    '自定义字段类型 Options:1(custom_field_value_type_text 多行文本),2(custom_field_value_type_url 网页链接),3(custom_field_value_type_enum 枚举选项),4(custom_field_value_type_generic_user 人员),10(custom_field_field_type_directory_multi_enum 多选枚举类型),11(custom_field_field_type_directory_multi_generic_user 人员列表)',
+                    '自定义字段类型 Options:1(custom_field_value_type_text 多行文本),2(custom_field_value_type_url 网页链接),3(custom_field_value_type_enum 枚举选项),4(custom_field_value_type_generic_user 人员),9(custom_field_value_type_phone 电话),10(custom_field_field_type_directory_multi_enum 多选枚举类型),11(custom_field_field_type_directory_multi_generic_user 人员列表)',
                   )
                   .optional(),
                 text_value: z
                   .object({
-                    default_value: z.string().describe('默认值'),
+                    default_value: z.string().describe('默认值最小长度：1字符'),
                     i18n_value: z
                       .object({})
                       .catchall(z.any())
@@ -832,7 +818,7 @@ export const directoryV1EmployeeCreate = {
                   .object({
                     link_text: z
                       .object({
-                        default_value: z.string().describe('默认值'),
+                        default_value: z.string().describe('默认值长度范围：1-40字符'),
                         i18n_value: z
                           .object({})
                           .catchall(z.any())
@@ -860,6 +846,14 @@ export const directoryV1EmployeeCreate = {
                   .array(z.object({ ids: z.array(z.string()).describe('人员ID，与employee_id_type类型保持一致') }))
                   .describe('人员字段值')
                   .optional(),
+                phone_value: z
+                  .object({
+                    phone_number: z.string().describe('电话号'),
+                    extension_number: z.string().describe('分机号').optional(),
+                  })
+                  .describe('电话字段值')
+                  .optional(),
+                field_key: z.string().describe('自定义字段key').optional(),
               }),
             )
             .describe('自定义字段')
@@ -884,20 +878,22 @@ export const directoryV1EmployeeCreate = {
         .describe('接口拓展选项')
         .optional(),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 相同。)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 相同。)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -910,87 +906,91 @@ export const directoryV1EmployeeDelete = {
   description: '[Feishu/Lark]-组织架构-员工管理-离职员工-本接口用于离职员工',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      options: z
-        .object({
-          resigned_employee_resource_receiver: z
-            .object({
-              department_chat_acceptor_employee_id: z
-                .string()
-                .describe(
-                  '部门群接收者。ID值与查询参数中的employee_id_type 对应。被删除用户为部门群群主时，转让群主给指定接收者，不指定接收者则默认转让给群内第一个入群的人',
-                )
-                .optional(),
-              external_chat_acceptor_employee_id: z
-                .string()
-                .describe(
-                  '外部群接收者。ID值与查询参数中的employee_id_type 对应。被删除用户为外部群群主时，转让群主给指定接收者，不指定接收者则默认转让给群内与被删除用户在同一组织的第一个入群的人，如果组织内只有该用户在群里，则解散外部群',
-                )
-                .optional(),
-              docs_acceptor_employee_id: z
-                .string()
-                .describe(
-                  '文档接收者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其拥有的文档转让给接收者。不指定接收者则将文档资源保留在该用户名下',
-                )
-                .optional(),
-              calendar_acceptor_employee_id: z
-                .string()
-                .describe(
-                  '日程接收者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其拥有的日程转让给接收者。不指定接收者则将日程资源保留在该用户名下',
-                )
-                .optional(),
-              application_acceptor_employee_id: z
-                .string()
-                .describe(
-                  '应用接受者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其创建的应用转让给接收者，不指定接收者则保留应用在该用户名下，但该用户无法登录开发者后台进行应用管理，管理员可以在管理后台手动转移应用给其他人',
-                )
-                .optional(),
-              helpdesk_acceptor_employee_id: z
-                .string()
-                .describe(
-                  '服务台资源接收者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其拥有的服务台资源转让给接收者，不指定接收者时保留服务台资源在该用户名下',
-                )
-                .optional(),
-              approval_acceptor_employee_id: z
-                .string()
-                .describe(
-                  '审批资源接收者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其拥有的审批资源转让给接收者，不指定接收者时保留审批资源在该用户名下',
-                )
-                .optional(),
-              email_acceptor_employee_id: z
-                .string()
-                .describe(
-                  '用户邮件资源接收者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其拥有的邮件资源转让给接收者，不指定接受者则保留邮件资源在该用户名下',
-                )
-                .optional(),
-              minutes_acceptor_employee_id: z
-                .string()
-                .describe(
-                  '妙记接收者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其拥有的妙记资源转让给接收者。如果不指定接收者则将妙记保留在该用户名下',
-                )
-                .optional(),
-              survey_acceptor_employee_id: z
-                .string()
-                .describe(
-                  '飞书问卷接收者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其拥有的飞书问卷资源转让给接收者，不指定接收者则直接删除飞书问卷资源',
-                )
-                .optional(),
-              anycross_acceptor_employee_id: z.string().describe('集成平台资源Owner').optional(),
-            })
-            .describe('离职员工的资源转移方式')
-            .optional(),
-        })
-        .describe('接口拓展选项')
-        .optional(),
-    }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        options: z
+          .object({
+            resigned_employee_resource_receiver: z
+              .object({
+                department_chat_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    '部门群接收者。ID值与查询参数中的employee_id_type 对应。被删除用户为部门群群主时，转让群主给指定接收者，不指定接收者则默认转让给群内第一个入群的人',
+                  )
+                  .optional(),
+                external_chat_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    '外部群接收者。ID值与查询参数中的employee_id_type 对应。被删除用户为外部群群主时，转让群主给指定接收者，不指定接收者则默认转让给群内与被删除用户在同一组织的第一个入群的人，如果组织内只有该用户在群里，则解散外部群',
+                  )
+                  .optional(),
+                docs_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    '文档接收者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其拥有的文档转让给接收者。不指定接收者则将文档资源保留在该用户名下',
+                  )
+                  .optional(),
+                calendar_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    '日程接收者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其拥有的日程转让给接收者。不指定接收者则将日程资源保留在该用户名下',
+                  )
+                  .optional(),
+                application_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    '应用接受者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其创建的应用转让给接收者，不指定接收者则保留应用在该用户名下，但该用户无法登录开发者后台进行应用管理，管理员可以在管理后台手动转移应用给其他人',
+                  )
+                  .optional(),
+                helpdesk_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    '服务台资源接收者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其拥有的服务台资源转让给接收者，不指定接收者时保留服务台资源在该用户名下',
+                  )
+                  .optional(),
+                approval_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    '审批资源接收者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其拥有的审批资源转让给接收者，不指定接收者时保留审批资源在该用户名下',
+                  )
+                  .optional(),
+                email_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    '用户邮件资源接收者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其拥有的邮件资源转让给接收者，不指定接受者则保留邮件资源在该用户名下',
+                  )
+                  .optional(),
+                minutes_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    '妙记接收者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其拥有的妙记资源转让给接收者。如果不指定接收者则将妙记保留在该用户名下',
+                  )
+                  .optional(),
+                survey_acceptor_employee_id: z
+                  .string()
+                  .describe(
+                    '飞书问卷接收者。ID值与查询参数中的employee_id_type 对应。用户被删除时，其拥有的飞书问卷资源转让给接收者，不指定接收者则直接删除飞书问卷资源',
+                  )
+                  .optional(),
+                anycross_acceptor_employee_id: z.string().describe('集成平台资源Owner').optional(),
+              })
+              .describe('离职员工的资源转移方式')
+              .optional(),
+          })
+          .describe('接口拓展选项')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       employee_id: z.string().describe('要离职的员工的ID。需要与查询参数中的employee_id_type类型保持一致'),
     }),
@@ -1042,7 +1042,7 @@ export const directoryV1EmployeeFilter = {
         ),
       page_request: z
         .object({
-          page_size: z.number().describe('本次请求条数，最大100条').optional(),
+          page_size: z.number().describe('本次请求条数，最小0条，最大100条').optional(),
           page_token: z
             .string()
             .describe(
@@ -1052,20 +1052,22 @@ export const directoryV1EmployeeFilter = {
         })
         .describe('分页参数'),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 相同。)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 相同。)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1076,31 +1078,33 @@ export const directoryV1EmployeeMget = {
   path: '/open-apis/directory/v1/employees/mget',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-组织架构-员工管理-批量获取员工信息-本接口用于批量根据员工的ID查询员工的详情。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」',
+    '[Feishu/Lark]-组织架构-员工管理-批量获取员工信息-本接口用于批量根据员工的ID查询员工的详情，比如员工姓名，手机号，邮箱，部门等信息。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
-      employee_ids: z.array(z.string()).describe('员工ID'),
+      employee_ids: z.array(z.string()).describe('员工ID，与employee_id_type类型保持一致'),
       required_fields: z
         .array(z.string())
         .describe(
           '需要查询的字段列表。将按照传递的字段列表返回有权限的行、列数据。不传则不会返回任何字段。[了解更多：字段枚举说明]',
         ),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 不相同。)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 不相同。)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1111,7 +1115,7 @@ export const directoryV1EmployeePatch = {
   path: '/open-apis/directory/v1/employees/:employee_id',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-组织架构-员工管理-更新员工-本接口用于更新在职/离职员工的信息、冻结/恢复员工。未传递的参数不会进行更新。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」',
+    '[Feishu/Lark]-组织架构-员工管理-更新员工信息-本接口用于更新在职/离职员工的信息、冻结/恢复员工。未传递的参数不会进行更新。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1121,14 +1125,14 @@ export const directoryV1EmployeePatch = {
             .object({
               name: z
                 .object({
-                  default_value: z.string().describe('默认值'),
+                  default_value: z.string().describe('默认值长度范围：1- 64 字符'),
                   i18n_value: z
                     .object({})
                     .catchall(z.any())
                     .describe('国际化值，key为zh_cn, ja_jp, en_us, value为对应的值')
                     .optional(),
                 })
-                .describe('员工的姓名，最多可输入 64 字'),
+                .describe('员工的姓名'),
               another_name: z.string().describe('别名，最多可输入 64 字').optional(),
             })
             .describe('姓名')
@@ -1173,7 +1177,7 @@ export const directoryV1EmployeePatch = {
             .array(
               z.object({
                 department_id: z.string().describe('部门id，与department_id_type类型保持一致').optional(),
-                order_weight_in_deparment: z.string().describe('员工在部门内的排序权重').optional(),
+                order_weight_in_deparment: z.string().describe('员工在部门内的排序权重**数据校验规则：**').optional(),
                 order_weight_among_deparments: z.string().describe('该部门在用户所属的多个部门间的排序权重').optional(),
                 is_main_department: z
                   .boolean()
@@ -1204,9 +1208,7 @@ export const directoryV1EmployeePatch = {
             .optional(),
           work_country_or_region: z
             .string()
-            .describe(
-              '工作地国家/地区码。获取国家/地区的编码请使用 [分页批量查询国家/地区]',
-            )
+            .describe('工作地国家/地区码。获取国家/地区的编码请使用 [分页批量查询国家/地区]')
             .optional(),
           work_place_id: z.string().describe('工作地点ID').optional(),
           work_station: z
@@ -1222,12 +1224,12 @@ export const directoryV1EmployeePatch = {
             .optional(),
           job_number: z.string().describe('工号。企业内在职员工的工号不可重复').optional(),
           extension_number: z.string().describe('分机号，最多可输入 99 字。企业内所有员工的分机号不可重复').optional(),
-          join_date: z.string().describe('入职日期').optional(),
+          join_date: z.string().describe("入职日期固定格式为：'YYYY-MM-DD' , 固定长度为：10").optional(),
           employment_type: z.number().describe('员工类型').optional(),
           job_title_id: z.string().describe('职务ID').optional(),
           job_level_id: z.string().describe('职级ID').optional(),
           job_family_id: z.string().describe('序列ID').optional(),
-          resign_date: z.string().describe('离职日期').optional(),
+          resign_date: z.string().describe("离职日期固定格式为：'YYYY-MM-DD' , 固定长度为：10").optional(),
           resign_reason: z
             .enum([
               '0',
@@ -1272,11 +1274,10 @@ export const directoryV1EmployeePatch = {
           custom_field_values: z
             .array(
               z.object({
-                field_key: z.string().describe('自定义字段key').optional(),
                 field_type: z
-                  .enum(['1', '2', '3', '4', '10', '11'])
+                  .enum(['1', '2', '3', '4', '9', '10', '11'])
                   .describe(
-                    '自定义字段类型 Options:1(custom_field_value_type_text 多行文本),2(custom_field_value_type_url 网页链接),3(custom_field_value_type_enum 枚举选项),4(custom_field_value_type_generic_user 人员),10(custom_field_field_type_directory_multi_enum 多选枚举类型(目前仅支持文本类型)),11(custom_field_field_type_directory_multi_generic_user 人员列表)',
+                    '自定义字段类型 Options:1(custom_field_value_type_text 多行文本),2(custom_field_value_type_url 网页链接),3(custom_field_value_type_enum 枚举选项),4(custom_field_value_type_generic_user 人员),9(custom_field_value_type_phone 电话),10(custom_field_field_type_directory_multi_enum 多选枚举类型(目前仅支持文本类型)),11(custom_field_field_type_directory_multi_generic_user 人员列表)',
                   )
                   .optional(),
                 text_value: z
@@ -1322,6 +1323,14 @@ export const directoryV1EmployeePatch = {
                   .array(z.object({ ids: z.array(z.string()).describe('人员ID，与employee_id_type类型保持一致') }))
                   .describe('人员字段值')
                   .optional(),
+                phone_value: z
+                  .object({
+                    phone_number: z.string().describe('电话号'),
+                    extension_number: z.string().describe('分机号').optional(),
+                  })
+                  .describe('电话字段值')
+                  .optional(),
+                field_key: z.string().describe('自定义字段key').optional(),
               }),
             )
             .describe('自定义字段')
@@ -1329,18 +1338,20 @@ export const directoryV1EmployeePatch = {
         })
         .describe('更新员工对象'),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe('部门ID类型 Options:department_id(department_id),open_department_id(open_department_id)')
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe('部门ID类型 Options:department_id(department_id),open_department_id(open_department_id)')
+          .optional(),
+      })
+      .optional(),
     path: z.object({ employee_id: z.string().describe('员工ID，与employee_id_type类型保持一致') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1355,20 +1366,22 @@ export const directoryV1EmployeeRegular = {
     '[Feishu/Lark]-组织架构-员工管理-更新待离职成员为在职-本接口用于为待离职员工取消离职，将其更新为「在职」状态。取消离职时会清空离职信息。使用user_access_token时默认为管理员用户，仅可操作「人事管理模式」的管理员可操作',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '部门ID类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 相同。)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '部门ID类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 相同。)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ employee_id: z.string().describe('员工ID，与employee_id_type类型保持一致') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1379,50 +1392,60 @@ export const directoryV1EmployeeResurrect = {
   sdkName: 'directory.v1.employee.resurrect',
   path: '/open-apis/directory/v1/employees/:employee_id/resurrect',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-组织架构-员工管理-恢复离职员工-该接口用于恢复已离职的成员',
+  description: '[Feishu/Lark]-组织架构-员工管理-恢复离职员工-该接口用于恢复已离职的成员，恢复已离职成员至在职状态',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      employee_order_in_departments: z
-        .array(
-          z.object({
-            department_id: z.string().describe('部门id，与department_id_type类型保持一致').optional(),
-            order_weight_in_deparment: z.string().describe('用户在部门内的排序权重').optional(),
-            order_weight_among_deparments: z.string().describe('用户多个部门间的排序权重').optional(),
-            is_main_department: z
-              .boolean()
+    data: z
+      .object({
+        employee_order_in_departments: z
+          .array(
+            z.object({
+              department_id: z.string().describe('部门id，与department_id_type类型保持一致').optional(),
+              order_weight_in_deparment: z
+                .string()
+                .describe('用户在部门内的排序权重**数据校验规则：**长度范围：1～ 3')
+                .optional(),
+              order_weight_among_deparments: z
+                .string()
+                .describe('用户多个部门间的排序权重**数据校验规则：**长度范围：1～ 3')
+                .optional(),
+              is_main_department: z
+                .boolean()
+                .describe(
+                  '是否为用户的主部门（用户只能有一个主部门，且排序权重应最大，不填则默认使用排序第一的部门作为主部门)',
+                )
+                .optional(),
+            }),
+          )
+          .describe('部门信息')
+          .optional(),
+        options: z
+          .object({
+            subscription_ids: z
+              .array(z.string())
               .describe(
-                '是否为用户的主部门（用户只能有一个主部门，且排序权重应最大，不填则默认使用排序第一的部门作为主部门)',
+                '分配给员工的席位ID列表。可通过下方接口获取到该租户的可用席位ID，参见[获取席位信息]。当在混合license模式下，此字段为必填',
               )
               .optional(),
-          }),
-        )
-        .describe('部门信息')
-        .optional(),
-      options: z
-        .object({
-          subscription_ids: z
-            .array(z.string())
-            .describe(
-              '分配给员工的席位ID列表。可通过下方接口获取到该租户的可用席位ID，参见[获取席位信息]。当在混合license模式下，此字段为必填',
-            )
-            .optional(),
-        })
-        .describe('选项')
-        .optional(),
-    }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe('部门ID类型 Options:department_id(department_id),open_department_id(open_department_id)')
-        .optional(),
-    }),
+          })
+          .describe('选项')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe('部门ID类型 Options:department_id(department_id),open_department_id(open_department_id)')
+          .optional(),
+      })
+      .optional(),
     path: z.object({ employee_id: z.string().describe('员工ID，与employee_id_type类型保持一致') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1434,7 +1457,7 @@ export const directoryV1EmployeeSearch = {
   path: '/open-apis/directory/v1/employees/search',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-组织架构-员工管理-搜索员工-本接口用于搜索员工信息。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」',
+    '[Feishu/Lark]-组织架构-员工管理-搜索员工信息-本接口用于搜索员工信息，如通过关键词搜索员工的名称、手机号、邮箱等信息。员工指飞书企业内身份为「Employee」的成员，等同于通讯录OpenAPI中的「User」',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1445,7 +1468,7 @@ export const directoryV1EmployeeSearch = {
         ),
       page_request: z
         .object({
-          page_size: z.number().describe('本次请求条数，最大100条**默认值**：20').optional(),
+          page_size: z.number().describe('本次请求条数，最小是0条，最大100条**默认值**：20').optional(),
           page_token: z
             .string()
             .describe(
@@ -1460,20 +1483,22 @@ export const directoryV1EmployeeSearch = {
           '需要查询的字段列表。将按照传递的字段列表返回有权限的行、列数据。不传则不会返回任何字段[了解更多：字段枚举说明]',
         ),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 不相同。),department_id(用来标识租户内一个唯一的部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 不相同。),department_id(用来标识租户内一个唯一的部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1531,20 +1556,22 @@ export const directoryV1EmployeeToBeResigned = {
         })
         .describe('在职员工流转到待离职'),
     }),
-    params: z.object({
-      employee_id_type: z
-        .enum(['open_id', 'union_id', 'employee_id'])
-        .describe(
-          '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '部门ID类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 相同。)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_id_type: z
+          .enum(['open_id', 'union_id', 'employee_id'])
+          .describe(
+            '用户 ID 类型 Options:open_id(标识一个用户在某个应用中的身份。同一个用户在不同应用中的 Open ID 不同。[了解更多：如何获取 Open ID]),union_id(标识一个用户在某个应用开发商下的身份。同一用户在同一开发商下的应用中的 Union ID 是相同的，在不同开发商下的应用中的 Union ID 是不同的。通过 Union ID，应用开发商可以把同个用户在多个应用中的身份关联起来。[了解更多：如何获取 Union ID？]),employee_id(企业内在职员工的唯一标识。支持自定义，未自定义时系统自动生成。ID支持修改。获取employee_id的方式： - 企业管理员在 管理后台 > 组织架构 > 成员与部门 页面，点击 成员详情，查询员工ID - 通过 [批量获取员工列表] 的接口，通过手机号或邮箱查询员工ID。)',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '部门ID类型 Options:department_id(用来标识租户内一个唯一的部门),open_department_id(用来在具体某个应用中标识一个部门，同一个部门 在不同应用中的 open_department_id 相同。)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ employee_id: z.string().describe('员工ID，与employee_id_type类型保持一致') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },

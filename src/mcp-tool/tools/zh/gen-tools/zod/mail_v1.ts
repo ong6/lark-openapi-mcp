@@ -76,8 +76,8 @@ export const mailV1MailgroupAliasCreate = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组别名-创建邮件组别名-创建邮件组别名',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({ email_alias: z.string().describe('邮箱别名').optional() }),
-    path: z.object({ mailgroup_id: z.string().describe('邮件组id或邮件组邮箱地址').optional() }),
+    data: z.object({ email_alias: z.string().describe('邮箱别名').optional() }).optional(),
+    path: z.object({ mailgroup_id: z.string().describe('邮件组id或邮件组邮箱地址').optional() }).optional(),
   },
 };
 export const mailV1MailgroupAliasDelete = {
@@ -89,10 +89,12 @@ export const mailV1MailgroupAliasDelete = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组别名-删除邮件组别名-删除邮件组别名',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      mailgroup_id: z.string().describe('邮件组id或邮件组邮箱地址').optional(),
-      alias_id: z.string().describe('邮件组别名邮箱地址').optional(),
-    }),
+    path: z
+      .object({
+        mailgroup_id: z.string().describe('邮件组id或邮件组邮箱地址').optional(),
+        alias_id: z.string().describe('邮件组别名邮箱地址').optional(),
+      })
+      .optional(),
   },
 };
 export const mailV1MailgroupAliasList = {
@@ -104,7 +106,7 @@ export const mailV1MailgroupAliasList = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组别名-获取邮件组所有别名-获取邮件组所有别名',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({ mailgroup_id: z.string().describe('邮件组id或邮件组邮箱地址').optional() }),
+    path: z.object({ mailgroup_id: z.string().describe('邮件组id或邮件组邮箱地址').optional() }).optional(),
   },
 };
 export const mailV1MailgroupCreate = {
@@ -116,17 +118,19 @@ export const mailV1MailgroupCreate = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组管理-创建邮件组-创建一个邮件组',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      email: z.string().describe('邮件组地址').optional(),
-      name: z.string().describe('邮件组名称').optional(),
-      description: z.string().describe('邮件组描述').optional(),
-      who_can_send_mail: z
-        .enum(['ANYONE', 'ALL_INTERNAL_USERS', 'ALL_GROUP_MEMBERS', 'CUSTOM_MEMBERS'])
-        .describe(
-          '谁可发送邮件到此邮件组 Options:ANYONE(任何人),ALL_INTERNAL_USERS(仅组织内部成员),ALL_GROUP_MEMBERS(仅邮件组成员),CUSTOM_MEMBERS(自定义成员)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        email: z.string().describe('邮件组地址').optional(),
+        name: z.string().describe('邮件组名称').optional(),
+        description: z.string().describe('邮件组描述').optional(),
+        who_can_send_mail: z
+          .enum(['ANYONE', 'ALL_INTERNAL_USERS', 'ALL_GROUP_MEMBERS', 'CUSTOM_MEMBERS'])
+          .describe(
+            '谁可发送邮件到此邮件组 Options:ANYONE(任何人),ALL_INTERNAL_USERS(仅组织内部成员),ALL_GROUP_MEMBERS(仅邮件组成员),CUSTOM_MEMBERS(自定义成员)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const mailV1MailgroupDelete = {
@@ -138,7 +142,7 @@ export const mailV1MailgroupDelete = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组管理-删除邮件组-删除一个邮件组',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }),
+    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }).optional(),
   },
 };
 export const mailV1MailgroupGet = {
@@ -150,7 +154,7 @@ export const mailV1MailgroupGet = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组管理-查询指定邮件组-获取特定邮件组信息',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }),
+    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }).optional(),
   },
 };
 export const mailV1MailgroupList = {
@@ -162,17 +166,19 @@ export const mailV1MailgroupList = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组管理-批量获取邮件组-分页批量获取邮件组',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      manager_user_id: z.string().describe('邮件组管理员用户ID，用于获取该用户有管理权限的邮件组').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-    }),
+    params: z
+      .object({
+        manager_user_id: z.string().describe('邮件组管理员用户ID，用于获取该用户有管理权限的邮件组').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+      })
+      .optional(),
   },
 };
 export const mailV1MailgroupManagerBatchCreate = {
@@ -184,14 +190,18 @@ export const mailV1MailgroupManagerBatchCreate = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组管理员-批量创建邮件组管理员-批量创建邮件组管理员',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      mailgroup_manager_list: z
-        .array(z.object({ user_id: z.string().describe('管理员用户ID').optional() }))
-        .describe('邮件组管理员列表')
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或邮箱地址').optional() }),
+    data: z
+      .object({
+        mailgroup_manager_list: z
+          .array(z.object({ user_id: z.string().describe('管理员用户ID').optional() }))
+          .describe('邮件组管理员列表')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或邮箱地址').optional() }).optional(),
   },
 };
 export const mailV1MailgroupManagerBatchDelete = {
@@ -203,14 +213,18 @@ export const mailV1MailgroupManagerBatchDelete = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组管理员-批量删除邮件组管理员-批量删除邮件组管理员',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      mailgroup_manager_list: z
-        .array(z.object({ user_id: z.string().describe('管理员用户ID').optional() }))
-        .describe('邮件组管理员列表')
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }),
+    data: z
+      .object({
+        mailgroup_manager_list: z
+          .array(z.object({ user_id: z.string().describe('管理员用户ID').optional() }))
+          .describe('邮件组管理员列表')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }).optional(),
   },
 };
 export const mailV1MailgroupManagerList = {
@@ -222,17 +236,19 @@ export const mailV1MailgroupManagerList = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组管理员-批量获取邮件组管理员-批量获取邮件组管理员',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或邮箱地址').optional() }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或邮箱地址').optional() }).optional(),
   },
 };
 export const mailV1MailgroupMemberBatchCreate = {
@@ -244,38 +260,52 @@ export const mailV1MailgroupMemberBatchCreate = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组成员-批量创建邮件组成员-一次请求可以给一个邮件组添加多个成员',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      items: z
-        .array(
-          z.object({
-            member_id: z.string().describe('邮件组内成员唯一标识（在请求体中不用填）').optional(),
-            email: z
-              .string()
-              .describe('成员邮箱地址（当成员类型是EXTERNAL_USER/MAIL_GROUP/OTHER_MEMBER时有值）')
-              .optional(),
-            user_id: z.string().describe('租户内用户的唯一标识（当成员类型是USER时有值）').optional(),
-            department_id: z.string().describe('租户内部门的唯一标识（当成员类型是DEPARTMENT时有值）').optional(),
-            type: z
-              .enum(['USER', 'DEPARTMENT', 'COMPANY', 'EXTERNAL_USER', 'MAIL_GROUP', 'PUBLIC_MAILBOX', 'OTHER_MEMBER'])
-              .describe(
-                '成员类型 Options:USER(内部用户),DEPARTMENT(部门),COMPANY(全员),EXTERNAL_USER(外部用户),MAIL_GROUP(邮件组),PUBLIC_MAILBOX(member is a public mailbox),OTHER_MEMBER(内部成员)',
-              )
-              .optional(),
-          }),
-        )
-        .describe('本次添加的邮件组成员列表')
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
-        )
-        .optional(),
-    }),
-    path: z.object({ mailgroup_id: z.string().describe('The unique ID or email address of a mail group').optional() }),
+    data: z
+      .object({
+        items: z
+          .array(
+            z.object({
+              member_id: z.string().describe('邮件组内成员唯一标识（在请求体中不用填）').optional(),
+              email: z
+                .string()
+                .describe('成员邮箱地址（当成员类型是EXTERNAL_USER/MAIL_GROUP/OTHER_MEMBER时有值）')
+                .optional(),
+              user_id: z.string().describe('租户内用户的唯一标识（当成员类型是USER时有值）').optional(),
+              department_id: z.string().describe('租户内部门的唯一标识（当成员类型是DEPARTMENT时有值）').optional(),
+              type: z
+                .enum([
+                  'USER',
+                  'DEPARTMENT',
+                  'COMPANY',
+                  'EXTERNAL_USER',
+                  'MAIL_GROUP',
+                  'PUBLIC_MAILBOX',
+                  'OTHER_MEMBER',
+                ])
+                .describe(
+                  '成员类型 Options:USER(内部用户),DEPARTMENT(部门),COMPANY(全员),EXTERNAL_USER(外部用户),MAIL_GROUP(邮件组),PUBLIC_MAILBOX(member is a public mailbox),OTHER_MEMBER(内部成员)',
+                )
+                .optional(),
+            }),
+          )
+          .describe('本次添加的邮件组成员列表')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z
+      .object({ mailgroup_id: z.string().describe('The unique ID or email address of a mail group').optional() })
+      .optional(),
   },
 };
 export const mailV1MailgroupMemberBatchDelete = {
@@ -287,13 +317,17 @@ export const mailV1MailgroupMemberBatchDelete = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组成员-批量删除邮件组成员-一次请求可以删除一个邮件组中的多个成员',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      member_id_list: z
-        .array(z.string().describe('The unique ID of a member in this mail group'))
-        .describe('本次调用删除的成员ID列表')
-        .optional(),
-    }),
-    path: z.object({ mailgroup_id: z.string().describe('The unique ID or email address of a mail group').optional() }),
+    data: z
+      .object({
+        member_id_list: z
+          .array(z.string().describe('The unique ID of a member in this mail group'))
+          .describe('本次调用删除的成员ID列表')
+          .optional(),
+      })
+      .optional(),
+    path: z
+      .object({ mailgroup_id: z.string().describe('The unique ID or email address of a mail group').optional() })
+      .optional(),
   },
 };
 export const mailV1MailgroupMemberCreate = {
@@ -305,27 +339,34 @@ export const mailV1MailgroupMemberCreate = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组成员-创建邮件组成员-向邮件组添加单个成员',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      email: z.string().describe('成员邮箱地址（当成员类型是EXTERNAL_USER/MAIL_GROUP/OTHER_MEMBER时有值）').optional(),
-      user_id: z.string().describe('租户内用户的唯一标识（当成员类型是USER时有值）').optional(),
-      department_id: z.string().describe('租户内部门的唯一标识（当成员类型是DEPARTMENT时有值）').optional(),
-      type: z
-        .enum(['USER', 'DEPARTMENT', 'COMPANY', 'EXTERNAL_USER', 'MAIL_GROUP', 'PUBLIC_MAILBOX', 'OTHER_MEMBER'])
-        .describe(
-          '成员类型 Options:USER(内部用户),DEPARTMENT(部门),COMPANY(全员),EXTERNAL_USER(外部用户),MAIL_GROUP(邮件组),PUBLIC_MAILBOX(member is a public mailbox),OTHER_MEMBER(内部成员)',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
-        )
-        .optional(),
-    }),
-    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }),
+    data: z
+      .object({
+        email: z
+          .string()
+          .describe('成员邮箱地址（当成员类型是EXTERNAL_USER/MAIL_GROUP/OTHER_MEMBER时有值）')
+          .optional(),
+        user_id: z.string().describe('租户内用户的唯一标识（当成员类型是USER时有值）').optional(),
+        department_id: z.string().describe('租户内部门的唯一标识（当成员类型是DEPARTMENT时有值）').optional(),
+        type: z
+          .enum(['USER', 'DEPARTMENT', 'COMPANY', 'EXTERNAL_USER', 'MAIL_GROUP', 'PUBLIC_MAILBOX', 'OTHER_MEMBER'])
+          .describe(
+            '成员类型 Options:USER(内部用户),DEPARTMENT(部门),COMPANY(全员),EXTERNAL_USER(外部用户),MAIL_GROUP(邮件组),PUBLIC_MAILBOX(member is a public mailbox),OTHER_MEMBER(内部成员)',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }).optional(),
   },
 };
 export const mailV1MailgroupMemberDelete = {
@@ -337,10 +378,12 @@ export const mailV1MailgroupMemberDelete = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组成员-删除邮件组成员-删除邮件组单个成员',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      mailgroup_id: z.string().describe('The unique ID or email address of a mail group').optional(),
-      member_id: z.string().describe('The unique ID of a member in this mail group').optional(),
-    }),
+    path: z
+      .object({
+        mailgroup_id: z.string().describe('The unique ID or email address of a mail group').optional(),
+        member_id: z.string().describe('The unique ID of a member in this mail group').optional(),
+      })
+      .optional(),
   },
 };
 export const mailV1MailgroupMemberGet = {
@@ -352,19 +395,23 @@ export const mailV1MailgroupMemberGet = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组成员-查询指定邮件组成员-获取邮件组单个成员信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional(),
-      member_id: z.string().describe('邮件组内成员唯一标识').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z
+      .object({
+        mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional(),
+        member_id: z.string().describe('邮件组内成员唯一标识').optional(),
+      })
+      .optional(),
   },
 };
 export const mailV1MailgroupMemberList = {
@@ -376,23 +423,27 @@ export const mailV1MailgroupMemberList = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组成员-获取所有邮件组成员-分页批量获取邮件组成员列表',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
-        )
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-    }),
-    path: z.object({ mailgroup_id: z.string().describe('The unique ID or email address of a mail group').optional() }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
+          )
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+      })
+      .optional(),
+    path: z
+      .object({ mailgroup_id: z.string().describe('The unique ID or email address of a mail group').optional() })
+      .optional(),
   },
 };
 export const mailV1MailgroupPatch = {
@@ -404,18 +455,20 @@ export const mailV1MailgroupPatch = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组管理-修改邮件组部分信息-更新邮件组部分字段，没有填写的字段不会被更新',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      email: z.string().describe('邮件组地址').optional(),
-      name: z.string().describe('邮件组名称').optional(),
-      description: z.string().describe('邮件组描述').optional(),
-      who_can_send_mail: z
-        .enum(['ANYONE', 'ALL_INTERNAL_USERS', 'ALL_GROUP_MEMBERS', 'CUSTOM_MEMBERS'])
-        .describe(
-          '谁可发送邮件到此邮件组 Options:ANYONE(任何人),ALL_INTERNAL_USERS(仅组织内部成员),ALL_GROUP_MEMBERS(仅邮件组成员),CUSTOM_MEMBERS(自定义成员)',
-        )
-        .optional(),
-    }),
-    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }),
+    data: z
+      .object({
+        email: z.string().describe('邮件组地址').optional(),
+        name: z.string().describe('邮件组名称').optional(),
+        description: z.string().describe('邮件组描述').optional(),
+        who_can_send_mail: z
+          .enum(['ANYONE', 'ALL_INTERNAL_USERS', 'ALL_GROUP_MEMBERS', 'CUSTOM_MEMBERS'])
+          .describe(
+            '谁可发送邮件到此邮件组 Options:ANYONE(任何人),ALL_INTERNAL_USERS(仅组织内部成员),ALL_GROUP_MEMBERS(仅邮件组成员),CUSTOM_MEMBERS(自定义成员)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }).optional(),
   },
 };
 export const mailV1MailgroupPermissionMemberBatchCreate = {
@@ -428,33 +481,41 @@ export const mailV1MailgroupPermissionMemberBatchCreate = {
     '[Feishu/Lark]-邮箱-邮件组-邮件组权限成员-批量创建邮件组权限成员-一次请求可以给一个邮件组添加多个权限成员',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      items: z
-        .array(
-          z.object({
-            permission_member_id: z.string().describe('权限组内成员唯一标识（在请求体中不用填）').optional(),
-            user_id: z.string().describe('租户内用户的唯一标识（当成员类型是USER时有值）').optional(),
-            department_id: z.string().describe('租户内部门的唯一标识（当成员类型是DEPARTMENT时有值）').optional(),
-            email: z.string().describe('成员邮箱地址（当成员类型是MAIL_GROUP/PUBLIC_MAILBOX时有值）').optional(),
-            type: z
-              .enum(['USER', 'DEPARTMENT', 'MAIL_GROUP', 'PUBLIC_MAILBOX'])
-              .describe('成员类型 Options:USER(内部用户),DEPARTMENT(部门),MAIL_GROUP(邮件组),PUBLIC_MAILBOX(公共邮箱)')
-              .optional(),
-          }),
-        )
-        .describe('本次添加的邮件组权限成员列表')
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
-        )
-        .optional(),
-    }),
-    path: z.object({ mailgroup_id: z.string().describe('The unique ID or email address of a mail group').optional() }),
+    data: z
+      .object({
+        items: z
+          .array(
+            z.object({
+              permission_member_id: z.string().describe('权限组内成员唯一标识（在请求体中不用填）').optional(),
+              user_id: z.string().describe('租户内用户的唯一标识（当成员类型是USER时有值）').optional(),
+              department_id: z.string().describe('租户内部门的唯一标识（当成员类型是DEPARTMENT时有值）').optional(),
+              email: z.string().describe('成员邮箱地址（当成员类型是MAIL_GROUP/PUBLIC_MAILBOX时有值）').optional(),
+              type: z
+                .enum(['USER', 'DEPARTMENT', 'MAIL_GROUP', 'PUBLIC_MAILBOX'])
+                .describe(
+                  '成员类型 Options:USER(内部用户),DEPARTMENT(部门),MAIL_GROUP(邮件组),PUBLIC_MAILBOX(公共邮箱)',
+                )
+                .optional(),
+            }),
+          )
+          .describe('本次添加的邮件组权限成员列表')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z
+      .object({ mailgroup_id: z.string().describe('The unique ID or email address of a mail group').optional() })
+      .optional(),
   },
 };
 export const mailV1MailgroupPermissionMemberBatchDelete = {
@@ -472,7 +533,9 @@ export const mailV1MailgroupPermissionMemberBatchDelete = {
         .array(z.string().describe('The unique ID of a member in this permission group'))
         .describe('本次调用删除的权限成员ID列表'),
     }),
-    path: z.object({ mailgroup_id: z.string().describe('The unique ID or email address of a mail group').optional() }),
+    path: z
+      .object({ mailgroup_id: z.string().describe('The unique ID or email address of a mail group').optional() })
+      .optional(),
   },
 };
 export const mailV1MailgroupPermissionMemberCreate = {
@@ -485,25 +548,29 @@ export const mailV1MailgroupPermissionMemberCreate = {
     '[Feishu/Lark]-邮箱-邮件组-邮件组权限成员-创建邮件组权限成员-向邮件组添加单个自定义权限成员，添加后该成员可发送邮件到该邮件组',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      user_id: z.string().describe('租户内用户的唯一标识（当成员类型是USER时有值）').optional(),
-      department_id: z.string().describe('租户内部门的唯一标识（当成员类型是DEPARTMENT时有值）').optional(),
-      email: z.string().describe('成员邮箱地址（当成员类型是MAIL_GROUP/PUBLIC_MAILBOX时有值）').optional(),
-      type: z
-        .enum(['USER', 'DEPARTMENT', 'MAIL_GROUP', 'PUBLIC_MAILBOX'])
-        .describe('成员类型 Options:USER(内部用户),DEPARTMENT(部门),MAIL_GROUP(邮件组),PUBLIC_MAILBOX(公共邮箱)')
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
-        )
-        .optional(),
-    }),
-    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }),
+    data: z
+      .object({
+        user_id: z.string().describe('租户内用户的唯一标识（当成员类型是USER时有值）').optional(),
+        department_id: z.string().describe('租户内部门的唯一标识（当成员类型是DEPARTMENT时有值）').optional(),
+        email: z.string().describe('成员邮箱地址（当成员类型是MAIL_GROUP/PUBLIC_MAILBOX时有值）').optional(),
+        type: z
+          .enum(['USER', 'DEPARTMENT', 'MAIL_GROUP', 'PUBLIC_MAILBOX'])
+          .describe('成员类型 Options:USER(内部用户),DEPARTMENT(部门),MAIL_GROUP(邮件组),PUBLIC_MAILBOX(公共邮箱)')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }).optional(),
   },
 };
 export const mailV1MailgroupPermissionMemberDelete = {
@@ -516,10 +583,12 @@ export const mailV1MailgroupPermissionMemberDelete = {
     '[Feishu/Lark]-邮箱-邮件组-邮件组权限成员-删除邮件组权限成员-从自定义成员中删除单个成员，删除后该成员无法发送邮件到该邮件组',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      mailgroup_id: z.string().describe('The unique ID or email address of a mail group').optional(),
-      permission_member_id: z.string().describe('The unique ID of a member in this permission group').optional(),
-    }),
+    path: z
+      .object({
+        mailgroup_id: z.string().describe('The unique ID or email address of a mail group').optional(),
+        permission_member_id: z.string().describe('The unique ID of a member in this permission group').optional(),
+      })
+      .optional(),
   },
 };
 export const mailV1MailgroupPermissionMemberGet = {
@@ -531,19 +600,23 @@ export const mailV1MailgroupPermissionMemberGet = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组权限成员-获取邮件组权限成员-获取邮件组单个权限成员信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional(),
-      permission_member_id: z.string().describe('权限组内成员唯一标识').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z
+      .object({
+        mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional(),
+        permission_member_id: z.string().describe('权限组内成员唯一标识').optional(),
+      })
+      .optional(),
   },
 };
 export const mailV1MailgroupPermissionMemberList = {
@@ -555,23 +628,25 @@ export const mailV1MailgroupPermissionMemberList = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组权限成员-批量获取邮件组权限成员-分页批量获取邮件组权限成员列表',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
-        )
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-    }),
-    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
+          )
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+      })
+      .optional(),
+    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }).optional(),
   },
 };
 export const mailV1MailgroupUpdate = {
@@ -583,18 +658,20 @@ export const mailV1MailgroupUpdate = {
   description: '[Feishu/Lark]-邮箱-邮件组-邮件组管理-修改邮件组全部信息-更新邮件组所有信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      email: z.string().describe('邮件组地址').optional(),
-      name: z.string().describe('邮件组名称').optional(),
-      description: z.string().describe('邮件组描述').optional(),
-      who_can_send_mail: z
-        .enum(['ANYONE', 'ALL_INTERNAL_USERS', 'ALL_GROUP_MEMBERS', 'CUSTOM_MEMBERS'])
-        .describe(
-          '谁可发送邮件到此邮件组 Options:ANYONE(任何人),ALL_INTERNAL_USERS(仅组织内部成员),ALL_GROUP_MEMBERS(仅邮件组成员),CUSTOM_MEMBERS(自定义成员)',
-        )
-        .optional(),
-    }),
-    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }),
+    data: z
+      .object({
+        email: z.string().describe('邮件组地址').optional(),
+        name: z.string().describe('邮件组名称').optional(),
+        description: z.string().describe('邮件组描述').optional(),
+        who_can_send_mail: z
+          .enum(['ANYONE', 'ALL_INTERNAL_USERS', 'ALL_GROUP_MEMBERS', 'CUSTOM_MEMBERS'])
+          .describe(
+            '谁可发送邮件到此邮件组 Options:ANYONE(任何人),ALL_INTERNAL_USERS(仅组织内部成员),ALL_GROUP_MEMBERS(仅邮件组成员),CUSTOM_MEMBERS(自定义成员)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ mailgroup_id: z.string().describe('邮件组ID或者邮件组地址').optional() }).optional(),
   },
 };
 export const mailV1PublicMailboxAliasCreate = {
@@ -606,8 +683,8 @@ export const mailV1PublicMailboxAliasCreate = {
   description: '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱别名-创建公共邮箱别名-创建公共邮箱别名',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({ email_alias: z.string().describe('邮箱别名').optional() }),
-    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱id或公共邮箱地址').optional() }),
+    data: z.object({ email_alias: z.string().describe('邮箱别名').optional() }).optional(),
+    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱id或公共邮箱地址').optional() }).optional(),
   },
 };
 export const mailV1PublicMailboxAliasDelete = {
@@ -619,10 +696,12 @@ export const mailV1PublicMailboxAliasDelete = {
   description: '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱别名-删除公共邮箱别名-删除公共邮箱别名',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      public_mailbox_id: z.string().describe('公共邮箱id或公共邮箱地址').optional(),
-      alias_id: z.string().describe('公共邮箱别名').optional(),
-    }),
+    path: z
+      .object({
+        public_mailbox_id: z.string().describe('公共邮箱id或公共邮箱地址').optional(),
+        alias_id: z.string().describe('公共邮箱别名').optional(),
+      })
+      .optional(),
   },
 };
 export const mailV1PublicMailboxAliasList = {
@@ -634,7 +713,7 @@ export const mailV1PublicMailboxAliasList = {
   description: '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱别名-查询公共邮箱的所有别名-获取所有公共邮箱别名',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱id或公共邮箱邮件地址').optional() }),
+    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱id或公共邮箱邮件地址').optional() }).optional(),
   },
 };
 export const mailV1PublicMailboxCreate = {
@@ -646,11 +725,13 @@ export const mailV1PublicMailboxCreate = {
   description: '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱管理-创建公共邮箱-创建一个公共邮箱',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      email: z.string().describe('公共邮箱地址').optional(),
-      name: z.string().describe('公共邮箱名称').optional(),
-      geo: z.string().describe('数据驻留地').optional(),
-    }),
+    data: z
+      .object({
+        email: z.string().describe('公共邮箱地址').optional(),
+        name: z.string().describe('公共邮箱名称').optional(),
+        geo: z.string().describe('数据驻留地').optional(),
+      })
+      .optional(),
   },
 };
 export const mailV1PublicMailboxDelete = {
@@ -675,7 +756,7 @@ export const mailV1PublicMailboxGet = {
   description: '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱管理-查询指定公共邮箱-获取公共邮箱信息',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional() }),
+    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional() }).optional(),
   },
 };
 export const mailV1PublicMailboxList = {
@@ -687,15 +768,17 @@ export const mailV1PublicMailboxList = {
   description: '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱管理-查询所有公共邮箱-分页批量获取公共邮箱列表',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -719,7 +802,9 @@ export const mailV1PublicMailboxMemberBatchCreate = {
         )
         .describe('本次调用添加的公共邮箱成员列表'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ public_mailbox_id: z.string().describe('The unique ID or email address of a public mailbox') }),
   },
 };
@@ -737,9 +822,11 @@ export const mailV1PublicMailboxMemberBatchDelete = {
         .array(z.string().describe('The unique ID of a member in this public mailbox'))
         .describe('本次调用删除的公共邮箱成员ID列表'),
     }),
-    path: z.object({
-      public_mailbox_id: z.string().describe('The unique ID or email address of a public mailbox').optional(),
-    }),
+    path: z
+      .object({
+        public_mailbox_id: z.string().describe('The unique ID or email address of a public mailbox').optional(),
+      })
+      .optional(),
   },
 };
 export const mailV1PublicMailboxMemberClear = {
@@ -751,7 +838,7 @@ export const mailV1PublicMailboxMemberClear = {
   description: '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱成员-删除公共邮箱所有成员-删除公共邮箱所有成员',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional() }),
+    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional() }).optional(),
   },
 };
 export const mailV1PublicMailboxMemberCreate = {
@@ -763,12 +850,16 @@ export const mailV1PublicMailboxMemberCreate = {
   description: '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱成员-添加公共邮箱成员-向公共邮箱添加单个成员',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      user_id: z.string().describe('租户内用户的唯一标识（当成员类型是USER时有值）').optional(),
-      type: z.literal('USER').describe('成员类型 Options:USER(内部用户)').optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional() }),
+    data: z
+      .object({
+        user_id: z.string().describe('租户内用户的唯一标识（当成员类型是USER时有值）').optional(),
+        type: z.literal('USER').describe('成员类型 Options:USER(内部用户)').optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional() }).optional(),
   },
 };
 export const mailV1PublicMailboxMemberDelete = {
@@ -780,10 +871,12 @@ export const mailV1PublicMailboxMemberDelete = {
   description: '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱成员-删除公共邮箱单个成员-删除公共邮箱单个成员',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional(),
-      member_id: z.string().describe('公共邮箱内成员唯一标识').optional(),
-    }),
+    path: z
+      .object({
+        public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional(),
+        member_id: z.string().describe('公共邮箱内成员唯一标识').optional(),
+      })
+      .optional(),
   },
 };
 export const mailV1PublicMailboxMemberGet = {
@@ -795,11 +888,15 @@ export const mailV1PublicMailboxMemberGet = {
   description: '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱成员-查询指定公共邮箱成员信息-获取公共邮箱单个成员信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional(),
-      member_id: z.string().describe('公共邮箱内成员唯一标识').optional(),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z
+      .object({
+        public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional(),
+        member_id: z.string().describe('公共邮箱内成员唯一标识').optional(),
+      })
+      .optional(),
   },
 };
 export const mailV1PublicMailboxMemberList = {
@@ -811,19 +908,23 @@ export const mailV1PublicMailboxMemberList = {
   description: '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱成员-查询所有公共邮箱成员信息-分页批量获取公共邮箱成员列表',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-    }),
-    path: z.object({
-      public_mailbox_id: z.string().describe('The unique ID or email address of a public mailbox').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+      })
+      .optional(),
+    path: z
+      .object({
+        public_mailbox_id: z.string().describe('The unique ID or email address of a public mailbox').optional(),
+      })
+      .optional(),
   },
 };
 export const mailV1PublicMailboxPatch = {
@@ -836,11 +937,13 @@ export const mailV1PublicMailboxPatch = {
     '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱管理-修改公共邮箱部分信息-更新公共邮箱部分字段，没有填写的字段不会被更新',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      email: z.string().describe('公共邮箱地址').optional(),
-      name: z.string().describe('公共邮箱名称').optional(),
-    }),
-    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional() }),
+    data: z
+      .object({
+        email: z.string().describe('公共邮箱地址').optional(),
+        name: z.string().describe('公共邮箱名称').optional(),
+      })
+      .optional(),
+    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional() }).optional(),
   },
 };
 export const mailV1PublicMailboxRemoveToRecycleBin = {
@@ -852,9 +955,9 @@ export const mailV1PublicMailboxRemoveToRecycleBin = {
   description: '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱管理-将公共邮箱移至回收站-将公共邮箱移至回收站',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      to_mail_address: z.string().describe('接收删除邮件的邮箱地址，不填则删除该公共邮箱的邮件').optional(),
-    }),
+    data: z
+      .object({ to_mail_address: z.string().describe('接收删除邮件的邮箱地址，不填则删除该公共邮箱的邮件').optional() })
+      .optional(),
     path: z.object({ public_mailbox_id: z.string().describe('公共邮箱地址') }),
   },
 };
@@ -867,11 +970,13 @@ export const mailV1PublicMailboxUpdate = {
   description: '[Feishu/Lark]-邮箱-公共邮箱-公共邮箱管理-修改公共邮箱全部信息-更新公共邮箱所有信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      email: z.string().describe('公共邮箱地址').optional(),
-      name: z.string().describe('公共邮箱名称').optional(),
-    }),
-    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional() }),
+    data: z
+      .object({
+        email: z.string().describe('公共邮箱地址').optional(),
+        name: z.string().describe('公共邮箱名称').optional(),
+      })
+      .optional(),
+    path: z.object({ public_mailbox_id: z.string().describe('公共邮箱唯一标识或公共邮箱地址').optional() }).optional(),
   },
 };
 export const mailV1UserMailboxAliasCreate = {
@@ -883,8 +988,8 @@ export const mailV1UserMailboxAliasCreate = {
   description: '[Feishu/Lark]-邮箱-用户邮箱-创建用户邮箱别名-创建用户邮箱别名',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({ email_alias: z.string().describe('邮箱别名').optional() }),
-    path: z.object({ user_mailbox_id: z.string().describe('用户邮箱地址').optional() }),
+    data: z.object({ email_alias: z.string().describe('邮箱别名').optional() }).optional(),
+    path: z.object({ user_mailbox_id: z.string().describe('用户邮箱地址').optional() }).optional(),
   },
 };
 export const mailV1UserMailboxAliasDelete = {
@@ -896,10 +1001,12 @@ export const mailV1UserMailboxAliasDelete = {
   description: '[Feishu/Lark]-邮箱-用户邮箱-删除用户邮箱别名-删除用户邮箱别名',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      user_mailbox_id: z.string().describe('用户邮箱地址').optional(),
-      alias_id: z.string().describe('别名邮箱地址').optional(),
-    }),
+    path: z
+      .object({
+        user_mailbox_id: z.string().describe('用户邮箱地址').optional(),
+        alias_id: z.string().describe('别名邮箱地址').optional(),
+      })
+      .optional(),
   },
 };
 export const mailV1UserMailboxAliasList = {
@@ -911,16 +1018,18 @@ export const mailV1UserMailboxAliasList = {
   description: '[Feishu/Lark]-邮箱-用户邮箱-获取用户邮箱所有别名-获取用户邮箱所有别名',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-    }),
-    path: z.object({ user_mailbox_id: z.string().describe('用户邮箱地址').optional() }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+      })
+      .optional(),
+    path: z.object({ user_mailbox_id: z.string().describe('用户邮箱地址').optional() }).optional(),
   },
 };
 export const mailV1UserMailboxDelete = {
@@ -933,7 +1042,7 @@ export const mailV1UserMailboxDelete = {
     '[Feishu/Lark]-邮箱-用户邮箱-从回收站删除用户邮箱地址-该接口会永久删除用户邮箱地址。可用于删除位于邮箱回收站中的用户邮箱地址，一旦删除，将无法恢复。该接口支持邮件的转移，可以将被释放邮箱的邮件转移到另外一个可以使用的邮箱中',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ transfer_mailbox: z.string().describe('用于接受转移的邮箱地址').optional() }),
+    params: z.object({ transfer_mailbox: z.string().describe('用于接受转移的邮箱地址').optional() }).optional(),
     path: z.object({ user_mailbox_id: z.string().describe('要释放的邮箱地址') }),
   },
 };
@@ -989,11 +1098,7 @@ export const mailV1UserMailboxFolderCreate = {
   schema: {
     data: z.object({
       name: z.string().describe('文件夹名称'),
-      parent_folder_id: z
-        .string()
-        .describe(
-          '父文件夹 id，该值为 0 表示根文件夹，id 获取方式见 [列出文邮箱文件夹]',
-        ),
+      parent_folder_id: z.string().describe('父文件夹 id，该值为 0 表示根文件夹，id 获取方式见 [列出文邮箱文件夹]'),
     }),
     path: z.object({ user_mailbox_id: z.string().describe('用户邮箱地址 或 输入me代表当前调用接口用户') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -1010,11 +1115,7 @@ export const mailV1UserMailboxFolderDelete = {
   schema: {
     path: z.object({
       user_mailbox_id: z.string().describe('用户邮箱地址 或 输入me代表当前调用接口用户'),
-      folder_id: z
-        .string()
-        .describe(
-          '文件夹 id，id 获取方式见 [列出文邮箱文件夹]',
-        ),
+      folder_id: z.string().describe('文件夹 id，id 获取方式见 [列出文邮箱文件夹]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1028,9 +1129,11 @@ export const mailV1UserMailboxFolderList = {
   description: '[Feishu/Lark]-邮箱-邮箱文件夹-列出邮箱文件夹-列出邮箱文件夹',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      folder_type: z.number().describe('文件夹类型 Options:1(System 系统文件夹),2(User 用户文件夹)').optional(),
-    }),
+    params: z
+      .object({
+        folder_type: z.number().describe('文件夹类型 Options:1(System 系统文件夹),2(User 用户文件夹)').optional(),
+      })
+      .optional(),
     path: z.object({ user_mailbox_id: z.string().describe('用户邮箱地址 或 输入me代表当前调用接口用户') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1044,22 +1147,18 @@ export const mailV1UserMailboxFolderPatch = {
   description: '[Feishu/Lark]-邮箱-邮箱文件夹-修改邮箱文件夹-修改邮箱文件夹',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      name: z.string().describe('文件夹名称').optional(),
-      parent_folder_id: z
-        .string()
-        .describe(
-          '父文件夹 id，该值为 0 表示根文件夹，id 获取方式见 [列出文邮箱文件夹]',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        name: z.string().describe('文件夹名称').optional(),
+        parent_folder_id: z
+          .string()
+          .describe('父文件夹 id，该值为 0 表示根文件夹，id 获取方式见 [列出文邮箱文件夹]')
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       user_mailbox_id: z.string().describe('用户邮箱地址 或 输入me代表当前调用接口用户'),
-      folder_id: z
-        .string()
-        .describe(
-          '文件夹 id，id 获取方式见 [列出文邮箱文件夹]',
-        ),
+      folder_id: z.string().describe('文件夹 id，id 获取方式见 [列出文邮箱文件夹]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1097,11 +1196,7 @@ export const mailV1UserMailboxMailContactDelete = {
   schema: {
     path: z.object({
       user_mailbox_id: z.string().describe('用户邮箱地址 或 输入me代表当前调用接口用户'),
-      mail_contact_id: z
-        .string()
-        .describe(
-          '邮箱联系人 id，获取方式见 [列出邮箱联系人]',
-        ),
+      mail_contact_id: z.string().describe('邮箱联系人 id，获取方式见 [列出邮箱联系人]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1148,11 +1243,7 @@ export const mailV1UserMailboxMailContactPatch = {
     }),
     path: z.object({
       user_mailbox_id: z.string().describe('用户邮箱地址 或 输入me代表当前调用接口用户'),
-      mail_contact_id: z
-        .string()
-        .describe(
-          '邮箱联系人 id，获取方式见 [列出邮箱联系人]',
-        ),
+      mail_contact_id: z.string().describe('邮箱联系人 id，获取方式见 [列出邮箱联系人]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1169,11 +1260,7 @@ export const mailV1UserMailboxMessageAttachmentDownloadUrl = {
     params: z.object({ attachment_ids: z.array(z.string()).describe('附件 id 列表') }),
     path: z.object({
       user_mailbox_id: z.string().describe('用户邮箱地址 或 输入me代表当前调用接口用户'),
-      message_id: z
-        .string()
-        .describe(
-          '用户邮件 id，获取方式见 [列出邮件]',
-        ),
+      message_id: z.string().describe('用户邮件 id，获取方式见 [列出邮件]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1189,11 +1276,7 @@ export const mailV1UserMailboxMessageGet = {
   schema: {
     path: z.object({
       user_mailbox_id: z.string().describe('用户邮箱地址 或 输入me代表当前调用接口用户'),
-      message_id: z
-        .string()
-        .describe(
-          '用户邮件 id，获取方式见 [列出邮件]',
-        ),
+      message_id: z.string().describe('用户邮件 id，获取方式见 [列出邮件]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1208,16 +1291,8 @@ export const mailV1UserMailboxMessageGetByCard = {
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
-      card_id: z
-        .string()
-        .describe(
-          '邮件卡片ID，可通过[接收消息]事件的推送获取',
-        ),
-      owner_id: z
-        .string()
-        .describe(
-          '邮件卡片OwnerID，可通过[接收消息]事件的推送获取（与`user_id_type`无关）',
-        ),
+      card_id: z.string().describe('邮件卡片ID，可通过[接收消息]事件的推送获取'),
+      owner_id: z.string().describe('邮件卡片OwnerID，可通过[接收消息]事件的推送获取（与`user_id_type`无关）'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
     }),
     path: z.object({ user_mailbox_id: z.string().describe('用户邮箱地址 或 输入me代表当前调用接口用户') }),
@@ -1241,11 +1316,7 @@ export const mailV1UserMailboxMessageList = {
           '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
         )
         .optional(),
-      folder_id: z
-        .string()
-        .describe(
-          '文件夹 id， 获取方式见 [列出文邮箱文件夹]',
-        ),
+      folder_id: z.string().describe('文件夹 id， 获取方式见 [列出文邮箱文件夹]'),
       only_unread: z.boolean().describe('是否只查询未读邮件').optional(),
     }),
     path: z.object({ user_mailbox_id: z.string().describe('用户邮箱地址 或 输入me代表当前调用接口用户') }),
@@ -1261,43 +1332,45 @@ export const mailV1UserMailboxMessageSend = {
   description: '[Feishu/Lark]-邮箱-用户邮件-发送邮件-发送邮件',
   accessTokens: ['user'],
   schema: {
-    data: z.object({
-      subject: z.string().describe('主题').optional(),
-      to: z
-        .array(
-          z.object({ mail_address: z.string().describe('邮件地址'), name: z.string().describe('名称').optional() }),
-        )
-        .describe('收件人')
-        .optional(),
-      cc: z
-        .array(
-          z.object({ mail_address: z.string().describe('邮件地址'), name: z.string().describe('名称').optional() }),
-        )
-        .describe('抄送')
-        .optional(),
-      bcc: z
-        .array(
-          z.object({ mail_address: z.string().describe('邮件地址'), name: z.string().describe('名称').optional() }),
-        )
-        .describe('秘送')
-        .optional(),
-      head_from: z
-        .object({ name: z.string().describe('名称').optional() })
-        .describe('发件人')
-        .optional(),
-      body_html: z.string().describe('正文').optional(),
-      body_plain_text: z.string().describe('正文纯文本').optional(),
-      attachments: z
-        .array(
-          z.object({
-            body: z.string().describe('附件的正文，使用 base64url 编码（支持的文件最大 37MB）'),
-            filename: z.string().describe('附件文件名'),
-          }),
-        )
-        .describe('邮件附件列表')
-        .optional(),
-      thread_id: z.string().describe('会话id').optional(),
-    }),
+    data: z
+      .object({
+        subject: z.string().describe('主题').optional(),
+        to: z
+          .array(
+            z.object({ mail_address: z.string().describe('邮件地址'), name: z.string().describe('名称').optional() }),
+          )
+          .describe('收件人')
+          .optional(),
+        cc: z
+          .array(
+            z.object({ mail_address: z.string().describe('邮件地址'), name: z.string().describe('名称').optional() }),
+          )
+          .describe('抄送')
+          .optional(),
+        bcc: z
+          .array(
+            z.object({ mail_address: z.string().describe('邮件地址'), name: z.string().describe('名称').optional() }),
+          )
+          .describe('秘送')
+          .optional(),
+        head_from: z
+          .object({ name: z.string().describe('名称').optional() })
+          .describe('发件人')
+          .optional(),
+        body_html: z.string().describe('正文').optional(),
+        body_plain_text: z.string().describe('正文纯文本').optional(),
+        attachments: z
+          .array(
+            z.object({
+              body: z.string().describe('附件的正文，使用 base64url 编码（支持的文件最大 37MB）'),
+              filename: z.string().describe('附件文件名'),
+            }),
+          )
+          .describe('邮件附件列表')
+          .optional(),
+        thread_id: z.string().describe('会话id').optional(),
+      })
+      .optional(),
     path: z.object({ user_mailbox_id: z.string().describe('用户邮箱地址 或 输入me代表当前调用接口用户') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1370,11 +1443,7 @@ export const mailV1UserMailboxRuleDelete = {
   schema: {
     path: z.object({
       user_mailbox_id: z.string().describe('用户邮箱地址 或 输入me代表当前调用接口用户'),
-      rule_id: z
-        .string()
-        .describe(
-          '规则 id，获取方式见 [列出收信规则]',
-        ),
+      rule_id: z.string().describe('规则 id，获取方式见 [列出收信规则]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1401,13 +1470,7 @@ export const mailV1UserMailboxRuleReorder = {
   description: '[Feishu/Lark]-邮箱-收信规则-对收信规则进行排序-对收信规则进行排序',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      rule_ids: z
-        .array(z.string())
-        .describe(
-          '规则 id 列表，获取方式见 [列出收信规则]',
-        ),
-    }),
+    data: z.object({ rule_ids: z.array(z.string()).describe('规则 id 列表，获取方式见 [列出收信规则]') }),
     path: z.object({ user_mailbox_id: z.string().describe('用户邮箱地址，使用 user_access_token 时可使用 me') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1467,11 +1530,7 @@ export const mailV1UserMailboxRuleUpdate = {
     }),
     path: z.object({
       user_mailbox_id: z.string().describe('用户邮箱地址 或 输入me代表当前调用接口用户'),
-      rule_id: z
-        .string()
-        .describe(
-          '规则 id，获取方式见 [列出收信规则]',
-        ),
+      rule_id: z.string().describe('规则 id，获取方式见 [列出收信规则]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },

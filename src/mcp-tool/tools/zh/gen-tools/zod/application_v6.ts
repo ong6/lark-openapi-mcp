@@ -53,7 +53,9 @@ export const applicationV6AppBadgeSet = {
         .describe('移动端badge数量')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const applicationV6AppRecommendRuleList = {
@@ -118,14 +120,16 @@ export const applicationV6ApplicationAppUsageDepartmentOverview = {
         )
         .optional(),
     }),
-    params: z.object({
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '调用中使用的部门ID的类型 Options:department_id(DepartmentId 以自定义department_id来标识部门),open_department_id(OpenDepartmentId 以open_department_id来标识部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '调用中使用的部门ID的类型 Options:department_id(DepartmentId 以自定义department_id来标识部门),open_department_id(OpenDepartmentId 以open_department_id来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ app_id: z.string().describe('目标应用 ID') }),
   },
 };
@@ -157,14 +161,16 @@ export const applicationV6ApplicationAppUsageMessagePushOverview = {
         )
         .optional(),
     }),
-    params: z.object({
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '调用中使用的部门ID的类型 Options:department_id(DepartmentId 以自定义department_id来标识部门),open_department_id(OpenDepartmentId 以open_department_id来标识部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '调用中使用的部门ID的类型 Options:department_id(DepartmentId 以自定义department_id来标识部门),open_department_id(OpenDepartmentId 以open_department_id来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ app_id: z.string().describe('目标应用ID，支持自建应用') }),
   },
 };
@@ -201,14 +207,16 @@ export const applicationV6ApplicationAppUsageOverview = {
           '能力类型，按能力类型进行筛选，返回对应能力的活跃数据 Options:app(返回应用整体的数据，指标值包括：uv：活跃用户数，total_users：累计用户数，new_users：新增用户数，pv：在应用（小程序或网页）中访问的页面数，lifecycle：打开应用（小程序或网页）的次数),mp(返回小程序能力的数据，指标值包括：uv（小程序活跃用户数）、pv（用户在小程序中的访问页面数）、lifecycle（小程序的打开次数）),h5(返回网页能力的数据，指标值包括：uv（网页应用活跃用户数）、pv（用户在网页应用中的访问页面数）、lifecycle（网页应用的打开次数）),bot(返回机器人能力的数据，指标值包括：uv（机器人的活跃用户数）)',
         ),
     }),
-    params: z.object({
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '调用中使用的部门ID的类型 Options:department_id(DepartmentId 以自定义department_id来标识部门),open_department_id(OpenDepartmentId 以open_department_id来标识部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '调用中使用的部门ID的类型 Options:department_id(DepartmentId 以自定义department_id来标识部门),open_department_id(OpenDepartmentId 以open_department_id来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ app_id: z.string().describe('目标应用 ID') }),
   },
 };
@@ -222,26 +230,24 @@ export const applicationV6ApplicationAppVersionContactsRangeSuggest = {
     '[Feishu/Lark]-应用信息-应用-获取应用版本中开发者申请的通讯录权限范围-该接口用于根据应用的 App ID 和版本 ID 获取企业自建应用某个版本的通讯录权限范围',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '返回值的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '返回值的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     path: z.object({
       app_id: z
         .string()
         .describe(
           '应用的 AppID，可以在[开发者后台] > **凭证与基础信息**页查看。* 仅查询本应用信息时，可填应用自身App ID 或 `me`。* 当值为其他应用的App ID时，必须申请以下权限：<md-perm name="admin:app.info:readonly" desc="获取应用信息" support_app_types="custom" tags="">获取应用信息</md-perm>',
         ),
-      version_id: z
-        .string()
-        .describe(
-          '唯一标识应用版本的 ID，可以调用[获取应用版本列表]接口获取',
-        ),
+      version_id: z.string().describe('唯一标识应用版本的 ID，可以调用[获取应用版本列表]接口获取'),
     }),
   },
 };
@@ -312,14 +318,16 @@ export const applicationV6ApplicationAppVersionPatch = {
     '[Feishu/Lark]-应用信息-应用管理-更新应用审核状态-通过接口来更新应用版本的审核结果：通过后应用可以直接上架；拒绝后则开发者可以看到拒绝理由，并在修改后再次申请发布',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      status: z
-        .number()
-        .describe(
-          '版本状态 Options:0(unknown 未知状态),1(audited 审核通过),2(reject 审核拒绝),3(under_audit 审核中),4(unaudit 未提交审核)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        status: z
+          .number()
+          .describe(
+            '版本状态 Options:0(unknown 未知状态),1(audited 审核通过),2(reject 审核拒绝),3(under_audit 审核中),4(unaudit 未提交审核)',
+          )
+          .optional(),
+      })
+      .optional(),
     params: z.object({
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型'),
       operator_id: z.string().describe('操作者的 open_id'),
@@ -341,12 +349,10 @@ export const applicationV6ApplicationCollaboratorsGet = {
     '[Feishu/Lark]-应用信息-应用-获取应用协作者列表-根据 app_id 获取应用（包括自建应用和商店应用）的协作者信息，包括应用的所有者、管理员、开发者、运营人员',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      app_id: z
-        .string()
-        .describe('应用 ID，获取方式参见 [app_id]'),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ app_id: z.string().describe('应用 ID，获取方式参见 [app_id]') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -360,26 +366,26 @@ export const applicationV6ApplicationCollaboratorsUpdate = {
     '[Feishu/Lark]-应用信息-应用-更新应用协作者-某个应用（包括自建应用和商店应用）中添加/移除应用协作者，添加后协作者将会收到添加通知',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      adds: z
-        .array(
-          z.object({
-            type: z
-              .enum(['administrator', 'developer', 'operator'])
-              .describe('人员类型 Options:administrator(管理员),developer(开发者),operator(运营)'),
-            user_id: z.string().describe('用户 ID，ID 类型与查询参数 user_id_type 取值一致'),
-          }),
-        )
-        .describe('添加人员')
-        .optional(),
-      removes: z.array(z.string()).describe('移除人员').optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      app_id: z
-        .string()
-        .describe('应用 ID，获取方式参见 [app_id]'),
-    }),
+    data: z
+      .object({
+        adds: z
+          .array(
+            z.object({
+              type: z
+                .enum(['administrator', 'developer', 'operator'])
+                .describe('人员类型 Options:administrator(管理员),developer(开发者),operator(运营)'),
+              user_id: z.string().describe('用户 ID，ID 类型与查询参数 user_id_type 取值一致'),
+            }),
+          )
+          .describe('添加人员')
+          .optional(),
+        removes: z.array(z.string()).describe('移除人员').optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ app_id: z.string().describe('应用 ID，获取方式参见 [app_id]') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -393,27 +399,25 @@ export const applicationV6ApplicationContactsRangeConfiguration = {
     '[Feishu/Lark]-应用信息-应用管理-获取应用通讯录权限范围配置-获取当前企业内某个自建应用线上实际生效的通讯录权限范围配置',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '返回值的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({
-      app_id: z
-        .string()
-        .describe('应用的 app_id，可以在[开发者后台] > 凭证与基础信息页查看'),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '返回值的部门ID的类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ app_id: z.string().describe('应用的 app_id，可以在[开发者后台] > 凭证与基础信息页查看') }),
   },
 };
 export const applicationV6ApplicationContactsRangePatch = {
@@ -449,15 +453,17 @@ export const applicationV6ApplicationContactsRangePatch = {
         .describe('从通讯录权限范围删除的列表仅contacts_range_type为some 时生效并进行增量更新')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '部门id类型 Options:open_department_id(以open_department_id标识部门),department_id(以department_id标识部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '部门id类型 Options:open_department_id(以open_department_id标识部门),department_id(以department_id标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ app_id: z.string().describe('应用id') }),
   },
 };
@@ -470,31 +476,33 @@ export const applicationV6ApplicationFeedbackList = {
   description: '[Feishu/Lark]-应用信息-应用反馈-获取应用反馈列表-查询应用的反馈数据',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      from_date: z.string().describe('查询的起始日期，格式为yyyy-mm-dd。不填则默认为当前日期减去180天').optional(),
-      to_date: z
-        .string()
-        .describe('查询的结束日期，格式为yyyy-mm-dd。不填默认为当前日期。只能查询 180 天内的数据')
-        .optional(),
-      feedback_type: z
-        .number()
-        .describe('反馈类型，不填写则表示查询所有反馈类型。 Options:1(Fault 故障反馈),2(Advice 产品建议)')
-        .optional(),
-      status: z
-        .number()
-        .describe(
-          '反馈处理状态，不填写则表示查询所有处理类型。 Options:0(Unmarked 反馈未处理),1(Marked 反馈已处理),2(Processing 反馈处理中),3(Closed 反馈已关闭)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('本次拉取反馈列表最大个数').optional(),
-    }),
+    params: z
+      .object({
+        from_date: z.string().describe('查询的起始日期，格式为yyyy-mm-dd。不填则默认为当前日期减去180天').optional(),
+        to_date: z
+          .string()
+          .describe('查询的结束日期，格式为yyyy-mm-dd。不填默认为当前日期。只能查询 180 天内的数据')
+          .optional(),
+        feedback_type: z
+          .number()
+          .describe('反馈类型，不填写则表示查询所有反馈类型。 Options:1(Fault 故障反馈),2(Advice 产品建议)')
+          .optional(),
+        status: z
+          .number()
+          .describe(
+            '反馈处理状态，不填写则表示查询所有处理类型。 Options:0(Unmarked 反馈未处理),1(Marked 反馈已处理),2(Processing 反馈处理中),3(Closed 反馈已关闭)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('本次拉取反馈列表最大个数').optional(),
+      })
+      .optional(),
     path: z.object({ app_id: z.string().describe('目标应用 ID（本租户创建的所有应用）') }),
   },
 };
@@ -600,7 +608,7 @@ export const applicationV6ApplicationManagementUpdate = {
   description: '[Feishu/Lark]-应用信息-应用管理-启停用应用-可停用或启用企业内已安装的自建应用与商店应用',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({ enable: z.boolean().describe('启用/停用应用').optional() }),
+    data: z.object({ enable: z.boolean().describe('启用/停用应用').optional() }).optional(),
     path: z.object({ app_id: z.string().describe('应用ID') }),
   },
 };
@@ -614,12 +622,10 @@ export const applicationV6ApplicationOwnerUpdate = {
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({ owner_id: z.string().describe('新的拥有者用户ID，类型由查询参数中的user_id_type确定') }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      app_id: z
-        .string()
-        .describe('应用 ID，获取方式参见 [app_id]'),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ app_id: z.string().describe('应用 ID，获取方式参见 [app_id]') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -633,12 +639,14 @@ export const applicationV6ApplicationPatch = {
     '[Feishu/Lark]-应用信息-应用管理-更新应用分组信息-更新应用的分组信息（分组会影响应用在工作台中的分类情况，请谨慎更新）',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      common_categories: z
-        .array(z.string().describe('应用分类在一个国际化文案下的描述'))
-        .describe('应用分类的国际化描述')
-        .optional(),
-    }),
+    data: z
+      .object({
+        common_categories: z
+          .array(z.string().describe('应用分类在一个国际化文案下的描述'))
+          .describe('应用分类的国际化描述')
+          .optional(),
+      })
+      .optional(),
     params: z.object({
       lang: z.enum(['zh_cn', 'en_us', 'ja_jp']).describe('指定返回的语言 Options:zh_cn(中文),en_us(英文),ja_jp(日文)'),
     }),
@@ -677,35 +685,33 @@ export const applicationV6ApplicationVisibilityCheckWhiteBlackList = {
     '[Feishu/Lark]-应用信息-应用管理-查询用户或部门是否在应用的可用或禁用名单-该接口用于查询用户、部门、用户组是否在应用的可用或禁用名单中',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      user_ids: z
-        .array(z.string())
-        .describe(
-          '想要查询的用户id列表，按照user_id_type录入，最多录入100个。可以调用[获取部门直属用户列表]接口获取',
-        )
-        .optional(),
-      department_ids: z
-        .array(z.string())
-        .describe(
-          '想要查询的部门的 id 列表，最多录入100个。可以[调用获取子部门列表]接口获取',
-        )
-        .optional(),
-      group_ids: z
-        .array(z.string())
-        .describe(
-          '想要查询的用户组id列表，最多录入100个。可以调用[查询用户组列表]接口获取',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '部门ID类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        user_ids: z
+          .array(z.string())
+          .describe('想要查询的用户id列表，按照user_id_type录入，最多录入100个。可以调用[获取部门直属用户列表]接口获取')
+          .optional(),
+        department_ids: z
+          .array(z.string())
+          .describe('想要查询的部门的 id 列表，最多录入100个。可以[调用获取子部门列表]接口获取')
+          .optional(),
+        group_ids: z
+          .array(z.string())
+          .describe('想要查询的用户组id列表，最多录入100个。可以调用[查询用户组列表]接口获取')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '部门ID类型 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       app_id: z
         .string()
@@ -725,64 +731,68 @@ export const applicationV6ApplicationVisibilityPatch = {
     '[Feishu/Lark]-应用信息-应用管理-更新应用可用范围-调用该接口更新指定应用的可用范围，支持更新当前企业内自建应用的可用范围，或者已安装的商店应用的可用范围，包括可用人员与禁用人员。更新可用范围后对线上立即生效',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      add_visible_list: z
-        .object({
-          user_ids: z.array(z.string()).describe('成员id列表 id类型根据user_id_type参数指定').optional(),
-          department_ids: z.array(z.string()).describe('部门id列表 id类型根据department_id_type参数指定').optional(),
-          group_ids: z.array(z.string()).describe('用户组id列表').optional(),
-        })
-        .describe(
-          '添加可用人员列表，如果参数is_visible_to_all不设置且当前已经是全员可见，或者参数is_visible_to_all设置为true，则该参数不生效',
-        )
-        .optional(),
-      del_visible_list: z
-        .object({
-          user_ids: z.array(z.string()).describe('成员id列表 id类型根据user_id_type参数指定').optional(),
-          department_ids: z.array(z.string()).describe('部门id列表 id类型根据department_id_type参数指定').optional(),
-          group_ids: z.array(z.string()).describe('用户组id').optional(),
-        })
-        .describe(
-          '删除可用人员列表，如果参数is_visible_to_all不设置且当前已经是全员可见，或者参数is_visible_to_all设置为true，则该参数不生效',
-        )
-        .optional(),
-      add_invisible_list: z
-        .object({
-          user_ids: z
-            .array(z.string())
-            .describe(
-              '成员id列表 id类型根据user_id_type参数指定相同的成员不能在30s内重复添加到禁用列表，否则会导致调用失败',
-            )
-            .optional(),
-          department_ids: z.array(z.string()).describe('部门id列表 id类型根据department_id_type参数指定').optional(),
-          group_ids: z.array(z.string()).describe('用户组id列表').optional(),
-        })
-        .describe('添加禁用人员列表')
-        .optional(),
-      del_invisible_list: z
-        .object({
-          user_ids: z.array(z.string()).describe('成员id列表 id类型根据user_id_type参数指定').optional(),
-          department_ids: z.array(z.string()).describe('部门id列表 id类型根据department_id_type参数指定').optional(),
-          group_ids: z.array(z.string()).describe('用户组id列表').optional(),
-        })
-        .describe('删除禁用人员列表')
-        .optional(),
-      is_visible_to_all: z
-        .boolean()
-        .describe(
-          '是否全员可见false：否true：是不设置：继续保持当前状态不改变如果参数不设置且当前已经是全员可见，或者设置为true，则add_visible_list/del_visible_list不生效',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '部门id 类型 Options:open_department_id(以open_department_id标识部门),department_id(以department_id标识部门)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    data: z
+      .object({
+        add_visible_list: z
+          .object({
+            user_ids: z.array(z.string()).describe('成员id列表 id类型根据user_id_type参数指定').optional(),
+            department_ids: z.array(z.string()).describe('部门id列表 id类型根据department_id_type参数指定').optional(),
+            group_ids: z.array(z.string()).describe('用户组id列表').optional(),
+          })
+          .describe(
+            '添加可用人员列表，如果参数is_visible_to_all不设置且当前已经是全员可见，或者参数is_visible_to_all设置为true，则该参数不生效',
+          )
+          .optional(),
+        del_visible_list: z
+          .object({
+            user_ids: z.array(z.string()).describe('成员id列表 id类型根据user_id_type参数指定').optional(),
+            department_ids: z.array(z.string()).describe('部门id列表 id类型根据department_id_type参数指定').optional(),
+            group_ids: z.array(z.string()).describe('用户组id').optional(),
+          })
+          .describe(
+            '删除可用人员列表，如果参数is_visible_to_all不设置且当前已经是全员可见，或者参数is_visible_to_all设置为true，则该参数不生效',
+          )
+          .optional(),
+        add_invisible_list: z
+          .object({
+            user_ids: z
+              .array(z.string())
+              .describe(
+                '成员id列表 id类型根据user_id_type参数指定相同的成员不能在30s内重复添加到禁用列表，否则会导致调用失败',
+              )
+              .optional(),
+            department_ids: z.array(z.string()).describe('部门id列表 id类型根据department_id_type参数指定').optional(),
+            group_ids: z.array(z.string()).describe('用户组id列表').optional(),
+          })
+          .describe('添加禁用人员列表')
+          .optional(),
+        del_invisible_list: z
+          .object({
+            user_ids: z.array(z.string()).describe('成员id列表 id类型根据user_id_type参数指定').optional(),
+            department_ids: z.array(z.string()).describe('部门id列表 id类型根据department_id_type参数指定').optional(),
+            group_ids: z.array(z.string()).describe('用户组id列表').optional(),
+          })
+          .describe('删除禁用人员列表')
+          .optional(),
+        is_visible_to_all: z
+          .boolean()
+          .describe(
+            '是否全员可见false：否true：是不设置：继续保持当前状态不改变如果参数不设置且当前已经是全员可见，或者设置为true，则add_visible_list/del_visible_list不生效',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '部门id 类型 Options:open_department_id(以open_department_id标识部门),department_id(以department_id标识部门)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     path: z.object({ app_id: z.string().describe('应用id') }),
   },
 };

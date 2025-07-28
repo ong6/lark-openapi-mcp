@@ -24,16 +24,18 @@ export const searchV2AppCreate = {
   accessTokens: ['user'],
   schema: {
     data: z.object({ query: z.string().describe('搜索关键词') }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -205,15 +207,17 @@ export const searchV2DataSourceItemGet = {
   description: '[Feishu/Lark]-搜索-搜索连接器-数据项-查询指定数据项-获取单个数据记录',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      data_source_id: z.string().describe('数据源的id').optional(),
-      item_id: z
-        .string()
-        .describe(
-          '数据记录的唯一标识**注意**：- 该字段大小写敏感。- 如果调用成功但返回结果为空数据，请检查该字段传值是否正确',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        data_source_id: z.string().describe('数据源的id').optional(),
+        item_id: z
+          .string()
+          .describe(
+            '数据记录的唯一标识**注意**：- 该字段大小写敏感。- 如果调用成功但返回结果为空数据，请检查该字段传值是否正确',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const searchV2DataSourceList = {
@@ -225,21 +229,23 @@ export const searchV2DataSourceList = {
   description: '[Feishu/Lark]-搜索-搜索连接器-数据源-批量获取数据源',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      view: z
-        .number()
-        .describe(
-          '回包数据格式，0-全量数据；1-摘要数据。**注**：摘要数据仅包含"id"，"name"，"state"。 Options:0(FULL 全量数据),1(BASIC 摘要数据)',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        view: z
+          .number()
+          .describe(
+            '回包数据格式，0-全量数据；1-摘要数据。**注**：摘要数据仅包含"id"，"name"，"state"。 Options:0(FULL 全量数据),1(BASIC 摘要数据)',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const searchV2DataSourcePatch = {
@@ -251,48 +257,50 @@ export const searchV2DataSourcePatch = {
   description: '[Feishu/Lark]-搜索-搜索连接器-数据源-修改数据源',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      name: z.string().describe('数据源的展示名称').optional(),
-      state: z
-        .number()
-        .describe('数据源状态，0-已上线，1-未上线 Options:0(Online 已上线),1(Offline 未上线)')
-        .optional(),
-      description: z.string().describe('对于数据源的描述').optional(),
-      icon_url: z.string().describe('数据源在 search tab 上的展示图标路径').optional(),
-      i18n_name: z
-        .object({
-          zh_cn: z.string().describe('国际化字段：中文').optional(),
-          en_us: z.string().describe('国际化字段：英文').optional(),
-          ja_jp: z.string().describe('国际化字段：日文').optional(),
-        })
-        .describe(
-          '数据源名称多语言配置，json格式，key为语言locale，value为对应文案，例如{"zh_cn":"测试数据源", "en_us":"Test DataSource"}',
-        )
-        .optional(),
-      i18n_description: z
-        .object({
-          zh_cn: z.string().describe('国际化字段：中文').optional(),
-          en_us: z.string().describe('国际化字段：英文').optional(),
-          ja_jp: z.string().describe('国际化字段：日文').optional(),
-        })
-        .describe(
-          '数据源描述多语言配置，json格式，key为语言locale，value为对应文案，例如{"zh_cn":"搜索测试数据源相关数据", "en_us":"Search data from Test DataSource"}',
-        )
-        .optional(),
-      connector_param: z
-        .object({
-          callback_user_id_type: z
-            .number()
-            .describe(
-              '回调时Request里面的id类型 Options:0(Unknown 不合法),1(UserID 用户在租户内的身份),2(OpenID 用户在应用内的身份),3(UnionID 用户在同一应用服务商所开发的多个应用下的统一身份)',
-            )
-            .optional(),
-          callback_endpoint: z.string().describe('回调时的地址，必须为POST地址').optional(),
-        })
-        .describe('修改connector的相关配置')
-        .optional(),
-      enable_answer: z.boolean().describe('是否使用问答服务').optional(),
-    }),
+    data: z
+      .object({
+        name: z.string().describe('数据源的展示名称').optional(),
+        state: z
+          .number()
+          .describe('数据源状态，0-已上线，1-未上线 Options:0(Online 已上线),1(Offline 未上线)')
+          .optional(),
+        description: z.string().describe('对于数据源的描述').optional(),
+        icon_url: z.string().describe('数据源在 search tab 上的展示图标路径').optional(),
+        i18n_name: z
+          .object({
+            zh_cn: z.string().describe('国际化字段：中文').optional(),
+            en_us: z.string().describe('国际化字段：英文').optional(),
+            ja_jp: z.string().describe('国际化字段：日文').optional(),
+          })
+          .describe(
+            '数据源名称多语言配置，json格式，key为语言locale，value为对应文案，例如{"zh_cn":"测试数据源", "en_us":"Test DataSource"}',
+          )
+          .optional(),
+        i18n_description: z
+          .object({
+            zh_cn: z.string().describe('国际化字段：中文').optional(),
+            en_us: z.string().describe('国际化字段：英文').optional(),
+            ja_jp: z.string().describe('国际化字段：日文').optional(),
+          })
+          .describe(
+            '数据源描述多语言配置，json格式，key为语言locale，value为对应文案，例如{"zh_cn":"搜索测试数据源相关数据", "en_us":"Search data from Test DataSource"}',
+          )
+          .optional(),
+        connector_param: z
+          .object({
+            callback_user_id_type: z
+              .number()
+              .describe(
+                '回调时Request里面的id类型 Options:0(Unknown 不合法),1(UserID 用户在租户内的身份),2(OpenID 用户在应用内的身份),3(UnionID 用户在同一应用服务商所开发的多个应用下的统一身份)',
+              )
+              .optional(),
+            callback_endpoint: z.string().describe('回调时的地址，必须为POST地址').optional(),
+          })
+          .describe('修改connector的相关配置')
+          .optional(),
+        enable_answer: z.boolean().describe('是否使用问答服务').optional(),
+      })
+      .optional(),
     path: z.object({ data_source_id: z.string().describe('数据源的唯一标识') }),
   },
 };
@@ -322,16 +330,18 @@ export const searchV2MessageCreate = {
       start_time: z.string().describe('消息发送起始时间').optional(),
       end_time: z.string().describe('消息发送结束时间').optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -516,7 +526,7 @@ export const searchV2SchemaCreate = {
         .describe('数据展示相关配置'),
       schema_id: z.string().describe('用户自定义数据范式的唯一标识'),
     }),
-    params: z.object({ validate_only: z.boolean().describe('是否只用来校验合法性').optional() }),
+    params: z.object({ validate_only: z.boolean().describe('是否只用来校验合法性').optional() }).optional(),
   },
 };
 export const searchV2SchemaDelete = {
@@ -552,47 +562,49 @@ export const searchV2SchemaPatch = {
   description: '[Feishu/Lark]-搜索-搜索连接器-数据范式-修改数据范式',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      display: z
-        .object({
-          card_key: z
-            .literal('search_common_card')
-            .describe('搜索数据的展示卡片 Options:search_common_card(Common 普通 common 卡片)'),
-          fields_mapping: z
-            .array(
-              z.object({
-                display_field: z
-                  .string()
-                  .describe('展示字段名称，与 card_key 有关，每个模版能展示的字段不同。该字段不能重复'),
-                data_field: z
-                  .string()
-                  .describe(
-                    '数据字段的名称。需要确保该字段对应在 schema 属性定义中的 is_returnable 为 true，否则无法展示。需要使用 ${xxx} 的规则来描述',
-                  ),
-              }),
-            )
-            .describe('数据字段名称和展示字段名称的映射关系。如果没有设置，则只会展示 与展示字段名称同名的 数据字段')
-            .optional(),
-        })
-        .describe('数据展示相关配置')
-        .optional(),
-      properties: z
-        .array(
-          z.object({
-            name: z.string().describe('属性名'),
-            desc: z.string().describe('属性描述').optional(),
-            answer_option: z
-              .object({
-                is_searchable: z.boolean().describe('是否用于搜索').optional(),
-                is_returnable: z.boolean().describe('是否用于返回').optional(),
-              })
-              .describe('问答产品设置，仅在datasource中use_answer为true时生效')
+    data: z
+      .object({
+        display: z
+          .object({
+            card_key: z
+              .literal('search_common_card')
+              .describe('搜索数据的展示卡片 Options:search_common_card(Common 普通 common 卡片)'),
+            fields_mapping: z
+              .array(
+                z.object({
+                  display_field: z
+                    .string()
+                    .describe('展示字段名称，与 card_key 有关，每个模版能展示的字段不同。该字段不能重复'),
+                  data_field: z
+                    .string()
+                    .describe(
+                      '数据字段的名称。需要确保该字段对应在 schema 属性定义中的 is_returnable 为 true，否则无法展示。需要使用 ${xxx} 的规则来描述',
+                    ),
+                }),
+              )
+              .describe('数据字段名称和展示字段名称的映射关系。如果没有设置，则只会展示 与展示字段名称同名的 数据字段')
               .optional(),
-          }),
-        )
-        .describe('数据范式的属性定义')
-        .optional(),
-    }),
+          })
+          .describe('数据展示相关配置')
+          .optional(),
+        properties: z
+          .array(
+            z.object({
+              name: z.string().describe('属性名'),
+              desc: z.string().describe('属性描述').optional(),
+              answer_option: z
+                .object({
+                  is_searchable: z.boolean().describe('是否用于搜索').optional(),
+                  is_returnable: z.boolean().describe('是否用于返回').optional(),
+                })
+                .describe('问答产品设置，仅在datasource中use_answer为true时生效')
+                .optional(),
+            }),
+          )
+          .describe('数据范式的属性定义')
+          .optional(),
+      })
+      .optional(),
     path: z.object({ schema_id: z.string().describe('用户自定义数据范式的唯一标识') }),
   },
 };

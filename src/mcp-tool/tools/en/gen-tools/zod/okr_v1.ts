@@ -65,15 +65,17 @@ export const okrV1PeriodList = {
   description: '[Feishu/Lark]-OKR-OKR Period-Get the OKR cycle list-Get the OKR cycle list',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Page size, default 10').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Page size, default 10').optional(),
+      })
+      .optional(),
   },
 };
 export const okrV1PeriodPatch = {
@@ -239,7 +241,9 @@ export const okrV1ProgressRecordCreate = {
       source_url_pc: z.string().describe('{}').optional(),
       source_url_mobile: z.string().describe('{}').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -266,8 +270,10 @@ export const okrV1ProgressRecordGet = {
     '[Feishu/Lark]-OKR-Progress record-Get OKR progress records-Obtain OKR progress record details according to ID',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
-    path: z.object({ progress_id: z.string().describe('OKR progress record ID to be queried').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
+    path: z.object({ progress_id: z.string().describe('OKR progress record ID to be queried').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -408,7 +414,9 @@ export const okrV1ProgressRecordUpdate = {
         })
         .describe('Details of progress, in rich text format'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ progress_id: z.string().describe('progress id') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -453,7 +461,7 @@ export const okrV1UserOkrList = {
         .optional(),
       period_ids: z.array(z.string()).describe('period_id list, up to 10').optional(),
     }),
-    path: z.object({ user_id: z.string().describe('Target user id').optional() }),
+    path: z.object({ user_id: z.string().describe('Target user id').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };

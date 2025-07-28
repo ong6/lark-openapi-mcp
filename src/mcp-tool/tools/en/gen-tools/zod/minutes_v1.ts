@@ -13,12 +13,14 @@ export const minutesV1MinuteGet = {
     '[Feishu/Lark]-Minutes-Minutes Meta-Get minutes meta-Through this api, you can get a basic overview of Lark Minutes, including `owner_id`, `create_time`, title, cover picture, duration and URL',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       minute_token: z
         .string()
         .describe(
-          'Minute uniquely identifies,it can be obtained from the minute link, usually the last string of characters in the link',
+          'The unique identifier for Minutes. It can be obtained from the URL link of the Minutes, usually the last string of characters: https://sample.feishu.cn/minutes/==obcnq3b9jl72l83w4f14xxxx==',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
@@ -34,7 +36,13 @@ export const minutesV1MinuteMediaGet = {
     '[Feishu/Lark]-Minutes-Minutes audio or video file-Download minutes audio or video file-Get the audio or video file of minutes',
   accessTokens: ['tenant', 'user'],
   schema: {
-    path: z.object({ minute_token: z.string().describe('Minute unique identifier') }),
+    path: z.object({
+      minute_token: z
+        .string()
+        .describe(
+          'The unique identifier for Minutes. It can be obtained from the URL link of the Minutes, usually the last string of characters: https://sample.feishu.cn/minutes/==obcnq3b9jl72l83w4f14xxxx==',
+        ),
+    }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -45,15 +53,17 @@ export const minutesV1MinuteStatisticsGet = {
   path: '/open-apis/minutes/v1/minutes/:minute_token/statistics',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Minutes-Minutes statistics-Get minutes statistics-Through this API, you can get access statistics of Lark Minutes, including PV, UV, visited user id, visited user timestamp',
+    '[Feishu/Lark]-Minutes-Minutes statistics-Get minutes statistics-Through this API, you can get access statistics of Feishu Minutes, including PV, UV, visited user id, visited user timestamp',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       minute_token: z
         .string()
         .describe(
-          'Minute uniquely identifies,it can be obtained from the minute link, usually the last string of characters in the link',
+          'The unique identifier for Minutes. It can be obtained from the URL link of the Minutes, usually the last string of characters: https://sample.feishu.cn/minutes/==obcnq3b9jl72l83w4f14xxxx==',
         ),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),

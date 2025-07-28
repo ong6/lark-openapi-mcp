@@ -23,15 +23,12 @@ export const personalSettingsV1SystemStatusBatchClose = {
           'List of user IDs, the incoming ID type is determined by the user_id_type, OpenID is recommended, and the way to get it can be found in the document [How to get Open ID]',
         ),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
-    path: z.object({
-      system_status_id: z
-        .string()
-        .describe(
-          'System Status ID[Get system status ID]',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
+    path: z
+      .object({ system_status_id: z.string().describe('System Status ID[Get system status ID]').optional() })
+      .optional(),
   },
 };
 export const personalSettingsV1SystemStatusBatchOpen = {
@@ -58,15 +55,12 @@ export const personalSettingsV1SystemStatusBatchOpen = {
         )
         .describe('User list'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
-    path: z.object({
-      system_status_id: z
-        .string()
-        .describe(
-          'System stauts ID[Get system status ID]',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
+    path: z
+      .object({ system_status_id: z.string().describe('System stauts ID[Get system status ID]').optional() })
+      .optional(),
   },
 };
 export const personalSettingsV1SystemStatusCreate = {
@@ -196,14 +190,9 @@ export const personalSettingsV1SystemStatusDelete = {
     '[Feishu/Lark]-Personal Settings-System status-Delete system status-Delete a system status of the full-tenant dimension',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      system_status_id: z
-        .string()
-        .describe(
-          'System stauts ID[Get system status ID]',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({ system_status_id: z.string().describe('System stauts ID[Get system status ID]').optional() })
+      .optional(),
   },
 };
 export const personalSettingsV1SystemStatusList = {
@@ -216,15 +205,17 @@ export const personalSettingsV1SystemStatusList = {
     '[Feishu/Lark]-Personal Settings-System status-List system status-List system statuses with a tenant-wide dimension',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const personalSettingsV1SystemStatusPatch = {
@@ -355,14 +346,9 @@ export const personalSettingsV1SystemStatusPatch = {
         )
         .describe('Fields that need to be updated'),
     }),
-    path: z.object({
-      system_status_id: z
-        .string()
-        .describe(
-          'System stauts ID[Get system status ID]',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({ system_status_id: z.string().describe('System stauts ID[Get system status ID]').optional() })
+      .optional(),
   },
 };
 export const personalSettingsV1Tools = [

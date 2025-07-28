@@ -117,10 +117,12 @@ export const acsV1RuleExternalCreate = {
         })
         .describe('rule info'),
     }),
-    params: z.object({
-      rule_id: z.string().describe('rule id,create if null,update if no null').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        rule_id: z.string().describe('rule id,create if null,update if no null').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -162,10 +164,12 @@ export const acsV1RuleExternalGet = {
   description: '[Feishu/Lark]-Smart Access Control-Rule-Get rule info-rule info get',
   accessTokens: ['user'],
   schema: {
-    params: z.object({
-      device_id: z.string().optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        device_id: z.string().optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -178,7 +182,9 @@ export const acsV1UserGet = {
   description: '[Feishu/Lark]-Smart Access Control-User Management-Get individual user information',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ user_id: z.string().describe('User ID') }),
   },
 };
@@ -191,11 +197,13 @@ export const acsV1UserList = {
   description: '[Feishu/Lark]-Smart Access Control-User Management-Get user list',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().optional(),
-      page_token: z.string().optional(),
-      user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().optional(),
+        page_token: z.string().optional(),
+        user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const acsV1UserPatch = {
@@ -207,8 +215,10 @@ export const acsV1UserPatch = {
   description: '[Feishu/Lark]-Smart Access Control-User Management-Modify parts of user information',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({ feature: z.object({ card: z.number().optional() }).optional() }),
-    params: z.object({ user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('User ID type').optional() }),
+    data: z.object({ feature: z.object({ card: z.number().optional() }).optional() }).optional(),
+    params: z
+      .object({ user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ user_id: z.string().describe('User ID') }),
   },
 };
@@ -234,7 +244,9 @@ export const acsV1VisitorCreate = {
         })
         .describe('visitor info'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -247,7 +259,9 @@ export const acsV1VisitorDelete = {
   description: '[Feishu/Lark]-Smart Access Control-Visitor-Delete visitor-visitor delete',
   accessTokens: ['user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ visitor_id: z.string().describe('visitor id') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },

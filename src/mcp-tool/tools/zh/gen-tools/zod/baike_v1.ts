@@ -21,15 +21,17 @@ export const baikeV1ClassificationList = {
     '[Feishu/Lark]-历史版本（不推荐）-飞书词典-分类-获取词典分类-获取飞书词典当前分类。飞书词典目前为二级分类体系，每个词条可添加多个二级分类，但选择的二级分类必须从属于不同的一级分类',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -147,7 +149,9 @@ export const baikeV1DraftCreate = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -258,7 +262,9 @@ export const baikeV1DraftUpdate = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ draft_id: z.string().describe('草稿 ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -376,7 +382,9 @@ export const baikeV1EntityCreate = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -390,7 +398,9 @@ export const baikeV1EntityExtract = {
     '[Feishu/Lark]-历史版本（不推荐）-飞书词典-词条-提取潜在的词条-提取文本中可能成为词条的词语，且不会过滤已经成为词条的词语。同时返回推荐的别名',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({ text: z.string().describe('需要被提取词条的文本（不会过滤租户中已成为词条的内容）').optional() }),
+    data: z
+      .object({ text: z.string().describe('需要被提取词条的文本（不会过滤租户中已成为词条的内容）').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -403,12 +413,14 @@ export const baikeV1EntityGet = {
   description: '[Feishu/Lark]-历史版本（不推荐）-飞书词典-词条-获取词条详情-通过词条 id 拉取对应的词条详情信息',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      provider: z.string().describe('外部系统').optional(),
-      outer_id: z.string().describe('词条在外部系统中对应的唯一 ID').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({ entity_id: z.string().describe('词条 ID').optional() }),
+    params: z
+      .object({
+        provider: z.string().describe('外部系统').optional(),
+        outer_id: z.string().describe('词条在外部系统中对应的唯一 ID').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ entity_id: z.string().describe('词条 ID').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -436,17 +448,19 @@ export const baikeV1EntityList = {
     '[Feishu/Lark]-历史版本（不推荐）-飞书词典-词条-获取词条列表-分页拉取词条列表数据，支持拉取租户内的全部词条',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      provider: z.string().describe('相关外部系统【可用来过滤词条数据】').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        provider: z.string().describe('相关外部系统【可用来过滤词条数据】').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -474,31 +488,35 @@ export const baikeV1EntitySearch = {
     '[Feishu/Lark]-历史版本（不推荐）-飞书词典-词条-模糊搜索词条-传入关键词，与词条名、别名、释义等信息进行模糊匹配，返回搜到的词条信息',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      query: z.string().describe('搜索关键词').optional(),
-      classification_filter: z
-        .object({
-          include: z.array(z.string()).describe('需要获取的分类').optional(),
-          exclude: z.array(z.string()).describe('需要排除的分类').optional(),
-        })
-        .describe('分类筛选')
-        .optional(),
-      sources: z
-        .array(z.number())
-        .describe('词条的创建来源，1：用户主动创建，2：批量导入，3：官方词，4：OpenAPI 创建')
-        .optional(),
-      creators: z.array(z.string()).describe('创建者').optional(),
-    }),
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    data: z
+      .object({
+        query: z.string().describe('搜索关键词').optional(),
+        classification_filter: z
+          .object({
+            include: z.array(z.string()).describe('需要获取的分类').optional(),
+            exclude: z.array(z.string()).describe('需要排除的分类').optional(),
+          })
+          .describe('分类筛选')
+          .optional(),
+        sources: z
+          .array(z.number())
+          .describe('词条的创建来源，1：用户主动创建，2：批量导入，3：官方词，4：OpenAPI 创建')
+          .optional(),
+        creators: z.array(z.string()).describe('创建者').optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -615,8 +633,10 @@ export const baikeV1EntityUpdate = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({ entity_id: z.string().describe('实体词 ID').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ entity_id: z.string().describe('实体词 ID').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };

@@ -184,21 +184,17 @@ export const hireV1AdvertisementPublish = {
   description: '[Feishu/Lark]-招聘-招聘相关配置-职位-发布职位广告-支持把职位广告发布上线至招聘官网、内推平台',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      job_channel_id: z
-        .string()
-        .describe(
-          '招聘渠道 ID，选择要发布的招聘官网，单次仅可发布 1 个渠道：- 当发布内推平台时，可使用 job_channel_id = 3 来发布- 官网渠道的 ID 可通过[获取招聘官网列表]」接口获取',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      advertisement_id: z
-        .string()
-        .describe(
-          '职位广告 ID，可由[新建职位]接口创建职位后返回获取',
-        ),
-    }),
+    data: z
+      .object({
+        job_channel_id: z
+          .string()
+          .describe(
+            '招聘渠道 ID，选择要发布的招聘官网，单次仅可发布 1 个渠道：- 当发布内推平台时，可使用 job_channel_id = 3 来发布- 官网渠道的 ID 可通过[获取招聘官网列表]」接口获取',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ advertisement_id: z.string().describe('职位广告 ID，可由[新建职位]接口创建职位后返回获取') }),
   },
 };
 export const hireV1AgencyBatchQuery = {
@@ -211,41 +207,48 @@ export const hireV1AgencyBatchQuery = {
     '[Feishu/Lark]-招聘-获取候选人-猎头-搜索猎头供应商列表-可根据猎头供应商 ID 列表或关键字、筛选项查询供应商信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      agency_supplier_id_list: z
-        .array(z.string())
-        .describe('猎头供应商 ID 列表，当传递此值，以此值为准，其余查询字段失效')
-        .optional(),
-      keyword: z.string().describe('搜索关键字，可传入名称或邮箱').optional(),
-      filter_list: z
-        .array(
-          z.object({
-            key: z.string().describe('筛选项 key，使用筛选项查询时必填'),
-            value_type: z
-              .number()
-              .describe(
-                '筛选项值类型，使用筛选项查询时必填 Options:1(值过滤，填充 value_list 字段),2(范围过滤，填充 range_filter 字段)',
-              ),
-            value_list: z.array(z.string()).describe('筛选项值列表，当`value_type`为`1`时必填').optional(),
-            range_filter: z
-              .object({ from: z.string().describe('起始值').optional(), to: z.string().describe('终止值').optional() })
-              .describe('范围筛选，当`value_type`为`2`时必填')
-              .optional(),
-          }),
-        )
-        .describe('筛选项，相同的 Key 仅可传一次，字段取值可查看本文`筛选字段说明`节')
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('每页获取记录数量').optional(),
-    }),
+    data: z
+      .object({
+        agency_supplier_id_list: z
+          .array(z.string())
+          .describe('猎头供应商 ID 列表，当传递此值，以此值为准，其余查询字段失效')
+          .optional(),
+        keyword: z.string().describe('搜索关键字，可传入名称或邮箱').optional(),
+        filter_list: z
+          .array(
+            z.object({
+              key: z.string().describe('筛选项 key，使用筛选项查询时必填'),
+              value_type: z
+                .number()
+                .describe(
+                  '筛选项值类型，使用筛选项查询时必填 Options:1(值过滤，填充 value_list 字段),2(范围过滤，填充 range_filter 字段)',
+                ),
+              value_list: z.array(z.string()).describe('筛选项值列表，当`value_type`为`1`时必填').optional(),
+              range_filter: z
+                .object({
+                  from: z.string().describe('起始值').optional(),
+                  to: z.string().describe('终止值').optional(),
+                })
+                .describe('范围筛选，当`value_type`为`2`时必填')
+                .optional(),
+            }),
+          )
+          .describe('筛选项，相同的 Key 仅可传一次，字段取值可查看本文`筛选字段说明`节')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('每页获取记录数量').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1AgencyGet = {
@@ -258,10 +261,12 @@ export const hireV1AgencyGet = {
     '[Feishu/Lark]-招聘-获取候选人-猎头-获取猎头供应商信息-根据猎头供应商 ID 获取有合作关系的猎头供应商信息，包含猎头供应商ID、名称、联系人等',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({ agency_id: z.string().describe('猎头供应商ID').optional() }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ agency_id: z.string().describe('猎头供应商ID').optional() }).optional(),
   },
 };
 export const hireV1AgencyGetAgencyAccount = {
@@ -275,27 +280,25 @@ export const hireV1AgencyGetAgencyAccount = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      supplier_id: z
-        .string()
-        .describe(
-          '猎头供应商 ID，可通过[搜索猎头供应商列表]接口获取',
-        ),
+      supplier_id: z.string().describe('猎头供应商 ID，可通过[搜索猎头供应商列表]接口获取'),
       status: z
         .number()
         .describe('猎头状态 Options:0(Normal 正常),1(Enabled 已禁用),2(DisabledBySupplier 已被猎头供应商停用)')
         .optional(),
       role: z.number().describe('角色 Options:0(Manager 管理员),1(Consultant 顾问)').optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id']).describe('用户ID类型').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('每页获取记录数量').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id']).describe('用户ID类型').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('每页获取记录数量').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1AgencyOperateAgencyAccount = {
@@ -310,11 +313,7 @@ export const hireV1AgencyOperateAgencyAccount = {
   schema: {
     data: z.object({
       option: z.number().describe('操作类型 Options:1(Add 禁用),2(Remove 取消禁用)'),
-      id: z
-        .string()
-        .describe(
-          '猎头 ID，可通过[查询猎头供应商下猎头列表]接口获取',
-        ),
+      id: z.string().describe('猎头 ID，可通过[查询猎头供应商下猎头列表]接口获取'),
       reason: z.string().describe('禁用原因，仅当`option`为`1`时，必填').optional(),
     }),
   },
@@ -330,11 +329,7 @@ export const hireV1AgencyProtect = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才ID，可通过[通过手机号或邮箱获取人才 ID]、[获取人才列表]接口获取',
-        ),
+      talent_id: z.string().describe('人才ID，可通过[通过手机号或邮箱获取人才 ID]、[获取人才列表]接口获取'),
       supplier_id: z.string().describe('猎头供应商ID'),
       consultant_id: z.string().describe('猎头顾问ID，需与`user_id_type`类型一致'),
       protect_create_time: z.number().describe('保护期创建时间（int64类型），毫秒时间戳'),
@@ -343,9 +338,11 @@ export const hireV1AgencyProtect = {
       current_salary: z.string().describe('当前薪资').optional(),
       expected_salary: z.string().describe('预期薪资').optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1AgencyProtectSearch = {
@@ -359,11 +356,7 @@ export const hireV1AgencyProtectSearch = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID，可通过[通过手机号或邮箱获取人才 ID]、[获取人才列表]接口获取',
-        ),
+      talent_id: z.string().describe('人才 ID，可通过[通过手机号或邮箱获取人才 ID]、[获取人才列表]接口获取'),
     }),
   },
 };
@@ -389,26 +382,18 @@ export const hireV1ApplicationCancelOnboard = {
   sdkName: 'hire.v1.application.cancelOnboard',
   path: '/open-apis/hire/v1/applications/:application_id/cancel_onboard',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-候选人管理-投递流程-入职-取消候选人入职-取消待入职状态的候选人入职',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-入职-取消候选人入职-取消待入职状态的候选人入职',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       termination_type: z.number().describe('终止类型 Options:1(我们拒绝了候选人),22(候选人拒绝了我们),27(其他)'),
       termination_reason_id_list: z
         .array(z.string())
-        .describe(
-          '终止的具体原因的id列表，详细信息请参考[获取终止投递原因]',
-        )
+        .describe('终止的具体原因的id列表，详细信息请参考[获取终止投递原因]')
         .optional(),
       termination_reason_notes: z.string().describe('备注').optional(),
     }),
-    path: z.object({
-      application_id: z
-        .string()
-        .describe(
-          '投递 ID，如何获取投递 ID 请参考[获取投递列表]',
-        ),
-    }),
+    path: z.object({ application_id: z.string().describe('投递 ID，如何获取投递 ID 请参考[获取投递列表]') }),
   },
 };
 export const hireV1ApplicationCreate = {
@@ -417,42 +402,31 @@ export const hireV1ApplicationCreate = {
   sdkName: 'hire.v1.application.create',
   path: '/open-apis/hire/v1/applications',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-候选人管理-投递流程-投递管理-创建投递-为人才在特定职位上创建投递',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-投递管理-创建投递-为人才在特定职位上创建投递',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID，可通过[获取人才列表]获取',
-        ),
-      job_id: z
-        .string()
-        .describe('职位 ID，可通过[获取职位列表]获取'),
+      talent_id: z.string().describe('人才 ID，可通过[获取人才列表]获取'),
+      job_id: z.string().describe('职位 ID，可通过[获取职位列表]获取'),
       user_id: z
         .string()
         .describe(
           '人员 ID，与入参 `user_id_type` 类型一致。**注意**：若投递来源为属于「员工转岗」或「实习生转正」时必填，创建投递成功后会将该员工和对应人才进行绑定；创建其他来源投递时，不会进行人员与人才绑定',
         )
         .optional(),
-      resume_source_id: z
-        .string()
-        .describe(
-          '简历来源 ID，可通过[获取简历来源列表]获取',
-        )
-        .optional(),
+      resume_source_id: z.string().describe('简历来源 ID，可通过[获取简历来源列表]获取').optional(),
       application_preferred_city_code_list: z
         .array(z.string())
-        .describe(
-          '意向投递城市列表，可通过[查询地点列表]获取到对应的城市编码',
-        )
+        .describe('意向投递城市列表，可通过[查询地点列表]获取到对应的城市编码')
         .optional(),
       delivery_type: z
         .number()
         .describe('投递方式 Options:1(HR_visit HR 寻访),2(candidate_delivery 候选人主动投递)')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const hireV1ApplicationGet = {
@@ -461,31 +435,27 @@ export const hireV1ApplicationGet = {
   sdkName: 'hire.v1.application.get',
   path: '/open-apis/hire/v1/applications/:application_id',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-候选人管理-投递流程-投递管理-获取投递信息-根据投递 ID 获取单个投递信息',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-投递管理-获取投递信息-根据投递 ID 获取单个投递信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      options: z
-        .array(
-          z
-            .literal('get_latest_application_on_chain')
-            .describe(
-              'Options:get_latest_application_on_chain(GetLatestApplicationOnChain 仅对当前投递是虚拟职位投递时生效。 - 若投递未分配，虚拟职位投递即为最新投递，返回请求中指定的虚拟职位投递的信息 - 若投递已分配，会返回分配链上最新一个实体职位投递的信息，而非请求中指定的投递。)',
-            ),
-        )
-        .describe(
-          '请求控制参数，用于控制接口响应逻辑。如需一次查询多个用户ID，可通过将同一参数名多次传递，并且每次传递不同的参数值。例如：https://{url}?options={option1}&options={option2}',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      application_id: z
-        .string()
-        .describe(
-          '投递 ID，可通过[获取投递列表]获取',
-        ),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        options: z
+          .array(
+            z
+              .literal('get_latest_application_on_chain')
+              .describe(
+                'Options:get_latest_application_on_chain(GetLatestApplicationOnChain 仅对当前投递是虚拟职位投递时生效。 - 若投递未分配，虚拟职位投递即为最新投递，返回请求中指定的虚拟职位投递的信息 - 若投递已分配，会返回分配链上最新一个实体职位投递的信息，而非请求中指定的投递。)',
+              ),
+          )
+          .describe(
+            '请求控制参数，用于控制接口响应逻辑。如需一次查询多个用户ID，可通过将同一参数名多次传递，并且每次传递不同的参数值。例如：https://{url}?options={option1}&options={option2}',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ application_id: z.string().describe('投递 ID，可通过[获取投递列表]获取') }),
   },
 };
 export const hireV1ApplicationGetDetail = {
@@ -495,66 +465,63 @@ export const hireV1ApplicationGetDetail = {
   path: '/open-apis/hire/v1/applications/:application_id/get_detail',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-投递管理-获取投递详情-根据投递 ID 获取投递信息并通过参数按需获取该投递相关的实体信息，如「职位」、「人才」、「评估」、「面试」、「Offer」、「猎头」、「内推」、「官网」等实体的信息',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-投递管理-获取投递详情-根据投递 ID 获取投递信息并通过参数按需获取该投递相关的实体信息，如「职位」、「人才」、「评估」、「面试」、「Offer」、「猎头」、「内推」、「官网」等实体的信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '此次调用中使用的部门 ID 类型 Options:open_department_id(以 open_department_id 来标识部门，通过[批量获取部门信息]接口获取),department_id(以 department_id 来标识部门，通过[批量获取部门信息]接口获取)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
-        )
-        .optional(),
-      options: z
-        .array(
-          z
-            .enum([
-              'with_job',
-              'with_talent',
-              'with_interview',
-              'with_offer',
-              'with_evaluation',
-              'with_employee',
-              'with_agency',
-              'with_referral',
-              'with_portal',
-            ])
-            .describe(
-              'Options:with_job(返回职位实体信息),with_talent(返回人才实体信息),with_interview(返回面试聚合实体信息),with_offer(返回 Offer 实体信息),with_evaluation(返回评估实体信息),with_employee(返回员工实体信息),with_agency(返回猎头实体信息),with_referral(返回内推实体信息),with_portal(返回官网实体信息)',
-            ),
-        )
-        .describe(
-          '关联实体信息获取参数，用于指定获取哪些关联实体信息，不传时默认只返回投递基本信息（`basic_info`）。如需一次查询多个实体信息，可通过将同一参数名多次传递，并且每次传递不同的参数值。 例如：https://{url}?options=with_job&options=with_talent',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      application_id: z
-        .string()
-        .describe(
-          '投递 ID，可通过[获取投递列表]接口获取',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '此次调用中使用的部门 ID 类型 Options:open_department_id(以 open_department_id 来标识部门，通过[批量获取部门信息]接口获取),department_id(以 department_id 来标识部门，通过[批量获取部门信息]接口获取)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
+          )
+          .optional(),
+        options: z
+          .array(
+            z
+              .enum([
+                'with_job',
+                'with_talent',
+                'with_interview',
+                'with_offer',
+                'with_evaluation',
+                'with_employee',
+                'with_agency',
+                'with_referral',
+                'with_portal',
+              ])
+              .describe(
+                'Options:with_job(返回职位实体信息),with_talent(返回人才实体信息),with_interview(返回面试聚合实体信息),with_offer(返回 Offer 实体信息),with_evaluation(返回评估实体信息),with_employee(返回员工实体信息),with_agency(返回猎头实体信息),with_referral(返回内推实体信息),with_portal(返回官网实体信息)',
+              ),
+          )
+          .describe(
+            '关联实体信息获取参数，用于指定获取哪些关联实体信息，不传时默认只返回投递基本信息（`basic_info`）。如需一次查询多个实体信息，可通过将同一参数名多次传递，并且每次传递不同的参数值。 例如：https://{url}?options=with_job&options=with_talent',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z
+      .object({ application_id: z.string().describe('投递 ID，可通过[获取投递列表]接口获取').optional() })
+      .optional(),
   },
 };
 export const hireV1ApplicationInterviewList = {
@@ -592,52 +559,37 @@ export const hireV1ApplicationList = {
   path: '/open-apis/hire/v1/applications',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-投递管理-获取投递列表-获取投递列表信息。可根据「招聘流程 ID」、「招聘阶段 ID」、「人才 ID」、「职位 ID」、「投递活跃状态」以及「投递更新时间」进行条件筛选',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-投递管理-获取投递列表-获取投递列表信息。可根据「招聘流程 ID」、「招聘阶段 ID」、「人才 ID」、「职位 ID」、「投递活跃状态」以及「投递更新时间」进行条件筛选',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      process_id: z
-        .string()
-        .describe(
-          '招聘流程 ID，可通过[获取招聘流程信息]接口中的「流程 ID」获取',
-        )
-        .optional(),
-      stage_id: z
-        .string()
-        .describe(
-          '招聘阶段 ID，可通过[获取招聘流程信息]接口每个流程下的「阶段列表」获取',
-        )
-        .optional(),
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID，可通过[获取人才列表]接口获取',
-        )
-        .optional(),
-      active_status: z
-        .string()
-        .describe('投递活跃状态，不传该参数则默认为“全部”**可选值有**：- `1`：活跃投递- `2`：非活跃投递- `3`：全部')
-        .optional(),
-      job_id: z
-        .string()
-        .describe(
-          '职位 ID，可通过[获取职位列表]接口获取',
-        )
-        .optional(),
-      lock_status: z
-        .array(z.number().describe('Options:1(未锁定),2(锁定在其他职位),3(锁定在当前职位)'))
-        .describe('锁定状态，无默认值，不传该参数则不对锁定状态进行筛选')
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小**最大值**：200').optional(),
-      update_start_time: z.string().describe('最早更新时间，毫秒时间戳').optional(),
-      update_end_time: z.string().describe('最晚更新时间，毫秒时间戳').optional(),
-    }),
+    params: z
+      .object({
+        process_id: z.string().describe('招聘流程 ID，可通过[获取招聘流程信息]接口中的「流程 ID」获取').optional(),
+        stage_id: z
+          .string()
+          .describe('招聘阶段 ID，可通过[获取招聘流程信息]接口每个流程下的「阶段列表」获取')
+          .optional(),
+        talent_id: z.string().describe('人才 ID，可通过[获取人才列表]接口获取').optional(),
+        active_status: z
+          .string()
+          .describe('投递活跃状态，不传该参数则默认为“全部”**可选值有**：- `1`：活跃投递- `2`：非活跃投递- `3`：全部')
+          .optional(),
+        job_id: z.string().describe('职位 ID，可通过[获取职位列表]接口获取').optional(),
+        lock_status: z
+          .array(z.number().describe('Options:1(未锁定),2(锁定在其他职位),3(锁定在当前职位)'))
+          .describe('锁定状态，无默认值，不传该参数则不对锁定状态进行筛选')
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小**最大值**：200').optional(),
+        update_start_time: z.string().describe('最早更新时间，毫秒时间戳').optional(),
+        update_end_time: z.string().describe('最晚更新时间，毫秒时间戳').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ApplicationOffer = {
@@ -646,43 +598,39 @@ export const hireV1ApplicationOffer = {
   sdkName: 'hire.v1.application.offer',
   path: '/open-apis/hire/v1/applications/:application_id/offer',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-候选人管理-投递流程-Offer-获取 Offer 信息-根据投递 ID 获取 Offer 信息',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-Offer-获取 Offer 信息-根据投递 ID 获取 Offer 信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '此次调用中使用的部门 ID 类型。 Options:open_department_id(【飞书】用来在具体某个应用中标识一个部门，同一个department_id 在不同应用中的 open_department_id 相同),department_id(【飞书】用来标识租户内一个唯一的部门)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      application_id: z
-        .string()
-        .describe(
-          '投递ID，可通过[获取投递列表]获取',
-        ),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '此次调用中使用的部门 ID 类型。 Options:open_department_id(【飞书】用来在具体某个应用中标识一个部门，同一个department_id 在不同应用中的 open_department_id 相同),department_id(【飞书】用来标识租户内一个唯一的部门)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ application_id: z.string().describe('投递ID，可通过[获取投递列表]获取') }),
   },
 };
 export const hireV1ApplicationRecover = {
@@ -691,16 +639,10 @@ export const hireV1ApplicationRecover = {
   sdkName: 'hire.v1.application.recover',
   path: '/open-apis/hire/v1/applications/:application_id/recover',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-候选人管理-投递流程-投递管理-恢复投递-根据投递 ID 将「已终止」投递进行恢复',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-投递管理-恢复投递-根据投递 ID 将「已终止」投递进行恢复',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      application_id: z
-        .string()
-        .describe(
-          '投递ID，详情请参考：[获取投递列表]',
-        ),
-    }),
+    path: z.object({ application_id: z.string().describe('投递ID，详情请参考：[获取投递列表]') }),
   },
 };
 export const hireV1ApplicationTerminate = {
@@ -709,26 +651,18 @@ export const hireV1ApplicationTerminate = {
   sdkName: 'hire.v1.application.terminate',
   path: '/open-apis/hire/v1/applications/:application_id/terminate',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-候选人管理-投递流程-投递管理-终止投递-根据投递 ID 修改投递状态为「已终止」',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-投递管理-终止投递-根据投递 ID 修改投递状态为「已终止」',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       termination_type: z.number().describe('终止原因的类型 Options:1(我们拒绝了候选人),22(候选人拒绝了我们),27(其他)'),
       termination_reason_list: z
         .array(z.string())
-        .describe(
-          '终止的具体原因的id列表，可通过[获取终止投递原因]接口获取',
-        )
+        .describe('终止的具体原因的id列表，可通过[获取终止投递原因]接口获取')
         .optional(),
       termination_reason_note: z.string().describe('终止备注').optional(),
     }),
-    path: z.object({
-      application_id: z
-        .string()
-        .describe(
-          '投递ID，可通过[获取投递列表]接口获取',
-        ),
-    }),
+    path: z.object({ application_id: z.string().describe('投递ID，可通过[获取投递列表]接口获取') }),
   },
 };
 export const hireV1ApplicationTransferOnboard = {
@@ -738,85 +672,84 @@ export const hireV1ApplicationTransferOnboard = {
   path: '/open-apis/hire/v1/applications/:application_id/transfer_onboard',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-入职-操作候选人入职-根据投递 ID 操作候选人入职并创建员工，后续可通过 [通过员工 ID 获取入职信息] 接口获取入职信息',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-入职-操作候选人入职-根据投递 ID 操作候选人入职并创建员工，后续可通过 [通过员工 ID 获取入职信息] 接口获取入职信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      actual_onboard_time: z
-        .number()
-        .describe('实际入职时间，毫秒时间戳（int64类型），不能晚于当前时间，不传则默认为当前时间')
-        .optional(),
-      expected_conversion_time: z.number().describe('预期转正时间，毫秒时间戳（int64类型），不传则默认为0').optional(),
-      job_requirement_id: z
-        .string()
-        .describe(
-          '招聘需求 ID，可通过接口 [获取招聘需求列表] 获取。是否必须传入取决于管理员在系统后台「招聘需求关联设置」的配置。入职完成后招聘需求的「已入职」人数会加1',
-        )
-        .optional(),
-      operator_id: z.string().describe('操作人ID，与入参 `user_id_type` 类型一致').optional(),
-      onboard_city_code: z
-        .string()
-        .describe(
-          '候选人办公地点 ID，将用于候选人内推奖规则判断，数据源可通过接口[获取地址列表]获取',
-        )
-        .optional(),
-      department: z
-        .string()
-        .describe(
-          '候选人入职部门 ID ，将用于候选人内推奖规则判断，可通过接口[搜索部门]获取，与入参 `department_id_type ` 类型一致',
-        )
-        .optional(),
-      leader: z
-        .string()
-        .describe('候选人直属上级 UserID ，将用于候选人内推奖规则判断，与入参 `user_id_type` 类型一致')
-        .optional(),
-      sequence: z
-        .string()
-        .describe('候选人序列 ID ，将用于候选人内推奖规则判断，与入参 `job_family_id_type ` 类型一致')
-        .optional(),
-      level: z
-        .string()
-        .describe('候选人职级 ID ，将用于候选人内推奖规则判断，与入参 `job_level_id_type ` 类型一致')
-        .optional(),
-      employee_type: z
-        .string()
-        .describe('候选人入职人员类型 ID，将用于候选人内推奖规则判断，与入参 `employee_type_id_type ` 类型一致')
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_admin_department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(以 open_department_id 来标识部门由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),people_admin_department_id(以 people_admin_department_id 来标识部门)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[「获取租户职级列表」]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[「获取租户序列列表」]接口获取)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[「查询人员类型」]接口获取)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      application_id: z
-        .string()
-        .describe(
-          '投递ID，可通过接口 [获取投递列表] 获取',
-        ),
-    }),
+    data: z
+      .object({
+        actual_onboard_time: z
+          .number()
+          .describe('实际入职时间，毫秒时间戳（int64类型），不能晚于当前时间，不传则默认为当前时间')
+          .optional(),
+        expected_conversion_time: z
+          .number()
+          .describe('预期转正时间，毫秒时间戳（int64类型），不传则默认为0')
+          .optional(),
+        job_requirement_id: z
+          .string()
+          .describe(
+            '招聘需求 ID，可通过接口 [获取招聘需求列表] 获取。是否必须传入取决于管理员在系统后台「招聘需求关联设置」的配置。入职完成后招聘需求的「已入职」人数会加1',
+          )
+          .optional(),
+        operator_id: z.string().describe('操作人ID，与入参 `user_id_type` 类型一致').optional(),
+        onboard_city_code: z
+          .string()
+          .describe('候选人办公地点 ID，将用于候选人内推奖规则判断，数据源可通过接口[获取地址列表]获取')
+          .optional(),
+        department: z
+          .string()
+          .describe(
+            '候选人入职部门 ID ，将用于候选人内推奖规则判断，可通过接口[搜索部门]获取，与入参 `department_id_type ` 类型一致',
+          )
+          .optional(),
+        leader: z
+          .string()
+          .describe('候选人直属上级 UserID ，将用于候选人内推奖规则判断，与入参 `user_id_type` 类型一致')
+          .optional(),
+        sequence: z
+          .string()
+          .describe('候选人序列 ID ，将用于候选人内推奖规则判断，与入参 `job_family_id_type ` 类型一致')
+          .optional(),
+        level: z
+          .string()
+          .describe('候选人职级 ID ，将用于候选人内推奖规则判断，与入参 `job_level_id_type ` 类型一致')
+          .optional(),
+        employee_type: z
+          .string()
+          .describe('候选人入职人员类型 ID，将用于候选人内推奖规则判断，与入参 `employee_type_id_type ` 类型一致')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_admin_department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(以 open_department_id 来标识部门由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),people_admin_department_id(以 people_admin_department_id 来标识部门)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[「获取租户职级列表」]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[「获取租户序列列表」]接口获取)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[「查询人员类型」]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ application_id: z.string().describe('投递ID，可通过接口 [获取投递列表] 获取') }),
   },
 };
 export const hireV1ApplicationTransferStage = {
@@ -825,23 +758,11 @@ export const hireV1ApplicationTransferStage = {
   sdkName: 'hire.v1.application.transferStage',
   path: '/open-apis/hire/v1/applications/:application_id/transfer_stage',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-候选人管理-投递流程-投递管理-转移投递阶段-根据投递 ID 和投递阶段 ID 转移投递阶段',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-投递管理-转移投递阶段-根据投递 ID 和投递阶段 ID 转移投递阶段',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      stage_id: z
-        .string()
-        .describe(
-          '要转移到的阶段 ID，可通过[获取招聘流程信息]接口获取',
-        ),
-    }),
-    path: z.object({
-      application_id: z
-        .string()
-        .describe(
-          '投递 ID，可通过[获取投递列表]接口获取',
-        ),
-    }),
+    data: z.object({ stage_id: z.string().describe('要转移到的阶段 ID，可通过[获取招聘流程信息]接口获取') }),
+    path: z.object({ application_id: z.string().describe('投递 ID，可通过[获取投递列表]接口获取') }),
   },
 };
 export const hireV1AttachmentGet = {
@@ -854,14 +775,16 @@ export const hireV1AttachmentGet = {
     '[Feishu/Lark]-招聘-附件-获取附件信息-根据附件 ID 和附件类型获取招聘系统中附件的信息，比如附件名称、附件创建时间、附件下载地址等',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      type: z
-        .number()
-        .describe(
-          '附件类型 Options:1(附件简历 简历附件，人才上的简历附件。),2(候选人作品 作品附件，人才上的作品附件。),3(自定义附件 通用附件，通过[创建附件]、[获取 Offer 详情]、[获取 Offer 信息]接口获取。)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        type: z
+          .number()
+          .describe(
+            '附件类型 Options:1(附件简历 简历附件，人才上的简历附件。),2(候选人作品 作品附件，人才上的作品附件。),3(自定义附件 通用附件，通过[创建附件]、[获取 Offer 详情]、[获取 Offer 信息]接口获取。)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       attachment_id: z
         .string()
@@ -882,11 +805,7 @@ export const hireV1AttachmentPreview = {
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
-      attachment_id: z
-        .string()
-        .describe(
-          '附件 ID，可通过[获取人才信息]接口返回数据中获取人才简历附件 ID',
-        ),
+      attachment_id: z.string().describe('附件 ID，可通过[获取人才信息]接口返回数据中获取人才简历附件 ID'),
     }),
   },
 };
@@ -896,27 +815,25 @@ export const hireV1BackgroundCheckOrderList = {
   sdkName: 'hire.v1.backgroundCheckOrder.list',
   path: '/open-apis/hire/v1/background_check_orders',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-候选人管理-投递流程-背调-获取背调信息列表-根据投递 ID 或背调更新时间批量获取背调订单信息',
+  description:
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-背调-获取背调信息列表-根据投递 ID 或背调更新时间批量获取背调订单信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-      application_id: z
-        .string()
-        .describe(
-          '投递 ID。可通过[获取投递列表]接口获取',
-        )
-        .optional(),
-      update_start_time: z.string().describe('最早更新时间。毫秒时间戳').optional(),
-      update_end_time: z.string().describe('最晚更新时间。毫秒时间戳').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+        application_id: z.string().describe('投递 ID。可通过[获取投递列表]接口获取').optional(),
+        update_start_time: z.string().describe('最早更新时间。毫秒时间戳').optional(),
+        update_end_time: z.string().describe('最晚更新时间。毫秒时间戳').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1DiversityInclusionSearch = {
@@ -926,23 +843,20 @@ export const hireV1DiversityInclusionSearch = {
   path: '/open-apis/hire/v1/applications/diversity_inclusions/search',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-投递管理-获取申请表附加信息-获取候选人的申请表附加信息。支持通过投递 ID 或者人才 ID 进行查询',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-投递管理-获取申请表附加信息-获取候选人的申请表附加信息。支持通过投递 ID 或者人才 ID 进行查询',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      talent_ids: z
-        .array(z.string())
-        .describe(
-          '人才 ID 列表，如何获取人才 ID 请参考[获取人才列表]**特殊说明：**- 当通过人才 ID 列表查询时会返回对应人才最新投递的申请表附加信息。- 当人才 ID 列表或投递 ID 列表同时存在将以人才 ID 列表为准。- 当人才 ID 列表和投递 ID 列表都没有填写时则返回空数据',
-        )
-        .optional(),
-      application_ids: z
-        .array(z.string())
-        .describe(
-          '投递 ID 列表，如何获取投递 ID 请参考[获取投递列表]',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        talent_ids: z
+          .array(z.string())
+          .describe(
+            '人才 ID 列表，如何获取人才 ID 请参考[获取人才列表]**特殊说明：**- 当通过人才 ID 列表查询时会返回对应人才最新投递的申请表附加信息。- 当人才 ID 列表或投递 ID 列表同时存在将以人才 ID 列表为准。- 当人才 ID 列表和投递 ID 列表都没有填写时则返回空数据',
+          )
+          .optional(),
+        application_ids: z.array(z.string()).describe('投递 ID 列表，如何获取投递 ID 请参考[获取投递列表]').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1EcoAccountCustomFieldBatchDelete = {
@@ -1052,13 +966,7 @@ export const hireV1EcoBackgroundCheckCustomFieldBatchDelete = {
   description: '[Feishu/Lark]-招聘-生态对接-背调-删除背调自定义字段-删除用户在发起背调时展示的表单自定义字段',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      account_id: z
-        .string()
-        .describe(
-          '背调账号 ID，可通过[账号绑定]事件获取',
-        ),
-    }),
+    data: z.object({ account_id: z.string().describe('背调账号 ID，可通过[账号绑定]事件获取') }),
   },
 };
 export const hireV1EcoBackgroundCheckCustomFieldBatchUpdate = {
@@ -1071,11 +979,7 @@ export const hireV1EcoBackgroundCheckCustomFieldBatchUpdate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      account_id: z
-        .string()
-        .describe(
-          '背调账号 ID，可通过[账号绑定]事件获取',
-        ),
+      account_id: z.string().describe('背调账号 ID，可通过[账号绑定]事件获取'),
       custom_field_list: z
         .array(
           z.object({
@@ -1115,9 +1019,7 @@ export const hireV1EcoBackgroundCheckCustomFieldBatchUpdate = {
               .optional(),
           }),
         )
-        .describe(
-          '自定义字段列表。**注意**：列表长度须与[创建背调自定义字段]时传入的一致',
-        ),
+        .describe('自定义字段列表。**注意**：列表长度须与[创建背调自定义字段]时传入的一致'),
     }),
   },
 };
@@ -1132,11 +1034,7 @@ export const hireV1EcoBackgroundCheckCustomFieldCreate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      account_id: z
-        .string()
-        .describe(
-          '背调账号 ID，可在[账号绑定]事件中获取',
-        ),
+      account_id: z.string().describe('背调账号 ID，可在[账号绑定]事件中获取'),
       custom_field_list: z
         .array(
           z.object({
@@ -1193,11 +1091,7 @@ export const hireV1EcoBackgroundCheckPackageBatchDelete = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      account_id: z
-        .string()
-        .describe(
-          '背调账号 ID，可通过[账号绑定]事件获取',
-        ),
+      account_id: z.string().describe('背调账号 ID，可通过[账号绑定]事件获取'),
       package_id_list: z.array(z.string()).describe('要删除的套餐 ID 列表。删除套餐不影响已安排的背调').optional(),
       additional_item_id_list: z
         .array(z.string())
@@ -1217,11 +1111,7 @@ export const hireV1EcoBackgroundCheckPackageBatchUpdate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      account_id: z
-        .string()
-        .describe(
-          '背调账号 ID，可通过[账号绑定]事件获取',
-        ),
+      account_id: z.string().describe('背调账号 ID，可通过[账号绑定]事件获取'),
       package_list: z
         .array(
           z.object({
@@ -1255,11 +1145,7 @@ export const hireV1EcoBackgroundCheckPackageCreate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      account_id: z
-        .string()
-        .describe(
-          '背调账号 ID，可通过[账号绑定]事件获取',
-        ),
+      account_id: z.string().describe('背调账号 ID，可通过[账号绑定]事件获取'),
       package_list: z
         .array(
           z.object({
@@ -1292,13 +1178,7 @@ export const hireV1EcoBackgroundCheckCancel = {
     '[Feishu/Lark]-招聘-生态对接-背调-终止背调订单-调用此接口将会将背调订单状态变成已终止，已终止订单将将无法通过[更新背调订单进度]和[回传背调订单的最终结果]修改订单进度和最终结果。 调用此接口前，建议先调用[更新背调订单进度]接口将订单进度更新为「已终止」',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      background_check_id: z
-        .string()
-        .describe(
-          '背调 ID。可通过[创建背调]事件获取',
-        ),
-    }),
+    data: z.object({ background_check_id: z.string().describe('背调 ID。可通过[创建背调]事件获取') }),
   },
 };
 export const hireV1EcoBackgroundCheckUpdateProgress = {
@@ -1312,11 +1192,7 @@ export const hireV1EcoBackgroundCheckUpdateProgress = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      background_check_id: z
-        .string()
-        .describe(
-          '背调 ID。可通过[创建背调]事件获取',
-        ),
+      background_check_id: z.string().describe('背调 ID。可通过[创建背调]事件获取'),
       stage_id: z.string().describe('阶段 ID。同一背调订单此 ID 不能重复，由调用方自定义'),
       stage_en_name: z.string().describe('背调阶段英文名称').optional(),
       stage_name: z.string().describe('背调阶段名称'),
@@ -1356,11 +1232,7 @@ export const hireV1EcoBackgroundCheckUpdateResult = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      background_check_id: z
-        .string()
-        .describe(
-          '背调 ID。可通过[创建背调]事件获取',
-        ),
+      background_check_id: z.string().describe('背调 ID。可通过[创建背调]事件获取'),
       result: z.string().describe('背调结果'),
       result_time: z.string().describe('背调结果时间。毫秒时间戳'),
       report_file_list: z
@@ -1394,16 +1266,8 @@ export const hireV1EcoExamPaperBatchDelete = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      account_id: z
-        .string()
-        .describe(
-          '笔试账号 ID，可通过[账号绑定]事件获取',
-        ),
-      paper_id_list: z
-        .array(z.string())
-        .describe(
-          '试卷 ID 列表。为通过[创建试卷列表]传入的 ID',
-        ),
+      account_id: z.string().describe('笔试账号 ID，可通过[账号绑定]事件获取'),
+      paper_id_list: z.array(z.string()).describe('试卷 ID 列表。为通过[创建试卷列表]传入的 ID'),
     }),
   },
 };
@@ -1418,19 +1282,11 @@ export const hireV1EcoExamPaperBatchUpdate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      account_id: z
-        .string()
-        .describe(
-          '笔试账号 ID，可通过[账号绑定]事件获取',
-        ),
+      account_id: z.string().describe('笔试账号 ID，可通过[账号绑定]事件获取'),
       paper_list: z
         .array(
           z.object({
-            id: z
-              .string()
-              .describe(
-                '试卷 ID，为通过[创建试卷列表]传入的 ID',
-              ),
+            id: z.string().describe('试卷 ID，为通过[创建试卷列表]传入的 ID'),
             name: z.string().describe('试卷名称**注意**：试卷名称长度应不超过`255`字符，超出部分将被截断'),
             duration: z.number().describe('笔试时长（分钟）').optional(),
             question_count: z.number().describe('试卷题目数量').optional(),
@@ -1463,11 +1319,7 @@ export const hireV1EcoExamPaperCreate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      account_id: z
-        .string()
-        .describe(
-          '笔试账号 ID，可通过[账号绑定]事件获取',
-        ),
+      account_id: z.string().describe('笔试账号 ID，可通过[账号绑定]事件获取'),
       paper_list: z
         .array(
           z.object({
@@ -1514,13 +1366,7 @@ export const hireV1EcoExamLoginInfo = {
         })
         .describe('笔试作答信息'),
     }),
-    path: z.object({
-      exam_id: z
-        .string()
-        .describe(
-          '笔试 ID。可通过[创建笔试]事件获取',
-        ),
-    }),
+    path: z.object({ exam_id: z.string().describe('笔试 ID。可通过[创建笔试]事件获取') }),
   },
 };
 export const hireV1EcoExamUpdateResult = {
@@ -1563,13 +1409,7 @@ export const hireV1EcoExamUpdateResult = {
         .describe('详细评价结果')
         .optional(),
     }),
-    path: z.object({
-      exam_id: z
-        .string()
-        .describe(
-          '笔试 ID，可通过[创建笔试]事件获取',
-        ),
-    }),
+    path: z.object({ exam_id: z.string().describe('笔试 ID，可通过[创建笔试]事件获取') }),
   },
 };
 export const hireV1EhrImportTaskPatch = {
@@ -1579,7 +1419,7 @@ export const hireV1EhrImportTaskPatch = {
   path: '/open-apis/hire/v1/ehr_import_tasks/:ehr_import_task_id',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-入职-更新 e-HR 导入任务结果-在处理完[导入 e-HR]事件后，可调用该接口，更新 e-HR 导入任务结果',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-入职-更新 e-HR 导入任务结果-在处理完[导入 e-HR]事件后，可调用该接口，更新 e-HR 导入任务结果',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1595,9 +1435,7 @@ export const hireV1EhrImportTaskPatch = {
     path: z.object({
       ehr_import_task_id: z
         .string()
-        .describe(
-          '导入任务 ID，任务 ID 来源于导入 e-HR 事件中的 task_id，详情参考[导入 e-HR]',
-        ),
+        .describe('导入任务 ID，任务 ID 来源于导入 e-HR 事件中的 task_id，详情参考[导入 e-HR]'),
     }),
   },
 };
@@ -1607,43 +1445,39 @@ export const hireV1EmployeeGet = {
   sdkName: 'hire.v1.employee.get',
   path: '/open-apis/hire/v1/employees/:employee_id',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-候选人管理-投递流程-入职-通过员工 ID 获取入职信息-通过员工 ID 获取入职信息',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-入职-通过员工 ID 获取入职信息-通过员工 ID 获取入职信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_admin_department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(由系统自动生成的部门 ID， ID前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内，department_id 具有唯一性。),people_admin_department_id(以 people_admin_department_id 来标识部门，该 ID 类型即将下线，不推荐使用)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      employee_id: z
-        .string()
-        .describe(
-          '员工ID，可通过[通过投递 ID 获取入职信息]接口获取',
-        ),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_admin_department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(由系统自动生成的部门 ID， ID前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内，department_id 具有唯一性。),people_admin_department_id(以 people_admin_department_id 来标识部门，该 ID 类型即将下线，不推荐使用)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ employee_id: z.string().describe('员工ID，可通过[通过投递 ID 获取入职信息]接口获取') }),
   },
 };
 export const hireV1EmployeeGetByApplication = {
@@ -1652,15 +1486,11 @@ export const hireV1EmployeeGetByApplication = {
   sdkName: 'hire.v1.employee.getByApplication',
   path: '/open-apis/hire/v1/employees/get_by_application',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-候选人管理-投递流程-入职-通过投递 ID 获取入职信息-通过投递 ID 获取员工入职信息',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-入职-通过投递 ID 获取入职信息-通过投递 ID 获取员工入职信息',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
-      application_id: z
-        .string()
-        .describe(
-          '投递ID，可通过[获取投递列表]接口获取',
-        ),
+      application_id: z.string().describe('投递ID，可通过[获取投递列表]接口获取'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
       department_id_type: z
         .enum(['open_department_id', 'department_id', 'people_admin_department_id'])
@@ -1695,7 +1525,8 @@ export const hireV1EmployeePatch = {
   sdkName: 'hire.v1.employee.patch',
   path: '/open-apis/hire/v1/employees/:employee_id',
   httpMethod: 'PATCH',
-  description: '[Feishu/Lark]-候选人管理-投递流程-入职-更新员工状态-根据员工 ID 更新员工招聘系统内的转正、离职状态',
+  description:
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-入职-更新员工状态-根据员工 ID 更新员工招聘系统内的转正、离职状态',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1716,40 +1547,36 @@ export const hireV1EmployeePatch = {
         .describe('离职信息，操作类型operation为`离职`时必填')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_admin_department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(以 open_department_id 来标识部门由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),people_admin_department_id(以 people_admin_department_id 来标识部门)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过 [获取租户职级列表]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过 [获取租户序列列表]接口获取)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过 [查询人员类型]接口获取)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      employee_id: z
-        .string()
-        .describe(
-          '员工ID，请参考：[通过投递 ID 获取入职信息]',
-        ),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_admin_department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(以 open_department_id 来标识部门由系统自动生成的部门 ID，ID 前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。),people_admin_department_id(以 people_admin_department_id 来标识部门)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过 [获取租户职级列表]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过 [获取租户序列列表]接口获取)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过 [查询人员类型]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ employee_id: z.string().describe('员工ID，请参考：[通过投递 ID 获取入职信息]') }),
   },
 };
 export const hireV1EvaluationTaskList = {
@@ -1786,27 +1613,24 @@ export const hireV1EvaluationList = {
   path: '/open-apis/hire/v1/evaluations',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-评估-获取简历评估信息列表-批量获取简历评估信息，包含评估人、评估结论、评估详情等信息。支持按照投递 ID、更新时间来进行筛选',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-评估-获取简历评估信息列表-批量获取简历评估信息，包含评估人、评估结论、评估详情等信息。支持按照投递 ID、更新时间来进行筛选',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('每页获取记录数量，最大100').optional(),
-      application_id: z
-        .string()
-        .describe(
-          '投递 ID，可通过[获取投递列表]接口获取',
-        )
-        .optional(),
-      update_start_time: z.string().describe('最早更新时间，毫秒时间戳').optional(),
-      update_end_time: z.string().describe('最晚更新时间，毫秒时间戳').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('每页获取记录数量，最大100').optional(),
+        application_id: z.string().describe('投递 ID，可通过[获取投递列表]接口获取').optional(),
+        update_start_time: z.string().describe('最早更新时间，毫秒时间戳').optional(),
+        update_end_time: z.string().describe('最晚更新时间，毫秒时间戳').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExamMarkingTaskList = {
@@ -1839,28 +1663,21 @@ export const hireV1ExamCreate = {
   sdkName: 'hire.v1.exam.create',
   path: '/open-apis/hire/v1/exams',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-候选人管理-投递流程-笔试-添加笔试结果-根据投递 ID 添加该投递下的笔试结果',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-笔试-添加笔试结果-根据投递 ID 添加该投递下的笔试结果',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      application_id: z
-        .string()
-        .describe(
-          '投递 ID，可通过[获取投递列表]获取',
-        ),
+      application_id: z.string().describe('投递 ID，可通过[获取投递列表]获取'),
       exam_resource_name: z.string().describe('试卷名称'),
       score: z.number().describe('笔试分数（精度为小数点后 1 位）'),
-      uuid: z
-        .string()
-        .describe(
-          '报告附件 ID，可通过[创建附件]上传报告附件，生成对应附件 ID',
-        )
-        .optional(),
+      uuid: z.string().describe('报告附件 ID，可通过[创建附件]上传报告附件，生成对应附件 ID').optional(),
       operator_id: z.string().describe('添加人用户 id，与入参`user_id_type` 保持一致'),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalApplicationCreate = {
@@ -1870,7 +1687,7 @@ export const hireV1ExternalApplicationCreate = {
   path: '/open-apis/hire/v1/external_applications',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-获取候选人-外部系统信息-外部投递信息-创建外部投递-创建外部投递，可用于导入来自其他系统的投递信息',
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部投递信息-创建外部投递-创建外部投递，可用于导入来自其他系统的投递信息',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1887,11 +1704,7 @@ export const hireV1ExternalApplicationCreate = {
       job_title: z.string().describe('职位名称').optional(),
       resume_source: z.string().describe('简历来源').optional(),
       stage: z.string().describe('阶段名称').optional(),
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID，可通过[获取人才列表]接口获取',
-        ),
+      talent_id: z.string().describe('人才 ID，可通过[获取人才列表]接口获取'),
       termination_reason: z.string().describe('终止原因').optional(),
       delivery_type: z
         .number()
@@ -1911,25 +1724,15 @@ export const hireV1ExternalApplicationDelete = {
   sdkName: 'hire.v1.externalApplication.delete',
   path: '/open-apis/hire/v1/external_applications/:external_application_id',
   httpMethod: 'DELETE',
-  description: '[Feishu/Lark]-获取候选人-外部系统信息-外部投递信息-删除外部投递-根据外部投递 ID 删除外部投递',
+  description: '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部投递信息-删除外部投递-根据外部投递 ID 删除外部投递',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID，可通过[获取人才列表]接口获取',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      external_application_id: z
-        .string()
-        .describe(
-          '外部投递 ID，可通过[查询外部投递列表]接口获取',
-        )
-        .optional(),
-    }),
+    params: z.object({ talent_id: z.string().describe('人才 ID，可通过[获取人才列表]接口获取').optional() }).optional(),
+    path: z
+      .object({
+        external_application_id: z.string().describe('外部投递 ID，可通过[查询外部投递列表]接口获取').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalApplicationList = {
@@ -1938,15 +1741,12 @@ export const hireV1ExternalApplicationList = {
   sdkName: 'hire.v1.externalApplication.list',
   path: '/open-apis/hire/v1/external_applications',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-获取候选人-外部系统信息-外部投递信息-查询外部投递列表-可根据人才 ID 获取人才外部投递列表',
+  description:
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部投递信息-查询外部投递列表-可根据人才 ID 获取人才外部投递列表',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID，可通过[获取人才列表]接口获取',
-        ),
+      talent_id: z.string().describe('人才 ID，可通过[获取人才列表]接口获取'),
       page_size: z.number().describe('分页大小**默认值：**10').optional(),
       page_token: z
         .string()
@@ -1963,36 +1763,34 @@ export const hireV1ExternalApplicationUpdate = {
   sdkName: 'hire.v1.externalApplication.update',
   path: '/open-apis/hire/v1/external_applications/:external_application_id',
   httpMethod: 'PUT',
-  description: '[Feishu/Lark]-获取候选人-外部系统信息-外部投递信息-更新外部投递-更新外部投递信息',
+  description: '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部投递信息-更新外部投递-更新外部投递信息',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       job_recruitment_type: z
         .number()
-        .describe('职位招聘类型 Options:1(social_recruitment 社招),2(campus_recruitment 校招)')
+        .describe('职位招聘类型。默认值为空 Options:1(social_recruitment 社招),2(campus_recruitment 校招)')
         .optional(),
       job_title: z.string().describe('职位名称').optional(),
       resume_source: z.string().describe('简历来源').optional(),
       stage: z.string().describe('阶段名称').optional(),
+      talent_id: z.string().describe('人才 ID，详情请查看：[获取人才信息]'),
       termination_reason: z.string().describe('终止原因').optional(),
       delivery_type: z
         .number()
         .describe(
-          '投递类型 Options:1(HR_visit HR 寻访),2(candidate_delivery 候选人主动投递),3(talent_recommend 人才推荐),4(others 其他)',
+          '投递类型。默认值为空 Options:1(HR_visit HR 寻访),2(candidate_delivery 候选人主动投递),3(talent_recommend 人才推荐),4(others 其他)',
         )
         .optional(),
       modify_time: z.number().describe('投递在外部系统终止时间，毫秒时间戳（字段类型为：int64）').optional(),
       create_time: z.number().describe('投递在外部系统创建时间，毫秒时间戳（字段类型为：int64）').optional(),
       termination_type: z.string().describe('终止类型').optional(),
     }),
-    path: z.object({
-      external_application_id: z
-        .string()
-        .describe(
-          '外部投递 ID，可通过[查询外部投递列表]接口获取',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        external_application_id: z.string().describe('外部投递 ID，可通过[查询外部投递列表]接口获取').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalBackgroundCheckBatchQuery = {
@@ -2002,30 +1800,29 @@ export const hireV1ExternalBackgroundCheckBatchQuery = {
   path: '/open-apis/hire/v1/external_background_checks/batch_query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-获取候选人-外部系统信息-外部背调信息-查询外部背调列表-可根据外部投递 ID 或外部背调 ID 列表查询外部背调信息',
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部背调信息-查询外部背调列表-可根据外部投递 ID 或外部背调 ID 列表查询外部背调信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      external_background_check_id_list: z
-        .array(z.string())
-        .describe('外部背调 ID 列表，当传此值时，仅以此值作为条件查询，其他查询条件不生效')
-        .optional(),
-    }),
-    params: z.object({
-      external_application_id: z
-        .string()
-        .describe(
-          '外部投递 ID，可通过[查询外部投递列表]接口获取',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        external_background_check_id_list: z
+          .array(z.string())
+          .describe('外部背调 ID 列表，当传此值时，仅以此值作为条件查询，其他查询条件不生效')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        external_application_id: z.string().describe('外部投递 ID，可通过[查询外部投递列表]接口获取').optional(),
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalBackgroundCheckCreate = {
@@ -2035,7 +1832,7 @@ export const hireV1ExternalBackgroundCheckCreate = {
   path: '/open-apis/hire/v1/external_background_checks',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-获取候选人-外部系统信息-外部背调信息-创建外部背调-创建外部背调，可用于导入来自其他系统的背调信息',
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部背调信息-创建外部背调-创建外部背调，可用于导入来自其他系统的背调信息',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2045,20 +1842,11 @@ export const hireV1ExternalBackgroundCheckCreate = {
           '外部系统背调主键 （仅用于幂等）- 若不传此值，则不进行幂等校验- 若传此值，则用于幂等校验，同一`external_id` 24小时内仅可创建一次',
         )
         .optional(),
-      external_application_id: z
-        .string()
-        .describe(
-          '外部投递 ID，可通过[查询外部投递列表]接口获取',
-        ),
+      external_application_id: z.string().describe('外部投递 ID，可通过[查询外部投递列表]接口获取'),
       date: z.number().describe('背调日期，毫秒时间戳（字段类型为：int64）').optional(),
       name: z.string().describe('背调名称').optional(),
       result: z.string().describe('背调结果').optional(),
-      attachment_id_list: z
-        .array(z.string())
-        .describe(
-          '背调附件 ID 列表，可通过[创建附件]接口返回',
-        )
-        .optional(),
+      attachment_id_list: z.array(z.string()).describe('背调附件 ID 列表，可通过[创建附件]接口返回').optional(),
     }),
   },
 };
@@ -2068,15 +1856,11 @@ export const hireV1ExternalBackgroundCheckDelete = {
   sdkName: 'hire.v1.externalBackgroundCheck.delete',
   path: '/open-apis/hire/v1/external_background_checks/:external_background_check_id',
   httpMethod: 'DELETE',
-  description: '[Feishu/Lark]-获取候选人-外部系统信息-外部背调信息-删除外部背调-根据外部背调 ID 删除外部背调',
+  description: '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部背调信息-删除外部背调-根据外部背调 ID 删除外部背调',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
-      external_background_check_id: z
-        .string()
-        .describe(
-          '外部背调 ID，可通过[查询外部背调列表]接口获取',
-        ),
+      external_background_check_id: z.string().describe('外部背调 ID，可通过[查询外部背调列表]接口获取'),
     }),
   },
 };
@@ -2086,31 +1870,18 @@ export const hireV1ExternalBackgroundCheckUpdate = {
   sdkName: 'hire.v1.externalBackgroundCheck.update',
   path: '/open-apis/hire/v1/external_background_checks/:external_background_check_id',
   httpMethod: 'PUT',
-  description: '[Feishu/Lark]-获取候选人-外部系统信息-外部背调信息-更新外部背调-更新外部背调信息',
+  description: '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部背调信息-更新外部背调-更新外部背调信息',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      external_application_id: z
-        .string()
-        .describe(
-          '外部投递 ID，可通过[查询外部投递列表]接口获取',
-        ),
+      external_application_id: z.string().describe('外部投递 ID，可通过[查询外部投递列表]接口获取'),
       date: z.number().describe('背调日期，毫秒时间戳（字段类型为：int64）').optional(),
       name: z.string().describe('背调名称').optional(),
       result: z.string().describe('背调结果').optional(),
-      attachment_id_list: z
-        .array(z.string())
-        .describe(
-          '背调附件 ID 列表，可通过[创建附件]接口返回',
-        )
-        .optional(),
+      attachment_id_list: z.array(z.string()).describe('背调附件 ID 列表，可通过[创建附件]接口返回').optional(),
     }),
     path: z.object({
-      external_background_check_id: z
-        .string()
-        .describe(
-          '外部背调 ID，可通过[查询外部背调列表]接口获取',
-        ),
+      external_background_check_id: z.string().describe('外部背调 ID，可通过[查询外部背调列表]接口获取'),
     }),
   },
 };
@@ -2121,7 +1892,7 @@ export const hireV1ExternalInterviewAssessmentCreate = {
   path: '/open-apis/hire/v1/external_interview_assessments',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-获取候选人-外部系统信息-外部面试信息-创建外部面评-导入来自其他系统的面评信息，创建为外部面评',
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部面试信息-创建外部面评-导入来自其他系统的面评信息，创建为外部面评',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2154,31 +1925,38 @@ export const hireV1ExternalInterviewAssessmentPatch = {
   path: '/open-apis/hire/v1/external_interview_assessments/:external_interview_assessment_id',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-获取候选人-外部系统信息-外部面试信息-更新外部面评-更新外部面评部分字段，没有填写的字段不会被更新',
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部面试信息-更新外部面评-更新外部面评部分字段，没有填写的字段不会被更新',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      username: z.string().describe('面试官姓名').optional(),
-      conclusion: z.number().describe('面试结果 Options:1(Fail 不通过),2(Pass 通过),3(toBeDetermined 待定)').optional(),
-      assessment_dimension_list: z
-        .array(
-          z.object({
-            score: z.number().describe('打分题分数（当题目类型为「打分题」时使用）').optional(),
-            option: z.string().describe('单选选项（当题目类型为「单选题」时使用）').optional(),
-            options: z.array(z.string()).describe('多选选项（当题目类型为「多选题」时使用）').optional(),
-            content: z.string().describe('描述内容（当题目类型为「描述题」时使用）').optional(),
-            assessment_type: z
-              .number()
-              .describe('题目类型 Options:1(Score 打分题),2(singleChoice 单选题),3(text 描述题),4(multiChoice 多选题)')
-              .optional(),
-            title: z.string().describe('题目标题').optional(),
-            description: z.string().describe('题目描述').optional(),
-          }),
-        )
-        .describe('评价维度列表')
-        .optional(),
-      content: z.string().describe('综合记录').optional(),
-    }),
+    data: z
+      .object({
+        username: z.string().describe('面试官姓名').optional(),
+        conclusion: z
+          .number()
+          .describe('面试结果 Options:1(Fail 不通过),2(Pass 通过),3(toBeDetermined 待定)')
+          .optional(),
+        assessment_dimension_list: z
+          .array(
+            z.object({
+              score: z.number().describe('打分题分数（当题目类型为「打分题」时使用）').optional(),
+              option: z.string().describe('单选选项（当题目类型为「单选题」时使用）').optional(),
+              options: z.array(z.string()).describe('多选选项（当题目类型为「多选题」时使用）').optional(),
+              content: z.string().describe('描述内容（当题目类型为「描述题」时使用）').optional(),
+              assessment_type: z
+                .number()
+                .describe(
+                  '题目类型 Options:1(Score 打分题),2(singleChoice 单选题),3(text 描述题),4(multiChoice 多选题)',
+                )
+                .optional(),
+              title: z.string().describe('题目标题').optional(),
+              description: z.string().describe('题目描述').optional(),
+            }),
+          )
+          .describe('评价维度列表')
+          .optional(),
+        content: z.string().describe('综合记录').optional(),
+      })
+      .optional(),
     path: z.object({ external_interview_assessment_id: z.string().describe('外部面评 ID') }),
   },
 };
@@ -2189,30 +1967,29 @@ export const hireV1ExternalInterviewBatchQuery = {
   path: '/open-apis/hire/v1/external_interviews/batch_query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-获取候选人-外部系统信息-外部面试信息-查询外部面试列表-可根据外部投递 ID 或外部面试 ID 列表查询外部面试信息',
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部面试信息-查询外部面试列表-可根据外部投递 ID 或外部面试 ID 列表查询外部面试信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      external_interview_id_list: z
-        .array(z.string())
-        .describe('外部面试 ID 列表，当传此值时，仅以此值作为条件查询，其他查询条件不生效')
-        .optional(),
-    }),
-    params: z.object({
-      external_application_id: z
-        .string()
-        .describe(
-          '外部投递 ID，可通过[查询外部投递列表]接口获取',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        external_interview_id_list: z
+          .array(z.string())
+          .describe('外部面试 ID 列表，当传此值时，仅以此值作为条件查询，其他查询条件不生效')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        external_application_id: z.string().describe('外部投递 ID，可通过[查询外部投递列表]接口获取').optional(),
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalInterviewCreate = {
@@ -2222,7 +1999,7 @@ export const hireV1ExternalInterviewCreate = {
   path: '/open-apis/hire/v1/external_interviews',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-获取候选人-外部系统信息-外部面试信息-创建外部面试-创建外部面试，可用于导入来自其他系统的面试信息',
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部面试信息-创建外部面试-创建外部面试，可用于导入来自其他系统的面试信息',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2232,11 +2009,7 @@ export const hireV1ExternalInterviewCreate = {
           '外部系统面试主键 （仅用于幂等）- 若不传此值，则不进行幂等校验- 若传此值，则用于幂等校验，同一`external_id` 24小时内仅可创建一次',
         )
         .optional(),
-      external_application_id: z
-        .string()
-        .describe(
-          '外部投递 ID，可通过[查询外部投递列表]接口获取',
-        ),
+      external_application_id: z.string().describe('外部投递 ID，可通过[查询外部投递列表]接口获取'),
       participate_status: z
         .number()
         .describe('参与状态 Options:1(NotStart 未参与),2(Participated 参与),3(NotPaticipated 爽约)')
@@ -2284,16 +2057,10 @@ export const hireV1ExternalInterviewDelete = {
   sdkName: 'hire.v1.externalInterview.delete',
   path: '/open-apis/hire/v1/external_interviews/:external_interview_id',
   httpMethod: 'DELETE',
-  description: '[Feishu/Lark]-获取候选人-外部系统信息-外部面试信息-删除外部面试-根据外部面试 ID 删除外部面试',
+  description: '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部面试信息-删除外部面试-根据外部面试 ID 删除外部面试',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      external_interview_id: z
-        .string()
-        .describe(
-          '外部面试 ID，可通过[查询外部面试列表]接口获取',
-        ),
-    }),
+    path: z.object({ external_interview_id: z.string().describe('外部面试 ID，可通过[查询外部面试列表]接口获取') }),
   },
 };
 export const hireV1ExternalInterviewUpdate = {
@@ -2302,15 +2069,11 @@ export const hireV1ExternalInterviewUpdate = {
   sdkName: 'hire.v1.externalInterview.update',
   path: '/open-apis/hire/v1/external_interviews/:external_interview_id',
   httpMethod: 'PUT',
-  description: '[Feishu/Lark]-获取候选人-外部系统信息-外部面试信息-更新外部面试-更新外部面试信息',
+  description: '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部面试信息-更新外部面试-更新外部面试信息',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      external_application_id: z
-        .string()
-        .describe(
-          '外部投递 ID，可通过[查询外部投递列表]接口获取',
-        ),
+      external_application_id: z.string().describe('外部投递 ID，可通过[查询外部投递列表]接口获取'),
       participate_status: z
         .number()
         .describe('参与状态 Options:1(NotStart 未参与),2(Participated 参与),3(NotPaticipated 爽约)')
@@ -2350,13 +2113,7 @@ export const hireV1ExternalInterviewUpdate = {
         .describe('面试评价列表')
         .optional(),
     }),
-    path: z.object({
-      external_interview_id: z
-        .string()
-        .describe(
-          '外部面试 ID，可通过[查询外部面试列表]接口获取',
-        ),
-    }),
+    path: z.object({ external_interview_id: z.string().describe('外部面试 ID，可通过[查询外部面试列表]接口获取') }),
   },
 };
 export const hireV1ExternalOfferBatchQuery = {
@@ -2366,30 +2123,29 @@ export const hireV1ExternalOfferBatchQuery = {
   path: '/open-apis/hire/v1/external_offers/batch_query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-获取候选人-外部系统信息-外部 Offer 信息-查询外部 Offer 列表-可根据外部投递 ID 或外部 Offer ID 列表查询外部 Offer 信息',
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部 Offer 信息-查询外部 Offer 列表-可根据外部投递 ID 或外部 Offer ID 列表查询外部 Offer 信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      external_offer_id_list: z
-        .array(z.string())
-        .describe('外部 Offer ID 列表，当传此值时，仅以此值作为条件查询，其他查询条件不生效')
-        .optional(),
-    }),
-    params: z.object({
-      external_application_id: z
-        .string()
-        .describe(
-          '外部投递 ID，可通过[查询外部投递列表]接口获取',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        external_offer_id_list: z
+          .array(z.string())
+          .describe('外部 Offer ID 列表，当传此值时，仅以此值作为条件查询，其他查询条件不生效')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        external_application_id: z.string().describe('外部投递 ID，可通过[查询外部投递列表]接口获取').optional(),
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalOfferCreate = {
@@ -2399,7 +2155,7 @@ export const hireV1ExternalOfferCreate = {
   path: '/open-apis/hire/v1/external_offers',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-获取候选人-外部系统信息-外部 Offer 信息-创建外部 Offer-创建外部 Offer，可用于导入来自其他系统的 Offer 信息',
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部 Offer 信息-创建外部 Offer-创建外部 Offer，可用于导入来自其他系统的 Offer 信息',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2409,20 +2165,11 @@ export const hireV1ExternalOfferCreate = {
           '外部系统 Offer 主键（仅用于幂等）- 若不传此值，则不进行幂等校验- 若传此值，则用于幂等校验，同一`external_id` 24小时内仅可创建一次',
         )
         .optional(),
-      external_application_id: z
-        .string()
-        .describe(
-          '外部投递 ID，可通过[查询外部投递列表]接口获得',
-        ),
+      external_application_id: z.string().describe('外部投递 ID，可通过[查询外部投递列表]接口获得'),
       biz_create_time: z.string().describe('Offer 创建时间，毫秒时间戳').optional(),
       owner: z.string().describe('Offer 负责人姓名').optional(),
       offer_status: z.string().describe('Offer 状态').optional(),
-      attachment_id_list: z
-        .array(z.string())
-        .describe(
-          'Offer 详情附件 ID 列表，可通过[创建附件]接口返回',
-        )
-        .optional(),
+      attachment_id_list: z.array(z.string()).describe('Offer 详情附件 ID 列表，可通过[创建附件]接口返回').optional(),
     }),
   },
 };
@@ -2432,17 +2179,15 @@ export const hireV1ExternalOfferDelete = {
   sdkName: 'hire.v1.externalOffer.delete',
   path: '/open-apis/hire/v1/external_offers/:external_offer_id',
   httpMethod: 'DELETE',
-  description: '[Feishu/Lark]-获取候选人-外部系统信息-外部 Offer 信息-删除外部 Offer-根据外部 Offer ID 删除外部 Offer',
+  description:
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部 Offer 信息-删除外部 Offer-根据外部 Offer ID 删除外部 Offer',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      external_offer_id: z
-        .string()
-        .describe(
-          '外部 Offer ID，可通过[查询外部 Offer 列表]接口获取',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        external_offer_id: z.string().describe('外部 Offer ID，可通过[查询外部 Offer 列表]接口获取').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalOfferUpdate = {
@@ -2451,33 +2196,21 @@ export const hireV1ExternalOfferUpdate = {
   sdkName: 'hire.v1.externalOffer.update',
   path: '/open-apis/hire/v1/external_offers/:external_offer_id',
   httpMethod: 'PUT',
-  description: '[Feishu/Lark]-获取候选人-外部系统信息-外部 Offer 信息-更新外部 Offer-更新外部 Offer 信息',
+  description: '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部 Offer 信息-更新外部 Offer-更新外部 Offer 信息',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      external_application_id: z
-        .string()
-        .describe(
-          '外部投递 ID，可通过[查询外部投递列表]接口获取',
-        ),
+      external_application_id: z.string().describe('外部投递 ID，可通过[查询外部投递列表]接口获取'),
       biz_create_time: z.string().describe('Offer 创建时间，毫秒时间戳').optional(),
       owner: z.string().describe('Offer 负责人姓名').optional(),
       offer_status: z.string().describe('Offer 状态').optional(),
-      attachment_id_list: z
-        .array(z.string())
-        .describe(
-          'Offer 详情附件 ID 列表，可由[创建附件]接口返回所得',
-        )
-        .optional(),
+      attachment_id_list: z.array(z.string()).describe('Offer 详情附件 ID 列表，可由[创建附件]接口返回所得').optional(),
     }),
-    path: z.object({
-      external_offer_id: z
-        .string()
-        .describe(
-          '外部 Offer ID，可通过[查询外部 Offer 列表]接口获取',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        external_offer_id: z.string().describe('外部 Offer ID，可通过[查询外部 Offer 列表]接口获取').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalReferralRewardCreate = {
@@ -2487,15 +2220,11 @@ export const hireV1ExternalReferralRewardCreate = {
   path: '/open-apis/hire/v1/external_referral_rewards',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-获取候选人-外部系统信息-外部内推奖励信息-导入外部内推奖励-支持将外部的内推奖励（积分/现金）导入到招聘的「内推账号」中',
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部内推奖励信息-导入外部内推奖励-支持将外部的内推奖励（积分/现金）导入到招聘的「内推账号」中',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      referral_user_id: z
-        .string()
-        .describe(
-          '内推人 ID内推人的唯一标识，在[获取用户信息]中获取',
-        ),
+      referral_user_id: z.string().describe('内推人 ID内推人的唯一标识，在[获取用户信息]中获取'),
       create_user_id: z.string().describe('奖励创建人，管理员与内推人可见，若不传，则默认为「外部系统」').optional(),
       confirm_user_id: z
         .string()
@@ -2543,9 +2272,7 @@ export const hireV1ExternalReferralRewardCreate = {
             .object({
               currency_type: z
                 .string()
-                .describe(
-                  '导入现金币种，若奖励发放形式为现金为必填，币种参数可在[「枚举常量介绍中查询」]',
-                ),
+                .describe('导入现金币种，若奖励发放形式为现金为必填，币种参数可在[「枚举常量介绍中查询」]'),
               amount: z.number().describe('导入现金数量，若奖励发放形式为现金为必填，需传入非负数'),
             })
             .describe('现金奖励')
@@ -2576,7 +2303,9 @@ export const hireV1ExternalReferralRewardCreate = {
         .optional(),
       comment: z.string().describe('操作备注管理员与内推人可见，若为空，将展示为奖励原因').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const hireV1ExternalReferralRewardDelete = {
@@ -2586,17 +2315,14 @@ export const hireV1ExternalReferralRewardDelete = {
   path: '/open-apis/hire/v1/external_referral_rewards/:external_referral_reward_id',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-获取候选人-外部系统信息-外部内推奖励信息-删除外部内推奖励-根据外部内推奖励ID删除外部内推奖励',
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部内推奖励信息-删除外部内推奖励-根据外部内推奖励ID删除外部内推奖励',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      external_referral_reward_id: z
-        .string()
-        .describe(
-          '外部内推奖励ID，通过[导入外部内推奖励]生成',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        external_referral_reward_id: z.string().describe('外部内推奖励ID，通过[导入外部内推奖励]生成').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1InterviewFeedbackFormList = {
@@ -2609,16 +2335,21 @@ export const hireV1InterviewFeedbackFormList = {
     '[Feishu/Lark]-招聘-招聘相关配置-面试设置-获取面试评价表列表-获取面试评价表信息列表，评价表信息包括题目描述、题目选项等。可用于面试评价表展示等场景',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      interview_feedback_form_ids: z.array(z.string()).describe('面试评价表 ID 列表，使用此参数时不再分页').optional(),
-      page_size: z.number().describe('分页大小。最大值为100，默认值为0').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        interview_feedback_form_ids: z
+          .array(z.string())
+          .describe('面试评价表 ID 列表，使用此参数时不再分页')
+          .optional(),
+        page_size: z.number().describe('分页大小。最大值为100，默认值为0').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1InterviewRecordAttachmentGet = {
@@ -2628,20 +2359,14 @@ export const hireV1InterviewRecordAttachmentGet = {
   path: '/open-apis/hire/v1/interview_records/attachments',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-面试-获取面试记录附件-获取面试记录 PDF 附件，包含相关投递基本信息、面试评价信息',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-面试-获取面试记录附件-获取面试记录 PDF 附件，包含相关投递基本信息、面试评价信息',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
-      application_id: z
-        .string()
-        .describe(
-          '投递 ID，可通过[获取投递信息]接口获取',
-        ),
+      application_id: z.string().describe('投递 ID，可通过[获取投递信息]接口获取'),
       interview_record_id: z
         .string()
-        .describe(
-          '面试评价 ID，可通过[获取面试信息]接口获取，若不填该参数，则会获取入参投递下所有的面试评价',
-        )
+        .describe('面试评价 ID，可通过[获取面试信息]接口获取，若不填该参数，则会获取入参投递下所有的面试评价')
         .optional(),
       language: z.number().describe('面试评价语言，用于指定附件的语言 Options:1(zh 中文),2(en 英文)').optional(),
     }),
@@ -2654,17 +2379,13 @@ export const hireV1InterviewRecordGet = {
   path: '/open-apis/hire/v1/interview_records/:interview_record_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-面试-获取面试评价详细信息-获取面试评价详细信息，如面试结论、面试得分和面试官等信息',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-面试-获取面试评价详细信息-获取面试评价详细信息，如面试结论、面试得分和面试官等信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      interview_record_id: z
-        .string()
-        .describe(
-          '面试评价 ID，可通过[获取面试信息]接口获取',
-        ),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ interview_record_id: z.string().describe('面试评价 ID，可通过[获取面试信息]接口获取') }),
   },
 };
 export const hireV1InterviewRecordList = {
@@ -2674,25 +2395,25 @@ export const hireV1InterviewRecordList = {
   path: '/open-apis/hire/v1/interview_records',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-面试-批量获取面试评价详细信息-批量获取面试评价详细信息，如面试结论、面试得分和面试官等信息',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-面试-批量获取面试评价详细信息-批量获取面试评价详细信息，如面试结论、面试得分和面试官等信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      ids: z
-        .array(z.string())
-        .describe(
-          '面试评价 ID 列表，可通过[获取面试信息]接口获取，使用该筛选项时不会分页',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        ids: z
+          .array(z.string())
+          .describe('面试评价 ID 列表，可通过[获取面试信息]接口获取，使用该筛选项时不会分页')
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1InterviewRegistrationSchemaList = {
@@ -2705,15 +2426,17 @@ export const hireV1InterviewRegistrationSchemaList = {
     '[Feishu/Lark]-招聘-招聘相关配置-面试设置-获取面试登记表列表-获取面试登记表列表，可获取到的信息包括登记表名称、登记表模块、登记表字段',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('每页获取记录数量，最大10').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('每页获取记录数量，最大10').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1InterviewRoundTypeList = {
@@ -2726,7 +2449,9 @@ export const hireV1InterviewRoundTypeList = {
     '[Feishu/Lark]-招聘-招聘相关配置-面试设置-获取面试轮次类型列表-根据职位流程查询面试轮次类型列表，可以查询到的信息包括：面试轮次类型名称、启用状态、关联的面试评价表信息。可应用于更新职位设置场景：[更新职位设置]',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ process_type: z.number().describe('职位流程类型 Options:1(社招流程),2(校招流程)').optional() }),
+    params: z
+      .object({ process_type: z.number().describe('职位流程类型 Options:1(社招流程),2(校招流程)').optional() })
+      .optional(),
   },
 };
 export const hireV1InterviewTaskList = {
@@ -2759,15 +2484,11 @@ export const hireV1InterviewGetByTalent = {
   sdkName: 'hire.v1.interview.getByTalent',
   path: '/open-apis/hire/v1/interviews/get_by_talent',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-候选人管理-投递流程-面试-获取人才面试信息-获取人才下所有面试信息',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-面试-获取人才面试信息-获取人才下所有面试信息',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID，可通过[获取人才列表]接口获取',
-        ),
+      talent_id: z.string().describe('人才 ID，可通过[获取人才列表]接口获取'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
       job_level_id_type: z
         .enum(['people_admin_job_level_id', 'job_level_id'])
@@ -2785,47 +2506,49 @@ export const hireV1InterviewList = {
   path: '/open-apis/hire/v1/interviews',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-面试-获取面试信息-获取面试信息。可通过「投递 ID」、「面试 ID」以及「面试开始时间」进行条件筛选，筛选条件不能同时为空',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-面试-获取面试信息-获取面试信息。可通过「投递 ID」、「面试 ID」以及「面试开始时间」进行条件筛选，筛选条件不能同时为空',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      application_id: z
-        .string()
-        .describe(
-          '投递 ID，可通过[获取投递列表]接口获取（不允许 application_id、interview_id、start_time、end_time 同时为空）',
-        )
-        .optional(),
-      interview_id: z
-        .string()
-        .describe('面试 ID（不允许 application_id、interview_id、start_time、end_time 同时为空）')
-        .optional(),
-      start_time: z
-        .string()
-        .describe(
-          '面试最早开始时间，毫秒时间戳，必须大于 0（不允许 application_id、interview_id、start_time、end_time 同时为空）',
-        )
-        .optional(),
-      end_time: z
-        .string()
-        .describe(
-          '面试最晚开始时间，毫秒时间戳，必须大于 0（不允许 application_id、interview_id、start_time、end_time 同时为空）',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        application_id: z
+          .string()
+          .describe(
+            '投递 ID，可通过[获取投递列表]接口获取（不允许 application_id、interview_id、start_time、end_time 同时为空）',
+          )
+          .optional(),
+        interview_id: z
+          .string()
+          .describe('面试 ID（不允许 application_id、interview_id、start_time、end_time 同时为空）')
+          .optional(),
+        start_time: z
+          .string()
+          .describe(
+            '面试最早开始时间，毫秒时间戳，必须大于 0（不允许 application_id、interview_id、start_time、end_time 同时为空）',
+          )
+          .optional(),
+        end_time: z
+          .string()
+          .describe(
+            '面试最晚开始时间，毫秒时间戳，必须大于 0（不允许 application_id、interview_id、start_time、end_time 同时为空）',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1InterviewerList = {
@@ -2835,23 +2558,25 @@ export const hireV1InterviewerList = {
   path: '/open-apis/hire/v1/interviewers',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-招聘相关配置-面试设置-面试官管理-查询面试官信息列表-分页查询面试官列表，接口只会返回执行过「更新面试官信息」用户的数据，通过接口查询不到的数据则默认为「未认证」面试官。接口默认按更新时间、user_id顺序进行顺序拉取',
+    '[Feishu/Lark]-招聘-招聘相关配置-面试设置-面试官管理-查询面试官信息列表-分页查询面试官列表，接口只会返回执行过「更新面试官信息」用户的数据，通过接口查询不到的数据则默认为「未认证」面试官。接口默认按更新时间、user_id顺序进行顺序拉取',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      user_ids: z.array(z.string().describe('面试官userID')).describe('面试官userID列表').optional(),
-      verify_status: z.number().describe('认证状态 Options:1(NotVarified 未认证),2(Varified 已认证)').optional(),
-      earliest_update_time: z.string().describe('最早更新时间，毫秒时间戳').optional(),
-      latest_update_time: z.string().describe('最晚更新时间，毫秒时间戳').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        user_ids: z.array(z.string().describe('面试官userID')).describe('面试官userID列表').optional(),
+        verify_status: z.number().describe('认证状态 Options:1(NotVarified 未认证),2(Varified 已认证)').optional(),
+        earliest_update_time: z.string().describe('最早更新时间，毫秒时间戳').optional(),
+        latest_update_time: z.string().describe('最晚更新时间，毫秒时间戳').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1InterviewerPatch = {
@@ -2860,7 +2585,7 @@ export const hireV1InterviewerPatch = {
   sdkName: 'hire.v1.interviewer.patch',
   path: '/open-apis/hire/v1/interviewers/:interviewer_id',
   httpMethod: 'PATCH',
-  description: '[Feishu/Lark]-招聘相关配置-面试设置-面试官管理-更新面试官信息-用于更新面试官认证信息',
+  description: '[Feishu/Lark]-招聘-招聘相关配置-面试设置-面试官管理-更新面试官信息-用于更新面试官认证信息',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2870,8 +2595,10 @@ export const hireV1InterviewerPatch = {
         })
         .describe('面试官信息'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({ interviewer_id: z.string().describe('面试官userID').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ interviewer_id: z.string().describe('面试官userID').optional() }).optional(),
   },
 };
 export const hireV1JobFunctionList = {
@@ -2884,15 +2611,17 @@ export const hireV1JobFunctionList = {
     '[Feishu/Lark]-招聘-招聘相关配置-职位-获取职能分类列表-根据page_token与page_size对职能分类进行游标分页查询，可查询到的信息包括：职能分类ID、职能分类中英文名、启用状态，可应用于职位基础信息绑定等场景',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小, 不能超过 50, 默认10').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小, 不能超过 50, 默认10').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobProcessList = {
@@ -2905,15 +2634,17 @@ export const hireV1JobProcessList = {
     '[Feishu/Lark]-招聘-招聘相关配置-招聘流程-获取招聘流程信息-获取全部招聘流程信息。如「流程名称」、「流程类型」及流程下的「阶段名称」、「阶段类型」等信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小**默认值**：10').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小**默认值**：10').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobPublishRecordSearch = {
@@ -2933,34 +2664,36 @@ export const hireV1JobPublishRecordSearch = {
           '招聘渠道 ID- 官网 ID：可通过[获取招聘官网列表]接口获取- 三方渠道 ID：可通过[枚举常量介绍]中「三方渠道 ID」枚举定义- 猎头渠道 ID ： "2"- 内推渠道 ID ： "3"',
         ),
     }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(由系统自动生成的部门 ID， ID前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内，department_id 具有唯一性。)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，可通过[获取租户序列列表]接口获取)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(由系统自动生成的部门 ID， ID前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内，department_id 具有唯一性。)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，可通过[获取租户序列列表]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobRequirementSchemaList = {
@@ -2973,15 +2706,17 @@ export const hireV1JobRequirementSchemaList = {
     '[Feishu/Lark]-招聘-招聘相关配置-招聘需求-获取招聘需求模板列表-获取招聘需求模板列表，包含需求模板ID，以及模板里的字段定义等。招聘需求模板可参考「飞书招聘」-「设置」-「招聘需求字段管理」',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小**最大值**：`100`').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小**最大值**：`100`').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobRequirementCreate = {
@@ -3032,22 +2767,12 @@ export const hireV1JobRequirementCreate = {
         .optional(),
       max_salary: z.string().describe('月薪范围-最高薪资，单位：K').optional(),
       min_salary: z.string().describe('月薪范围-最低薪资，单位：K').optional(),
-      address_id: z
-        .string()
-        .describe(
-          '工作地址 ID，可通过[获取地址列表]获取',
-        )
-        .optional(),
+      address_id: z.string().describe('工作地址 ID，可通过[获取地址列表]获取').optional(),
       description: z.string().describe('需求描述').optional(),
       customized_data_list: z
         .array(
           z.object({
-            object_id: z
-              .string()
-              .describe(
-                '自定义字段 ID，可通过[获取招聘需求模板]获取',
-              )
-              .optional(),
+            object_id: z.string().describe('自定义字段 ID，可通过[获取招聘需求模板]获取').optional(),
             value: z
               .string()
               .describe(
@@ -3056,23 +2781,17 @@ export const hireV1JobRequirementCreate = {
               .optional(),
           }),
         )
-        .describe(
-          '自定义字段，可通过[获取招聘需求模板]获取自定义字段列表、类型等',
-        )
+        .describe('自定义字段，可通过[获取招聘需求模板]获取自定义字段列表、类型等')
         .optional(),
       process_type: z.number().describe('招聘类型 Options:1(Social 社招),2(Campus 校招)').optional(),
-      job_type_id: z
-        .string()
-        .describe(
-          '职位类别，可通过[获取职位类别列表]获取',
-        )
+      job_type_id: z.string().describe('职位类别，可通过[获取职位类别列表]获取').optional(),
+      job_id_list: z
+        .array(z.string())
+        .describe('关联的职位 ID 列表。注：若企业开启了“招聘需求审批”，未通过审批的需求无法关联职位，请勿传入该字段')
         .optional(),
-      job_id_list: z.array(z.string()).describe('关联的职位 ID 列表').optional(),
       employment_job_id: z
         .string()
-        .describe(
-          '职务 ID，可通过[获取租户职务列表]获取（仅限飞书人事租户使用）',
-        )
+        .describe('职务 ID，可通过[获取租户职务列表]获取（仅限飞书人事租户使用）')
         .optional(),
       position_id: z
         .string()
@@ -3081,33 +2800,35 @@ export const hireV1JobRequirementCreate = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，可通过[获取租户职级列表]获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，可通过[获取租户序列列表]获取)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，可通过[查询人员类型]获取)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，可通过[获取租户职级列表]获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，可通过[获取租户序列列表]获取)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，可通过[查询人员类型]获取)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobRequirementDelete = {
@@ -3120,13 +2841,7 @@ export const hireV1JobRequirementDelete = {
     '[Feishu/Lark]-招聘-招聘相关配置-招聘需求-删除招聘需求-删除指定的招聘需求，请注意：若该招聘需求已经关联到职位上，则需先接触关联后，才能删除招聘需求',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      job_requirement_id: z
-        .string()
-        .describe(
-          '招聘需求ID，可通过[获取招聘需求列表]获取',
-        ),
-    }),
+    path: z.object({ job_requirement_id: z.string().describe('招聘需求ID，可通过[获取招聘需求列表]获取') }),
   },
 };
 export const hireV1JobRequirementList = {
@@ -3138,48 +2853,47 @@ export const hireV1JobRequirementList = {
   description: '[Feishu/Lark]-招聘-招聘相关配置-招聘需求-获取招聘需求列表-获取招聘需求列表',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小，最大值100').optional(),
-      job_id: z
-        .string()
-        .describe('职位ID，详情请参考：[获取职位列表]')
-        .optional(),
-      create_time_begin: z.string().describe('起始创建时间，传入毫秒级时间戳').optional(),
-      create_time_end: z.string().describe('截止创建时间，传入毫秒级时间戳').optional(),
-      update_time_begin: z.string().describe('起始更新时间，传入毫秒级时间戳').optional(),
-      update_time_end: z.string().describe('截止更新时间，传入毫秒级时间戳').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小，最大值100').optional(),
+        job_id: z.string().describe('职位ID，详情请参考：[获取职位列表]').optional(),
+        create_time_begin: z.string().describe('起始创建时间，传入毫秒级时间戳').optional(),
+        create_time_end: z.string().describe('截止创建时间，传入毫秒级时间戳').optional(),
+        update_time_begin: z.string().describe('起始更新时间，传入毫秒级时间戳').optional(),
+        update_time_end: z.string().describe('截止更新时间，传入毫秒级时间戳').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobRequirementListById = {
@@ -3192,47 +2906,51 @@ export const hireV1JobRequirementListById = {
     '[Feishu/Lark]-招聘-招聘相关配置-招聘需求-获取招聘需求信息-根据「招聘需求ID」获取招聘需求信息，支持批量查询',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      id_list: z
-        .array(z.string())
-        .describe(
-          '招聘需求ID列表，详情请参考：[获取招聘需求列表]不允许和招聘需求编号列表同时使用，否则报错（详见错误码1002725）限制单次最大100条，该字段和编号列表都不传则返回空',
-        )
-        .optional(),
-      short_code_list: z
-        .array(z.string())
-        .describe(
-          '招聘需求编号列表，详情请参考：[获取招聘需求列表]不允许和招聘需求ID列表同时使用，否则报错（详见错误码1002725）限制单次最大100条，该字段和ID列表都不传则返回空',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        id_list: z
+          .array(z.string())
+          .describe(
+            '招聘需求ID列表，详情请参考：[获取招聘需求列表]不允许和招聘需求编号列表同时使用，否则报错（详见错误码1002725）限制单次最大100条，该字段和编号列表都不传则返回空',
+          )
+          .optional(),
+        short_code_list: z
+          .array(z.string())
+          .describe(
+            '招聘需求编号列表，详情请参考：[获取招聘需求列表]不允许和招聘需求ID列表同时使用，否则报错（详见错误码1002725）限制单次最大100条，该字段和ID列表都不传则返回空',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobRequirementUpdate = {
@@ -3242,7 +2960,7 @@ export const hireV1JobRequirementUpdate = {
   path: '/open-apis/hire/v1/job_requirements/:job_requirement_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-招聘-招聘相关配置-招聘需求-更新招聘需求-更新指定招聘需求的信息，包含招聘需求的名称、状态、需求人数等',
+    '[Feishu/Lark]-招聘-招聘相关配置-招聘需求-更新招聘需求-更新指定招聘需求的信息，包含招聘需求的名称、状态、需求人数等。（审批中的招聘需求无法更新）',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -3282,22 +3000,12 @@ export const hireV1JobRequirementUpdate = {
         .optional(),
       max_salary: z.string().describe('月薪范围-最高薪资，单位：K').optional(),
       min_salary: z.string().describe('月薪范围-最低薪资，单位：K').optional(),
-      address_id: z
-        .string()
-        .describe(
-          '工作地点 ID，可通过[获取地址列表]获取',
-        )
-        .optional(),
+      address_id: z.string().describe('工作地点 ID，可通过[获取地址列表]获取').optional(),
       description: z.string().describe('需求描述').optional(),
       customized_data_list: z
         .array(
           z.object({
-            object_id: z
-              .string()
-              .describe(
-                '自定义字段 ID，可通过[获取招聘需求模板]获取',
-              )
-              .optional(),
+            object_id: z.string().describe('自定义字段 ID，可通过[获取招聘需求模板]获取').optional(),
             value: z
               .string()
               .describe(
@@ -3311,21 +3019,14 @@ export const hireV1JobRequirementUpdate = {
         )
         .optional(),
       process_type: z.number().describe('招聘类型 Options:1(Social 社招),2(Campus 校招)').optional(),
-      job_type_id: z
-        .string()
-        .describe(
-          '职位类别，可通过[获取职位类别列表]获取',
-        )
-        .optional(),
+      job_type_id: z.string().describe('职位类别，可通过[获取职位类别列表]获取').optional(),
       job_id_list: z
         .array(z.string())
         .describe('关联的职位 ID 列表（与 update_option. need_update_related_job 配合使用）')
         .optional(),
       employment_job_id: z
         .string()
-        .describe(
-          '职务 ID，可通过[获取租户职务列表]获取（仅限飞书人事租户使用）',
-        )
+        .describe('职务 ID，可通过[获取租户职务列表]获取（仅限飞书人事租户使用）')
         .optional(),
       position_id: z
         .string()
@@ -3338,40 +3039,36 @@ export const hireV1JobRequirementUpdate = {
         .describe('招聘需求修改确认控制')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，可通过[获取租户职级列表]获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，可通过[获取租户序列列表]获取)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，可通过[查询人员类型]获取)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      job_requirement_id: z
-        .string()
-        .describe(
-          '招聘需求ID，可通过[获取招聘需求列表]获取',
-        ),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，可通过[获取租户职级列表]获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，可通过[获取租户序列列表]获取)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，可通过[查询人员类型]获取)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ job_requirement_id: z.string().describe('招聘需求ID，可通过[获取招聘需求列表]获取') }),
   },
 };
 export const hireV1JobSchemaList = {
@@ -3384,16 +3081,18 @@ export const hireV1JobSchemaList = {
     '[Feishu/Lark]-招聘-招聘相关配置-职位-获取职位模板-获取社招、校招职位模板中的职位字段，返回结果包括系统默认字段和自定义字段。招聘管理员可在「飞书招聘」-「设置」-「职位管理」-「职位字段管理」中修改职位模板',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小**默认值**：10**数据校验规则**：* 最大值：100').optional(),
-      scenario: z.number().describe('职位模板类型 Options:1(社招),2(校招)').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小**默认值**：10**数据校验规则**：* 最大值：100').optional(),
+        scenario: z.number().describe('职位模板类型 Options:1(社招),2(校招)').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobTypeList = {
@@ -3406,15 +3105,17 @@ export const hireV1JobTypeList = {
     '[Feishu/Lark]-招聘-招聘相关配置-职位-获取职位类别列表-获取招聘系统预置的职位类别列表，可用于操作职位（如[新建职位]），操作招聘需求（如[创建招聘需求]）时回填职位类别字段。返回列表默认按创建时间升序排序，且包含节点的层级关系（节点的父节点 ID），可在获取全量数据后自行构建职位类别树',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小**默认值**：10').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小**默认值**：10').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobClose = {
@@ -3427,13 +3128,7 @@ export const hireV1JobClose = {
     '[Feishu/Lark]-招聘-招聘相关配置-职位-关闭职位-关闭职位后，职位所有的职位广告将同步从官网、内推、猎头渠道下线',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      job_id: z
-        .string()
-        .describe(
-          '职位 ID，可通过[获取职位列表]接口获取',
-        ),
-    }),
+    path: z.object({ job_id: z.string().describe('职位 ID，可通过[获取职位列表]接口获取') }),
   },
 };
 export const hireV1JobCombinedCreate = {
@@ -3460,12 +3155,7 @@ export const hireV1JobCombinedCreate = {
       customized_data_list: z
         .array(
           z.object({
-            object_id: z
-              .string()
-              .describe(
-                '自定义字段 ID，可通过[获取职位模板]接口获取',
-              )
-              .optional(),
+            object_id: z.string().describe('自定义字段 ID，可通过[获取职位模板]接口获取').optional(),
             value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
           }),
         )
@@ -3482,24 +3172,10 @@ export const hireV1JobCombinedCreate = {
           assistant_id_list: z.array(z.string()).describe('协助人 ID 列表，需与入参`user_id_type`类型一致').optional(),
         })
         .describe('职位管理者'),
-      job_process_id: z
-        .string()
-        .describe(
-          '招聘流程 ID，可通过[获取招聘流程信息]接口获取',
-        ),
+      job_process_id: z.string().describe('招聘流程 ID，可通过[获取招聘流程信息]接口获取'),
       process_type: z.number().describe('职位流程类型 Options:1(SocialProcess 社招),2(CampusProcess 校招)'),
-      subject_id: z
-        .string()
-        .describe(
-          '项目 ID，可通过[获取项目列表]接口获取',
-        )
-        .optional(),
-      job_function_id: z
-        .string()
-        .describe(
-          '职能分类ID，可通过[获取职能分类列表]接口获取',
-        )
-        .optional(),
+      subject_id: z.string().describe('项目 ID，可通过[获取项目列表]接口获取').optional(),
+      job_function_id: z.string().describe('职能分类ID，可通过[获取职能分类列表]接口获取').optional(),
       department_id: z.string().describe('部门 ID，需与入参中的`department_id_type`类型一致'),
       head_count: z.number().describe('招聘数量').optional(),
       is_never_expired: z.boolean().describe('是否长期有效'),
@@ -3508,21 +3184,13 @@ export const hireV1JobCombinedCreate = {
       description: z.string().describe('职位描述').optional(),
       highlight_list: z
         .array(z.string())
-        .describe(
-          '职位亮点列表，可通过[枚举常量介绍]中职位亮枚举定义」获取',
-        )
+        .describe('职位亮点列表，可通过[枚举常量介绍]中职位亮枚举定义」获取')
         .optional(),
-      job_type_id: z
-        .string()
-        .describe(
-          '职位类别 ID，可通过[获取职位类别列表]接口获取',
-        ),
+      job_type_id: z.string().describe('职位类别 ID，可通过[获取职位类别列表]接口获取'),
       max_level_id: z.string().describe('最高职级 ID，需与入参`job_level_id_type` 类型一致').optional(),
       recruitment_type_id: z
         .string()
-        .describe(
-          '雇佣类型 ID，详情请参考：[枚举常量介绍]中「职位性质/雇佣类型（recruitment_type）枚举定义」',
-        ),
+        .describe('雇佣类型 ID，详情请参考：[枚举常量介绍]中「职位性质/雇佣类型（recruitment_type）枚举定义」'),
       required_degree: z
         .number()
         .describe(
@@ -3530,12 +3198,7 @@ export const hireV1JobCombinedCreate = {
         )
         .optional(),
       job_category_id: z.string().describe('序列 ID，需与入参`job_family_id_type` 类型一致').optional(),
-      address_id_list: z
-        .array(z.string())
-        .describe(
-          '工作地址列表，可通过[获取地址列表]接口获取',
-        )
-        .optional(),
+      address_id_list: z.array(z.string()).describe('工作地址列表，可通过[获取地址列表]接口获取').optional(),
       job_attribute: z.number().describe('职位属性 Options:1(Concrete 实体职位),2(Virtual 虚拟职位)').optional(),
       expiry_timestamp: z
         .string()
@@ -3555,38 +3218,36 @@ export const hireV1JobCombinedCreate = {
         .optional(),
       target_major_id_list: z
         .array(z.string().describe('目标专业ID'))
-        .describe(
-          '目标专业 ID 列表，可通过[「分页批量查询专业」]获取',
-        )
+        .describe('目标专业 ID 列表，可通过[「分页批量查询专业」]获取')
         .optional(),
       portal_website_apply_form_schema_id: z
         .string()
-        .describe(
-          '官网申请表ID，可通过[获取招聘官网申请表模板列表]接口获取',
-        )
+        .describe('官网申请表ID，可通过[获取招聘官网申请表模板列表]接口获取')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(由系统自动生成的部门 ID， ID前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内，department_id 具有唯一性。)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(由系统自动生成的部门 ID， ID前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内，department_id 具有唯一性。)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobCombinedUpdate = {
@@ -3599,12 +3260,7 @@ export const hireV1JobCombinedUpdate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      id: z
-        .string()
-        .describe(
-          '职位 ID，可通过 [获取职位列表] 接口获取',
-        )
-        .optional(),
+      id: z.string().describe('职位 ID，可通过 [获取职位列表] 接口获取').optional(),
       experience: z
         .number()
         .describe(
@@ -3615,12 +3271,7 @@ export const hireV1JobCombinedUpdate = {
       customized_data_list: z
         .array(
           z.object({
-            object_id: z
-              .string()
-              .describe(
-                '自定义字段 ID，可通过[获取职位模板]接口获取',
-              )
-              .optional(),
+            object_id: z.string().describe('自定义字段 ID，可通过[获取职位模板]接口获取').optional(),
             value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
           }),
         )
@@ -3637,24 +3288,9 @@ export const hireV1JobCombinedUpdate = {
           assistant_id_list: z.array(z.string()).describe('协助人 ID 列表，需与入参`user_id_type`类型一致').optional(),
         })
         .describe('职位管理者列表'),
-      job_process_id: z
-        .string()
-        .describe(
-          '招聘流程，可通过[获取招聘流程信息]接口获取',
-        )
-        .optional(),
-      subject_id: z
-        .string()
-        .describe(
-          '项目 ID，可通过[获取项目列表]接口获取',
-        )
-        .optional(),
-      job_function_id: z
-        .string()
-        .describe(
-          '职能分类ID，可通过[获取职能分类列表]接口获取',
-        )
-        .optional(),
+      job_process_id: z.string().describe('招聘流程，可通过[获取招聘流程信息]接口获取').optional(),
+      subject_id: z.string().describe('项目 ID，可通过[获取项目列表]接口获取').optional(),
+      job_function_id: z.string().describe('职能分类ID，可通过[获取职能分类列表]接口获取').optional(),
       department_id: z.string().describe('部门 ID，需与入参中的`department_id_type`类型一致').optional(),
       head_count: z.number().describe('招聘数量').optional(),
       is_never_expired: z.boolean().describe('是否长期有效'),
@@ -3663,15 +3299,9 @@ export const hireV1JobCombinedUpdate = {
       description: z.string().describe('职位描述').optional(),
       highlight_list: z
         .array(z.string())
-        .describe(
-          '职位亮点 ID 列表， 详情请查看：[枚举常量介绍]中「职位亮点枚举定义」',
-        )
+        .describe('职位亮点 ID 列表， 详情请查看：[枚举常量介绍]中「职位亮点枚举定义」')
         .optional(),
-      job_type_id: z
-        .string()
-        .describe(
-          '职位类别ID，可通过[获取职位类别列表]接口获取',
-        ),
+      job_type_id: z.string().describe('职位类别ID，可通过[获取职位类别列表]接口获取'),
       max_level_id: z.string().describe('最高职级 ID，需与入参`job_level_id_type` 类型一致').optional(),
       required_degree: z
         .number()
@@ -3680,12 +3310,7 @@ export const hireV1JobCombinedUpdate = {
         )
         .optional(),
       job_category_id: z.string().describe('序列 ID，需与入参`job_family_id_type` 类型一致').optional(),
-      address_id_list: z
-        .array(z.string())
-        .describe(
-          '工作地点 ID 列表，可通过[获取地址列表]接口获取',
-        )
-        .optional(),
+      address_id_list: z.array(z.string()).describe('工作地点 ID 列表，可通过[获取地址列表]接口获取').optional(),
       job_attribute: z.number().describe('职位属性 Options:1(Concrete 实体职位),2(Virtual 虚拟职位)').optional(),
       expiry_timestamp: z
         .string()
@@ -3693,39 +3318,33 @@ export const hireV1JobCombinedUpdate = {
         .optional(),
       target_major_id_list: z
         .array(z.string().describe('目标专业ID'))
-        .describe(
-          '目标专业 ID 列表，可通过[「分页批量查询专业」]获取',
-        )
+        .describe('目标专业 ID 列表，可通过[「分页批量查询专业」]获取')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(由系统自动生成的部门 ID， ID前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内，department_id 具有唯一性。)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，可通过 [获取租户职级列表] 接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，可通过 [获取租户序列列表] 接口获取)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      job_id: z
-        .string()
-        .describe(
-          '职位 ID，可通过 [获取职位列表] 接口获取',
-        ),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(由系统自动生成的部门 ID， ID前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内，department_id 具有唯一性。)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，可通过 [获取租户职级列表] 接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，可通过 [获取租户序列列表] 接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ job_id: z.string().describe('职位 ID，可通过 [获取职位列表] 接口获取') }),
   },
 };
 export const hireV1JobConfig = {
@@ -3738,16 +3357,12 @@ export const hireV1JobConfig = {
     '[Feishu/Lark]-招聘-招聘相关配置-职位-获取职位设置-获取职位设置，包含 Offer 申请表、Offer 审批流程、建议评估人列表、面试评价表、建议面试官列表、招聘需求、面试登记表、入职登记表、面试轮次类型列表、关联职位列表等设置',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({
-      job_id: z
-        .string()
-        .describe(
-          '职位 ID，可通过[获取职位列表]接口获取',
-        ),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ job_id: z.string().describe('职位 ID，可通过[获取职位列表]接口获取') }),
   },
 };
 export const hireV1JobGet = {
@@ -3759,25 +3374,27 @@ export const hireV1JobGet = {
   description: '[Feishu/Lark]-招聘-招聘相关配置-职位-获取职位信息-根据职位 ID 获取职位信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe('部门ID类型 Options:open_department_id(开放平台部门ID),department_id(内部部门ID)')
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[「获取租户职级列表」]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[「获取租户序列列表」]接口获取)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe('部门ID类型 Options:open_department_id(开放平台部门ID),department_id(内部部门ID)')
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[「获取租户职级列表」]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[「获取租户序列列表」]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ job_id: z.string().describe('职位 ID，请求Path中') }),
   },
 };
@@ -3791,34 +3408,30 @@ export const hireV1JobGetDetail = {
     '[Feishu/Lark]-招聘-招聘相关配置-职位-获取职位详情-根据职位 ID 获取职位详情，包含职位基本信息、职位负责人、协助人、用人经理、职位地址列表、职位设置、关联招需、门店列表及标签列表等信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '此次调用中使用的部门 ID 的类型 Options:open_department_id(以 open_department_id 来标识部门),department_id(以 department_id 来标识部门)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[「获取租户职级列表」]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[「获取租户序列列表」]接口获取)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      job_id: z
-        .string()
-        .describe(
-          '职位 ID，可通过[获取职位列表]接口获取',
-        ),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '此次调用中使用的部门 ID 的类型 Options:open_department_id(以 open_department_id 来标识部门),department_id(以 department_id 来标识部门)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[「获取租户职级列表」]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[「获取租户序列列表」]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ job_id: z.string().describe('职位 ID，可通过[获取职位列表]接口获取') }),
   },
 };
 export const hireV1JobList = {
@@ -3831,36 +3444,38 @@ export const hireV1JobList = {
     '[Feishu/Lark]-招聘-招聘相关配置-职位-获取职位列表-获取职位列表，仅支持获取默认字段信息，获取详细信息可调用[获取职位信息]接口',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      update_start_time: z.string().describe('最早更新时间，毫秒时间戳').optional(),
-      update_end_time: z.string().describe('最晚更新时间，毫秒时间戳').optional(),
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，可通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[「获取租户序列列表」]接口获取)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        update_start_time: z.string().describe('最早更新时间，毫秒时间戳').optional(),
+        update_end_time: z.string().describe('最晚更新时间，毫秒时间戳').optional(),
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，可通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[「获取租户序列列表」]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobManagerBatchUpdate = {
@@ -3893,14 +3508,10 @@ export const hireV1JobManagerBatchUpdate = {
         .describe('更新的人员类型'),
       creator_id: z.string().describe('操作者 ID，与入参`user_id_type`类型一致，不填默认系统操作').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      job_id: z
-        .string()
-        .describe(
-          '职位 ID，可通过[获取职位列表]接口获取',
-        ),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ job_id: z.string().describe('职位 ID，可通过[获取职位列表]接口获取') }),
   },
 };
 export const hireV1JobManagerGet = {
@@ -3913,9 +3524,11 @@ export const hireV1JobManagerGet = {
     '[Feishu/Lark]-历史版本（不推荐）-招聘-职位-获取职位上的招聘人员信息-根据职位 ID 获取职位上的招聘人员信息，如招聘负责人、用人经理',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     path: z.object({ job_id: z.string().describe('职位 ID'), manager_id: z.string().describe('此处传入职位 ID') }),
   },
 };
@@ -3935,11 +3548,7 @@ export const hireV1JobOpen = {
         .optional(),
       is_never_expired: z.boolean().describe('是否长期有效**可选值有**：* `true`：长期有效* `false`：指定到期日期'),
     }),
-    path: z.object({
-      job_id: z
-        .string()
-        .describe('职位 ID，可通过[获取职位列表]获取'),
-    }),
+    path: z.object({ job_id: z.string().describe('职位 ID，可通过[获取职位列表]获取') }),
   },
 };
 export const hireV1JobRecruiter = {
@@ -3952,14 +3561,10 @@ export const hireV1JobRecruiter = {
     '[Feishu/Lark]-招聘-招聘相关配置-职位-获取职位上的招聘人员信息-根据职位 ID 获取职位上的招聘人员信息，如招聘负责人、用人经理等',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      job_id: z
-        .string()
-        .describe(
-          '职位 ID, 可通过[获取职位列表]接口获取',
-        ),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ job_id: z.string().describe('职位 ID, 可通过[获取职位列表]接口获取') }),
   },
 };
 export const hireV1JobUpdateConfig = {
@@ -3980,9 +3585,7 @@ export const hireV1JobUpdateConfig = {
         .optional(),
       offer_process_conf: z
         .string()
-        .describe(
-          'Offer 审批流程 ID，可通过[获取 Offer 审批流配置列表]接口获取',
-        )
+        .describe('Offer 审批流程 ID，可通过[获取 Offer 审批流配置列表]接口获取')
         .optional(),
       recommended_evaluator_id_list: z
         .array(z.string())
@@ -4017,12 +3620,7 @@ export const hireV1JobUpdateConfig = {
         )
         .describe('建议面试官列表，当`update_option_list`包含`更新建议面试官`时，该参数必填')
         .optional(),
-      jr_id_list: z
-        .array(z.string())
-        .describe(
-          '关联招聘需求，可通过[获取招聘需求信息]接口获取',
-        )
-        .optional(),
+      jr_id_list: z.array(z.string()).describe('关联招聘需求，可通过[获取招聘需求信息]接口获取').optional(),
       interview_registration_schema_id: z
         .string()
         .describe(
@@ -4038,17 +3636,10 @@ export const hireV1JobUpdateConfig = {
       interview_round_type_conf_list: z
         .array(
           z.object({
-            round_biz_id: z
-              .string()
-              .describe(
-                '面试轮次类型 ID，可通过接口[获取面试轮次类型列表]获取',
-              )
-              .optional(),
+            round_biz_id: z.string().describe('面试轮次类型 ID，可通过接口[获取面试轮次类型列表]获取').optional(),
             assessment_template_biz_id: z
               .string()
-              .describe(
-                '面试评价表 ID，可通过[获取面试评价表列表]接口获取',
-              )
+              .describe('面试评价表 ID，可通过[获取面试评价表列表]接口获取')
               .optional(),
           }),
         )
@@ -4075,12 +3666,7 @@ export const hireV1JobUpdateConfig = {
               contact_user_id: z.string().describe('面试联系人 ID，需与入参`user_id_type`类型一致').optional(),
               contact_mobile: z.string().describe('面试联系人电话').optional(),
               contact_email: z.string().describe('面试联系人邮箱').optional(),
-              address_id: z
-                .string()
-                .describe(
-                  '面试地点 ID，可通过[获取地址列表]接口获取',
-                )
-                .optional(),
+              address_id: z.string().describe('面试地点 ID，可通过[获取地址列表]接口获取').optional(),
               video_type: z
                 .number()
                 .describe(
@@ -4100,19 +3686,13 @@ export const hireV1JobUpdateConfig = {
         .optional(),
       portal_website_apply_form_schema_id: z
         .string()
-        .describe(
-          '官网申请表ID，可通过[获取招聘官网申请表模板列表]接口获取',
-        )
+        .describe('官网申请表ID，可通过[获取招聘官网申请表模板列表]接口获取')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      job_id: z
-        .string()
-        .describe(
-          '职位 ID，可通过[获取职位列表]接口获取',
-        ),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ job_id: z.string().describe('职位 ID，可通过[获取职位列表]接口获取') }),
   },
 };
 export const hireV1LocationList = {
@@ -4174,15 +3754,11 @@ export const hireV1MinutesGet = {
   sdkName: 'hire.v1.minutes.get',
   path: '/open-apis/hire/v1/minutes',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-候选人管理-投递流程-面试-获取面试速记明细-获取指定面试的面试速记明细记录',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-面试-获取面试速记明细-获取指定面试的面试速记明细记录',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
-      interview_id: z
-        .string()
-        .describe(
-          '面试ID，可根据接口[获取面试信息]、[获取人才面试信息]获取',
-        ),
+      interview_id: z.string().describe('面试ID，可根据接口[获取面试信息]、[获取人才面试信息]获取'),
       page_token: z
         .string()
         .describe(
@@ -4203,15 +3779,8 @@ export const hireV1NoteCreate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      talent_id: z
-        .string()
-        .describe('人才ID，可通过[获取人才列表]获取'),
-      application_id: z
-        .string()
-        .describe(
-          '投递ID，可通过[获取投递列表]获取',
-        )
-        .optional(),
+      talent_id: z.string().describe('人才ID，可通过[获取人才列表]获取'),
+      application_id: z.string().describe('投递ID，可通过[获取投递列表]获取').optional(),
       creator_id: z.string().describe('创建人ID，请传入与`user_id_type`相匹配的ID').optional(),
       content: z.string().describe('备注内容'),
       privacy: z.number().describe('备注私密属性（默认为公开） Options:1(Private 私密),2(Public 公开)').optional(),
@@ -4226,9 +3795,11 @@ export const hireV1NoteCreate = {
         .describe('被@用户列表')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1NoteDelete = {
@@ -4240,12 +3811,7 @@ export const hireV1NoteDelete = {
   description: '[Feishu/Lark]-招聘-候选人管理-备注-删除备注-根据备注 ID 删除备注',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      note_id: z
-        .string()
-        .describe('备注 ID，可通过[获取备注列表]获取')
-        .optional(),
-    }),
+    path: z.object({ note_id: z.string().describe('备注 ID，可通过[获取备注列表]获取').optional() }).optional(),
   },
 };
 export const hireV1NoteGet = {
@@ -4258,14 +3824,12 @@ export const hireV1NoteGet = {
     '[Feishu/Lark]-招聘-候选人管理-备注-获取备注-根据备注 ID 查询人才备注信息，包括备注内容、人才 ID、投递 ID 等。可用于人才备注信息展示等场景',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({
-      note_id: z
-        .string()
-        .describe('备注 ID，可通过[获取备注列表]获取'),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ note_id: z.string().describe('备注 ID，可通过[获取备注列表]获取') }),
   },
 };
 export const hireV1NoteList = {
@@ -4285,9 +3849,7 @@ export const hireV1NoteList = {
           '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
         )
         .optional(),
-      talent_id: z
-        .string()
-        .describe('人才ID，可通过[获取人才列表]获取'),
+      talent_id: z.string().describe('人才ID，可通过[获取人才列表]获取'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
     }),
   },
@@ -4315,14 +3877,12 @@ export const hireV1NotePatch = {
         .describe('被@用户列表')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({
-      note_id: z
-        .string()
-        .describe('备注 ID，可通过[获取备注列表]获取'),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ note_id: z.string().describe('备注 ID，可通过[获取备注列表]获取') }),
   },
 };
 export const hireV1OfferApplicationFormGet = {
@@ -4332,17 +3892,17 @@ export const hireV1OfferApplicationFormGet = {
   path: '/open-apis/hire/v1/offer_application_forms/:offer_application_form_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-招聘相关配置-Offer 设置-Offer 申请表-获取 Offer 申请表信息-根据 Offer 申请表 ID 获取 Offer 申请表信息，可获取到的信息包括申请表名称、申请表模块、申请表字段等',
+    '[Feishu/Lark]-招聘-招聘相关配置-Offer 设置-Offer 申请表-获取 Offer 申请表信息-根据 Offer 申请表 ID 获取 Offer 申请表信息，可获取到的信息包括申请表名称、申请表模块、申请表字段等',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      offer_application_form_id: z
-        .string()
-        .describe(
-          'Offer 申请表 ID，可通过[获取 Offer 申请表列表]接口获取',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        offer_application_form_id: z
+          .string()
+          .describe('Offer 申请表 ID，可通过[获取 Offer 申请表列表]接口获取')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1OfferApplicationFormList = {
@@ -4352,18 +3912,20 @@ export const hireV1OfferApplicationFormList = {
   path: '/open-apis/hire/v1/offer_application_forms',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-招聘相关配置-Offer 设置-Offer 申请表-获取 Offer 申请表列表-获取 Offer 申请表列表，可获取的信息包括申请表名称、创建时间等',
+    '[Feishu/Lark]-招聘-招聘相关配置-Offer 设置-Offer 申请表-获取 Offer 申请表列表-获取 Offer 申请表列表，可获取的信息包括申请表名称、创建时间等',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小，**无效参数，请忽略**').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小，**无效参数，请忽略**').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1OfferCustomFieldUpdate = {
@@ -4373,7 +3935,7 @@ export const hireV1OfferCustomFieldUpdate = {
   path: '/open-apis/hire/v1/offer_custom_fields/:offer_custom_field_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-招聘相关配置-Offer 设置-Offer 申请表-更新 Offer 申请表自定义字段-本接口支持修改 Offer 申请表的自定义字段，Offer 申请表的定义可参考「飞书招聘」-「设置」-「Offer 设置」-「Offer 申请表设置」中的内容',
+    '[Feishu/Lark]-招聘-招聘相关配置-Offer 设置-Offer 申请表-更新 Offer 申请表自定义字段-本接口支持修改 Offer 申请表的自定义字段，Offer 申请表的定义可参考「飞书招聘」-「设置」-「Offer 设置」-「Offer 申请表设置」中的内容',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -4404,14 +3966,14 @@ export const hireV1OfferCustomFieldUpdate = {
         .describe('自定义字段配置信息')
         .optional(),
     }),
-    path: z.object({
-      offer_custom_field_id: z
-        .string()
-        .describe(
-          'Offer 申请表自定义字段 ID，可通过接口[获取 Offer 申请表信息]获取',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        offer_custom_field_id: z
+          .string()
+          .describe('Offer 申请表自定义字段 ID，可通过接口[获取 Offer 申请表信息]获取')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1OfferSchemaGet = {
@@ -4432,15 +3994,11 @@ export const hireV1OfferCreate = {
   sdkName: 'hire.v1.offer.create',
   path: '/open-apis/hire/v1/offers',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-候选人管理-投递流程-Offer-创建 Offer-传入 Offer 基本信息，创建 Offer',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-Offer-创建 Offer-传入 Offer 基本信息，创建 Offer',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      application_id: z
-        .string()
-        .describe(
-          '投递 ID，详情请参考：[获取投递列表]',
-        ),
+      application_id: z.string().describe('投递 ID，详情请参考：[获取投递列表]'),
       schema_id: z
         .string()
         .describe(
@@ -4452,29 +4010,15 @@ export const hireV1OfferCreate = {
         .object({
           department_id: z
             .string()
-            .describe(
-              '部门 ID，与入参中的`department_id_type`类型一致，详情请查看：[获取部门信息列表]',
-            ),
+            .describe('部门 ID，与入参中的`department_id_type`类型一致，详情请查看：[获取部门信息列表]'),
           leader_user_id: z.string().describe('直属上级 ID，与入参`user_id_type`类型一致'),
           employment_job_id: z
             .string()
-            .describe(
-              '职务 ID，可通过[批量查询职务]接口获取。**请注意**：仅支持开通飞书人事企业版的客户使用',
-            )
+            .describe('职务 ID，可通过[批量查询职务]接口获取。**请注意**：仅支持开通飞书人事企业版的客户使用')
             .optional(),
           employee_type_id: z.string().describe('人员类型 ID，与入参`employee_type_id_type` 类型一致').optional(),
-          job_family_id: z
-            .string()
-            .describe(
-              '职位序列 ID，通过[获取租户序列列表]接口获取',
-            )
-            .optional(),
-          job_level_id: z
-            .string()
-            .describe(
-              '职位级别 ID，通过[获取租户职级列表]接口获取',
-            )
-            .optional(),
+          job_family_id: z.string().describe('职位序列 ID，通过[获取租户序列列表]接口获取').optional(),
+          job_level_id: z.string().describe('职位级别 ID，通过[获取租户职级列表]接口获取').optional(),
           probation_month: z.number().describe('试用期（月）').optional(),
           contract_year: z.number().describe('合同期(年)，推荐使用「contract_period」').optional(),
           contract_period: z
@@ -4485,33 +4029,16 @@ export const hireV1OfferCreate = {
             .describe('合同期（年/月）')
             .optional(),
           expected_onboard_date: z.string().describe('预计入职日期。以下示例值未转义，使用时请注意转义').optional(),
-          onboard_address_id: z
-            .string()
-            .describe(
-              '入职地点 ID，详情请参考：[获取地址列表]',
-            )
-            .optional(),
-          work_address_id: z
-            .string()
-            .describe(
-              '办公地点 ID，详情请参考：[获取地址列表]',
-            )
-            .optional(),
+          onboard_address_id: z.string().describe('入职地点 ID，详情请参考：[获取地址列表]').optional(),
+          work_address_id: z.string().describe('办公地点 ID，详情请参考：[获取地址列表]').optional(),
           owner_user_id: z.string().describe('Offer负责人 ID，与入参`user_id_type`类型一致'),
           recommended_words: z.string().describe('Offer 推荐语').optional(),
-          job_requirement_id: z
-            .string()
-            .describe(
-              '招聘需求 ID，详情请查看：[获取招聘需求列表]',
-            )
-            .optional(),
+          job_requirement_id: z.string().describe('招聘需求 ID，详情请查看：[获取招聘需求列表]').optional(),
           job_process_type_id: z.number().describe('招聘流程类型 ID，可选值：「1:社招，2:校招」').optional(),
           attachment_id_list: z.array(z.string()).describe('附件 ID 列表，暂无获取附件 ID 的方式，请勿使用').optional(),
           common_attachment_id_list: z
             .array(z.string())
-            .describe(
-              '通用附件 ID 列表，可使用[创建附件]接口创建的附件',
-            )
+            .describe('通用附件 ID 列表，可使用[创建附件]接口创建的附件')
             .optional(),
           attachment_description: z.string().describe('附件描述').optional(),
           operator_user_id: z.string().describe('Offer操作人 ID，与入参`user_id_type`类型一致'),
@@ -4522,12 +4049,7 @@ export const hireV1OfferCreate = {
             )
             .optional(),
           job_offered: z.string().describe('入职职位').optional(),
-          job_grade_id: z
-            .string()
-            .describe(
-              '职等 ID，可通过[查询职等] 获取（仅限飞书人事租户使用）',
-            )
-            .optional(),
+          job_grade_id: z.string().describe('职等 ID，可通过[查询职等] 获取（仅限飞书人事租户使用）').optional(),
         })
         .describe('Offer 基本信息'),
       salary_info: z
@@ -4560,33 +4082,35 @@ export const hireV1OfferCreate = {
         .describe('自定义信息')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '此次调用中使用的部门 ID 类型。 Options:open_department_id(【飞书】用来在具体某个应用中标识一个部门，同一个department_id 在不同应用中的 open_department_id 相同),department_id(【飞书】用来标识租户内一个唯一的部门)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '此次调用中使用的部门 ID 类型。 Options:open_department_id(【飞书】用来在具体某个应用中标识一个部门，同一个department_id 在不同应用中的 open_department_id 相同),department_id(【飞书】用来标识租户内一个唯一的部门)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1OfferGet = {
@@ -4595,44 +4119,39 @@ export const hireV1OfferGet = {
   sdkName: 'hire.v1.offer.get',
   path: '/open-apis/hire/v1/offers/:offer_id',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-候选人管理-投递流程-Offer-获取 Offer 详情-根据 Offer ID 获取 Offer 详细信息',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-Offer-获取 Offer 详情-根据 Offer ID 获取 Offer 详细信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '此次调用中使用的部门 ID 类型。 Options:open_department_id(【飞书】用来在具体某个应用中标识一个部门，同一个department_id 在不同应用中的 open_department_id 相同),department_id(【飞书】用来标识租户内一个唯一的部门)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      offer_id: z
-        .string()
-        .describe(
-          'Offer ID，可通过[获取 Offer 列表]获取',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '此次调用中使用的部门 ID 类型。 Options:open_department_id(【飞书】用来在具体某个应用中标识一个部门，同一个department_id 在不同应用中的 open_department_id 相同),department_id(【飞书】用来标识租户内一个唯一的部门)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ offer_id: z.string().describe('Offer ID，可通过[获取 Offer 列表]获取').optional() }).optional(),
   },
 };
 export const hireV1OfferInternOfferStatus = {
@@ -4642,7 +4161,7 @@ export const hireV1OfferInternOfferStatus = {
   path: '/open-apis/hire/v1/offers/:offer_id/intern_offer_status',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-Offer-更新实习 Offer 入/离职状态-对「实习待入职」状态的实习 Offer 确认入职、放弃入职，或对「实习已入职」状态的实习 Offer 操作离职',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-Offer-更新实习 Offer 入/离职状态-对「实习待入职」状态的实习 Offer 确认入职、放弃入职，或对「实习已入职」状态的实习 Offer 操作离职',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -4665,14 +4184,9 @@ export const hireV1OfferInternOfferStatus = {
         .describe('离职表单信息**注意**：当 operation 为 `offboard` 时，该字段必填')
         .optional(),
     }),
-    path: z.object({
-      offer_id: z
-        .string()
-        .describe(
-          'Offer ID，如何获取请参考[获取 Offer 列表]',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({ offer_id: z.string().describe('Offer ID，如何获取请参考[获取 Offer 列表]').optional() })
+      .optional(),
   },
 };
 export const hireV1OfferList = {
@@ -4681,7 +4195,7 @@ export const hireV1OfferList = {
   sdkName: 'hire.v1.offer.list',
   path: '/open-apis/hire/v1/offers',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-候选人管理-投递流程-Offer-获取 Offer 列表-根据人才 ID 获取 Offer 列表',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-Offer-获取 Offer 列表-根据人才 ID 获取 Offer 列表',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -4692,11 +4206,7 @@ export const hireV1OfferList = {
         )
         .optional(),
       page_size: z.number().describe('分页大小，最大为 200').optional(),
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID，如何获取人才 ID 请参考[获取人才列表]',
-        ),
+      talent_id: z.string().describe('人才 ID，如何获取人才 ID 请参考[获取人才列表]'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
       employee_type_id_type: z
         .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
@@ -4714,7 +4224,7 @@ export const hireV1OfferOfferStatus = {
   path: '/open-apis/hire/v1/offers/:offer_id/offer_status',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-Offer-更新 Offer 状态-通过 Offer ID 更新候选人 Offer 的「Offer 审批状态」或 「Offer 发送和接受状态」',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-Offer-更新 Offer 状态-通过 Offer ID 更新候选人 Offer 的「Offer 审批状态」或 「Offer 发送和接受状态」',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -4735,14 +4245,9 @@ export const hireV1OfferOfferStatus = {
         .optional(),
       termination_reason_note: z.string().describe('Offer 终止备注信息').optional(),
     }),
-    path: z.object({
-      offer_id: z
-        .string()
-        .describe(
-          'Offer ID，如何获取请参考[获取 Offer 列表]',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({ offer_id: z.string().describe('Offer ID，如何获取请参考[获取 Offer 列表]').optional() })
+      .optional(),
   },
 };
 export const hireV1OfferUpdate = {
@@ -4752,7 +4257,7 @@ export const hireV1OfferUpdate = {
   path: '/open-apis/hire/v1/offers/:offer_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-Offer-更新 Offer 信息-更新 Offer 信息，包含基本信息、薪资信息、自定义信息',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-Offer-更新 Offer 信息-更新 Offer 信息，包含基本信息、薪资信息、自定义信息',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -4765,15 +4270,11 @@ export const hireV1OfferUpdate = {
         .object({
           department_id: z
             .string()
-            .describe(
-              '部门 ID，与入参中的`department_id_type`类型一致，可通过[搜索部门]接口获取',
-            ),
+            .describe('部门 ID，与入参中的`department_id_type`类型一致，可通过[搜索部门]接口获取'),
           leader_user_id: z.string().describe('直属上级 ID，需与入参`user_id_type`类型一致'),
           employment_job_id: z
             .string()
-            .describe(
-              '职务 ID，可通过[批量查询职务]获取，**请注意**：仅支持开通飞书人事企业版的租户使用',
-            )
+            .describe('职务 ID，可通过[批量查询职务]获取，**请注意**：仅支持开通飞书人事企业版的租户使用')
             .optional(),
           employee_type_id: z.string().describe('人员类型 ID，需与入参`employee_type_id_type` 类型一致').optional(),
           job_family_id: z.string().describe('职位序列 ID，需与入参`job_family_id_type` 类型一致').optional(),
@@ -4791,33 +4292,16 @@ export const hireV1OfferUpdate = {
             .string()
             .describe('预计入职日期，格式为：{"date":"YYYY-MM-DD"}，使用时请注意转义')
             .optional(),
-          onboard_address_id: z
-            .string()
-            .describe(
-              '入职地点 ID，可通过[获取地址列表]接口获取',
-            )
-            .optional(),
-          work_address_id: z
-            .string()
-            .describe(
-              '办公地点 ID，可通过[获取地址列表]接口获取',
-            )
-            .optional(),
+          onboard_address_id: z.string().describe('入职地点 ID，可通过[获取地址列表]接口获取').optional(),
+          work_address_id: z.string().describe('办公地点 ID，可通过[获取地址列表]接口获取').optional(),
           owner_user_id: z.string().describe('Offer负责人 ID，需与入参`user_id_type`类型一致'),
           recommended_words: z.string().describe('Offer 推荐语').optional(),
-          job_requirement_id: z
-            .string()
-            .describe(
-              '招聘需求 ID，可通过[获取招聘需求列表]接口获取',
-            )
-            .optional(),
+          job_requirement_id: z.string().describe('招聘需求 ID，可通过[获取招聘需求列表]接口获取').optional(),
           job_process_type_id: z.number().describe('招聘流程类型 ID**可选值**：- 1：社招- 2：校招').optional(),
           attachment_id_list: z.array(z.string()).describe('附件 ID 列表，暂无获取附件 ID 的方式，请勿使用').optional(),
           common_attachment_id_list: z
             .array(z.string())
-            .describe(
-              '通用附件 ID 列表，可使用[创建附件]接口创建的附件',
-            )
+            .describe('通用附件 ID 列表，可使用[创建附件]接口创建的附件')
             .optional(),
           attachment_description: z.string().describe('附件描述').optional(),
           operator_user_id: z.string().describe('Offer 操作人 ID，需与入参`user_id_type`类型一致'),
@@ -4828,12 +4312,7 @@ export const hireV1OfferUpdate = {
             )
             .optional(),
           job_offered: z.string().describe('入职职位').optional(),
-          job_grade_id: z
-            .string()
-            .describe(
-              '职等 ID，可通过[查询职等] 获取（仅限飞书人事租户使用）',
-            )
-            .optional(),
+          job_grade_id: z.string().describe('职等 ID，可通过[查询职等] 获取（仅限飞书人事租户使用）').optional(),
         })
         .describe('Offer 基本信息'),
       salary_info: z
@@ -4866,41 +4345,38 @@ export const hireV1OfferUpdate = {
         .describe('自定义信息，此字段更新为覆盖式更新，旧 Offer 中已存在字段不传则默认为删除，反之为新增')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(由系统自动生成的部门 ID， ID前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内，department_id 具有唯一性。)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      offer_id: z
-        .string()
-        .describe(
-          'Offer ID，可通过[获取 Offer 列表]接口获取',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(由系统自动生成的部门 ID， ID前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内，department_id 具有唯一性。)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            '此次调用中使用的「序列 ID」的类型 Options:people_admin_job_category_id(「人力系统管理后台」适用的序列 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_family_id(「飞书管理后台」适用的序列 ID，通过[获取租户序列列表]接口获取)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            '此次调用中使用的「人员类型 ID」的类型 Options:people_admin_employee_type_id(「人力系统管理后台」适用的人员类型 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),employee_type_enum_id(「飞书管理后台」适用的人员类型 ID，通过[查询人员类型]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z
+      .object({ offer_id: z.string().describe('Offer ID，可通过[获取 Offer 列表]接口获取').optional() })
+      .optional(),
   },
 };
 export const hireV1QuestionnaireList = {
@@ -4910,32 +4386,34 @@ export const hireV1QuestionnaireList = {
   path: '/open-apis/hire/v1/questionnaires',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-面试-获取面试满意度问卷列表-批量获取面试满意度问卷信息，包含问卷完成情况、问卷题目及问卷题目作答内容等信息',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-面试-获取面试满意度问卷列表-批量获取面试满意度问卷信息，包含问卷完成情况、问卷题目及问卷题目作答内容等信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-      application_id: z
-        .string()
-        .describe(
-          '投递 ID，用于筛选指定投递下的数据，可通过[获取投递列表]接口获取**注意**：- 当「飞书招聘」-「设置」-「面试设置」-「面试满意度问卷设置」中，通过邮件向候选人发送问卷时机选择为「面试流程结束后」时，仅可通过该参数进行筛选- 该参数不可以和 `interview_id` 参数同时填写',
-        )
-        .optional(),
-      interview_id: z
-        .string()
-        .describe(
-          '面试 ID，用于筛选指定面试下的数据，可通过[获取面试信息]接口或[获取人才面试信息]接口获取**注意**：- 当「飞书招聘」-「设置」-「面试设置」-「面试满意度问卷设置」中，通过邮件向候选人发送问卷时机选择为「每次面试结束后」或者「第一次面试结束后」时，仅可通过该参数进行筛选- 该参数不可以和 `application_id` 参数同时填写',
-        )
-        .optional(),
-      update_start_time: z.string().describe('最早更新时间，毫秒时间戳').optional(),
-      update_end_time: z.string().describe('最晚更新时间，毫秒时间戳').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+        application_id: z
+          .string()
+          .describe(
+            '投递 ID，用于筛选指定投递下的数据，可通过[获取投递列表]接口获取**注意**：- 当「飞书招聘」-「设置」-「面试设置」-「面试满意度问卷设置」中，通过邮件向候选人发送问卷时机选择为「面试流程结束后」时，仅可通过该参数进行筛选- 该参数不可以和 `interview_id` 参数同时填写',
+          )
+          .optional(),
+        interview_id: z
+          .string()
+          .describe(
+            '面试 ID，用于筛选指定面试下的数据，可通过[获取面试信息]接口或[获取人才面试信息]接口获取**注意**：- 当「飞书招聘」-「设置」-「面试设置」-「面试满意度问卷设置」中，通过邮件向候选人发送问卷时机选择为「每次面试结束后」或者「第一次面试结束后」时，仅可通过该参数进行筛选- 该参数不可以和 `application_id` 参数同时填写',
+          )
+          .optional(),
+        update_start_time: z.string().describe('最早更新时间，毫秒时间戳').optional(),
+        update_end_time: z.string().describe('最晚更新时间，毫秒时间戳').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ReferralAccountCreate = {
@@ -4948,21 +4426,21 @@ export const hireV1ReferralAccountCreate = {
     '[Feishu/Lark]-招聘-内推账户-注册内推账户-通过内推人的手机号或邮箱注册「内推奖励账户」。注册后，可通过[查询内推账户]接口获取内推账户 ID、积分余额、现金余额等，可通过[「全额提取内推账号余额」]接口提取账户余额，可通过[启动内推账户]、[「停用内推账户」]接口启/停用账户',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      mobile: z
-        .object({
-          code: z
-            .string()
-            .describe(
-              '电话国际区号，遵守国际统一标准，请参考[百度百科-国际长途电话区号]',
-            )
-            .optional(),
-          number: z.string().describe('手机号码，在传 mobile 参数的情况下必传').optional(),
-        })
-        .describe('电话，该参数与 email 参数必传一个')
-        .optional(),
-      email: z.string().describe('邮箱，该参数与 mobile 参数必传一个').optional(),
-    }),
+    data: z
+      .object({
+        mobile: z
+          .object({
+            code: z.string().describe('电话国际区号，遵守国际统一标准，请参考[百度百科-国际长途电话区号]').optional(),
+            number: z.string().describe('手机号码，在传 mobile 参数的情况下必传').optional(),
+          })
+          .describe('电话，该参数与 email 参数必传一个')
+          .optional(),
+        email: z.string().describe('邮箱，该参数与 mobile 参数必传一个').optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const hireV1ReferralAccountDeactivate = {
@@ -4975,14 +4453,9 @@ export const hireV1ReferralAccountDeactivate = {
     '[Feishu/Lark]-招聘-内推账户-停用内推账户-停用内推账户，停用后，将不再发送[「内推账户余额变更事件」]，也无法通过[「提取内推账号余额」]提取',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      referral_account_id: z
-        .string()
-        .describe(
-          '账户ID，注册账户后获取：[注册内推账户]',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({ referral_account_id: z.string().describe('账户ID，注册账户后获取：[注册内推账户]').optional() })
+      .optional(),
   },
 };
 export const hireV1ReferralAccountEnable = {
@@ -4995,14 +4468,12 @@ export const hireV1ReferralAccountEnable = {
     '[Feishu/Lark]-招聘-内推账户-启用内推账户-根据账户 ID 启用账户，启用后可通过[「内推账户余额变更事件」]监听余额变更、通过[「全额提取内推账户余额」]提取余额',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      referral_account_id: z
-        .string()
-        .describe(
-          '账户 ID，注册账户后获取：[注册内推账户]',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({ referral_account_id: z.string().describe('账户 ID，注册账户后获取：[注册内推账户]').optional() })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const hireV1ReferralAccountGetAccountAssets = {
@@ -5015,11 +4486,7 @@ export const hireV1ReferralAccountGetAccountAssets = {
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
-      referral_account_id: z
-        .string()
-        .describe(
-          '账户 ID，注册账户后获取：[注册内推账户]',
-        ),
+      referral_account_id: z.string().describe('账户 ID，注册账户后获取：[注册内推账户]'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
     }),
   },
@@ -5040,11 +4507,7 @@ export const hireV1ReferralAccountReconciliation = {
       trade_details: z
         .array(
           z.object({
-            account_id: z
-              .string()
-              .describe(
-                '内推账户ID，通过[注册内推账户]生成',
-              ),
+            account_id: z.string().describe('内推账户ID，通过[注册内推账户]生成'),
             total_recharge_reward_info: z
               .object({ point_bonus: z.number().describe('变动的积分数量').optional() })
               .describe('时段内该账户发生在调用方系统的积分之和')
@@ -5076,14 +4539,9 @@ export const hireV1ReferralAccountWithdraw = {
           '外部提取单 ID，由请求方提供，用于保证接口的幂等性，需要保证唯一。传入重复 ID 会返回原 ID 对应的提取详情',
         ),
     }),
-    path: z.object({
-      referral_account_id: z
-        .string()
-        .describe(
-          '账户 ID，通过[注册内推账户]生成',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({ referral_account_id: z.string().describe('账户 ID，通过[注册内推账户]生成').optional() })
+      .optional(),
   },
 };
 export const hireV1ReferralWebsiteJobPostGet = {
@@ -5096,28 +4554,24 @@ export const hireV1ReferralWebsiteJobPostGet = {
     '[Feishu/Lark]-招聘-获取候选人-内推-获取内推官网下职位广告详情-根据职位广告 ID 获取内推官网下的职位广告详情，包含职位广告 ID 以及职位信息等',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      job_post_id: z
-        .string()
-        .describe(
-          '职位广告 ID，可通过[获取内推官网下职位广告列表]获取',
-        ),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ job_post_id: z.string().describe('职位广告 ID，可通过[获取内推官网下职位广告列表]获取') }),
   },
 };
 export const hireV1ReferralWebsiteJobPostList = {
@@ -5130,32 +4584,34 @@ export const hireV1ReferralWebsiteJobPostList = {
     '[Feishu/Lark]-招聘-获取候选人-内推-获取内推官网下职位广告列表-获取内推官网下的职位列表，包含职位广告ID、职位广告名称、职位信息等',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      process_type: z
-        .number()
-        .describe('招聘流程类型 Options:1(social_process 社招),2(campus_process 校招)')
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('每页获取记录数量').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        process_type: z
+          .number()
+          .describe('招聘流程类型 Options:1(social_process 社招),2(campus_process 校招)')
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('每页获取记录数量').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ReferralGetByApplication = {
@@ -5169,11 +4625,7 @@ export const hireV1ReferralGetByApplication = {
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
-      application_id: z
-        .string()
-        .describe(
-          '投递 ID，可通过[获取投递列表]获取',
-        ),
+      application_id: z.string().describe('投递 ID，可通过[获取投递列表]获取'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
     }),
   },
@@ -5189,11 +4641,7 @@ export const hireV1ReferralSearch = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID ，可通过[批量获取人才ID]获取',
-        ),
+      talent_id: z.string().describe('人才 ID ，可通过[批量获取人才ID]获取'),
       start_time: z
         .string()
         .describe('内推记录最早创建时间，毫秒时间戳。若不填，默认为指定人才下的全部记录，但最多返回200条')
@@ -5203,7 +4651,9 @@ export const hireV1ReferralSearch = {
         .describe('内推记录最晚创建时间，毫秒时间戳。默认为指定人才下的全部记录，但最多返回200条')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const hireV1RegistrationSchemaList = {
@@ -5216,21 +4666,23 @@ export const hireV1RegistrationSchemaList = {
     '[Feishu/Lark]-招聘-招聘相关配置-候选人-获取信息登记表列表-根据适用场景获取信息登记表列表，可获取到的信息包括登记表名称、登记表模块、登记表字段等',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      scenario: z
-        .number()
-        .describe(
-          '登记表适用场景；不填表示获取全部类型信息登记表 Options:5(InterviewRegistration 面试登记表),6(OnboardRegistration 入职登记表),14(InfoUpdateRegistration 信息更新登记表)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        scenario: z
+          .number()
+          .describe(
+            '登记表适用场景；不填表示获取全部类型信息登记表 Options:5(InterviewRegistration 面试登记表),6(OnboardRegistration 入职登记表),14(InfoUpdateRegistration 信息更新登记表)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ResumeSourceList = {
@@ -5242,15 +4694,17 @@ export const hireV1ResumeSourceList = {
   description: '[Feishu/Lark]-招聘-候选人管理-简历来源-获取简历来源列表-获取简历来源列表',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小**默认值**：1000').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小**默认值**：1000').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1RoleGet = {
@@ -5263,12 +4717,7 @@ export const hireV1RoleGet = {
     '[Feishu/Lark]-招聘-招聘相关配置-权限-获取角色详情-可通过此接口获取角色详情信息，包括名称、描述、权限列表等',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      role_id: z
-        .string()
-        .describe('角色 ID，调用 [获取角色列表]获取')
-        .optional(),
-    }),
+    path: z.object({ role_id: z.string().describe('角色 ID，调用 [获取角色列表]获取').optional() }).optional(),
   },
 };
 export const hireV1RoleList = {
@@ -5281,15 +4730,17 @@ export const hireV1RoleList = {
     '[Feishu/Lark]-招聘-招聘相关配置-权限-获取角色列表-根据 page_token 与 page_size 对权限角色进行游标分页查询，可查询到的信息包括：权限角色ID、角色名、角色描述。可应用于权限判断等鉴权场景',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('每页获取记录数量').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('每页获取记录数量').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1SubjectList = {
@@ -5302,16 +4753,18 @@ export const hireV1SubjectList = {
     '[Feishu/Lark]-招聘-招聘相关配置-项目-获取项目列表-获取项目列表（概念上一批集体启动和管理的职位可以定义为一个项目，例如 「2012 秋招项目」）',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小, 不能超过 200').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小, 不能超过 200').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentBlocklistChangeTalentBlock = {
@@ -5324,11 +4777,7 @@ export const hireV1TalentBlocklistChangeTalentBlock = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID，可通过[获取人才列表]接口获取',
-        ),
+      talent_id: z.string().describe('人才 ID，可通过[获取人才列表]接口获取'),
       option: z.number().describe('操作类型 Options:1(Add 加入屏蔽名单),2(Remove 从屏蔽名单中移除)'),
       reason: z.string().describe('屏蔽原因，当`option`为`1`时必填').optional(),
     }),
@@ -5344,16 +4793,18 @@ export const hireV1TalentFolderList = {
     '[Feishu/Lark]-招聘-候选人管理-人才-获取人才文件夹列表-获取招聘系统中人才文件夹信息列表，包括文件夹 ID、文件夹名称、文件夹所有者 ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('每页获取记录数量').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('每页获取记录数量').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentObjectQuery = {
@@ -5377,29 +4828,24 @@ export const hireV1TalentOperationLogSearch = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      job_id_list: z
-        .array(z.string())
-        .describe(
-          '职位 ID 列表，可通过[获取职位列表]接口获取',
-        )
-        .optional(),
+      job_id_list: z.array(z.string()).describe('职位 ID 列表，可通过[获取职位列表]接口获取').optional(),
       operator_id_list: z.array(z.string()).describe('操作人 ID 列表，与入参 `user_id_type` 类型一致'),
       operation_list: z
         .array(z.number())
-        .describe(
-          '操作类型 ID 列表，操作类型枚举可查看[枚举常量介绍]中 `操作类型枚举定义`',
-        ),
+        .describe('操作类型 ID 列表，操作类型枚举可查看[枚举常量介绍]中 `操作类型枚举定义`'),
     }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('分页大小').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('分页大小').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentPoolBatchChangeTalentPool = {
@@ -5413,22 +4859,12 @@ export const hireV1TalentPoolBatchChangeTalentPool = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      talent_id_list: z
-        .array(z.string())
-        .describe(
-          '人才 ID 列表，可通过[获取人才列表]接口获取',
-        ),
+      talent_id_list: z.array(z.string()).describe('人才 ID 列表，可通过[获取人才列表]接口获取'),
       option_type: z
         .number()
         .describe('操作类型 Options:1(Add 将人才添加至指定人才库),2(Remove 将人才从指定人才库中移除)'),
     }),
-    path: z.object({
-      talent_pool_id: z
-        .string()
-        .describe(
-          '人才库 ID，可通过[获取人才库列表]接口获取',
-        ),
-    }),
+    path: z.object({ talent_pool_id: z.string().describe('人才库 ID，可通过[获取人才库列表]接口获取') }),
   },
 };
 export const hireV1TalentPoolMoveTalent = {
@@ -5441,23 +4877,14 @@ export const hireV1TalentPoolMoveTalent = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID，可通过接口 [获取人才列表] 获取',
-        ),
+      talent_id: z.string().describe('人才 ID，可通过接口 [获取人才列表] 获取'),
       add_type: z
         .number()
         .describe('加入类型，加入后是否从其他库移出 Options:1(OnlyAdd 否),2(AddAndRemoveFromOrigin 是)'),
     }),
-    path: z.object({
-      talent_pool_id: z
-        .string()
-        .describe(
-          '人才库 ID，可通过接口 [获取人才库列表] 获取',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({ talent_pool_id: z.string().describe('人才库 ID，可通过接口 [获取人才库列表] 获取').optional() })
+      .optional(),
   },
 };
 export const hireV1TalentPoolSearch = {
@@ -5470,19 +4897,21 @@ export const hireV1TalentPoolSearch = {
     '[Feishu/Lark]-招聘-候选人管理-人才库-获取人才库列表-获取人才库列表，可获取的信息包括人才库 ID、人才库名称等',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      id_list: z
-        .array(z.string())
-        .describe('人才库 ID 列表。当传入该参数时，返回min(page_size, len(id_list))的人才库信息')
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        id_list: z
+          .array(z.string())
+          .describe('人才库 ID 列表。当传入该参数时，返回min(page_size, len(id_list))的人才库信息')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentTagList = {
@@ -5495,19 +4924,21 @@ export const hireV1TalentTagList = {
     '[Feishu/Lark]-招聘-招聘相关配置-候选人-获取人才标签信息列表-可通过关键词、ID 列表、标签类型、停用状态等获取人才标签信息列表，结果按照创建时间倒序排序',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      keyword: z.string().describe('搜索关键词').optional(),
-      id_list: z.array(z.string().describe('标签 ID')).describe('标签 ID 列表').optional(),
-      type: z.number().describe('标签类型 Options:1(手动标签),2(自动标签)').optional(),
-      include_inactive: z.boolean().describe('是否包含停用标签').optional(),
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        keyword: z.string().describe('搜索关键词').optional(),
+        id_list: z.array(z.string().describe('标签 ID')).describe('标签 ID 列表').optional(),
+        type: z.number().describe('标签类型 Options:1(手动标签),2(自动标签)').optional(),
+        include_inactive: z.boolean().describe('是否包含停用标签').optional(),
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentAddToFolder = {
@@ -5520,16 +4951,8 @@ export const hireV1TalentAddToFolder = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      talent_id_list: z
-        .array(z.string())
-        .describe(
-          '人才 ID 列表，可通过[获取人才列表]接口获得',
-        ),
-      folder_id: z
-        .string()
-        .describe(
-          '文件夹 ID，可通过[获取人才文件夹列表]接口获取',
-        ),
+      talent_id_list: z.array(z.string()).describe('人才 ID 列表，可通过[获取人才列表]接口获得'),
+      folder_id: z.string().describe('文件夹 ID，可通过[获取人才文件夹列表]接口获取'),
     }),
   },
 };
@@ -5542,23 +4965,23 @@ export const hireV1TalentBatchGetId = {
   description: '[Feishu/Lark]-招聘-候选人管理-人才-批量获取人才ID-通过手机号、邮箱、证件号，批量查询人才ID',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      mobile_code: z
-        .string()
-        .describe(
-          '国际区号，遵守国际统一标准，请参考[百度百科-国际长途电话区号]。传入手机号但没传区号的情况下，默认为中国大陆区号："86"',
-        )
-        .optional(),
-      mobile_number_list: z.array(z.string()).describe('手机号列表').optional(),
-      email_list: z.array(z.string()).describe('邮箱列表').optional(),
-      identification_type: z
-        .number()
-        .describe(
-          '证件类型，枚举定义详见文档：[枚举常量介绍]的 IdentificationType。传入证件号的情况下必须传入该参数',
-        )
-        .optional(),
-      identification_number_list: z.array(z.string()).describe('证件号列表').optional(),
-    }),
+    data: z
+      .object({
+        mobile_code: z
+          .string()
+          .describe(
+            '国际区号，遵守国际统一标准，请参考[百度百科-国际长途电话区号]。传入手机号但没传区号的情况下，默认为中国大陆区号："86"',
+          )
+          .optional(),
+        mobile_number_list: z.array(z.string()).describe('手机号列表').optional(),
+        email_list: z.array(z.string()).describe('邮箱列表').optional(),
+        identification_type: z
+          .number()
+          .describe('证件类型，枚举定义详见文档：[枚举常量介绍]的 IdentificationType。传入证件号的情况下必须传入该参数')
+          .optional(),
+        identification_number_list: z.array(z.string()).describe('证件号列表').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentCombinedCreate = {
@@ -5573,18 +4996,8 @@ export const hireV1TalentCombinedCreate = {
   schema: {
     data: z.object({
       init_source_id: z.string().describe('简历来源 ID，已弃用，请使用 resume_source_id 字段').optional(),
-      resume_source_id: z
-        .string()
-        .describe(
-          '简历来源 ID，可通过[获取简历来源列表]接口查询',
-        )
-        .optional(),
-      folder_id_list: z
-        .array(z.string())
-        .describe(
-          '文件夹 ID 列表，可通过[获取人才文件夹列表]接口获取',
-        )
-        .optional(),
+      resume_source_id: z.string().describe('简历来源 ID，可通过[获取简历来源列表]接口查询').optional(),
+      folder_id_list: z.array(z.string()).describe('文件夹 ID 列表，可通过[获取人才文件夹列表]接口获取').optional(),
       creator_id: z
         .string()
         .describe(
@@ -5592,22 +5005,12 @@ export const hireV1TalentCombinedCreate = {
         )
         .optional(),
       creator_account_type: z.number().describe('创建人类型 Options:1(员工体系 员工),3(系统)').optional(),
-      resume_attachment_id: z
-        .string()
-        .describe(
-          '简历附件 ID，如何创建附件请参考[创建附件]',
-        )
-        .optional(),
+      resume_attachment_id: z.string().describe('简历附件 ID，如何创建附件请参考[创建附件]').optional(),
       basic_info: z
         .object({
           name: z.string().describe('名字'),
           mobile: z.string().describe('手机').optional(),
-          mobile_country_code: z
-            .string()
-            .describe(
-              '手机国家代码，可通过[查询地点列表]接口获取',
-            )
-            .optional(),
+          mobile_country_code: z.string().describe('手机国家代码，可通过[查询地点列表]接口获取').optional(),
           email: z.string().describe('邮箱').optional(),
           identification: z
             .object({
@@ -5624,42 +5027,17 @@ export const hireV1TalentCombinedCreate = {
           start_work_time: z.string().describe('开始工作时间，毫秒时间戳').optional(),
           birthday: z.string().describe('出生日期时间，毫秒时间戳').optional(),
           gender: z.number().describe('性别 Options:1(Male 男),2(Female 女),3(Other 其他)').optional(),
-          nationality_id: z
-            .string()
-            .describe(
-              '国籍编码，可通过[查询地点列表]获取',
-            )
-            .optional(),
-          current_city_code: z
-            .string()
-            .describe(
-              '所在地点编码，可通过[查询地点列表]获取',
-            )
-            .optional(),
-          hometown_city_code: z
-            .string()
-            .describe(
-              '家乡编码，可通过[查询地点列表]获取',
-            )
-            .optional(),
+          nationality_id: z.string().describe('国籍编码，可通过[查询地点列表]获取').optional(),
+          current_city_code: z.string().describe('所在地点编码，可通过[查询地点列表]获取').optional(),
+          hometown_city_code: z.string().describe('家乡编码，可通过[查询地点列表]获取').optional(),
           customized_data: z
             .array(
               z.object({
-                object_id: z
-                  .string()
-                  .describe(
-                    '自定义字段 ID，可通过[获取人才字段]接口获取',
-                  )
-                  .optional(),
+                object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                 children: z
                   .array(
                     z.object({
-                      object_id: z
-                        .string()
-                        .describe(
-                          '自定义字段 ID，可通过[获取人才字段]接口获取',
-                        )
-                        .optional(),
+                      object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                       value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                     }),
                   )
@@ -5702,21 +5080,11 @@ export const hireV1TalentCombinedCreate = {
             customized_data: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   children: z
                     .array(
                       z.object({
-                        object_id: z
-                          .string()
-                          .describe(
-                            '自定义字段 ID，可通过[获取人才字段]接口获取',
-                          )
-                          .optional(),
+                        object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                         value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                       }),
                     )
@@ -5748,21 +5116,11 @@ export const hireV1TalentCombinedCreate = {
             customized_data: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   children: z
                     .array(
                       z.object({
-                        object_id: z
-                          .string()
-                          .describe(
-                            '自定义字段 ID，可通过[获取人才字段]接口获取',
-                          )
-                          .optional(),
+                        object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                         value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                       }),
                     )
@@ -5791,21 +5149,11 @@ export const hireV1TalentCombinedCreate = {
             customized_data: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   children: z
                     .array(
                       z.object({
-                        object_id: z
-                          .string()
-                          .describe(
-                            '自定义字段 ID，可通过[获取人才字段]接口获取',
-                          )
-                          .optional(),
+                        object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                         value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                       }),
                     )
@@ -5831,21 +5179,11 @@ export const hireV1TalentCombinedCreate = {
             customized_data: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   children: z
                     .array(
                       z.object({
-                        object_id: z
-                          .string()
-                          .describe(
-                            '自定义字段 ID，可通过[获取人才字段]接口获取',
-                          )
-                          .optional(),
+                        object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                         value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                       }),
                     )
@@ -5871,21 +5209,11 @@ export const hireV1TalentCombinedCreate = {
             customized_data: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   children: z
                     .array(
                       z.object({
-                        object_id: z
-                          .string()
-                          .describe(
-                            '自定义字段 ID，可通过[获取人才字段]接口获取',
-                          )
-                          .optional(),
+                        object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                         value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                       }),
                     )
@@ -5920,21 +5248,11 @@ export const hireV1TalentCombinedCreate = {
             customized_data: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   children: z
                     .array(
                       z.object({
-                        object_id: z
-                          .string()
-                          .describe(
-                            '自定义字段 ID，可通过[获取人才字段]接口获取',
-                          )
-                          .optional(),
+                        object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                         value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                       }),
                     )
@@ -5964,21 +5282,11 @@ export const hireV1TalentCombinedCreate = {
             customized_data: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   children: z
                     .array(
                       z.object({
-                        object_id: z
-                          .string()
-                          .describe(
-                            '自定义字段 ID，可通过[获取人才字段]接口获取',
-                          )
-                          .optional(),
+                        object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                         value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                       }),
                     )
@@ -5994,12 +5302,7 @@ export const hireV1TalentCombinedCreate = {
         )
         .describe('社交账号')
         .optional(),
-      preferred_city_code_list: z
-        .array(z.string())
-        .describe(
-          '意向地点，可通过[查询地点列表]接口获取',
-        )
-        .optional(),
+      preferred_city_code_list: z.array(z.string()).describe('意向地点，可通过[查询地点列表]接口获取').optional(),
       self_evaluation: z
         .object({
           id: z.string().describe('自我评价 ID，无效字段，请勿使用').optional(),
@@ -6007,21 +5310,11 @@ export const hireV1TalentCombinedCreate = {
           customized_data: z
             .array(
               z.object({
-                object_id: z
-                  .string()
-                  .describe(
-                    '自定义字段 ID，可通过[获取人才字段]接口获取',
-                  )
-                  .optional(),
+                object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                 children: z
                   .array(
                     z.object({
-                      object_id: z
-                        .string()
-                        .describe(
-                          '自定义字段 ID，可通过[获取人才字段]接口获取',
-                        )
-                        .optional(),
+                      object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                       value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                     }),
                   )
@@ -6039,21 +5332,11 @@ export const hireV1TalentCombinedCreate = {
       customized_data: z
         .array(
           z.object({
-            object_id: z
-              .string()
-              .describe(
-                '自定义模块 ID，可通过[获取人才字段]接口获取',
-              )
-              .optional(),
+            object_id: z.string().describe('自定义模块 ID，可通过[获取人才字段]接口获取').optional(),
             children: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                 }),
               )
@@ -6064,9 +5347,11 @@ export const hireV1TalentCombinedCreate = {
         .describe('自定义模块列表**注意**：`children` 字段为二维数组，请参考请求体示例')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentCombinedUpdate = {
@@ -6080,23 +5365,9 @@ export const hireV1TalentCombinedUpdate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID，可通过[获取人才列表]接口获取',
-        ),
-      init_source_id: z
-        .string()
-        .describe(
-          '简历来源 ID，可通过[获取简历来源列表]接口查询',
-        )
-        .optional(),
-      folder_id_list: z
-        .array(z.string())
-        .describe(
-          '文件夹 ID 列表，可通过[获取人才文件夹列表]接口获取',
-        )
-        .optional(),
+      talent_id: z.string().describe('人才 ID，可通过[获取人才列表]接口获取'),
+      init_source_id: z.string().describe('简历来源 ID，可通过[获取简历来源列表]接口查询').optional(),
+      folder_id_list: z.array(z.string()).describe('文件夹 ID 列表，可通过[获取人才文件夹列表]接口获取').optional(),
       operator_id: z.string().describe('更新人 ID，与入参 `user_id_type` 类型一致').optional(),
       operator_account_type: z.number().describe('更新人类型 Options:1(员工体系 员工),3(系统)').optional(),
       resume_attachment_id: z
@@ -6109,12 +5380,7 @@ export const hireV1TalentCombinedUpdate = {
         .object({
           name: z.string().describe('名字').optional(),
           mobile: z.string().describe('手机').optional(),
-          mobile_country_code: z
-            .string()
-            .describe(
-              '手机国家代码，可通过[查询地点列表]接口获取',
-            )
-            .optional(),
+          mobile_country_code: z.string().describe('手机国家代码，可通过[查询地点列表]接口获取').optional(),
           email: z.string().describe('邮箱').optional(),
           identification: z
             .object({
@@ -6131,42 +5397,17 @@ export const hireV1TalentCombinedUpdate = {
           start_work_time: z.string().describe('开始工作时间，毫秒时间戳').optional(),
           birthday: z.string().describe('出生日期时间，毫秒时间戳').optional(),
           gender: z.number().describe('性别 Options:1(Male 男),2(Female 女),3(Other 其他)').optional(),
-          nationality_id: z
-            .string()
-            .describe(
-              '国籍编码，可通过[查询地点列表]获取',
-            )
-            .optional(),
-          current_city_code: z
-            .string()
-            .describe(
-              '所在地点编码，可通过[查询地点列表]获取',
-            )
-            .optional(),
-          hometown_city_code: z
-            .string()
-            .describe(
-              '家乡编码，可通过[查询地点列表]获取',
-            )
-            .optional(),
+          nationality_id: z.string().describe('国籍编码，可通过[查询地点列表]获取').optional(),
+          current_city_code: z.string().describe('所在地点编码，可通过[查询地点列表]获取').optional(),
+          hometown_city_code: z.string().describe('家乡编码，可通过[查询地点列表]获取').optional(),
           customized_data: z
             .array(
               z.object({
-                object_id: z
-                  .string()
-                  .describe(
-                    '自定义字段 ID，可通过[获取人才字段]接口获取',
-                  )
-                  .optional(),
+                object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                 children: z
                   .array(
                     z.object({
-                      object_id: z
-                        .string()
-                        .describe(
-                          '自定义字段 ID，可通过[获取人才字段]接口获取',
-                        )
-                        .optional(),
+                      object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                       value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                     }),
                   )
@@ -6209,21 +5450,11 @@ export const hireV1TalentCombinedUpdate = {
             customized_data: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   children: z
                     .array(
                       z.object({
-                        object_id: z
-                          .string()
-                          .describe(
-                            '自定义字段 ID，可通过[获取人才字段]接口获取',
-                          )
-                          .optional(),
+                        object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                         value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                       }),
                     )
@@ -6255,21 +5486,11 @@ export const hireV1TalentCombinedUpdate = {
             customized_data: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   children: z
                     .array(
                       z.object({
-                        object_id: z
-                          .string()
-                          .describe(
-                            '自定义字段 ID，可通过[获取人才字段]接口获取',
-                          )
-                          .optional(),
+                        object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                         value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                       }),
                     )
@@ -6298,21 +5519,11 @@ export const hireV1TalentCombinedUpdate = {
             customized_data: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   children: z
                     .array(
                       z.object({
-                        object_id: z
-                          .string()
-                          .describe(
-                            '自定义字段 ID，可通过[获取人才字段]接口获取',
-                          )
-                          .optional(),
+                        object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                         value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                       }),
                     )
@@ -6338,21 +5549,11 @@ export const hireV1TalentCombinedUpdate = {
             customized_data: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   children: z
                     .array(
                       z.object({
-                        object_id: z
-                          .string()
-                          .describe(
-                            '自定义字段 ID，可通过[获取人才字段]接口获取',
-                          )
-                          .optional(),
+                        object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                         value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                       }),
                     )
@@ -6378,21 +5579,11 @@ export const hireV1TalentCombinedUpdate = {
             customized_data: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   children: z
                     .array(
                       z.object({
-                        object_id: z
-                          .string()
-                          .describe(
-                            '自定义字段 ID，可通过[获取人才字段]接口获取',
-                          )
-                          .optional(),
+                        object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                         value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                       }),
                     )
@@ -6427,21 +5618,11 @@ export const hireV1TalentCombinedUpdate = {
             customized_data: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   children: z
                     .array(
                       z.object({
-                        object_id: z
-                          .string()
-                          .describe(
-                            '自定义字段 ID，可通过[获取人才字段]接口获取',
-                          )
-                          .optional(),
+                        object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                         value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                       }),
                     )
@@ -6471,21 +5652,11 @@ export const hireV1TalentCombinedUpdate = {
             customized_data: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   children: z
                     .array(
                       z.object({
-                        object_id: z
-                          .string()
-                          .describe(
-                            '自定义字段 ID，可通过[获取人才字段]接口获取',
-                          )
-                          .optional(),
+                        object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                         value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                       }),
                     )
@@ -6501,12 +5672,7 @@ export const hireV1TalentCombinedUpdate = {
         )
         .describe('社交账号**注意**：更新时会全量覆盖')
         .optional(),
-      preferred_city_code_list: z
-        .array(z.string())
-        .describe(
-          '意向地点，可通过[查询地点列表]接口获取',
-        )
-        .optional(),
+      preferred_city_code_list: z.array(z.string()).describe('意向地点，可通过[查询地点列表]接口获取').optional(),
       self_evaluation: z
         .object({
           id: z.string().describe('自我评价 ID，无效字段，请勿使用').optional(),
@@ -6514,21 +5680,11 @@ export const hireV1TalentCombinedUpdate = {
           customized_data: z
             .array(
               z.object({
-                object_id: z
-                  .string()
-                  .describe(
-                    '自定义字段 ID，可通过[获取人才字段]接口获取',
-                  )
-                  .optional(),
+                object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                 children: z
                   .array(
                     z.object({
-                      object_id: z
-                        .string()
-                        .describe(
-                          '自定义字段 ID，可通过[获取人才字段]接口获取',
-                        )
-                        .optional(),
+                      object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                       value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                     }),
                   )
@@ -6546,21 +5702,11 @@ export const hireV1TalentCombinedUpdate = {
       customized_data: z
         .array(
           z.object({
-            object_id: z
-              .string()
-              .describe(
-                '自定义模块 ID，可通过[获取人才字段]接口获取',
-              )
-              .optional(),
+            object_id: z.string().describe('自定义模块 ID，可通过[获取人才字段]接口获取').optional(),
             children: z
               .array(
                 z.object({
-                  object_id: z
-                    .string()
-                    .describe(
-                      '自定义字段 ID，可通过[获取人才字段]接口获取',
-                    )
-                    .optional(),
+                  object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]接口获取').optional(),
                   value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                 }),
               )
@@ -6571,9 +5717,11 @@ export const hireV1TalentCombinedUpdate = {
         .describe('自定义模块列表**注意**：- `children` 字段为二维数组，请参考请求体示例- 更新时会全量覆盖')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentExternalInfoCreate = {
@@ -6583,17 +5731,11 @@ export const hireV1TalentExternalInfoCreate = {
   path: '/open-apis/hire/v1/talents/:talent_id/external_info',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-获取候选人-外部系统信息-外部人才信息-创建人才外部信息-创建外部人才，可将已存在人才标记为外部人才，并写入外部系统创建时间',
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部人才信息-创建人才外部信息-创建外部人才，可将已存在人才标记为外部人才，并写入外部系统创建时间',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ external_create_time: z.string().describe('人才在外部系统的创建时间，毫秒时间戳') }),
-    path: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID，可通过[获取人才列表]获取',
-        ),
-    }),
+    path: z.object({ talent_id: z.string().describe('人才 ID，可通过[获取人才列表]获取') }),
   },
 };
 export const hireV1TalentExternalInfoUpdate = {
@@ -6603,17 +5745,11 @@ export const hireV1TalentExternalInfoUpdate = {
   path: '/open-apis/hire/v1/talents/:talent_id/external_info',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-获取候选人-外部系统信息-外部人才信息-更新人才外部信息-更新人才外部信息，包含外部系统创建时间',
+    '[Feishu/Lark]-招聘-获取候选人-外部系统信息-外部人才信息-更新人才外部信息-更新人才外部信息，包含外部系统创建时间',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ external_create_time: z.string().describe('人才在外部系统的创建时间，毫秒时间戳') }),
-    path: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID，可通过[获取人才列表]接口获取',
-        ),
-    }),
+    path: z.object({ talent_id: z.string().describe('人才 ID，可通过[获取人才列表]接口获取') }),
   },
 };
 export const hireV1TalentGet = {
@@ -6625,16 +5761,12 @@ export const hireV1TalentGet = {
   description: '[Feishu/Lark]-招聘-候选人管理-人才-获取人才信息-根据人才 ID 获取人才信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才ID，可通过[获取人才列表]接口获取',
-        ),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ talent_id: z.string().describe('人才ID，可通过[获取人才列表]接口获取') }),
   },
 };
 export const hireV1TalentList = {
@@ -6647,27 +5779,29 @@ export const hireV1TalentList = {
     '[Feishu/Lark]-招聘-候选人管理-人才-获取人才列表-批量获取人才摘要信息，包括人才 ID、人才基信息、教育经历、工作经历等。若需要获取人才详细信息请使用[获取人才详情]接口',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      keyword: z.string().describe('搜索关键词，支持布尔语言（使用 and、or、not 连接关键词）').optional(),
-      update_start_time: z.string().describe('最早更新时间，毫秒时间戳').optional(),
-      update_end_time: z.string().describe('最晚更新时间，毫秒时间戳').optional(),
-      page_size: z.number().describe('分页大小').optional(),
-      sort_by: z
-        .number()
-        .describe('排序规则 Options:1(按更新日期降序),2(按相关度降序),3(按投递时间降序),4(按入库时间降序)')
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
-      query_option: z
-        .literal('ignore_empty_error')
-        .describe('请求控制参数 Options:ignore_empty_error(忽略结果为空时的报错)')
-        .optional(),
-    }),
+    params: z
+      .object({
+        keyword: z.string().describe('搜索关键词，支持布尔语言（使用 and、or、not 连接关键词）').optional(),
+        update_start_time: z.string().describe('最早更新时间，毫秒时间戳').optional(),
+        update_end_time: z.string().describe('最晚更新时间，毫秒时间戳').optional(),
+        page_size: z.number().describe('分页大小').optional(),
+        sort_by: z
+          .number()
+          .describe('排序规则 Options:1(按更新日期降序),2(按相关度降序),3(按投递时间降序),4(按入库时间降序)')
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('用户ID类型').optional(),
+        query_option: z
+          .literal('ignore_empty_error')
+          .describe('请求控制参数 Options:ignore_empty_error(忽略结果为空时的报错)')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentOnboardStatus = {
@@ -6684,14 +5818,7 @@ export const hireV1TalentOnboardStatus = {
       onboard_time: z.string().describe('入职时间，毫秒时间戳；当操作类型为入职的时候时必填').optional(),
       overboard_time: z.string().describe('离职时间，毫秒时间戳；当操作类型为离职的时候时必填').optional(),
     }),
-    path: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才ID，可通过[获取人才列表]接口获取',
-        )
-        .optional(),
-    }),
+    path: z.object({ talent_id: z.string().describe('人才ID，可通过[获取人才列表]接口获取').optional() }).optional(),
   },
 };
 export const hireV1TalentRemoveToFolder = {
@@ -6704,16 +5831,8 @@ export const hireV1TalentRemoveToFolder = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      talent_id_list: z
-        .array(z.string())
-        .describe(
-          '人才 ID 列表，可通过[获取人才列表]接口获得',
-        ),
-      folder_id: z
-        .string()
-        .describe(
-          '文件夹 ID，可通过[获取人才文件夹列表]接口获取',
-        ),
+      talent_id_list: z.array(z.string()).describe('人才 ID 列表，可通过[获取人才列表]接口获得'),
+      folder_id: z.string().describe('文件夹 ID，可通过[获取人才文件夹列表]接口获取'),
     }),
   },
 };
@@ -6730,17 +5849,9 @@ export const hireV1TalentTag = {
       operation: z.number().describe('操作类型 Options:1(新增),2(删除)'),
       tag_id_list: z
         .array(z.string().describe('标签 ID'))
-        .describe(
-          '标签 ID 列表，可通过以下接口获取[获取人才标签信息列表]',
-        ),
+        .describe('标签 ID 列表，可通过以下接口获取[获取人才标签信息列表]'),
     }),
-    path: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          '人才 ID，可通过[批量获取人才ID]获取',
-        ),
-    }),
+    path: z.object({ talent_id: z.string().describe('人才 ID，可通过[批量获取人才ID]获取') }),
   },
 };
 export const hireV1TerminationReasonList = {
@@ -6750,18 +5861,20 @@ export const hireV1TerminationReasonList = {
   path: '/open-apis/hire/v1/termination_reasons',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-投递管理-获取终止投递原因-获取系统中默认的投递终止原因以及用户配置的自定义投递终止原因',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-投递管理-获取终止投递原因-获取系统中默认的投递终止原因以及用户配置的自定义投递终止原因',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('每页获取记录数量，默认值为 10').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('每页获取记录数量，默认值为 10').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TestSearch = {
@@ -6771,29 +5884,28 @@ export const hireV1TestSearch = {
   path: '/open-apis/hire/v1/tests/search',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-笔试-获取笔试列表-批量获取人才在投递流程中的笔试信息。如作答状态、笔试得分等',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-笔试-获取笔试列表-批量获取人才在投递流程中的笔试信息。如作答状态、笔试得分等',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      application_id_list: z
-        .array(z.string())
-        .describe(
-          '投递 ID 列表，可通过[获取投递信息]接口获取',
-        )
-        .optional(),
-      test_start_time_min: z.string().describe('笔试最早开始时间（毫秒时间戳）').optional(),
-      test_start_time_max: z.string().describe('笔试最晚开始时间（毫秒时间戳）').optional(),
-    }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('每页获取记录数量').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    data: z
+      .object({
+        application_id_list: z.array(z.string()).describe('投递 ID 列表，可通过[获取投递信息]接口获取').optional(),
+        test_start_time_min: z.string().describe('笔试最早开始时间（毫秒时间戳）').optional(),
+        test_start_time_max: z.string().describe('笔试最晚开始时间（毫秒时间戳）').optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('每页获取记录数量').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TodoList = {
@@ -6829,15 +5941,11 @@ export const hireV1TripartiteAgreementCreate = {
   sdkName: 'hire.v1.tripartiteAgreement.create',
   path: '/open-apis/hire/v1/tripartite_agreements',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-候选人管理-投递流程-三方协议-创建三方协议-在校招投递上创建三方协议',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-三方协议-创建三方协议-在校招投递上创建三方协议',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      application_id: z
-        .string()
-        .describe(
-          '投递 ID，可通过[获取投递列表]接口获取',
-        ),
+      application_id: z.string().describe('投递 ID，可通过[获取投递列表]接口获取'),
       state: z
         .number()
         .describe(
@@ -6853,17 +5961,17 @@ export const hireV1TripartiteAgreementDelete = {
   sdkName: 'hire.v1.tripartiteAgreement.delete',
   path: '/open-apis/hire/v1/tripartite_agreements/:tripartite_agreement_id',
   httpMethod: 'DELETE',
-  description: '[Feishu/Lark]-候选人管理-投递流程-三方协议-删除三方协议-删除投递的三方协议',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-三方协议-删除三方协议-删除投递的三方协议',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      tripartite_agreement_id: z
-        .string()
-        .describe(
-          '三方协议 ID，由[创建三方协议]接口返回或通过[获取三方协议]获取',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        tripartite_agreement_id: z
+          .string()
+          .describe('三方协议 ID，由[创建三方协议]接口返回或通过[获取三方协议]获取')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TripartiteAgreementList = {
@@ -6873,30 +5981,22 @@ export const hireV1TripartiteAgreementList = {
   path: '/open-apis/hire/v1/tripartite_agreements',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-候选人管理-投递流程-三方协议-获取三方协议-根据三方协议 ID 或投递 ID 获取三方协议信息，如三方协议状态、创建时间等信息',
+    '[Feishu/Lark]-招聘-候选人管理-投递流程-三方协议-获取三方协议-根据三方协议 ID 或投递 ID 获取三方协议信息，如三方协议状态、创建时间等信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      application_id: z
-        .string()
-        .describe(
-          '投递 ID，可通过[获取投递列表]接口获取',
-        )
-        .optional(),
-      tripartite_agreement_id: z
-        .string()
-        .describe(
-          '三方协议 ID，由[创建三方协议]接口返回',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        application_id: z.string().describe('投递 ID，可通过[获取投递列表]接口获取').optional(),
+        tripartite_agreement_id: z.string().describe('三方协议 ID，由[创建三方协议]接口返回').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TripartiteAgreementUpdate = {
@@ -6905,7 +6005,7 @@ export const hireV1TripartiteAgreementUpdate = {
   sdkName: 'hire.v1.tripartiteAgreement.update',
   path: '/open-apis/hire/v1/tripartite_agreements/:tripartite_agreement_id',
   httpMethod: 'PUT',
-  description: '[Feishu/Lark]-候选人管理-投递流程-三方协议-更新三方协议-更新三方协议的状态及修改时间信息',
+  description: '[Feishu/Lark]-招聘-候选人管理-投递流程-三方协议-更新三方协议-更新三方协议的状态及修改时间信息',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -6916,14 +6016,9 @@ export const hireV1TripartiteAgreementUpdate = {
         ),
       modify_time: z.string().describe('三方协议修改时间，毫秒时间戳**注意**：不可小于创建时间或者上次修改时间'),
     }),
-    path: z.object({
-      tripartite_agreement_id: z
-        .string()
-        .describe(
-          '三方协议 ID，可通过[获取三方协议]获取',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({ tripartite_agreement_id: z.string().describe('三方协议 ID，可通过[获取三方协议]获取').optional() })
+      .optional(),
   },
 };
 export const hireV1UserRoleList = {
@@ -6936,25 +6031,22 @@ export const hireV1UserRoleList = {
     '[Feishu/Lark]-招聘-招聘相关配置-权限-获取用户角色列表-通过用户ID、角色ID等筛选条件获取用户角色列表，可获取的信息包括用户ID、角色ID、角色姓名、业务管理范围等',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('每页获取记录数量').optional(),
-      user_id: z.string().describe('用户 ID，与入参 `user_id_type` 类型一致').optional(),
-      role_id: z
-        .string()
-        .describe(
-          '角色 ID，可通过接口 [获取角色列表] 获取',
-        )
-        .optional(),
-      update_start_time: z.string().describe('最早更新时间，毫秒时间戳').optional(),
-      update_end_time: z.string().describe('最晚更新时间，毫秒时间戳').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('每页获取记录数量').optional(),
+        user_id: z.string().describe('用户 ID，与入参 `user_id_type` 类型一致').optional(),
+        role_id: z.string().describe('角色 ID，可通过接口 [获取角色列表] 获取').optional(),
+        update_start_time: z.string().describe('最早更新时间，毫秒时间戳').optional(),
+        update_end_time: z.string().describe('最晚更新时间，毫秒时间戳').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1WebsiteChannelCreate = {
@@ -6968,14 +6060,7 @@ export const hireV1WebsiteChannelCreate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ channel_name: z.string().describe('推广渠道名称') }),
-    path: z.object({
-      website_id: z
-        .string()
-        .describe(
-          '官网 ID，可通过[获取招聘官网列表]获取',
-        )
-        .optional(),
-    }),
+    path: z.object({ website_id: z.string().describe('官网 ID，可通过[获取招聘官网列表]获取').optional() }).optional(),
   },
 };
 export const hireV1WebsiteChannelDelete = {
@@ -6987,20 +6072,12 @@ export const hireV1WebsiteChannelDelete = {
   description: '[Feishu/Lark]-招聘-获取候选人-官网-删除招聘官网推广渠道-根据招聘官网 ID 和推广渠道 ID 删除推广渠道',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      website_id: z
-        .string()
-        .describe(
-          '官网 ID，可通过[获取招聘官网列表]获取',
-        )
-        .optional(),
-      channel_id: z
-        .string()
-        .describe(
-          '推广渠道 ID，可通过[获取推广渠道列表]获取',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        website_id: z.string().describe('官网 ID，可通过[获取招聘官网列表]获取').optional(),
+        channel_id: z.string().describe('推广渠道 ID，可通过[获取推广渠道列表]获取').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1WebsiteChannelList = {
@@ -7012,23 +6089,18 @@ export const hireV1WebsiteChannelList = {
   description: '[Feishu/Lark]-招聘-获取候选人-官网-获取招聘官网推广渠道列表-根据官网 ID 获取推广渠道列表，支持分页查询',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.string().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      website_id: z
-        .string()
-        .describe(
-          '官网 ID，可通过[获取招聘官网列表]获取',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.string().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ website_id: z.string().describe('官网 ID，可通过[获取招聘官网列表]获取').optional() }).optional(),
   },
 };
 export const hireV1WebsiteChannelUpdate = {
@@ -7042,20 +6114,12 @@ export const hireV1WebsiteChannelUpdate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ channel_name: z.string().describe('推广渠道名称') }),
-    path: z.object({
-      website_id: z
-        .string()
-        .describe(
-          '官网 ID，通过[获取招聘官网列表]获取',
-        )
-        .optional(),
-      channel_id: z
-        .string()
-        .describe(
-          '推广渠道 ID，可通过[获取推广渠道列表]获取',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        website_id: z.string().describe('官网 ID，通过[获取招聘官网列表]获取').optional(),
+        channel_id: z.string().describe('推广渠道 ID，可通过[获取推广渠道列表]获取').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1WebsiteDeliveryTaskGet = {
@@ -7069,16 +6133,8 @@ export const hireV1WebsiteDeliveryTaskGet = {
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
-      website_id: z
-        .string()
-        .describe(
-          '官网 ID，可通过[获取招聘官网列表]获取',
-        ),
-      delivery_task_id: z
-        .string()
-        .describe(
-          '投递任务 ID，可通过[根据简历附件创建招聘官网投递]获取',
-        ),
+      website_id: z.string().describe('官网 ID，可通过[获取招聘官网列表]获取'),
+      delivery_task_id: z.string().describe('投递任务 ID，可通过[根据简历附件创建招聘官网投递]获取'),
     }),
   },
 };
@@ -7093,30 +6149,13 @@ export const hireV1WebsiteDeliveryCreateByAttachment = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      job_post_id: z
-        .string()
-        .describe(
-          '职位广告 ID，可通过[获取招聘官网下的职位列表]获取',
-        ),
-      user_id: z
-        .string()
-        .describe(
-          '官网用户ID，暂无直接查询接口，需在[新建招聘官网用户]获取并保存',
-        ),
-      resume_file_id: z
-        .string()
-        .describe('简历文件 ID，通过[创建附件]生成'),
-      channel_id: z
-        .string()
-        .describe(
-          '官网推广渠道 ID，可通过[获取招聘官网推广渠道列表]获取',
-        )
-        .optional(),
+      job_post_id: z.string().describe('职位广告 ID，可通过[获取招聘官网下的职位列表]获取'),
+      user_id: z.string().describe('官网用户ID，暂无直接查询接口，需在[新建招聘官网用户]获取并保存'),
+      resume_file_id: z.string().describe('简历文件 ID，通过[创建附件]生成'),
+      channel_id: z.string().describe('官网推广渠道 ID，可通过[获取招聘官网推广渠道列表]获取').optional(),
       application_preferred_city_code_list: z
         .array(z.string())
-        .describe(
-          '意向投递城市列表，最多可填入一个意向城市，可通过[查询地点列表]获取',
-        )
+        .describe('意向投递城市列表，最多可填入一个意向城市，可通过[查询地点列表]获取')
         .optional(),
       mobile_country_code: z
         .string()
@@ -7139,13 +6178,7 @@ export const hireV1WebsiteDeliveryCreateByAttachment = {
         .describe('证件（当该参数值与简历附件中的相关值不一致时，将以该参数值为准）')
         .optional(),
     }),
-    path: z.object({
-      website_id: z
-        .string()
-        .describe(
-          '官网 ID，可通过[获取招聘官网列表]获取',
-        ),
-    }),
+    path: z.object({ website_id: z.string().describe('官网 ID，可通过[获取招聘官网列表]获取') }),
   },
 };
 export const hireV1WebsiteDeliveryCreateByResume = {
@@ -7160,9 +6193,7 @@ export const hireV1WebsiteDeliveryCreateByResume = {
     data: z.object({
       job_post_id: z
         .string()
-        .describe(
-          '职位广告 ID，可通过[搜索招聘官网下的职位广告列表]或者[获取招聘官网下的职位广告列表]获取',
-        ),
+        .describe('职位广告 ID，可通过[搜索招聘官网下的职位广告列表]或者[获取招聘官网下的职位广告列表]获取'),
       resume: z
         .object({
           internship_list: z
@@ -7176,12 +6207,7 @@ export const hireV1WebsiteDeliveryCreateByResume = {
                 customized_data: z
                   .array(
                     z.object({
-                      object_id: z
-                        .string()
-                        .describe(
-                          '自定义字段 ID，可通过[获取人才字段]获取',
-                        )
-                        .optional(),
+                      object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]获取').optional(),
                       value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                     }),
                   )
@@ -7193,26 +6219,11 @@ export const hireV1WebsiteDeliveryCreateByResume = {
             .optional(),
           basic_info: z
             .object({
-              nationality_id: z
-                .string()
-                .describe(
-                  '国家码，可通过[查询地点列表]获取',
-                )
-                .optional(),
+              nationality_id: z.string().describe('国家码，可通过[查询地点列表]获取').optional(),
               start_work_time: z.number().describe('起始工作时间，毫秒时间戳').optional(),
               current_home_address: z.string().describe('家庭住址').optional(),
-              hometown_city_code: z
-                .string()
-                .describe(
-                  '家乡，可通过[查询地点列表]获取',
-                )
-                .optional(),
-              mobile_country_code: z
-                .string()
-                .describe(
-                  '手机国家代码，可通过[查询地点列表]获取',
-                )
-                .optional(),
+              hometown_city_code: z.string().describe('家乡，可通过[查询地点列表]获取').optional(),
+              mobile_country_code: z.string().describe('手机国家代码，可通过[查询地点列表]获取').optional(),
               identification: z
                 .object({
                   identification_number: z.string().describe('身份证件号码').optional(),
@@ -7227,38 +6238,21 @@ export const hireV1WebsiteDeliveryCreateByResume = {
                 .optional(),
               marital_status: z.number().describe('婚姻状况 Options:1(已婚),2(未婚)').optional(),
               mobile: z.string().describe('电话').optional(),
-              current_city_code: z
-                .string()
-                .describe(
-                  '所在城市，可通过[查询地点列表]获取',
-                )
-                .optional(),
+              current_city_code: z.string().describe('所在城市，可通过[查询地点列表]获取').optional(),
               experience_years: z.number().describe('工作年限').optional(),
               gender: z.number().describe('性别 Options:1(Male 男),2(Female 女),3(Other 其他)').optional(),
               birthday: z.number().describe('出生日期，毫秒时间戳').optional(),
               name: z.string().describe('姓名'),
               preferred_city_code_list: z
                 .array(z.string())
-                .describe(
-                  '意向城市列表，可通过[查询地点列表]获取',
-                )
+                .describe('意向城市列表，可通过[查询地点列表]获取')
                 .optional(),
-              resume_source_id: z
-                .string()
-                .describe(
-                  '简历来源，可通过[获取简历来源列表]获取',
-                )
-                .optional(),
+              resume_source_id: z.string().describe('简历来源，可通过[获取简历来源列表]获取').optional(),
               age: z.number().describe('年龄').optional(),
               customized_data: z
                 .array(
                   z.object({
-                    object_id: z
-                      .string()
-                      .describe(
-                        '自定义字段 ID，可通过[获取人才字段]获取',
-                      )
-                      .optional(),
+                    object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]获取').optional(),
                     value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                   }),
                 )
@@ -7300,12 +6294,7 @@ export const hireV1WebsiteDeliveryCreateByResume = {
                 customized_data: z
                   .array(
                     z.object({
-                      object_id: z
-                        .string()
-                        .describe(
-                          '自定义字段 ID，可通过[获取人才字段]获取',
-                        )
-                        .optional(),
+                      object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]获取').optional(),
                       value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                     }),
                   )
@@ -7327,12 +6316,7 @@ export const hireV1WebsiteDeliveryCreateByResume = {
               customized_data: z
                 .array(
                   z.object({
-                    object_id: z
-                      .string()
-                      .describe(
-                        '自定义字段 ID，可通过[获取人才字段]获取',
-                      )
-                      .optional(),
+                    object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]获取').optional(),
                     value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                   }),
                 )
@@ -7352,12 +6336,7 @@ export const hireV1WebsiteDeliveryCreateByResume = {
                 customized_data: z
                   .array(
                     z.object({
-                      object_id: z
-                        .string()
-                        .describe(
-                          '自定义字段 ID，可通过[获取人才字段]获取',
-                        )
-                        .optional(),
+                      object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]获取').optional(),
                       value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                     }),
                   )
@@ -7370,21 +6349,11 @@ export const hireV1WebsiteDeliveryCreateByResume = {
           customized_data: z
             .array(
               z.object({
-                object_id: z
-                  .string()
-                  .describe(
-                    '自定义模块ID，可通过[获取人才字段]获取',
-                  )
-                  .optional(),
+                object_id: z.string().describe('自定义模块ID，可通过[获取人才字段]获取').optional(),
                 children: z
                   .array(
                     z.object({
-                      object_id: z
-                        .string()
-                        .describe(
-                          '自定义字段 ID，可通过[获取人才字段]获取',
-                        )
-                        .optional(),
+                      object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]获取').optional(),
                       value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                     }),
                   )
@@ -7394,12 +6363,7 @@ export const hireV1WebsiteDeliveryCreateByResume = {
             )
             .describe('自定义模块')
             .optional(),
-          resume_attachment_id: z
-            .string()
-            .describe(
-              '简历附件ID，需通过[创建附件]生成',
-            )
-            .optional(),
+          resume_attachment_id: z.string().describe('简历附件ID，需通过[创建附件]生成').optional(),
           sns_list: z
             .array(
               z.object({
@@ -7412,12 +6376,7 @@ export const hireV1WebsiteDeliveryCreateByResume = {
                 customized_data: z
                   .array(
                     z.object({
-                      object_id: z
-                        .string()
-                        .describe(
-                          '自定义字段 ID，可通过[获取人才字段]获取',
-                        )
-                        .optional(),
+                      object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]获取').optional(),
                       value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                     }),
                   )
@@ -7434,25 +6393,13 @@ export const hireV1WebsiteDeliveryCreateByResume = {
                 desc: z.string().describe('作品描述').optional(),
                 link: z.string().describe('作品链接').optional(),
                 attachment: z
-                  .object({
-                    file_id: z
-                      .string()
-                      .describe(
-                        '文件ID，需通过[创建附件]生成',
-                      )
-                      .optional(),
-                  })
+                  .object({ file_id: z.string().describe('文件ID，需通过[创建附件]生成').optional() })
                   .describe('附件')
                   .optional(),
                 customized_data: z
                   .array(
                     z.object({
-                      object_id: z
-                        .string()
-                        .describe(
-                          '自定义字段 ID，可通过[获取人才字段]获取',
-                        )
-                        .optional(),
+                      object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]获取').optional(),
                       value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                     }),
                   )
@@ -7468,12 +6415,7 @@ export const hireV1WebsiteDeliveryCreateByResume = {
                 customized_data: z
                   .array(
                     z.object({
-                      object_id: z
-                        .string()
-                        .describe(
-                          '自定义字段 ID，可通过[获取人才字段]获取',
-                        )
-                        .optional(),
+                      object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]获取').optional(),
                       value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                     }),
                   )
@@ -7492,12 +6434,7 @@ export const hireV1WebsiteDeliveryCreateByResume = {
                 customized_data: z
                   .array(
                     z.object({
-                      object_id: z
-                        .string()
-                        .describe(
-                          '自定义字段 ID，可通过[获取人才字段]获取',
-                        )
-                        .optional(),
+                      object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]获取').optional(),
                       value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                     }),
                   )
@@ -7519,12 +6456,7 @@ export const hireV1WebsiteDeliveryCreateByResume = {
                 customized_data: z
                   .array(
                     z.object({
-                      object_id: z
-                        .string()
-                        .describe(
-                          '自定义字段 ID，可通过[获取人才字段]获取',
-                        )
-                        .optional(),
+                      object_id: z.string().describe('自定义字段 ID，可通过[获取人才字段]获取').optional(),
                       value: z.string().describe('自定义字段值，请参考本文「自定义字段数据格式说明」').optional(),
                     }),
                   )
@@ -7548,32 +6480,17 @@ export const hireV1WebsiteDeliveryCreateByResume = {
             .optional(),
         })
         .describe('人才信息'),
-      user_id: z
-        .string()
-        .describe(
-          '官网用户 ID，需通过[新建招聘官网用户]生成',
-        ),
+      user_id: z.string().describe('官网用户 ID，需通过[新建招聘官网用户]生成'),
       application_preferred_city_code_list: z
         .array(z.string())
-        .describe(
-          '意向投递城市列表，可通过[查询地点列表]获取',
-        )
+        .describe('意向投递城市列表，可通过[查询地点列表]获取')
         .optional(),
-      channel_id: z
-        .string()
-        .describe(
-          '官网推广渠道 ID，可通过[获取招聘官网推广渠道列表]获取',
-        )
-        .optional(),
+      channel_id: z.string().describe('官网推广渠道 ID，可通过[获取招聘官网推广渠道列表]获取').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      website_id: z
-        .string()
-        .describe(
-          '官网 ID，可通过[获取招聘官网列表]获取',
-        ),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ website_id: z.string().describe('官网 ID，可通过[获取招聘官网列表]获取') }),
   },
 };
 export const hireV1WebsiteJobPostGet = {
@@ -7586,32 +6503,28 @@ export const hireV1WebsiteJobPostGet = {
     '[Feishu/Lark]-招聘-获取候选人-官网-获取招聘官网下职位广告详情-获取招聘官网下的职位广告详情，包含职位广告 ID、名称、关联职位 ID、关联职位编码等信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(由系统自动生成的部门 ID， ID前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内，department_id 具有唯一性。)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[「获取租户职级列表」]接口获取)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门资源介绍]。 Options:open_department_id(由系统自动生成的部门 ID， ID前缀固定为 `od-`，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内，department_id 具有唯一性。)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[「获取租户职级列表」]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
-      website_id: z
-        .string()
-        .describe(
-          '官网 ID，可通过[获取招聘官网列表]获取',
-        ),
+      website_id: z.string().describe('官网 ID，可通过[获取招聘官网列表]获取'),
       job_post_id: z
         .string()
-        .describe(
-          '职位广告 ID，可通过[获取招聘官网下的职位广告列表]或[搜索招聘官网下的职位广告列表]获取',
-        ),
+        .describe('职位广告 ID，可通过[获取招聘官网下的职位广告列表]或[搜索招聘官网下的职位广告列表]获取'),
     }),
   },
 };
@@ -7624,40 +6537,37 @@ export const hireV1WebsiteJobPostList = {
   description: '[Feishu/Lark]-招聘-获取候选人-官网-获取招聘官网下的职位广告列表-获取招聘官网下的职位信息列表',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('每页获取记录数量，最大10，不传则默认值为10').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-      update_start_time: z.string().describe('最早更新时间，毫秒级时间戳').optional(),
-      update_end_time: z.string().describe('最晚更新时间，毫秒级时间戳').optional(),
-      create_start_time: z.string().describe('最早创建时间，毫秒级时间戳').optional(),
-      create_end_time: z.string().describe('最晚创建时间，毫秒级时间戳').optional(),
-    }),
-    path: z.object({
-      website_id: z
-        .string()
-        .describe(
-          '官网 ID，通过[「获取招聘官网列表」]接口获得',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('每页获取记录数量，最大10，不传则默认值为10').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+        update_start_time: z.string().describe('最早更新时间，毫秒级时间戳').optional(),
+        update_end_time: z.string().describe('最晚更新时间，毫秒级时间戳').optional(),
+        create_start_time: z.string().describe('最早创建时间，毫秒级时间戳').optional(),
+        create_end_time: z.string().describe('最晚创建时间，毫秒级时间戳').optional(),
+      })
+      .optional(),
+    path: z
+      .object({ website_id: z.string().describe('官网 ID，通过[「获取招聘官网列表」]接口获得').optional() })
+      .optional(),
   },
 };
 export const hireV1WebsiteJobPostSearch = {
@@ -7669,67 +6579,44 @@ export const hireV1WebsiteJobPostSearch = {
   description: '[Feishu/Lark]-招聘-获取候选人-官网-搜索招聘官网下的职位广告列表-搜索招聘官网下的职位列表',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      job_type_id_list: z
-        .array(z.string())
-        .describe(
-          '职位类别列表，详情请参考：[获取职位类别列表]',
-        )
-        .optional(),
-      city_code_list: z
-        .array(z.string())
-        .describe(
-          '职位城市列表，详情请参考：[查询地点列表]',
-        )
-        .optional(),
-      job_function_id_list: z
-        .array(z.string())
-        .describe(
-          '职能分类列表，详情请参考：[获取职能分类列表]',
-        )
-        .optional(),
-      subject_id_list: z
-        .array(z.string())
-        .describe(
-          '职位项目列表，详情请参考：[获取项目列表]',
-        )
-        .optional(),
-      keyword: z.string().describe('关键字').optional(),
-      update_start_time: z.string().describe('最早更新时间，毫秒级时间戳').optional(),
-      update_end_time: z.string().describe('最晚更新时间，毫秒级时间戳').optional(),
-      create_start_time: z.string().describe('最早创建时间，毫秒级时间戳').optional(),
-      create_end_time: z.string().describe('最晚创建时间，毫秒级时间戳').optional(),
-    }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('每页获取记录数量，最大10，不传则默认值为10').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      website_id: z
-        .string()
-        .describe(
-          '官网 ID，可通过[获取招聘官网列表]获取',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        job_type_id_list: z.array(z.string()).describe('职位类别列表，详情请参考：[获取职位类别列表]').optional(),
+        city_code_list: z.array(z.string()).describe('职位城市列表，详情请参考：[查询地点列表]').optional(),
+        job_function_id_list: z.array(z.string()).describe('职能分类列表，详情请参考：[获取职能分类列表]').optional(),
+        subject_id_list: z.array(z.string()).describe('职位项目列表，详情请参考：[获取项目列表]').optional(),
+        keyword: z.string().describe('关键字').optional(),
+        update_start_time: z.string().describe('最早更新时间，毫秒级时间戳').optional(),
+        update_end_time: z.string().describe('最晚更新时间，毫秒级时间戳').optional(),
+        create_start_time: z.string().describe('最早创建时间，毫秒级时间戳').optional(),
+        create_end_time: z.string().describe('最晚创建时间，毫秒级时间戳').optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('每页获取记录数量，最大10，不传则默认值为10').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            '指定查询结果中的部门 ID 类型。关于部门 ID 的详细介绍，可参见[部门ID说明]。 Options:open_department_id(由系统自动生成的部门 ID，ID 前缀固定为 od-，在租户内全局唯一。),department_id(支持用户自定义配置的部门 ID。自定义配置时可复用已删除的 department_id，因此在未删除的部门范围内 department_id 具有唯一性。)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            '此次调用中使用的「职级 ID」的类型 Options:people_admin_job_level_id(「人力系统管理后台」适用的职级 ID。人力系统管理后台逐步下线中，建议不继续使用此 ID。),job_level_id(「飞书管理后台」适用的职级 ID，通过[获取租户职级列表]接口获取)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ website_id: z.string().describe('官网 ID，可通过[获取招聘官网列表]获取').optional() }).optional(),
   },
 };
 export const hireV1WebsiteList = {
@@ -7742,15 +6629,17 @@ export const hireV1WebsiteList = {
     '[Feishu/Lark]-招聘-获取候选人-官网-获取招聘官网列表-获取招聘官网列表，返回信息包括官网名称、官网ID、招聘渠道ID等',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.number().describe('每页获取记录数量 **默认值** : 10').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.number().describe('每页获取记录数量 **默认值** : 10').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1WebsiteSiteUserCreate = {
@@ -7774,18 +6663,10 @@ export const hireV1WebsiteSiteUserCreate = {
       mobile: z.string().describe('电话，若填写了该字段，国家码(mobile_country_code)字段必填').optional(),
       mobile_country_code: z
         .string()
-        .describe(
-          '国家码，若填写了该字段，电话（mobile）字段必填，可通过[获取地点列表]获取',
-        )
+        .describe('国家码，若填写了该字段，电话（mobile）字段必填，可通过[获取地点列表]获取')
         .optional(),
     }),
-    path: z.object({
-      website_id: z
-        .string()
-        .describe(
-          '官网 ID，可通过[获取招聘官网列表]获取',
-        ),
-    }),
+    path: z.object({ website_id: z.string().describe('官网 ID，可通过[获取招聘官网列表]获取') }),
   },
 };
 export const hireV1Tools = [

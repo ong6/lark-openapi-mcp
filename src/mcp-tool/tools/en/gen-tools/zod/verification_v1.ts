@@ -6,7 +6,7 @@ export const verificationV1VerificationGet = {
   sdkName: 'verification.v1.verification.get',
   path: '/open-apis/verification/v1/verification',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-Verification Information-Obtain verification information-获取认证状态',
+  description: '[Feishu/Lark]-Verification Information-Obtain verification information',
   accessTokens: ['tenant'],
   schema: {},
 };

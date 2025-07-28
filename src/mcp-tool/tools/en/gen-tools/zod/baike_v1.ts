@@ -21,15 +21,17 @@ export const baikeV1ClassificationList = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Lingo-Classification-Classification list-Get Lingo classification data, Baike currently supports primary classification and sub-classification, temporarily does not support multi-level classification',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('Page size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('Page size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -181,7 +183,9 @@ export const baikeV1DraftCreate = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -288,7 +292,9 @@ export const baikeV1DraftUpdate = {
         .optional(),
       rich_text: z.string().describe('Description information in rich text format').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ draft_id: z.string().describe('Draft Id') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -409,7 +415,9 @@ export const baikeV1EntityCreate = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -423,14 +431,16 @@ export const baikeV1EntityExtract = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Lingo-Entity-Extract lingo entity words-Extract physical words in the text that could become Baike entries and recommend possible aliases (does not filter content where tenants have become Baike entries)',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      text: z
-        .string()
-        .describe(
-          'The text that needs to be extracted for the Baike entity word (does not filter the content of the tenant that has become a Baike entry)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        text: z
+          .string()
+          .describe(
+            'The text that needs to be extracted for the Baike entity word (does not filter the content of the tenant that has become a Baike entry)',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -444,12 +454,14 @@ export const baikeV1EntityGet = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Lingo-Entity-Get entity-Pull the corresponding entity details through the entity id',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      provider: z.string().describe('Data provider').optional(),
-      outer_id: z.string().describe('External unique id').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
-    path: z.object({ entity_id: z.string().describe('Entity word id').optional() }),
+    params: z
+      .object({
+        provider: z.string().describe('Data provider').optional(),
+        outer_id: z.string().describe('External unique id').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
+    path: z.object({ entity_id: z.string().describe('Entity word id').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -481,17 +493,19 @@ export const baikeV1EntityList = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Lingo-Entity-Get entities-Paging entity word data to support all entity word pulling within the tenant',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('Page size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      provider: z.string().describe('Data provider [can be used to filter data]').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('Page size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        provider: z.string().describe('Data provider [can be used to filter data]').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -519,31 +533,35 @@ export const baikeV1EntitySearch = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Lingo-Entity-Search entity-Passing in keywords, performing fuzzy matching to search for corresponding entity words',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      query: z.string().describe('Search keywords').optional(),
-      classification_filter: z
-        .object({
-          include: z.array(z.string()).describe('Classification to be obtained').optional(),
-          exclude: z.array(z.string()).describe('Classification to be excluded').optional(),
-        })
-        .describe('Classification Filter')
-        .optional(),
-      sources: z
-        .array(z.number())
-        .describe('Creation source of the entry, 1: user creation, 2: batch import, 3: official, 4: OpenAPI creation')
-        .optional(),
-      creators: z.array(z.string()).describe('creator').optional(),
-    }),
-    params: z.object({
-      page_size: z.number().describe('Page size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    data: z
+      .object({
+        query: z.string().describe('Search keywords').optional(),
+        classification_filter: z
+          .object({
+            include: z.array(z.string()).describe('Classification to be obtained').optional(),
+            exclude: z.array(z.string()).describe('Classification to be excluded').optional(),
+          })
+          .describe('Classification Filter')
+          .optional(),
+        sources: z
+          .array(z.number())
+          .describe('Creation source of the entry, 1: user creation, 2: batch import, 3: official, 4: OpenAPI creation')
+          .optional(),
+        creators: z.array(z.string()).describe('creator').optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        page_size: z.number().describe('Page size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -658,8 +676,10 @@ export const baikeV1EntityUpdate = {
         .optional(),
       rich_text: z.string().describe('Description information in rich text format').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
-    path: z.object({ entity_id: z.string().describe('Entity word ID').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
+    path: z.object({ entity_id: z.string().describe('Entity word ID').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };

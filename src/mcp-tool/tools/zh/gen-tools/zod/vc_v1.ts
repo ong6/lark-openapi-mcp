@@ -94,7 +94,7 @@ export const vcV1ExportGet = {
   description: '[Feishu/Lark]-视频会议-导出-查询导出任务结果-查看异步导出的进度',
   accessTokens: ['tenant', 'user'],
   schema: {
-    path: z.object({ task_id: z.string().describe('任务id').optional() }),
+    path: z.object({ task_id: z.string().describe('任务id').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -124,7 +124,9 @@ export const vcV1ExportMeetingList = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -151,7 +153,9 @@ export const vcV1ExportParticipantList = {
       user_id: z.string().describe('按参会Lark用户筛选（最多一个筛选条件）').optional(),
       room_id: z.string().describe('按参会Rooms筛选（最多一个筛选条件）').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -173,7 +177,9 @@ export const vcV1ExportParticipantQualityList = {
       user_id: z.string().describe('参会人为Lark用户时填入，room_id和user_id必须只填一个').optional(),
       room_id: z.string().describe('参会人为Rooms时填入，room_id和user_id必须只填一个').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -203,8 +209,7 @@ export const vcV1MeetingListGet = {
   sdkName: 'vc.v1.meetingList.get',
   path: '/open-apis/vc/v1/meeting_list',
   httpMethod: 'GET',
-  description:
-    '[Feishu/Lark]-视频会议-会议数据-查询会议明细-查询会议明细，具体权限要求请参考[资源介绍]',
+  description: '[Feishu/Lark]-视频会议-会议数据-查询会议明细-查询会议明细，具体权限要求请参考[资源介绍]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -246,9 +251,9 @@ export const vcV1MeetingEnd = {
   description: '[Feishu/Lark]-视频会议-会议管理-结束会议-结束一个进行中的会议',
   accessTokens: ['user'],
   schema: {
-    path: z.object({
-      meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional(),
-    }),
+    path: z
+      .object({ meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -261,14 +266,16 @@ export const vcV1MeetingGet = {
   description: '[Feishu/Lark]-视频会议-会议管理-获取会议详情-获取一个会议的详细数据',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      with_participants: z.boolean().describe('是否需要参会人列表').optional(),
-      with_meeting_ability: z.boolean().describe('是否需要会中使用能力统计（仅限tenant_access_token）').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({
-      meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional(),
-    }),
+    params: z
+      .object({
+        with_participants: z.boolean().describe('是否需要参会人列表').optional(),
+        with_meeting_ability: z.boolean().describe('是否需要会中使用能力统计（仅限tenant_access_token）').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z
+      .object({ meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -296,10 +303,12 @@ export const vcV1MeetingInvite = {
         )
         .describe('被邀请的用户列表【一次性最多支持邀请10人】'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional(),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z
+      .object({ meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -327,8 +336,10 @@ export const vcV1MeetingKickout = {
         )
         .describe('需移除的用户列表'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({ meeting_id: z.string().describe('会议ID').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ meeting_id: z.string().describe('会议ID').optional() }).optional(),
   },
 };
 export const vcV1MeetingListByNo = {
@@ -365,9 +376,9 @@ export const vcV1MeetingRecordingGet = {
   description: '[Feishu/Lark]-视频会议-录制-获取录制文件-获取一个会议的录制文件',
   accessTokens: ['tenant', 'user'],
   schema: {
-    path: z.object({
-      meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional(),
-    }),
+    path: z
+      .object({ meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -399,10 +410,12 @@ export const vcV1MeetingRecordingSetPermission = {
         .describe('授权或者取消授权，默认授权 Options:0(authorize 授权),1(revoke 取消授权)')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional(),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z
+      .object({ meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -415,10 +428,10 @@ export const vcV1MeetingRecordingStart = {
   description: '[Feishu/Lark]-视频会议-录制-开始录制-在会议中开始录制',
   accessTokens: ['user'],
   schema: {
-    data: z.object({ timezone: z.number().describe('录制文件时间显示使用的时区[-12,12]').optional() }),
-    path: z.object({
-      meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional(),
-    }),
+    data: z.object({ timezone: z.number().describe('录制文件时间显示使用的时区[-12,12]').optional() }).optional(),
+    path: z
+      .object({ meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -431,9 +444,9 @@ export const vcV1MeetingRecordingStop = {
   description: '[Feishu/Lark]-视频会议-录制-停止录制-在会议中停止录制',
   accessTokens: ['user'],
   schema: {
-    path: z.object({
-      meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional(),
-    }),
+    path: z
+      .object({ meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -471,10 +484,12 @@ export const vcV1MeetingSetHost = {
         .describe('当前主持人（CAS并发安全：如果和会中当前主持人不符则会设置失败，可使用返回的最新数据重新设置）')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional(),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z
+      .object({ meeting_id: z.string().describe('会议ID（视频会议的唯一标识，视频会议开始后才会产生）').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -484,8 +499,7 @@ export const vcV1ParticipantListGet = {
   sdkName: 'vc.v1.participantList.get',
   path: '/open-apis/vc/v1/participant_list',
   httpMethod: 'GET',
-  description:
-    '[Feishu/Lark]-视频会议-会议数据-查询参会人明细-查询参会人明细，具体权限要求请参考[资源介绍]',
+  description: '[Feishu/Lark]-视频会议-会议数据-查询参会人明细-查询参会人明细，具体权限要求请参考[资源介绍]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -599,7 +613,7 @@ export const vcV1ReserveConfigAdminGet = {
       scope_type: z.number().describe('会议室或层级'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
     }),
-    path: z.object({ reserve_config_id: z.string().describe('会议室或层级id').optional() }),
+    path: z.object({ reserve_config_id: z.string().describe('会议室或层级id').optional() }).optional(),
   },
 };
 export const vcV1ReserveConfigAdminPatch = {
@@ -626,8 +640,10 @@ export const vcV1ReserveConfigAdminPatch = {
         })
         .describe('预定管理员或部门'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({ reserve_config_id: z.string().describe('会议室或层级id').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ reserve_config_id: z.string().describe('会议室或层级id').optional() }).optional(),
   },
 };
 export const vcV1ReserveConfigDisableInformGet = {
@@ -672,7 +688,9 @@ export const vcV1ReserveConfigDisableInformPatch = {
         })
         .describe('禁用通知配置'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ reserve_config_id: z.string().describe('会议室或层级ID，可通过会议室或层级相关查询接口获取') }),
   },
 };
@@ -689,7 +707,7 @@ export const vcV1ReserveConfigFormGet = {
       scope_type: z.number().describe('1代表层级，2代表会议室'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
     }),
-    path: z.object({ reserve_config_id: z.string().describe('会议室或层级id').optional() }),
+    path: z.object({ reserve_config_id: z.string().describe('会议室或层级id').optional() }).optional(),
   },
 };
 export const vcV1ReserveConfigFormPatch = {
@@ -716,8 +734,10 @@ export const vcV1ReserveConfigFormPatch = {
         })
         .describe('预定表单设置'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({ reserve_config_id: z.string().describe('会议室或层级ID').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ reserve_config_id: z.string().describe('会议室或层级ID').optional() }).optional(),
   },
 };
 export const vcV1ReserveConfigPatch = {
@@ -814,7 +834,9 @@ export const vcV1ReserveConfigPatch = {
         .describe('预定范围设置')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ reserve_config_id: z.string().describe('会议室或层级id') }),
   },
 };
@@ -938,7 +960,9 @@ export const vcV1ReserveApply = {
         })
         .describe('会议设置'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -951,7 +975,7 @@ export const vcV1ReserveDelete = {
   description: '[Feishu/Lark]-视频会议-预约-删除预约-删除一个预约',
   accessTokens: ['tenant', 'user'],
   schema: {
-    path: z.object({ reserve_id: z.string().describe('预约ID（预约的唯一标识）').optional() }),
+    path: z.object({ reserve_id: z.string().describe('预约ID（预约的唯一标识）').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -964,8 +988,10 @@ export const vcV1ReserveGet = {
   description: '[Feishu/Lark]-视频会议-预约-获取预约-获取一个预约的详情',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({ reserve_id: z.string().describe('预约ID（预约的唯一标识）').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ reserve_id: z.string().describe('预约ID（预约的唯一标识）').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -978,11 +1004,13 @@ export const vcV1ReserveGetActiveMeeting = {
   description: '[Feishu/Lark]-视频会议-预约-获取活跃会议-获取一个预约的当前活跃会议',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      with_participants: z.boolean().describe('是否需要参会人列表，默认为false').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({ reserve_id: z.string().describe('预约ID（预约的唯一标识）').optional() }),
+    params: z
+      .object({
+        with_participants: z.boolean().describe('是否需要参会人列表，默认为false').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ reserve_id: z.string().describe('预约ID（预约的唯一标识）').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -995,98 +1023,102 @@ export const vcV1ReserveUpdate = {
   description: '[Feishu/Lark]-视频会议-预约-更新预约-更新一个预约',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      end_time: z.string().describe('预约到期时间（unix时间，单位sec）').optional(),
-      meeting_settings: z
-        .object({
-          topic: z.string().describe('会议主题').optional(),
-          action_permissions: z
-            .array(
-              z.object({
-                permission: z
-                  .number()
-                  .describe(
-                    '权限项 Options:1(can_be_host 是否能成为主持人),2(can_invite 是否能邀请参会人),3(can_join 是否能加入会议)',
-                  ),
-                permission_checkers: z
-                  .array(
-                    z.object({
-                      check_field: z
-                        .number()
-                        .describe(
-                          '检查字段类型 Options:1(user_id 用户ID（check_list填入用户ID）),2(user_type 用户类型（check_list可选值有 "1"：飞书用户、"2"：rooms用户、"6"：pstn用户、"7"：sip用户）),3(tenant_id 租户ID（check_list填入租户tenant_key）)',
-                        ),
-                      check_mode: z
-                        .number()
-                        .describe(
-                          '检查方式 Options:1(within 在check_list中为有权限（白名单）),2(without 不在check_list中为有权限（黑名单）)',
-                        ),
-                      check_list: z.array(z.string()).describe('检查字段列表（根据check_field的类型填入对应内容）'),
-                    }),
-                  )
-                  .describe('权限检查器列表，权限检查器之间为"逻辑或"的关系（即 有一个为true则拥有该权限）'),
-              }),
-            )
-            .describe(
-              '会议权限配置列表，如果存在相同的权限配置项则它们之间为"逻辑或"的关系（即 有一个为true则拥有该权限）',
-            )
-            .optional(),
-          meeting_initial_type: z
-            .number()
-            .describe('会议初始类型 Options:1(group_meeting 多人会议),2(call 1v1呼叫)')
-            .optional(),
-          meeting_connect: z.boolean().describe('该会议是否支持互通，不支持更新（注：该字段内测中）').optional(),
-          call_setting: z
-            .object({
-              callee: z
-                .object({
-                  id: z.string().describe('用户ID').optional(),
-                  user_type: z
+    data: z
+      .object({
+        end_time: z.string().describe('预约到期时间（unix时间，单位sec）').optional(),
+        meeting_settings: z
+          .object({
+            topic: z.string().describe('会议主题').optional(),
+            action_permissions: z
+              .array(
+                z.object({
+                  permission: z
                     .number()
                     .describe(
-                      '用户类型，当前仅支持用户类型6(pstn用户) Options:1(lark_user 飞书用户),2(room_user rooms用户),3(doc_user 文档用户),4(neo_user neo单品用户),5(neo_guest_user neo单品游客用户),6(pstn_user pstn用户),7(sip_user sip用户)',
+                      '权限项 Options:1(can_be_host 是否能成为主持人),2(can_invite 是否能邀请参会人),3(can_join 是否能加入会议)',
                     ),
-                  pstn_sip_info: z
-                    .object({
-                      nickname: z.string().describe('给pstn/sip用户设置的临时昵称').optional(),
-                      main_address: z
-                        .string()
-                        .describe(
-                          'pstn/sip主机号，格式为：[国际冠字]-[电话区号][电话号码]，当前仅支持国内手机及固定电话号码',
-                        ),
-                    })
-                    .describe('pstn/sip信息')
+                  permission_checkers: z
+                    .array(
+                      z.object({
+                        check_field: z
+                          .number()
+                          .describe(
+                            '检查字段类型 Options:1(user_id 用户ID（check_list填入用户ID）),2(user_type 用户类型（check_list可选值有 "1"：飞书用户、"2"：rooms用户、"6"：pstn用户、"7"：sip用户）),3(tenant_id 租户ID（check_list填入租户tenant_key）)',
+                          ),
+                        check_mode: z
+                          .number()
+                          .describe(
+                            '检查方式 Options:1(within 在check_list中为有权限（白名单）),2(without 不在check_list中为有权限（黑名单）)',
+                          ),
+                        check_list: z.array(z.string()).describe('检查字段列表（根据check_field的类型填入对应内容）'),
+                      }),
+                    )
+                    .describe('权限检查器列表，权限检查器之间为"逻辑或"的关系（即 有一个为true则拥有该权限）'),
+                }),
+              )
+              .describe(
+                '会议权限配置列表，如果存在相同的权限配置项则它们之间为"逻辑或"的关系（即 有一个为true则拥有该权限）',
+              )
+              .optional(),
+            meeting_initial_type: z
+              .number()
+              .describe('会议初始类型 Options:1(group_meeting 多人会议),2(call 1v1呼叫)')
+              .optional(),
+            meeting_connect: z.boolean().describe('该会议是否支持互通，不支持更新（注：该字段内测中）').optional(),
+            call_setting: z
+              .object({
+                callee: z
+                  .object({
+                    id: z.string().describe('用户ID').optional(),
+                    user_type: z
+                      .number()
+                      .describe(
+                        '用户类型，当前仅支持用户类型6(pstn用户) Options:1(lark_user 飞书用户),2(room_user rooms用户),3(doc_user 文档用户),4(neo_user neo单品用户),5(neo_guest_user neo单品游客用户),6(pstn_user pstn用户),7(sip_user sip用户)',
+                      ),
+                    pstn_sip_info: z
+                      .object({
+                        nickname: z.string().describe('给pstn/sip用户设置的临时昵称').optional(),
+                        main_address: z
+                          .string()
+                          .describe(
+                            'pstn/sip主机号，格式为：[国际冠字]-[电话区号][电话号码]，当前仅支持国内手机及固定电话号码',
+                          ),
+                      })
+                      .describe('pstn/sip信息')
+                      .optional(),
+                  })
+                  .describe('被呼叫的用户'),
+              })
+              .describe('1v1呼叫相关参数')
+              .optional(),
+            auto_record: z.boolean().describe('使用飞书视频会议时，是否开启自动录制，默认false').optional(),
+            assign_host_list: z
+              .array(
+                z.object({
+                  user_type: z
+                    .number()
+                    .describe('用户类型，仅支持设置同租户下的 Lark 用户 Options:1(lark_user 飞书用户)')
                     .optional(),
-                })
-                .describe('被呼叫的用户'),
-            })
-            .describe('1v1呼叫相关参数')
-            .optional(),
-          auto_record: z.boolean().describe('使用飞书视频会议时，是否开启自动录制，默认false').optional(),
-          assign_host_list: z
-            .array(
-              z.object({
-                user_type: z
-                  .number()
-                  .describe('用户类型，仅支持设置同租户下的 Lark 用户 Options:1(lark_user 飞书用户)')
-                  .optional(),
-                id: z.string().describe('用户ID').optional(),
-              }),
-            )
-            .describe('指定主持人列表')
-            .optional(),
-          password: z
-            .string()
-            .describe(
-              '设置会议密码，不传则根据个人设置决定是否使用密码及分配随机密码，传空则不使用密码，传 4-9 位数字则设置密码',
-            )
-            .optional(),
-        })
-        .describe('会议设置')
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({ reserve_id: z.string().describe('预约ID（预约的唯一标识）').optional() }),
+                  id: z.string().describe('用户ID').optional(),
+                }),
+              )
+              .describe('指定主持人列表')
+              .optional(),
+            password: z
+              .string()
+              .describe(
+                '设置会议密码，不传则根据个人设置决定是否使用密码及分配随机密码，传空则不使用密码，传 4-9 位数字则设置密码',
+              )
+              .optional(),
+          })
+          .describe('会议设置')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ reserve_id: z.string().describe('预约ID（预约的唯一标识）').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1251,7 +1283,9 @@ export const vcV1RoomConfigSet = {
         })
         .describe('会议室设置'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const vcV1RoomConfigSetCheckboardAccessCode = {
@@ -1358,16 +1392,18 @@ export const vcV1RoomLevelList = {
   description: '[Feishu/Lark]-视频会议-会议室层级-查询会议室层级列表-该接口用来查询某个会议室层级下的子层级列表',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      room_level_id: z.string().describe('层级ID，当需要获取租户下层级列表时，room_level_id可传空').optional(),
-      page_size: z.number().describe('分页尺寸大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        room_level_id: z.string().describe('层级ID，当需要获取租户下层级列表时，room_level_id可传空').optional(),
+        page_size: z.number().describe('分页尺寸大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const vcV1RoomLevelMget = {
@@ -1449,7 +1485,9 @@ export const vcV1RoomCreate = {
         .describe('设施信息列表')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const vcV1RoomDelete = {
@@ -1473,7 +1511,9 @@ export const vcV1RoomGet = {
   description: '[Feishu/Lark]-视频会议-会议室管理-查询会议室详情-该接口可以使用会议室 ID 查询会议室详情',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ room_id: z.string().describe('会议室ID') }),
   },
 };
@@ -1486,17 +1526,19 @@ export const vcV1RoomList = {
   description: '[Feishu/Lark]-视频会议-会议室管理-查询会议室列表-该接口可以用来查询某个会议室层级下会议室列表',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      room_level_id: z.string().describe('层级ID，当需要获取租户下会议室列表时，room_level_id可传空').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        room_level_id: z.string().describe('层级ID，当需要获取租户下会议室列表时，room_level_id可传空').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const vcV1RoomMget = {
@@ -1509,7 +1551,9 @@ export const vcV1RoomMget = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ room_ids: z.array(z.string()).describe('会议室id列表') }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const vcV1RoomPatch = {
@@ -1521,34 +1565,38 @@ export const vcV1RoomPatch = {
   description: '[Feishu/Lark]-视频会议-会议室管理-更新会议室-该接口可以用来更新某个会议室的信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      name: z.string().describe('会议室名称').optional(),
-      capacity: z.number().describe('会议室能容纳的人数').optional(),
-      description: z.string().describe('会议室的相关描述').optional(),
-      custom_room_id: z.string().describe('自定义的会议室ID').optional(),
-      room_level_id: z.string().describe('层级ID').optional(),
-      room_status: z
-        .object({
-          status: z.boolean().describe('是否启用会议室'),
-          schedule_status: z
-            .boolean()
-            .describe('会议室未来状态为启用或禁用（请忽略，该字段用于查询接口的返回值）')
-            .optional(),
-          disable_start_time: z.string().describe('禁用开始时间（unix时间，单位sec）').optional(),
-          disable_end_time: z.string().describe('禁用结束时间（unix时间，单位sec，数值0表示永久禁用）').optional(),
-          disable_reason: z.string().describe('禁用原因').optional(),
-          contact_ids: z.array(z.string()).describe('联系人列表，id类型由user_id_type参数决定').optional(),
-          disable_notice: z.boolean().describe('是否在禁用时发送通知给预定了该会议室的员工').optional(),
-          resume_notice: z.boolean().describe('是否在恢复启用时发送通知给联系人').optional(),
-        })
-        .describe('会议室状态')
-        .optional(),
-      device: z
-        .array(z.object({ name: z.string().describe('设施名称') }))
-        .describe('设施信息列表')
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    data: z
+      .object({
+        name: z.string().describe('会议室名称').optional(),
+        capacity: z.number().describe('会议室能容纳的人数').optional(),
+        description: z.string().describe('会议室的相关描述').optional(),
+        custom_room_id: z.string().describe('自定义的会议室ID').optional(),
+        room_level_id: z.string().describe('层级ID').optional(),
+        room_status: z
+          .object({
+            status: z.boolean().describe('是否启用会议室'),
+            schedule_status: z
+              .boolean()
+              .describe('会议室未来状态为启用或禁用（请忽略，该字段用于查询接口的返回值）')
+              .optional(),
+            disable_start_time: z.string().describe('禁用开始时间（unix时间，单位sec）').optional(),
+            disable_end_time: z.string().describe('禁用结束时间（unix时间，单位sec，数值0表示永久禁用）').optional(),
+            disable_reason: z.string().describe('禁用原因').optional(),
+            contact_ids: z.array(z.string()).describe('联系人列表，id类型由user_id_type参数决定').optional(),
+            disable_notice: z.boolean().describe('是否在禁用时发送通知给预定了该会议室的员工').optional(),
+            resume_notice: z.boolean().describe('是否在恢复启用时发送通知给联系人').optional(),
+          })
+          .describe('会议室状态')
+          .optional(),
+        device: z
+          .array(z.object({ name: z.string().describe('设施名称') }))
+          .describe('设施信息列表')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ room_id: z.string().describe('会议室ID') }),
   },
 };
@@ -1562,32 +1610,36 @@ export const vcV1RoomSearch = {
     '[Feishu/Lark]-视频会议-会议室管理-搜索会议室-该接口可以用来搜索会议室，支持使用关键词进行搜索，也支持使用自定义会议室 ID 进行查询。该接口只会返回用户有预定权限的会议室列表',
   accessTokens: ['user'],
   schema: {
-    data: z.object({
-      custom_room_ids: z
-        .array(z.string())
-        .describe('用于查询指定会议室的租户自定义会议室ID列表，优先使用该字段进行查询')
-        .optional(),
-      keyword: z.string().describe('会议室搜索关键词（当custom_room_ids为空时，使用该字段进行查询）').optional(),
-      room_level_id: z
-        .string()
-        .describe('在该会议室层级下进行搜索（当custom_room_ids为空时，使用该字段进行查询）')
-        .optional(),
-      search_level_name: z
-        .boolean()
-        .describe('搜索会议室是否可以包括层级名称（当custom_room_ids为空时，使用 keyword 字段查询）')
-        .optional(),
-      page_size: z
-        .number()
-        .describe('分页大小，该值默认为10，最大为100（当custom_room_ids为空时，使用该字段进行查询）')
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    data: z
+      .object({
+        custom_room_ids: z
+          .array(z.string())
+          .describe('用于查询指定会议室的租户自定义会议室ID列表，优先使用该字段进行查询')
+          .optional(),
+        keyword: z.string().describe('会议室搜索关键词（当custom_room_ids为空时，使用该字段进行查询）').optional(),
+        room_level_id: z
+          .string()
+          .describe('在该会议室层级下进行搜索（当custom_room_ids为空时，使用该字段进行查询）')
+          .optional(),
+        search_level_name: z
+          .boolean()
+          .describe('搜索会议室是否可以包括层级名称（当custom_room_ids为空时，使用 keyword 字段查询）')
+          .optional(),
+        page_size: z
+          .number()
+          .describe('分页大小，该值默认为10，最大为100（当custom_room_ids为空时，使用该字段进行查询）')
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1692,7 +1744,9 @@ export const vcV1ScopeConfigCreate = {
         .describe('节点配置')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const vcV1ScopeConfigGet = {

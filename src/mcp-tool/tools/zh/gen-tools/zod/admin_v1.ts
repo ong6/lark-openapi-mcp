@@ -95,37 +95,39 @@ export const adminV1AuditInfoList = {
   sdkName: 'admin.v1.auditInfo.list',
   path: '/open-apis/admin/v1/audit_infos',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-安全合规-行为审计日志-获取行为审计日志数据-用户行为日志搜索',
+  description: '[Feishu/Lark]-安全合规-行为审计日志-获取行为审计日志数据',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('用户ID类型').optional(),
-      latest: z.number().describe('日志时间范围: 结束时间. 格式: 秒级时间戳. 默认值: 此刻').optional(),
-      oldest: z.number().describe('日志时间范围: 起始时间. 格式: 秒级时间戳. 默认值: 30日前此刻').optional(),
-      event_name: z.string().describe('事件名称').optional(),
-      operator_type: z
-        .enum(['user', 'bot'])
-        .describe(
-          '过滤操作者: 操作者类型. 与 operator_value 配合使用 Options:user(以user_id来识别用户),bot([已废弃] 以bot_id来识别用户)',
-        )
-        .optional(),
-      operator_value: z.string().describe('过滤操作者: 操作者ID. 与 operator_type 配合使用').optional(),
-      event_module: z.number().describe('过滤模块').optional(),
-      page_token: z.string().describe('下一页分页的token').optional(),
-      page_size: z.number().describe('分页参数').optional(),
-      user_type: z
-        .number()
-        .describe(
-          '过滤用户类型. 仅当 operator_type=user 时生效 Options:0(all 互联网上的任何人),1(normal_user 组织内成员),2(external_user 组织外成员)',
-        )
-        .optional(),
-      object_type: z.number().describe('过滤操作对象: 操作对象类型. 与object_value配合使用').optional(),
-      object_value: z.string().describe('过滤操作对象: 操作对象ID. 与object_type配合使用').optional(),
-      ext_filter_object_by_ccm_token: z
-        .string()
-        .describe('增强过滤操作对象: 操作对象ID，支持云文档侧泛token过滤。会覆盖object_type和object_value查询条件')
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('用户ID类型').optional(),
+        latest: z.number().describe('日志时间范围: 结束时间. 格式: 秒级时间戳. 默认值: 此刻').optional(),
+        oldest: z.number().describe('日志时间范围: 起始时间. 格式: 秒级时间戳. 默认值: 30日前此刻').optional(),
+        event_name: z.string().describe('事件名称').optional(),
+        operator_type: z
+          .enum(['user', 'bot'])
+          .describe(
+            '过滤操作者: 操作者类型. 与 operator_value 配合使用 Options:user(以user_id来识别用户),bot([已废弃] 以bot_id来识别用户)',
+          )
+          .optional(),
+        operator_value: z.string().describe('过滤操作者: 操作者ID. 与 operator_type 配合使用').optional(),
+        event_module: z.number().describe('过滤模块').optional(),
+        page_token: z.string().describe('下一页分页的token').optional(),
+        page_size: z.number().describe('分页参数').optional(),
+        user_type: z
+          .number()
+          .describe(
+            '过滤用户类型. 仅当 operator_type=user 时生效 Options:0(all 互联网上的任何人),1(normal_user 组织内成员),2(external_user 组织外成员)',
+          )
+          .optional(),
+        object_type: z.number().describe('过滤操作对象: 操作对象类型. 与object_value配合使用').optional(),
+        object_value: z.string().describe('过滤操作对象: 操作对象ID. 与object_type配合使用').optional(),
+        ext_filter_object_by_ccm_token: z
+          .string()
+          .describe('增强过滤操作对象: 操作对象ID，支持云文档侧泛token过滤。会覆盖object_type和object_value查询条件')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const adminV1BadgeCreate = {
@@ -237,15 +239,17 @@ export const adminV1BadgeGrantCreate = {
         .describe('授予的用户组ID列表，授予名单列表接口返回结果中不返回该字段，只在详情接口返回')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型。 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型。 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ badge_id: z.string().describe('勋章ID') }),
   },
 };
@@ -273,15 +277,17 @@ export const adminV1BadgeGrantGet = {
   description: '[Feishu/Lark]-管理后台-企业勋章-勋章授予名单-获取授予名单详情-通过该接口可以获取特定授予名单的信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型。 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型。 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       badge_id: z.string().describe('租户内勋章的唯一标识，该值由系统随机生成'),
       grant_id: z.string().describe('租户内授予名单的唯一标识，该值由系统随机生成'),
@@ -372,15 +378,17 @@ export const adminV1BadgeGrantUpdate = {
         .describe('授予的用户组ID列表，授予名单列表接口返回结果中不返回该字段，只在详情接口返回')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['department_id', 'open_department_id'])
-        .describe(
-          '此次调用中使用的部门ID的类型。 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['department_id', 'open_department_id'])
+          .describe(
+            '此次调用中使用的部门ID的类型。 Options:department_id(以自定义department_id来标识部门),open_department_id(以open_department_id来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ badge_id: z.string().describe('勋章ID'), grant_id: z.string().describe('授予名单ID') }),
   },
 };

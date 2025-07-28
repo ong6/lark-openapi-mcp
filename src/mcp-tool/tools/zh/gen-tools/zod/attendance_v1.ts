@@ -50,9 +50,7 @@ export const attendanceV1ApprovalInfoProcess = {
     data: z.object({
       approval_id: z
         .string()
-        .describe(
-          '审批实例 ID，获取方式：1）[获取审批通过数据] 2）[写入审批结果] 3）[通知补卡审批发起（补卡情况下）]',
-        ),
+        .describe('审批实例 ID，获取方式：1）[获取审批通过数据] 2）[写入审批结果] 3）[通知补卡审批发起（补卡情况下）]'),
       approval_type: z
         .string()
         .describe('审批类型- `leave`：请假- `out`：外出- `overtime`：加班- `trip`：出差- `remedy`：补卡'),
@@ -76,11 +74,7 @@ export const attendanceV1ArchiveRuleDelReport = {
     data: z.object({
       month: z.string().describe('月份，格式yyyyMM'),
       operator_id: z.string().describe('操作者ID，对应employee_type'),
-      archive_rule_id: z
-        .string()
-        .describe(
-          '归档规则id，可根据[查询所有归档规则]获得',
-        ),
+      archive_rule_id: z.string().describe('归档规则id，可根据[查询所有归档规则]获得'),
       user_ids: z.array(z.string()).describe('用户id，对应employee_type').optional(),
     }),
     params: z.object({
@@ -103,15 +97,17 @@ export const attendanceV1ArchiveRuleList = {
     '[Feishu/Lark]-考勤打卡-归档报表-查询所有归档规则-查询所有归档规则，对应后台假勤管理-考勤统计-报表-[归档报表]功能',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小，必填参数').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小，必填参数').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -137,11 +133,7 @@ export const attendanceV1ArchiveRuleUploadReport = {
             field_datas: z
               .array(
                 z.object({
-                  code: z
-                    .string()
-                    .describe(
-                      '字段编码，可根据[查询归档报表表头] 获取',
-                    ),
+                  code: z.string().describe('字段编码，可根据[查询归档报表表头] 获取'),
                   value: z.string().describe('字段结果值').optional(),
                 }),
               )
@@ -151,11 +143,7 @@ export const attendanceV1ArchiveRuleUploadReport = {
         )
         .describe('归档报表内容(不超过50个)')
         .optional(),
-      archive_rule_id: z
-        .string()
-        .describe(
-          '归档规则id，可根据[查询所有归档规则]获得',
-        ),
+      archive_rule_id: z.string().describe('归档规则id，可根据[查询所有归档规则]获得'),
     }),
     params: z.object({
       employee_type: z
@@ -180,11 +168,7 @@ export const attendanceV1ArchiveRuleUserStatsFieldsQuery = {
     data: z.object({
       locale: z.string().describe('语言类型。默认为zh。可选值有：* `en`：英语* `ja`：日语* `zh`：中文').optional(),
       month: z.string().describe('月份，日期格式为yyyyMM'),
-      archive_rule_id: z
-        .string()
-        .describe(
-          '归档规则id，可根据[查询所有归档规则]获得',
-        ),
+      archive_rule_id: z.string().describe('归档规则id，可根据[查询所有归档规则]获得'),
       operator_id: z.string().describe('操作者id，对应employee_type'),
     }),
     params: z.object({
@@ -347,14 +331,14 @@ export const attendanceV1GroupCreate = {
             )
             .describe('考勤机列表')
             .optional(),
-          gps_range: z.number().describe('GPS 打卡的有效范围（历史无效字段）').optional(),
+          gps_range: z.number().describe('GPS 打卡的有效范围').optional(),
           locations: z
             .array(
               z.object({
                 location_name: z.string().describe('地址名称'),
                 location_type: z.number().describe('地址类型**可选值有：*** 1：GPS* 2：Wi-Fi* 8：IP'),
-                latitude: z.number().describe('地址纬度').optional(),
-                longitude: z.number().describe('地址经度').optional(),
+                latitude: z.number().describe('地址纬度（需配合gps_range使用）').optional(),
+                longitude: z.number().describe('地址经度（需配合gps_range使用）').optional(),
                 ssid: z.string().describe('Wi-Fi 名称').optional(),
                 bssid: z.string().describe('Wi-Fi 的 MAC 地址').optional(),
                 map_type: z.number().describe('地图类型，1：高德， 2：谷歌').optional(),
@@ -396,11 +380,7 @@ export const attendanceV1GroupCreate = {
             .array(
               z.object({
                 punch_day: z.number().describe('打卡日期，格式为yyyyMMdd'),
-                shift_id: z
-                  .string()
-                  .describe(
-                    '班次 ID，可根据[查询所有班次] 和[按名称查询班次] 获得',
-                  ),
+                shift_id: z.string().describe('班次 ID，可根据[查询所有班次] 和[按名称查询班次] 获得'),
               }),
             )
             .describe('必须打卡的特殊日期')
@@ -409,11 +389,7 @@ export const attendanceV1GroupCreate = {
             .array(
               z.object({
                 punch_day: z.number().describe('打卡日期，格式为yyyyMMdd'),
-                shift_id: z
-                  .string()
-                  .describe(
-                    '班次 ID，可根据[查询所有班次] 和[按名称查询班次] 获得',
-                  ),
+                shift_id: z.string().describe('班次 ID，可根据[查询所有班次] 和[按名称查询班次] 获得'),
               }),
             )
             .describe('无需打卡的特殊日期')
@@ -642,9 +618,7 @@ export const attendanceV1GroupCreate = {
         .describe('考勤组信息'),
       operator_id: z
         .string()
-        .describe(
-          '操作人uid，对应employee_type，如果您未操作[考勤管理后台“API 接入”流程]，则此字段为必填字段',
-        )
+        .describe('操作人uid，对应employee_type，如果您未操作[考勤管理后台“API 接入”流程]，则此字段为必填字段')
         .optional(),
     }),
     params: z.object({
@@ -674,9 +648,7 @@ export const attendanceV1GroupDelete = {
     path: z.object({
       group_id: z
         .string()
-        .describe(
-          '考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]',
-        ),
+        .describe('考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]'),
     }),
   },
 };
@@ -705,9 +677,7 @@ export const attendanceV1GroupGet = {
     path: z.object({
       group_id: z
         .string()
-        .describe(
-          '考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]',
-        ),
+        .describe('考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]'),
     }),
   },
 };
@@ -721,15 +691,17 @@ export const attendanceV1GroupList = {
     '[Feishu/Lark]-考勤打卡-考勤组管理-查询所有考勤组-翻页获取所有考勤组列表。列表中的数据为考勤组信息，字段包含考勤组名称和考勤组id',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const attendanceV1GroupListUser = {
@@ -768,9 +740,7 @@ export const attendanceV1GroupListUser = {
     path: z.object({
       group_id: z
         .string()
-        .describe(
-          '考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]',
-        ),
+        .describe('考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -799,17 +769,9 @@ export const attendanceV1LeaveAccrualRecordPatch = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      leave_granting_record_id: z
-        .string()
-        .describe(
-          '发放记录的唯一ID，可通过[创建假期发放记录]',
-        ),
+      leave_granting_record_id: z.string().describe('发放记录的唯一ID，可通过[创建假期发放记录]'),
       employment_id: z.string().describe('员工ID，类型对应user_id_type'),
-      leave_type_id: z
-        .string()
-        .describe(
-          '假期类型ID，可通过[获取假期类型列表]获取',
-        ),
+      leave_type_id: z.string().describe('假期类型ID，可通过[获取假期类型列表]获取'),
       reason: z
         .array(z.object({ lang: z.string().describe('语言码'), value: z.string().describe('语言码对应的文本') }))
         .describe('修改发放记录原因'),
@@ -817,17 +779,12 @@ export const attendanceV1LeaveAccrualRecordPatch = {
       expiration_date: z.string().describe('失效日期，格式"2020-01-01"').optional(),
       quantity: z.string().describe('修改发放数量').optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({
-      leave_id: z
-        .string()
-        .describe(
-          '假期类型ID，可通过[获取假期类型列表]获取',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ leave_id: z.string().describe('假期类型ID，可通过[获取假期类型列表]获取').optional() }).optional(),
   },
 };
 export const attendanceV1LeaveEmployExpireRecordGet = {
@@ -842,26 +799,17 @@ export const attendanceV1LeaveEmployExpireRecordGet = {
   schema: {
     data: z.object({
       employment_id: z.string().describe('员工ID，与user_id_type保持一致'),
-      leave_type_id: z
-        .string()
-        .describe(
-          '假期类型ID，可通过[获取假期类型列表]获取',
-        ),
+      leave_type_id: z.string().describe('假期类型ID，可通过[获取假期类型列表]获取'),
       start_expiration_date: z.string().describe('失效最早日期，格式为yyyy-MM-dd'),
       end_expiration_date: z.string().describe('失效最晚日期，格式为yyyy-MM-dd'),
       time_offset: z.number().describe('时间偏移，东八区：480 8*60， 如果没有这个参数，默认东八区').optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({
-      leave_id: z
-        .string()
-        .describe(
-          '假期类型ID，可通过[获取假期类型列表]获取',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ leave_id: z.string().describe('假期类型ID，可通过[获取假期类型列表]获取').optional() }).optional(),
   },
 };
 export const attendanceV1ShiftCreate = {
@@ -1005,21 +953,18 @@ export const attendanceV1ShiftCreate = {
         })
         .describe('晚走次日晚到配置规则')
         .optional(),
-      id: z
-        .string()
-        .describe(
-          '班次id(更新班次时需要传递)，获取方式：1）[按名称查询班次] 2）[创建班次]',
-        )
-        .optional(),
+      id: z.string().describe('班次id(更新班次时需要传递)，获取方式：1）[按名称查询班次] 2）[创建班次]').optional(),
     }),
-    params: z.object({
-      employee_type: z
-        .enum(['employee_id', 'employee_no'])
-        .describe(
-          '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID，或者[通过手机号或邮箱获取用户 ID]获取的userid。),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_type: z
+          .enum(['employee_id', 'employee_no'])
+          .describe(
+            '请求体中的 user_ids 和响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID，或者[通过手机号或邮箱获取用户 ID]获取的userid。),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const attendanceV1ShiftDelete = {
@@ -1032,13 +977,7 @@ export const attendanceV1ShiftDelete = {
     '[Feishu/Lark]-考勤打卡-考勤班次-删除班次-通过班次 ID 删除班次。对应功能为假勤设置-[班次设置]班次列表中操作栏的删除按钮',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      shift_id: z
-        .string()
-        .describe(
-          '班次 ID，获取方式：1）[按名称查询班次] 2）[创建班次]',
-        ),
-    }),
+    path: z.object({ shift_id: z.string().describe('班次 ID，获取方式：1）[按名称查询班次] 2）[创建班次]') }),
   },
 };
 export const attendanceV1ShiftGet = {
@@ -1051,13 +990,7 @@ export const attendanceV1ShiftGet = {
     '[Feishu/Lark]-考勤打卡-考勤班次-按 ID 查询班次-通过班次 ID 获取班次详情。对应功能为假勤设置-[班次设置]班次列表中的具体班次，班次信息可以点击班次名称查看',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      shift_id: z
-        .string()
-        .describe(
-          '班次 ID，获取方式：1）[按名称查询班次] 2）[创建班次]',
-        ),
-    }),
+    path: z.object({ shift_id: z.string().describe('班次 ID，获取方式：1）[按名称查询班次] 2）[创建班次]') }),
   },
 };
 export const attendanceV1ShiftList = {
@@ -1070,15 +1003,17 @@ export const attendanceV1ShiftList = {
     '[Feishu/Lark]-考勤打卡-考勤班次-查询所有班次-飞书人事管理后台中假勤设置-[班次配置]中的翻页查询所有班次功能，展示班次名称、打卡规则、弹性班次规则、休息规则等',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const attendanceV1ShiftQuery = {
@@ -1104,208 +1039,206 @@ export const attendanceV1UserApprovalCreate = {
     '[Feishu/Lark]-考勤打卡-假勤审批-写入审批结果-由于部分企业使用的是自己的审批系统，而不是飞书审批系统，因此员工的请假、加班等数据无法流入到飞书考勤系统中，导致员工在请假时间段内依然收到打卡提醒，并且被记为缺卡。对于这些只使用飞书考勤系统，而未使用飞书审批系统的企业，可以通过考勤开放接口的形式，将三方审批结果数据回写到飞书考勤系统中',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      user_approval: z
-        .object({
-          user_id: z.string().describe('审批提交人 ID。传入的ID类型需要与employee_type的取值一致'),
-          date: z.string().describe('审批作用日期，格式为yyyyMMdd'),
-          outs: z
-            .array(
-              z.object({
-                uniq_id: z
-                  .string()
-                  .describe(
-                    '外出类型唯一 ID，代表一种外出类型，长度小于 14* 如何获取？可以选择填入三方的外出类型id。如市内外出、市外外出的id',
-                  ),
-                unit: z
-                  .number()
-                  .describe('外出时长单位 Options:1(Day 天),2(Hour 小时),3(HalfDay 半天),4(HalfHour 半小时)'),
-                interval: z.number().describe('关联审批单外出时长，单位为秒，与unit无关'),
-                start_time: z.string().describe('开始时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
-                end_time: z.string().describe('结束时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
-                i18n_names: z
-                  .object({
-                    ch: z.string().describe('中文描述').optional(),
-                    en: z.string().describe('英语描述').optional(),
-                    ja: z.string().describe('日语描述').optional(),
-                  })
-                  .describe(
-                    '外出多语言展示，格式为 map，key 为 ["ch"、"en"、"ja"]，其中 ch 代表中文、en 代表英语、ja 代表日语',
-                  ),
-                default_locale: z
-                  .string()
-                  .describe(
-                    '默认语言类型，由于飞书客户端支持中、英、日三种语言，当用户切换语言时，如果假期名称没有所对应的语言，会使用默认语言的名称',
-                  ),
-                reason: z.string().describe('外出理由'),
-                idempotent_id: z
-                  .string()
-                  .describe('外出记录的唯一幂等键，用于避免外出记录重复创建，可以填入三方的外出记录id')
-                  .optional(),
-                correct_process_id: z
-                  .array(z.string())
-                  .describe('更正流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
-                  .optional(),
-                cancel_process_id: z
-                  .array(z.string())
-                  .describe('撤销流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
-                  .optional(),
-                process_id: z
-                  .array(z.string())
-                  .describe('发起流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
-                  .optional(),
-              }),
-            )
-            .describe('外出信息')
-            .optional(),
-          leaves: z
-            .array(
-              z.object({
-                uniq_id: z.string().describe('审批实例id').optional(),
-                unit: z
-                  .number()
-                  .describe('假期时长单位 Options:1(Day 天),2(Hour 小时),3(HalfDay 半天),4(HalfHour 半小时)'),
-                interval: z.number().describe('关联审批单假期时长，单位为秒，与unit无关'),
-                start_time: z.string().describe('开始时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
-                end_time: z.string().describe('结束时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
-                i18n_names: z
-                  .object({
-                    ch: z.string().describe('中文描述').optional(),
-                    en: z.string().describe('英语描述').optional(),
-                    ja: z.string().describe('日语描述').optional(),
-                  })
-                  .describe(
-                    '假期多语言展示，格式为 map，key 为 ["ch"、"en"、"ja"]，其中 ch 代表中文、en 代表英语、ja 代表日语',
-                  ),
-                default_locale: z
-                  .enum(['ch', 'en', 'ja'])
-                  .describe(
-                    '默认语言类型，由于飞书客户端支持中、英、日三种语言，当用户切换语言时，如果假期名称没有所对应的语言，会使用默认语言的名称 Options:ch(中文),en(英文),ja(日文)',
-                  ),
-                reason: z.string().describe('请假理由，必选字段'),
-                idempotent_id: z
-                  .string()
-                  .describe('请假记录的唯一幂等键，用于避免请假记录重复创建，可以填入三方的请假记录id')
-                  .optional(),
-              }),
-            )
-            .describe('请假信息')
-            .optional(),
-          overtime_works: z
-            .array(
-              z.object({
-                duration: z
-                  .number()
-                  .describe(
-                    '加班时长，如需使用此字段进行加班时长计算，请联系[技术支持]开通。默认采用start_time和end_time计算',
-                  ),
-                unit: z
-                  .number()
-                  .describe('加班时长单位 Options:1(Day 天),2(Hour 小时),3(HalfDay 半天),4(HalfHour 半小时)'),
-                category: z
-                  .number()
-                  .describe('加班日期类型 Options:1(Workday 工作日),2(Weekend 休息日),3(Holiday 节假日)'),
-                type: z
-                  .number()
-                  .describe(
-                    '加班规则类型 Options:0(None 仅记录),1(DaysOff 调休),2(Fee 加班费),3(Bind 【该可选值已废弃】)',
-                  ),
-                start_time: z.string().describe('开始时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
-                end_time: z.string().describe('结束时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
-                reason: z.string().describe('加班事由').optional(),
-                idempotent_id: z
-                  .string()
-                  .describe('加班记录的唯一幂等键，用于避免加班记录重复创建，可以填入三方的加班记录id')
-                  .optional(),
-                correct_process_id: z
-                  .array(z.string())
-                  .describe('更正流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
-                  .optional(),
-                cancel_process_id: z
-                  .array(z.string())
-                  .describe('撤销流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
-                  .optional(),
-                process_id: z
-                  .array(z.string())
-                  .describe('发起流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
-                  .optional(),
-              }),
-            )
-            .describe('加班信息')
-            .optional(),
-          trips: z
-            .array(
-              z.object({
-                start_time: z.string().describe('开始时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
-                end_time: z.string().describe('结束时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
-                reason: z.string().describe('出差理由'),
-                approve_pass_time: z.string().describe('审批通过时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
-                approve_apply_time: z.string().describe('审批申请时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
-                idempotent_id: z
-                  .string()
-                  .describe('出差记录的唯一幂等键，用于避免出差记录重复创建，可以填入三方的出差记录id')
-                  .optional(),
-                correct_process_id: z
-                  .array(z.string())
-                  .describe('更正流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
-                  .optional(),
-                cancel_process_id: z
-                  .array(z.string())
-                  .describe('撤销流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
-                  .optional(),
-                process_id: z
-                  .array(z.string())
-                  .describe('发起流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
-                  .optional(),
-                departure: z
-                  .object({
-                    region_level: z
-                      .string()
-                      .describe('地理等级（国家｜省｜市｜区）l1：国家级；l2：省级；l3：市级；l4：区/县级')
-                      .optional(),
-                    region_id: z
-                      .string()
-                      .describe(
-                        '地理id可以通过[查询区/县信息]或[查询城市信息]获取（仅支持飞书人事企业版使用）',
-                      )
-                      .optional(),
-                  })
-                  .describe('出发地（只有一个）')
-                  .optional(),
-                destinations: z
-                  .array(
-                    z.object({
+    data: z
+      .object({
+        user_approval: z
+          .object({
+            user_id: z.string().describe('审批提交人 ID。传入的ID类型需要与employee_type的取值一致'),
+            date: z.string().describe('审批作用日期，格式为yyyyMMdd'),
+            outs: z
+              .array(
+                z.object({
+                  uniq_id: z
+                    .string()
+                    .describe(
+                      '外出类型唯一 ID，代表一种外出类型，长度小于 14* 如何获取？可以选择填入三方的外出类型id。如市内外出、市外外出的id',
+                    ),
+                  unit: z
+                    .number()
+                    .describe('外出时长单位 Options:1(Day 天),2(Hour 小时),3(HalfDay 半天),4(HalfHour 半小时)'),
+                  interval: z.number().describe('关联审批单外出时长，单位为秒，与unit无关'),
+                  start_time: z.string().describe('开始时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
+                  end_time: z.string().describe('结束时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
+                  i18n_names: z
+                    .object({
+                      ch: z.string().describe('中文描述').optional(),
+                      en: z.string().describe('英语描述').optional(),
+                      ja: z.string().describe('日语描述').optional(),
+                    })
+                    .describe(
+                      '外出多语言展示，格式为 map，key 为 ["ch"、"en"、"ja"]，其中 ch 代表中文、en 代表英语、ja 代表日语',
+                    ),
+                  default_locale: z
+                    .string()
+                    .describe(
+                      '默认语言类型，由于飞书客户端支持中、英、日三种语言，当用户切换语言时，如果假期名称没有所对应的语言，会使用默认语言的名称',
+                    ),
+                  reason: z.string().describe('外出理由'),
+                  idempotent_id: z
+                    .string()
+                    .describe('外出记录的唯一幂等键，用于避免外出记录重复创建，可以填入三方的外出记录id')
+                    .optional(),
+                  correct_process_id: z
+                    .array(z.string())
+                    .describe('更正流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
+                    .optional(),
+                  cancel_process_id: z
+                    .array(z.string())
+                    .describe('撤销流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
+                    .optional(),
+                  process_id: z
+                    .array(z.string())
+                    .describe('发起流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
+                    .optional(),
+                }),
+              )
+              .describe('外出信息')
+              .optional(),
+            leaves: z
+              .array(
+                z.object({
+                  uniq_id: z.string().describe('审批实例id').optional(),
+                  unit: z
+                    .number()
+                    .describe('假期时长单位 Options:1(Day 天),2(Hour 小时),3(HalfDay 半天),4(HalfHour 半小时)'),
+                  interval: z.number().describe('关联审批单假期时长，单位为秒，与unit无关'),
+                  start_time: z.string().describe('开始时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
+                  end_time: z.string().describe('结束时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
+                  i18n_names: z
+                    .object({
+                      ch: z.string().describe('中文描述').optional(),
+                      en: z.string().describe('英语描述').optional(),
+                      ja: z.string().describe('日语描述').optional(),
+                    })
+                    .describe(
+                      '假期多语言展示，格式为 map，key 为 ["ch"、"en"、"ja"]，其中 ch 代表中文、en 代表英语、ja 代表日语',
+                    ),
+                  default_locale: z
+                    .enum(['ch', 'en', 'ja'])
+                    .describe(
+                      '默认语言类型，由于飞书客户端支持中、英、日三种语言，当用户切换语言时，如果假期名称没有所对应的语言，会使用默认语言的名称 Options:ch(中文),en(英文),ja(日文)',
+                    ),
+                  reason: z.string().describe('请假理由，必选字段'),
+                  idempotent_id: z
+                    .string()
+                    .describe('请假记录的唯一幂等键，用于避免请假记录重复创建，可以填入三方的请假记录id')
+                    .optional(),
+                }),
+              )
+              .describe('请假信息')
+              .optional(),
+            overtime_works: z
+              .array(
+                z.object({
+                  duration: z
+                    .number()
+                    .describe(
+                      '加班时长，如需使用此字段进行加班时长计算，请联系[技术支持]开通。默认采用start_time和end_time计算',
+                    ),
+                  unit: z
+                    .number()
+                    .describe('加班时长单位 Options:1(Day 天),2(Hour 小时),3(HalfDay 半天),4(HalfHour 半小时)'),
+                  category: z
+                    .number()
+                    .describe('加班日期类型 Options:1(Workday 工作日),2(Weekend 休息日),3(Holiday 节假日)'),
+                  type: z
+                    .number()
+                    .describe(
+                      '加班规则类型 Options:0(None 仅记录),1(DaysOff 调休),2(Fee 加班费),3(Bind 【该可选值已废弃】)',
+                    ),
+                  start_time: z.string().describe('开始时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
+                  end_time: z.string().describe('结束时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
+                  reason: z.string().describe('加班事由').optional(),
+                  idempotent_id: z
+                    .string()
+                    .describe('加班记录的唯一幂等键，用于避免加班记录重复创建，可以填入三方的加班记录id')
+                    .optional(),
+                  correct_process_id: z
+                    .array(z.string())
+                    .describe('更正流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
+                    .optional(),
+                  cancel_process_id: z
+                    .array(z.string())
+                    .describe('撤销流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
+                    .optional(),
+                  process_id: z
+                    .array(z.string())
+                    .describe('发起流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
+                    .optional(),
+                }),
+              )
+              .describe('加班信息')
+              .optional(),
+            trips: z
+              .array(
+                z.object({
+                  start_time: z.string().describe('开始时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
+                  end_time: z.string().describe('结束时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
+                  reason: z.string().describe('出差理由'),
+                  approve_pass_time: z.string().describe('审批通过时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
+                  approve_apply_time: z.string().describe('审批申请时间，时间格式为 yyyy-MM-dd HH:mm:ss'),
+                  idempotent_id: z
+                    .string()
+                    .describe('出差记录的唯一幂等键，用于避免出差记录重复创建，可以填入三方的出差记录id')
+                    .optional(),
+                  correct_process_id: z
+                    .array(z.string())
+                    .describe('更正流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
+                    .optional(),
+                  cancel_process_id: z
+                    .array(z.string())
+                    .describe('撤销流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
+                    .optional(),
+                  process_id: z
+                    .array(z.string())
+                    .describe('发起流程实例 ID。该字段由系统自动生成，在写入审批结果时，无需传入该参数')
+                    .optional(),
+                  departure: z
+                    .object({
                       region_level: z
                         .string()
                         .describe('地理等级（国家｜省｜市｜区）l1：国家级；l2：省级；l3：市级；l4：区/县级')
                         .optional(),
                       region_id: z
                         .string()
-                        .describe(
-                          '地理id可以通过[查询区/县信息]或[查询城市信息]获取（仅支持飞书人事企业版使用）',
-                        )
+                        .describe('地理id可以通过[查询区/县信息]或[查询城市信息]获取（仅支持飞书人事企业版使用）')
                         .optional(),
-                    }),
-                  )
-                  .describe('目的地（可写多个）')
-                  .optional(),
-                transportation: z
-                  .array(z.number())
-                  .describe('交通工具（1 飞机，2 火车，3 汽车，4 高铁/动车，5 船，6 其他）')
-                  .optional(),
-                trip_type: z.number().describe('出差类型(1:单程 2:往返)').optional(),
-                remarks: z.string().describe('出差备注').optional(),
-              }),
-            )
-            .describe(
-              '出差信息。目前仅支持全天出差（未满全天则按全天计入）。如果你需要支持半天出差，请咨询[技术支持]',
-            )
-            .optional(),
-          time_zone: z.string().describe('此字段不再使用，以用户匹配的考勤组时区为准').optional(),
-        })
-        .describe('审批信息')
-        .optional(),
-    }),
+                    })
+                    .describe('出发地（只有一个）')
+                    .optional(),
+                  destinations: z
+                    .array(
+                      z.object({
+                        region_level: z
+                          .string()
+                          .describe('地理等级（国家｜省｜市｜区）l1：国家级；l2：省级；l3：市级；l4：区/县级')
+                          .optional(),
+                        region_id: z
+                          .string()
+                          .describe('地理id可以通过[查询区/县信息]或[查询城市信息]获取（仅支持飞书人事企业版使用）')
+                          .optional(),
+                      }),
+                    )
+                    .describe('目的地（可写多个）')
+                    .optional(),
+                  transportation: z
+                    .array(z.number())
+                    .describe('交通工具（1 飞机，2 火车，3 汽车，4 高铁/动车，5 船，6 其他）')
+                    .optional(),
+                  trip_type: z.number().describe('出差类型(1:单程 2:往返)').optional(),
+                  remarks: z.string().describe('出差备注').optional(),
+                }),
+              )
+              .describe(
+                '出差信息。目前仅支持全天出差（未满全天则按全天计入）。如果你需要支持半天出差，请咨询[技术支持]',
+              )
+              .optional(),
+            time_zone: z.string().describe('此字段不再使用，以用户匹配的考勤组时区为准').optional(),
+          })
+          .describe('审批信息')
+          .optional(),
+      })
+      .optional(),
     params: z.object({
       employee_type: z
         .enum(['employee_id', 'employee_no', 'open_id'])
@@ -1374,14 +1307,8 @@ export const attendanceV1UserDailyShiftBatchCreate = {
           z.object({
             group_id: z
               .string()
-              .describe(
-                '考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]',
-              ),
-            shift_id: z
-              .string()
-              .describe(
-                '班次 ID，获取方式：1）[按名称查询班次] 2）[创建班次]。传入0代表休息',
-              ),
+              .describe('考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]'),
+            shift_id: z.string().describe('班次 ID，获取方式：1）[按名称查询班次] 2）[创建班次]。传入0代表休息'),
             month: z.number().describe('月份，格式yyyyMM'),
             user_id: z.string().describe('用户 ID，与employee_type对应'),
             day_no: z.number().describe('日期'),
@@ -1394,9 +1321,7 @@ export const attendanceV1UserDailyShiftBatchCreate = {
         .describe('排班表信息列表（数量限制50以内）'),
       operator_id: z
         .string()
-        .describe(
-          '操作人uid，与employee_type对应。如果您未操作[考勤管理后台“API 接入”流程]，则此字段为必填字段',
-        )
+        .describe('操作人uid，与employee_type对应。如果您未操作[考勤管理后台“API 接入”流程]，则此字段为必填字段')
         .optional(),
     }),
     params: z.object({
@@ -1424,9 +1349,7 @@ export const attendanceV1UserDailyShiftBatchCreateTemp = {
           z.object({
             group_id: z
               .string()
-              .describe(
-                '考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]',
-              ),
+              .describe('考勤组 ID，获取方式：1）[创建或修改考勤组] 2）[按名称查询考勤组] 3）[获取打卡结果]'),
             user_id: z.string().describe('用户 ID，与employee_type对应'),
             date: z.number().describe('日期，格式：yyyymmdd，如20240120'),
             shift_name: z.string().describe('班次名称'),
@@ -1557,9 +1480,7 @@ export const attendanceV1UserFlowBatchDel = {
     data: z.object({
       record_ids: z
         .array(z.string().describe('待删除的流水记录ID'))
-        .describe(
-          '打卡流水记录 ID，获取方式：1）[批量查询打卡流水记录] 2）[获取打卡结果] 3）[导入打卡流水记录]',
-        ),
+        .describe('打卡流水记录 ID，获取方式：1）[批量查询打卡流水记录] 2）[获取打卡结果] 3）[导入打卡流水记录]'),
     }),
   },
 };
@@ -1583,9 +1504,7 @@ export const attendanceV1UserFlowGet = {
     path: z.object({
       user_flow_id: z
         .string()
-        .describe(
-          '打卡流水记录 ID，获取方式：1）[批量查询打卡流水记录] 2）[获取打卡结果] 3）[导入打卡流水记录]',
-        ),
+        .describe('打卡流水记录 ID，获取方式：1）[批量查询打卡流水记录] 2）[获取打卡结果] 3）[导入打卡流水记录]'),
     }),
   },
 };
@@ -1629,20 +1548,18 @@ export const attendanceV1UserSettingModify = {
     '[Feishu/Lark]-考勤打卡-考勤用户管理-修改用户人脸识别信息-修改授权内员工的用户设置信息，包括人脸照片文件 ID。修改用户人脸识别信息目前只支持 API 方式修改，管理后台已无法修改',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      user_setting: z
-        .object({
-          user_id: z.string().describe('用户 ID，对应employee_type'),
-          face_key: z
-            .string()
-            .describe(
-              '人脸照片文件 ID，获取方式：[上传用户人脸识别照片]',
-            ),
-          face_key_update_time: z.string().describe('人脸照片更新时间，精确到秒的时间戳').optional(),
-        })
-        .describe('用户设置')
-        .optional(),
-    }),
+    data: z
+      .object({
+        user_setting: z
+          .object({
+            user_id: z.string().describe('用户 ID，对应employee_type'),
+            face_key: z.string().describe('人脸照片文件 ID，获取方式：[上传用户人脸识别照片]'),
+            face_key_update_time: z.string().describe('人脸照片更新时间，精确到秒的时间戳').optional(),
+          })
+          .describe('用户设置')
+          .optional(),
+      })
+      .optional(),
     params: z.object({
       employee_type: z
         .enum(['employee_id', 'employee_no'])
@@ -1779,11 +1696,7 @@ export const attendanceV1UserStatsViewUpdate = {
     data: z.object({
       view: z
         .object({
-          view_id: z
-            .string()
-            .describe(
-              '视图 ID，可通过[查询统计设置]获取',
-            ),
+          view_id: z.string().describe('视图 ID，可通过[查询统计设置]获取'),
           stats_type: z.enum(['daily', 'month']).describe('视图类型 Options:daily(日度统计),month(月度统计)'),
           user_id: z.string().describe('操作者的用户id，对应employee_type'),
           items: z
@@ -1813,13 +1726,7 @@ export const attendanceV1UserStatsViewUpdate = {
           '响应体中的 user_id 的员工ID类型。如果没有后台管理权限，可使用[通过手机号或邮箱获取用户 ID] Options:employee_id(员工 employee ID，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的用户 ID),employee_no(员工工号，即[飞书管理后台] > 组织架构 > 成员与部门 > 成员详情中的工号)',
         ),
     }),
-    path: z.object({
-      user_stats_view_id: z
-        .string()
-        .describe(
-          '用户视图 ID，获取方式：1）[查询统计设置]',
-        ),
-    }),
+    path: z.object({ user_stats_view_id: z.string().describe('用户视图 ID，获取方式：1）[查询统计设置]') }),
   },
 };
 export const attendanceV1UserTaskRemedyCreate = {

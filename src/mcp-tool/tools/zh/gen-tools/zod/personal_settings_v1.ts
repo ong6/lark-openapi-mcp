@@ -18,19 +18,12 @@ export const personalSettingsV1SystemStatusBatchClose = {
     data: z.object({
       user_list: z
         .array(z.string())
-        .describe(
-          '用户ID列表，传入的ID类型由user_id_type决定，推荐使用 OpenID，获取方式可参考文档[如何获取 Open ID]',
-        ),
+        .describe('用户ID列表，传入的ID类型由user_id_type决定，推荐使用 OpenID，获取方式可参考文档[如何获取 Open ID]'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      system_status_id: z
-        .string()
-        .describe(
-          '系统状态ID[获取系统状态ID]',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ system_status_id: z.string().describe('系统状态ID[获取系统状态ID]').optional() }).optional(),
   },
 };
 export const personalSettingsV1SystemStatusBatchOpen = {
@@ -56,15 +49,10 @@ export const personalSettingsV1SystemStatusBatchOpen = {
         )
         .describe('开启列表'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      system_status_id: z
-        .string()
-        .describe(
-          '系统状态ID[获取系统状态ID]',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ system_status_id: z.string().describe('系统状态ID[获取系统状态ID]').optional() }).optional(),
   },
 };
 export const personalSettingsV1SystemStatusCreate = {
@@ -182,14 +170,7 @@ export const personalSettingsV1SystemStatusDelete = {
   description: '[Feishu/Lark]-个人设置-系统状态-删除系统状态-删除租户维度的系统状态',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      system_status_id: z
-        .string()
-        .describe(
-          '系统状态ID[获取系统状态ID]',
-        )
-        .optional(),
-    }),
+    path: z.object({ system_status_id: z.string().describe('系统状态ID[获取系统状态ID]').optional() }).optional(),
   },
 };
 export const personalSettingsV1SystemStatusList = {
@@ -201,15 +182,17 @@ export const personalSettingsV1SystemStatusList = {
   description: '[Feishu/Lark]-个人设置-系统状态-获取系统状态-获取租户下所有系统状态',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const personalSettingsV1SystemStatusPatch = {
@@ -331,14 +314,7 @@ export const personalSettingsV1SystemStatusPatch = {
         )
         .describe('需要更新的字段'),
     }),
-    path: z.object({
-      system_status_id: z
-        .string()
-        .describe(
-          '系统状态ID[获取系统状态ID]',
-        )
-        .optional(),
-    }),
+    path: z.object({ system_status_id: z.string().describe('系统状态ID[获取系统状态ID]').optional() }).optional(),
   },
 };
 export const personalSettingsV1Tools = [

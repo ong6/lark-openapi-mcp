@@ -22,21 +22,23 @@ export const lingoV1ClassificationList = {
     '[Feishu/Lark]-飞书词典-分类-获取词典分类-获取飞书词典当前分类。飞书词典目前为二级分类体系，每个词条可添加多个二级分类，但选择的二级分类必须从属于不同的一级分类',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      repo_id: z
-        .string()
-        .describe(
-          '词库ID（不传默认范围为全员词库）如以应用身份获取非全员词库中的分类，需要在“词库设置”页面添加应用；若以用户身份获取非全员词库中的分类，该用户需要拥有对应词库的可见权限',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        repo_id: z
+          .string()
+          .describe(
+            '词库ID（不传默认范围为全员词库）如以应用身份获取非全员词库中的分类，需要在“词库设置”页面添加应用；若以用户身份获取非全员词库中的分类，该用户需要拥有对应词库的可见权限',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -166,15 +168,17 @@ export const lingoV1DraftCreate = {
         .describe('国际化的词条释义')
         .optional(),
     }),
-    params: z.object({
-      repo_id: z
-        .string()
-        .describe(
-          '词库ID（需要在指定词库创建草稿时填写，不填写默认创建至全员词库）如以应用身份创建草稿到非全员词库，需要在“词库设置”页面添加应用；若以用户身份创建草稿到非全员词库，该用户需要拥有对应词库的可见权限',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        repo_id: z
+          .string()
+          .describe(
+            '词库ID（需要在指定词库创建草稿时填写，不填写默认创建至全员词库）如以应用身份创建草稿到非全员词库，需要在“词库设置”页面添加应用；若以用户身份创建草稿到非全员词库，该用户需要拥有对应词库的可见权限',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -286,7 +290,9 @@ export const lingoV1DraftUpdate = {
         .describe('国际化的词条释义')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ draft_id: z.string().describe('草稿ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -414,15 +420,17 @@ export const lingoV1EntityCreate = {
         .describe('国际化的词条释义')
         .optional(),
     }),
-    params: z.object({
-      repo_id: z
-        .string()
-        .describe(
-          '词库 ID（需要在指定词库创建词条时传入，不传时默认创建至全员词库）如以应用身份创建词条到非全员词库，需要在“词库设置”页面添加应用；若以用户身份创建词条到非全员词库，该用户需要拥有对应词库的可见权限',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        repo_id: z
+          .string()
+          .describe(
+            '词库 ID（需要在指定词库创建词条时传入，不传时默认创建至全员词库）如以应用身份创建词条到非全员词库，需要在“词库设置”页面添加应用；若以用户身份创建词条到非全员词库，该用户需要拥有对应词库的可见权限',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const lingoV1EntityDelete = {
@@ -435,18 +443,20 @@ export const lingoV1EntityDelete = {
     '[Feishu/Lark]-飞书词典-词条-删除免审词条-通过 entity_id 删除已有的词条，无需经过词典管理员审核。因此，调用该接口时应当慎重操作',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      provider: z
-        .string()
-        .describe('外部系统（使用时需要将路径中的词条 ID 固定为：enterprise_0，且提供 provider 和 outer_id）')
-        .optional(),
-      outer_id: z
-        .string()
-        .describe(
-          '词条在外部系统中对应的唯一 ID（使用时需要将路径中的词条 ID 固定为：enterprise_0，且提供 provider 和 outer_id）',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        provider: z
+          .string()
+          .describe('外部系统（使用时需要将路径中的词条 ID 固定为：enterprise_0，且提供 provider 和 outer_id）')
+          .optional(),
+        outer_id: z
+          .string()
+          .describe(
+            '词条在外部系统中对应的唯一 ID（使用时需要将路径中的词条 ID 固定为：enterprise_0，且提供 provider 和 outer_id）',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ entity_id: z.string().describe('词条 ID') }),
   },
 };
@@ -459,12 +469,14 @@ export const lingoV1EntityGet = {
   description: '[Feishu/Lark]-飞书词典-词条-获取词条详情-通过词条 id 拉取对应的词条详情信息',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      provider: z.string().describe('外部系统').optional(),
-      outer_id: z.string().describe('词条在外部系统中对应的唯一 ID').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({ entity_id: z.string().describe('词条 ID').optional() }),
+    params: z
+      .object({
+        provider: z.string().describe('外部系统').optional(),
+        outer_id: z.string().describe('词条在外部系统中对应的唯一 ID').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ entity_id: z.string().describe('词条 ID').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -491,23 +503,25 @@ export const lingoV1EntityList = {
   description: '[Feishu/Lark]-飞书词典-词条-获取词条列表-分页拉取词条列表数据，支持拉取租户内(或指定词库内)的全部词条',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      provider: z.string().describe('相关外部系统【可用来过滤词条数据】').optional(),
-      repo_id: z
-        .string()
-        .describe(
-          '词库 id(不传时默认返回全员词库数据)如以应用身份拉取非全员词库的词条，需要在“词库设置”页面添加应用；若以用户身份拉取非全员词库的词条，该用户需要拥有对应词库的可见权限',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        provider: z.string().describe('相关外部系统【可用来过滤词条数据】').optional(),
+        repo_id: z
+          .string()
+          .describe(
+            '词库 id(不传时默认返回全员词库数据)如以应用身份拉取非全员词库的词条，需要在“词库设置”页面添加应用；若以用户身份拉取非全员词库的词条，该用户需要拥有对应词库的可见权限',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -521,14 +535,16 @@ export const lingoV1EntityMatch = {
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({ word: z.string().describe('搜索关键词，将与词条名、别名进行精准匹配') }),
-    params: z.object({
-      repo_id: z
-        .string()
-        .describe(
-          '词库ID(不传时默认在全员词库内搜索)如以应用身份搜索非全员词库中的词条，需要在“词库设置”页面添加应用；若以用户身份搜索非全员词库中的词条，该用户需要拥有对应词库的可见权限',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        repo_id: z
+          .string()
+          .describe(
+            '词库ID(不传时默认在全员词库内搜索)如以应用身份搜索非全员词库中的词条，需要在“词库设置”页面添加应用；若以用户身份搜索非全员词库中的词条，该用户需要拥有对应词库的可见权限',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -542,37 +558,41 @@ export const lingoV1EntitySearch = {
     '[Feishu/Lark]-飞书词典-词条-模糊搜索词条-传入关键词，与词条名、别名、释义等信息进行模糊匹配，返回搜到的词条信息',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      query: z.string().describe('搜索关键词').optional(),
-      classification_filter: z
-        .object({
-          include: z.array(z.string()).describe('需要获取的分类').optional(),
-          exclude: z.array(z.string()).describe('需要排除的分类').optional(),
-        })
-        .describe('分类筛选')
-        .optional(),
-      sources: z
-        .array(z.number())
-        .describe('词条的创建来源，1：用户主动创建，2：批量导入，3：官方词，4：OpenAPI 创建')
-        .optional(),
-      creators: z.array(z.string()).describe('创建者').optional(),
-    }),
-    params: z.object({
-      page_size: z.number().describe('每页返回的词条量').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      repo_id: z
-        .string()
-        .describe(
-          '词库ID(不传时默认在全员词库内搜索)如以应用身份搜索非全员词库中的词条，需要在“词库设置”页面添加应用；若以用户身份搜索非全员词库中的词条，该用户需要拥有对应词库的可见权限',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    data: z
+      .object({
+        query: z.string().describe('搜索关键词').optional(),
+        classification_filter: z
+          .object({
+            include: z.array(z.string()).describe('需要获取的分类').optional(),
+            exclude: z.array(z.string()).describe('需要排除的分类').optional(),
+          })
+          .describe('分类筛选')
+          .optional(),
+        sources: z
+          .array(z.number())
+          .describe('词条的创建来源，1：用户主动创建，2：批量导入，3：官方词，4：OpenAPI 创建')
+          .optional(),
+        creators: z.array(z.string()).describe('创建者').optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        page_size: z.number().describe('每页返回的词条量').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        repo_id: z
+          .string()
+          .describe(
+            '词库ID(不传时默认在全员词库内搜索)如以应用身份搜索非全员词库中的词条，需要在“词库设置”页面添加应用；若以用户身份搜索非全员词库中的词条，该用户需要拥有对应词库的可见权限',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -695,8 +715,10 @@ export const lingoV1EntityUpdate = {
         .describe('国际化的词条释义')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({ entity_id: z.string().describe('词条 ID').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ entity_id: z.string().describe('词条 ID').optional() }).optional(),
   },
 };
 export const lingoV1RepoList = {

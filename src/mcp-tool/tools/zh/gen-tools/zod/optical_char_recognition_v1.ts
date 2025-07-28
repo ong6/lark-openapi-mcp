@@ -10,7 +10,7 @@ export const opticalCharRecognitionV1ImageBasicRecognize = {
     '[Feishu/Lark]-AI 能力-光学字符识别-识别图片中的文字-可识别图片中的文字，按图片中的区域划分，分段返回文本列表。文件大小需小于5M',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({ image: z.string().describe('base64 后的图片数据').optional() }),
+    data: z.object({ image: z.string().describe('base64 后的图片数据').optional() }).optional(),
   },
 };
 export const opticalCharRecognitionV1Tools = [opticalCharRecognitionV1ImageBasicRecognize];

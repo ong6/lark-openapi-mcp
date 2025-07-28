@@ -31,37 +31,39 @@ export const mdmV3CountryRegionList = {
     '[Feishu/Lark]-飞书主数据-基础数据-国家/地区-分页批量查询国家/地区-分页批量查询国家/地区。资源介绍请参考[概述]',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      filter: z
-        .object({
-          logic: z.string().describe('逻辑关系同一层级的多个expression由logic参数决定使用“与/或”条件0=and，1=or'),
-          expressions: z
-            .array(
-              z.object({
-                field: z.string().describe('字段名'),
-                operator: z
-                  .string()
-                  .describe(
-                    '运算符。0=等于，1=不等于，2=大于，3=大于等于，4=小于，5=小于等于，6=属于任意，7=不属于任意，8=匹配，9=前缀匹配，10=后缀匹配，11=为空，12=不为空',
-                  ),
-                value: z
-                  .object({
-                    string_value: z.string().describe('字符串值').optional(),
-                    bool_value: z.boolean().describe('布尔值').optional(),
-                    int_value: z.string().describe('整型值').optional(),
-                    string_list_value: z.array(z.string()).describe('字符串列表值').optional(),
-                    int_list_value: z.array(z.string()).describe('整型列表值').optional(),
-                  })
-                  .describe('字段值'),
-              }),
-            )
-            .describe('过滤条件')
-            .optional(),
-        })
-        .describe('过滤参数')
-        .optional(),
-      common: z.object({}).describe('此参数可忽略').optional(),
-    }),
+    data: z
+      .object({
+        filter: z
+          .object({
+            logic: z.string().describe('逻辑关系同一层级的多个expression由logic参数决定使用“与/或”条件0=and，1=or'),
+            expressions: z
+              .array(
+                z.object({
+                  field: z.string().describe('字段名'),
+                  operator: z
+                    .string()
+                    .describe(
+                      '运算符。0=等于，1=不等于，2=大于，3=大于等于，4=小于，5=小于等于，6=属于任意，7=不属于任意，8=匹配，9=前缀匹配，10=后缀匹配，11=为空，12=不为空',
+                    ),
+                  value: z
+                    .object({
+                      string_value: z.string().describe('字符串值').optional(),
+                      bool_value: z.boolean().describe('布尔值').optional(),
+                      int_value: z.string().describe('整型值').optional(),
+                      string_list_value: z.array(z.string()).describe('字符串列表值').optional(),
+                      int_list_value: z.array(z.string()).describe('整型列表值').optional(),
+                    })
+                    .describe('字段值'),
+                }),
+              )
+              .describe('过滤条件')
+              .optional(),
+          })
+          .describe('过滤参数')
+          .optional(),
+        common: z.object({}).describe('此参数可忽略').optional(),
+      })
+      .optional(),
     params: z.object({
       languages: z
         .array(z.string().describe('语言'))

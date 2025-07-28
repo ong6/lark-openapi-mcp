@@ -6,7 +6,7 @@ export const baseV2AppRoleCreate = {
   sdkName: 'base.v2.appRole.create',
   path: '/open-apis/base/v2/apps/:app_token/roles',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-Base-Advanced Permission-Role-Create role-Create a role',
+  description: '[Feishu/Lark]-Docs-Base-Advanced Permission-Role-Create role-Create a role',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -131,13 +131,7 @@ export const baseV2AppRoleCreate = {
         )
         .optional(),
     }),
-    path: z.object({
-      app_token: z
-        .string()
-        .describe(
-          'Base unique device identifier [app_token description]',
-        ),
-    }),
+    path: z.object({ app_token: z.string().describe('Base unique device identifier [app_token description]') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -147,25 +141,21 @@ export const baseV2AppRoleList = {
   sdkName: 'base.v2.appRole.list',
   path: '/open-apis/base/v2/apps/:app_token/roles',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-Base-Advanced Permission-Role-List roles-Get all roles according to app_token',
+  description: '[Feishu/Lark]-Docs-Base-Advanced Permission-Role-List roles-Get all roles according to app_token',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('page_size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      app_token: z
-        .string()
-        .describe(
-          'Base unique device identifier [app_token description]',
-        ),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('page_size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ app_token: z.string().describe('Base unique device identifier [app_token description]') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -175,7 +165,7 @@ export const baseV2AppRoleUpdate = {
   sdkName: 'base.v2.appRole.update',
   path: '/open-apis/base/v2/apps/:app_token/roles/:role_id',
   httpMethod: 'PUT',
-  description: '[Feishu/Lark]-Base-Advanced Permission-Role-Update role-Update a role',
+  description: '[Feishu/Lark]-Docs-Base-Advanced Permission-Role-Update role-Update a role',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -295,11 +285,7 @@ export const baseV2AppRoleUpdate = {
         .optional(),
     }),
     path: z.object({
-      app_token: z
-        .string()
-        .describe(
-          'Base unique device identifier [app_token description]',
-        ),
+      app_token: z.string().describe('Base unique device identifier [app_token description]'),
       role_id: z.string().describe('Role id'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),

@@ -29,7 +29,7 @@ export const cardkitV1CardBatchUpdate = {
       sequence: z
         .number()
         .describe(
-          "When the card is in streaming update mode, operate the serial number of the card. It is used to ensure the timing of multiple updates. The value of this serial number should be a positive integer, customized by the developer, and timestamp is recommended.** Attention**:If you update the card multiple times during the single stream update of the card, you need to ensure that the'sequence 'is incremented one by one, otherwise an error will be reported",
+          'The sequence number of the card operation when the card is in streaming update mode. It is used to ensure the chronological order of multiple updates.**Note**:Please ensure that the value of `sequence` is strictly increasing compared to the previous operation when manipulating the same card through the Card OpenAPI.**Data validation rules**: Positive integers within the int32 range (`1`~`2147483647`)',
         ),
       actions: z
         .string()
@@ -37,13 +37,7 @@ export const cardkitV1CardBatchUpdate = {
           "List of operations, optional values are:- 'partial_update_setting': Update card configuration, support updating card config and card_link fields. For parameter structure, please refer to [Update Card Configuration];- 'add_elements': Add components, support type, target_element_id, elements fields. The parameter structure can refer to the [New Component] interface request body;- delete_elements: Delete the component, support element_ids fields. The parameter value is the component ID array. The parameter structure can refer to [Delete Component];- 'partial_update_element': Update the properties of the component, support element_id and partial_element fields. The parameter structure can refer to the path parameters of the [Update Component Properties] interface element_id and request body partial_element fields;- update_element: full update component, support element_id and element fields. The parameter structure can refer to the path parameter element_id and request body element field of the [full update component] interface",
         ),
     }),
-    path: z.object({
-      card_id: z
-        .string()
-        .describe(
-          'Card entity ID. Get it by [Create Card Entity]',
-        ),
-    }),
+    path: z.object({ card_id: z.string().describe('Card entity ID. Get it by [Create Card Entity]') }),
   },
 };
 export const cardkitV1CardCreate = {
@@ -52,15 +46,20 @@ export const cardkitV1CardCreate = {
   sdkName: 'cardkit.v1.card.create',
   path: '/open-apis/cardkit/v1/cards',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-Feishu Card-Card-Create card entity-Create a card entity based on the card JSON code',
+  description:
+    '[Feishu/Lark]-Feishu Card-Card-Create card entity-Create a card entity based on the card JSON code or the cardkit tool',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      type: z.string().describe('Type of card data. Take the fixed value `card_json`'),
+      type: z
+        .string()
+        .describe(
+          'Card types. Optional values:- `card_json`: Cards constructed from card JSON code- `template`: Card templates built with the [card construction tool]',
+        ),
       data: z
         .string()
         .describe(
-          'The contents of the card JSON data. Only [Card JSON 2.0 structure] is supported, i.e. you must declare the schema as 2.0. The following example values are not escaped, please be careful to convert them to JSON serialized strings when using them',
+          'Card data. It must be consistent with the type specified by `type`:- If `type` is `card_json`, then card JSON code should be passed here, and ensure it is escaped as a string. Only the [card JSON 2.0 structure] is supported, meaning you must declare `schema` as `2.0`.- If `type` is `template`, then card template data should be passed here, and ensure it is escaped as a string. Only the new version cards are supported. In the construction tool, there should be a "New Version" label next to the card name',
         ),
     }),
   },
@@ -72,7 +71,7 @@ export const cardkitV1CardElementContent = {
   path: '/open-apis/cardkit/v1/cards/:card_id/elements/:element_id/content',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-Feishu Card-Element-Stream update text-Stream Updating Text. Refer to the [Streaming updates OpenAPI calling guide] to understand the complete process of streaming updates for text',
+    '[Feishu/Lark]-Feishu Card-Element-Stream update text-Pass the full text content to a plain text element (tagged as `plain_text`) or a rich text component (tagged as `markdown`) in the card to achieve a "typewriter" effect for text output. Refer to [Streaming Updates for Cards] to understand the complete process of streaming text updates',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -82,20 +81,24 @@ export const cardkitV1CardElementContent = {
           'Idempotent IDs, which can be passed a unique uuid to ensure that the same batch of operations is performed only once',
         )
         .optional(),
-      content: z.string().describe('Updated text content'),
+      content: z
+        .string()
+        .describe(
+          'Updated text content.**Note**: If the content contains code blocks, you need to remove the spaces before and after the code blocks, as they may cause the code rendering to fail',
+        ),
       sequence: z
         .number()
         .describe(
-          'Sequence number, used to ensure the timing of updating text content. During the single streaming mode cycle of the card (steaming state from start to stop), this value needs to be an increasing positive integer, otherwise an error will be reported',
+          'The sequence number of the card operation when the card is in streaming update mode. It is used to ensure the chronological order of multiple updates.**Note**:Please ensure that the value of `sequence` is strictly increasing compared to the previous operation when manipulating the same card through the Card OpenAPI.**Data validation rules**: Positive integers within the int32 range (`1`~`2147483647`)',
         ),
     }),
     path: z.object({
-      card_id: z
+      card_id: z.string().describe('Card entity ID. Get it by [Create Card Entity]'),
+      element_id: z
         .string()
         .describe(
-          'Card entity ID. Get it by [Create Card Entity]',
+          'The ID of a plain text element or rich text component. This corresponds to the `element_id` attribute in the card JSON or the component ID attribute in the construction tool, which is customized by the developer. **Note**: For cards in the construction tool, only the component ID of a rich text component is supported here. This means only the content within rich text components supports streaming updates',
         ),
-      element_id: z.string().describe('Component ID'),
     }),
   },
 };
@@ -129,17 +132,11 @@ export const cardkitV1CardElementCreate = {
       sequence: z
         .number()
         .describe(
-          'When the card is in streaming update mode, the sequence number of the card operation is used to ensure the timing of multiple updates. The value is a positive integer, and multiple updates of a streaming state (streaming_mode a period from true to false) need to ensure that the sequence is incremented, otherwise an error will be reported. Timestamp is recommended',
+          'The sequence number of the card operation when the card is in streaming update mode. It is used to ensure the chronological order of multiple updates.**Note**:Please ensure that the value of `sequence` is strictly increasing compared to the previous operation when manipulating the same card through the Card OpenAPI.**Data validation rules**: Positive integers within the int32 range (`1`~`2147483647`)',
         ),
       elements: z.string().describe('Component List'),
     }),
-    path: z.object({
-      card_id: z
-        .string()
-        .describe(
-          'Card entity ID. Get it by [Create Card Entity]',
-        ),
-    }),
+    path: z.object({ card_id: z.string().describe('Card entity ID. Get it by [Create Card Entity]') }),
   },
 };
 export const cardkitV1CardElementDelete = {
@@ -161,15 +158,11 @@ export const cardkitV1CardElementDelete = {
       sequence: z
         .number()
         .describe(
-          'When the card is in streaming update mode, the sequence number of the card operation is used to ensure the timing of multiple updates. The value is a positive integer, and multiple updates of a streaming state (streaming_mode a period from true to false) need to ensure that the sequence is incremented, otherwise an error will be reported. Timestamp is recommended',
+          'The sequence number of the card operation when the card is in streaming update mode. It is used to ensure the chronological order of multiple updates.**Note**:Please ensure that the value of `sequence` is strictly increasing compared to the previous operation when manipulating the same card through the Card OpenAPI.**Data validation rules**: Positive integers within the int32 range (`1`~`2147483647`)',
         ),
     }),
     path: z.object({
-      card_id: z
-        .string()
-        .describe(
-          'Card entity ID. Get it by [Create Card Entity]',
-        ),
+      card_id: z.string().describe('Card entity ID. Get it by [Create Card Entity]'),
       element_id: z.string().describe('Component ID'),
     }),
   },
@@ -198,15 +191,11 @@ export const cardkitV1CardElementPatch = {
       sequence: z
         .number()
         .describe(
-          'When the card is in streaming update mode, the sequence number of the card operation is used to ensure the timing of multiple updates. The value is a positive integer, and multiple updates of a streaming state (streaming_mode a period from true to false) need to ensure that the sequence is incremented, otherwise an error will be reported. Timestamp is recommended',
+          'The sequence number of the card operation when the card is in streaming update mode. It is used to ensure the chronological order of multiple updates.**Note**:Please ensure that the value of `sequence` is strictly increasing compared to the previous operation when manipulating the same card through the Card OpenAPI.**Data validation rules**: Positive integers within the int32 range (`1`~`2147483647`)',
         ),
     }),
     path: z.object({
-      card_id: z
-        .string()
-        .describe(
-          'Card entity ID. Get it by [Create Card Entity]',
-        ),
+      card_id: z.string().describe('Card entity ID. Get it by [Create Card Entity]'),
       element_id: z.string().describe('Component ID'),
     }),
   },
@@ -231,15 +220,11 @@ export const cardkitV1CardElementUpdate = {
       sequence: z
         .number()
         .describe(
-          'When the card is in streaming update mode, the sequence number of the card operation is used to ensure the timing of multiple updates. The value is a positive integer, and multiple updates of a streaming state (streaming_mode a period from true to false) need to ensure that the sequence is incremented, otherwise an error will be reported. Timestamp is recommended',
+          'The sequence number of the card operation when the card is in streaming update mode. It is used to ensure the chronological order of multiple updates.**Note**:Please ensure that the value of `sequence` is strictly increasing compared to the previous operation when manipulating the same card through the Card OpenAPI.**Data validation rules**: Positive integers within the int32 range (`1`~`2147483647`)',
         ),
     }),
     path: z.object({
-      card_id: z
-        .string()
-        .describe(
-          'Card entity ID. Get it by [Create Card Entity]',
-        ),
+      card_id: z.string().describe('Card entity ID. Get it by [Create Card Entity]'),
       element_id: z.string().describe('Component ID'),
     }),
   },
@@ -253,13 +238,7 @@ export const cardkitV1CardIdConvert = {
   description: '[Feishu/Lark]-Deprecated Version (Not Recommended)-Convert ID-ID Convert',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      message_id: z
-        .string()
-        .describe(
-          'Message ID. Get via [Send Message]',
-        ),
-    }),
+    data: z.object({ message_id: z.string().describe('Message ID. Get via [Send Message]') }),
   },
 };
 export const cardkitV1CardSettings = {
@@ -287,16 +266,10 @@ export const cardkitV1CardSettings = {
       sequence: z
         .number()
         .describe(
-          "When the card is in streaming update mode, operate the serial number of the card. Used to ensure the timing of multiple updates. The value of this serial number should be a positive integer, customized by the developer.**Attention**:If you update the card multiple times during the single stream update of the card, you need to ensure that the'sequence 'is incremented one by one, otherwise an error code of 300317 will be reported",
+          'The sequence number of the card operation when the card is in streaming update mode. It is used to ensure the chronological order of multiple updates.**Note**:Please ensure that the value of `sequence` is strictly increasing compared to the previous operation when manipulating the same card through the Card OpenAPI.**Data validation rules**: Positive integers within the int32 range (`1`~`2147483647`)',
         ),
     }),
-    path: z.object({
-      card_id: z
-        .string()
-        .describe(
-          'Card entity ID. Get it by [Create Card Entity]',
-        ),
-    }),
+    path: z.object({ card_id: z.string().describe('Card entity ID. Get it by [Create Card Entity]') }),
   },
 };
 export const cardkitV1CardUpdate = {
@@ -330,16 +303,10 @@ export const cardkitV1CardUpdate = {
       sequence: z
         .number()
         .describe(
-          "When the card is in streaming update mode, operate the serial number of the card. It is used to ensure the timing of multiple updates. The value of this serial number should be a positive integer, customized by the developer, and timestamp is recommended.**Attention**:If you update the card multiple times during the single stream update of the card, you need to ensure that the'sequence 'is incremented one by one, otherwise an error will be reported",
+          'The sequence number of the card operation when the card is in streaming update mode. It is used to ensure the chronological order of multiple updates.**Note**:Please ensure that the value of `sequence` is strictly increasing compared to the previous operation when manipulating the same card through the Card OpenAPI.**Data validation rules**: Positive integers within the int32 range (`1`~`2147483647`)',
         ),
     }),
-    path: z.object({
-      card_id: z
-        .string()
-        .describe(
-          'Card entity ID. Get it by [Create Card Entity]',
-        ),
-    }),
+    path: z.object({ card_id: z.string().describe('Card entity ID. Get it by [Create Card Entity]') }),
   },
 };
 export const cardkitV1Tools = [

@@ -30,15 +30,19 @@ export const reportV1RuleViewRemove = {
   description: '[Feishu/Lark]-Report-Rule view-Remove rule board-Remove rule board',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      user_ids: z
-        .array(z.string())
-        .describe(
-          'If the list is empty and, deletes the full user view under the rule. If the list is not empty, then deletes the specified user view. The size limit is 200',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        user_ids: z
+          .array(z.string())
+          .describe(
+            'If the list is empty and, deletes the full user view under the rule. If the list is not empty, then deletes the specified user view. The size limit is 200',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ rule_id: z.string().describe('Reporting tule ID') }),
   },
 };
@@ -63,7 +67,9 @@ export const reportV1TaskQuery = {
         ),
       page_size: z.number().describe('Number of items returned by a single page'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const reportV1Tools = [reportV1RuleQuery, reportV1RuleViewRemove, reportV1TaskQuery];

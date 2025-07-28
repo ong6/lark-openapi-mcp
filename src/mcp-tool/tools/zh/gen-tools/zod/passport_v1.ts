@@ -34,7 +34,9 @@ export const passportV1SessionLogout = {
         .optional(),
       sid: z.string().describe('需要精确登出的 session 标识符，logout_type = 3 时必填').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const passportV1SessionQuery = {
@@ -46,8 +48,10 @@ export const passportV1SessionQuery = {
   description: '[Feishu/Lark]-认证及授权-登录态管理-批量获取脱敏的用户登录信息-该接口用于查询用户的登录信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({ user_ids: z.array(z.string()).describe('用户 ID').optional() }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    data: z.object({ user_ids: z.array(z.string()).describe('用户 ID').optional() }).optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
   },
 };
 export const passportV1Tools = [passportV1SessionLogout, passportV1SessionQuery];

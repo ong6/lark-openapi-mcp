@@ -24,14 +24,16 @@ export const wikiV2SpaceCreate = {
   description: '[Feishu/Lark]-Docs-Wiki-Wiki space-Create Wiki space-This interface is used to create a Wiki space',
   accessTokens: ['user'],
   schema: {
-    data: z.object({
-      name: z.string().describe('Wiki space name').optional(),
-      description: z.string().describe('Wiki space description').optional(),
-      open_sharing: z
-        .enum(['open', 'closed'])
-        .describe('Represents Wiki space sharing status Options:open(Open),closed(Closed)')
-        .optional(),
-    }),
+    data: z
+      .object({
+        name: z.string().describe('Wiki space name').optional(),
+        description: z.string().describe('Wiki space description').optional(),
+        open_sharing: z
+          .enum(['open', 'closed'])
+          .describe('Represents Wiki space sharing status Options:open(Open),closed(Closed)')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -45,22 +47,24 @@ export const wikiV2SpaceGet = {
     "[Feishu/Lark]-Docs-Wiki-Wiki space-Access to Wiki space information-This interface is used to query the information of the Wiki space according to the Wiki space ID.Space type:- Person Space: Managed by individuals. One person can only have one personal space, and no other administrators can be added.- Team Space: Managed by a team (multiple people), multiple administrators can be added.Space visibility:- Public Space: Visible to all users within the tenant and defaults to member permissions. Additional members cannot be added, but administrators can be added.- Private Space: Only visible to knowledge space administrators and members, administrators and members need to be added manually.Space sharing status:- Open: The wiki space has been published to web.- Closed: The wiki space hasn't been published to web",
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      lang: z
-        .enum(['zh', 'id', 'de', 'en', 'es', 'fr', 'it', 'pt', 'vi', 'ru', 'hi', 'th', 'ko', 'ja', 'zh-HK', 'zh-TW'])
-        .describe(
-          'When querying a personal document library, specify the document library name display language to return. Options:zh(LangZH Simplified Chinese),id(LangID Indonesian),de(LangDE German),en(LangEN English),es(LangES Spanish),fr(LangFR French),it(LangIT Italian),pt(LangPT Portuguese),vi(LangVI Vietnamese),ru(LangRU Russian),hi(LangHI Hindi),th(LangTH Thai),ko(LangKO Korean),ja(LangJA Japanese),zh-HK(LangZHHK Traditional Chinese (Hong Kong, China)),zh-TW(LangZHTW Traditional Chinese (Taiwan, China))',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      space_id: z
-        .string()
-        .describe(
-          'Wiki space ID <md-text type="field-name" >[How to get Wiki space ID]</md-text>',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        lang: z
+          .enum(['zh', 'id', 'de', 'en', 'es', 'fr', 'it', 'pt', 'vi', 'ru', 'hi', 'th', 'ko', 'ja', 'zh-HK', 'zh-TW'])
+          .describe(
+            'When querying **My Document Library**​​, specify the document library name display language to return. Options:zh(LangZH Simplified Chinese),id(LangID Indonesian),de(LangDE German),en(LangEN English),es(LangES Spanish),fr(LangFR French),it(LangIT Italian),pt(LangPT Portuguese),vi(LangVI Vietnamese),ru(LangRU Russian),hi(LangHI Hindi),th(LangTH Thai),ko(LangKO Korean),ja(LangJA Japanese),zh-HK(LangZHHK Traditional Chinese (Hong Kong, China)),zh-TW(LangZHTW Traditional Chinese (Taiwan, China))',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z
+      .object({
+        space_id: z
+          .string()
+          .describe('Wiki space ID <md-text type="field-name" >[How to get Wiki space ID]</md-text>')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -99,21 +103,17 @@ export const wikiV2SpaceList = {
     '[Feishu/Lark]-Docs-Wiki-Wiki space-Get a list of Wiki spaces-This interface is used to get a list of Wiki spaces that have permission to access.This interface is a paging interface. Due to permission filtering, the return list may be empty, but the paging flag (has_more) is true, and can continue the paging request.For the description of each attribute of the Wiki space, please refer to [Access to Wiki space information]',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      lang: z
-        .enum(['zh', 'id', 'de', 'en', 'es', 'fr', 'it', 'pt', 'vi', 'ru', 'hi', 'th', 'ko', 'ja', 'zh-HK', 'zh-TW'])
-        .describe(
-          'When querying a personal document library, specify the returned document library name display language. Options:zh(LangZH Simplified Chinese),id(LangID Indonesian),de(LangDE German),en(LangEN English),es(LangES Spanish),fr(LangFR French),it(LangIT Italian),pt(LangPT Portuguese),vi(LangVI Vietnamese),ru(LangRU Russian),hi(LangHI Hindi),th(LangTH Thai),ko(LangKO Korean),ja(LangJA Japanese),zh-HK(LangZHHK Traditional Chinese (Hong Kong, China)),zh-TW(LangZHTW Traditional Chinese (Taiwan, China))',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -130,15 +130,20 @@ export const wikiV2SpaceMemberCreate = {
       member_type: z
         .string()
         .describe(
-          '"openchat" - group id "userid" - user id"email" - email "opendepartmentid" - department id"openid" - openid for application"unionid" - [unionid](/:ssltoken/home/user-identity-introduction/union-id)',
+          '"openchat" - group id "userid" - user id"email" - email "opendepartmentid" - department id"openid" - openid for application"unionid" - [unionid]',
         ),
       member_id: z.string().describe('Member id, which should match the member type above'),
       member_role: z.string().describe('Role: "admin" -admin "member" -member'),
     }),
-    params: z.object({
-      need_notification: z.boolean().describe('Whether to notify the other party after adding permissions').optional(),
-    }),
-    path: z.object({ space_id: z.string().describe('Wiki space id').optional() }),
+    params: z
+      .object({
+        need_notification: z
+          .boolean()
+          .describe('Whether to notify the other party after adding permissions')
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ space_id: z.string().describe('Wiki space id').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -156,7 +161,7 @@ export const wikiV2SpaceMemberDelete = {
       member_type: z
         .string()
         .describe(
-          '"openchat" - group id "userid" - user id"email" - email "opendepartmentid" - department id"openid" - openid for application"unionid" - [unionid](/:ssltoken/home/user-identity-introduction/union-id)',
+          '"openchat" - group id "userid" - user id"email" - email "opendepartmentid" - department id"openid" - openid for application"unionid" - [unionid]',
         ),
       member_role: z.string().describe('Role: "admin" -admin "member" -member'),
       type: z
@@ -180,15 +185,17 @@ export const wikiV2SpaceMemberList = {
   description: '[Feishu/Lark]-Docs-Wiki-Space member-Obtain Wiki space members-Obtain Wiki space members',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ space_id: z.string().describe('Wiki Workspace ID') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -203,29 +210,32 @@ export const wikiV2SpaceNodeCopy = {
     '[Feishu/Lark]-Docs-Wiki-node-Create a node copy-This interface is used for creating a copy of a node to a specified location',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      target_parent_token: z
-        .string()
-        .describe(
-          'Target parent node token- Target Wiki space ID and target parent token cannot be empty at the same time',
-        )
-        .optional(),
-      target_space_id: z
-        .string()
-        .describe('Target Wiki space id- Target Wiki space ID and target parent token cannot be empty at the same time')
-        .optional(),
-      title: z
-        .string()
-        .describe('Copied new title. If blank, the new title is empty. If not, the original node title is used')
-        .optional(),
-    }),
-    path: z.object({
-      space_id: z
-        .string()
-        .describe('[Wiki space id]')
-        .optional(),
-      node_token: z.string().describe('Node token').optional(),
-    }),
+    data: z
+      .object({
+        target_parent_token: z
+          .string()
+          .describe(
+            'Target parent node token- Target Wiki space ID and target parent token cannot be empty at the same time',
+          )
+          .optional(),
+        target_space_id: z
+          .string()
+          .describe(
+            'Target Wiki space id- Target Wiki space ID and target parent token cannot be empty at the same time',
+          )
+          .optional(),
+        title: z
+          .string()
+          .describe('Copied new title. If blank, the new title is empty. If not, the original node title is used')
+          .optional(),
+      })
+      .optional(),
+    path: z
+      .object({
+        space_id: z.string().describe('[Wiki space id]').optional(),
+        node_token: z.string().describe('Node token').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -260,12 +270,7 @@ export const wikiV2SpaceNodeCreate = {
         .optional(),
       title: z.string().describe('The title of this document').optional(),
     }),
-    path: z.object({
-      space_id: z
-        .string()
-        .describe('[Wiki space id]')
-        .optional(),
-    }),
+    path: z.object({ space_id: z.string().describe('[Wiki space id]').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -279,22 +284,19 @@ export const wikiV2SpaceNodeList = {
     '[Feishu/Lark]-Docs-Wiki-node-Get the list of child nodes in Wiki-This interface is used for pagination to get the list of child nodes of Wiki nodes.This interface is a paging interface. Due to permission filtering, the return list may be empty, but the paging flag (has_more) is true and can continue the paging request',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('Paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      parent_node_token: z.string().describe('Parent token').optional(),
-    }),
-    path: z.object({
-      space_id: z
-        .string()
-        .describe('[Wiki space id]')
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('Paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        parent_node_token: z.string().describe('Parent token').optional(),
+      })
+      .optional(),
+    path: z.object({ space_id: z.string().describe('[Wiki space id]').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -308,10 +310,12 @@ export const wikiV2SpaceNodeMove = {
     '[Feishu/Lark]-Docs-Wiki-node-Move node in Wiki-This method is used to move nodes within the Wiki and supports movement across the Wiki space',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      target_parent_token: z.string().describe('Moved to parent token').optional(),
-      target_space_id: z.string().describe('Moved to Wiki space').optional(),
-    }),
+    data: z
+      .object({
+        target_parent_token: z.string().describe('Moved to parent token').optional(),
+        target_space_id: z.string().describe('Moved to Wiki space').optional(),
+      })
+      .optional(),
     path: z.object({
       space_id: z.string().describe('Wiki space id'),
       node_token: z.string().describe('Node tokens to migrate'),
@@ -339,9 +343,7 @@ export const wikiV2SpaceNodeMoveDocsToWiki = {
       obj_token: z.string().describe('Document token'),
       apply: z.boolean().describe('Whether to apply for moving in documents when there is no permission').optional(),
     }),
-    path: z.object({
-      space_id: z.string().describe('[Wiki space id]'),
-    }),
+    path: z.object({ space_id: z.string().describe('[Wiki space id]') }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -355,10 +357,12 @@ export const wikiV2SpaceNodeUpdateTitle = {
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({ title: z.string().describe('New title of the node') }),
-    path: z.object({
-      space_id: z.string().describe('Space ID').optional(),
-      node_token: z.string().describe('Node Token').optional(),
-    }),
+    path: z
+      .object({
+        space_id: z.string().describe('Space ID').optional(),
+        node_token: z.string().describe('Node Token').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -372,21 +376,23 @@ export const wikiV2SpaceSettingUpdate = {
     '[Feishu/Lark]-Docs-Wiki-Space settings-Update Wiki space settings-Update the public settings of the Wiki space according to space_id',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      create_setting: z
-        .string()
-        .describe('Who can create space level page: "admin_and_member" = admin and member "admin" - admin only')
-        .optional(),
-      security_setting: z
-        .string()
-        .describe('Readable user can create copy/print/export/copy: "allow" -allow "not_allow" -not allowed')
-        .optional(),
-      comment_setting: z
-        .string()
-        .describe('Readable user can comment: "allow" -allow "not_allow" -not allowed')
-        .optional(),
-    }),
-    path: z.object({ space_id: z.string().describe('Wiki space id').optional() }),
+    data: z
+      .object({
+        create_setting: z
+          .string()
+          .describe('Who can create space level page: "admin_and_member" = admin and member "admin" - admin only')
+          .optional(),
+        security_setting: z
+          .string()
+          .describe('Readable user can create copy/print/export/copy: "allow" -allow "not_allow" -not allowed')
+          .optional(),
+        comment_setting: z
+          .string()
+          .describe('Readable user can comment: "allow" -allow "not_allow" -not allowed')
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ space_id: z.string().describe('Wiki space id').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -401,7 +407,7 @@ export const wikiV2TaskGet = {
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({ task_type: z.literal('move').describe('Task type Options:move(MoveDocsToWiki Task)') }),
-    path: z.object({ task_id: z.string().describe('Task id').optional() }),
+    path: z.object({ task_id: z.string().describe('Task id').optional() }).optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };

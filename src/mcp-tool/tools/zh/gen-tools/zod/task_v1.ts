@@ -32,15 +32,19 @@ export const taskV1TaskBatchDeleteCollaborator = {
   description: '[Feishu/Lark]-历史版本（不推荐）-任务-执行者-批量删除执行者-该接口用于批量删除执行者',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      id_list: z
-        .array(z.string())
-        .describe(
-          '执行者的用户ID列表。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档[如何获取不同的用户 ID]',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    data: z
+      .object({
+        id_list: z
+          .array(z.string())
+          .describe(
+            '执行者的用户ID列表。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档[如何获取不同的用户 ID]',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('任务ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -54,8 +58,10 @@ export const taskV1TaskBatchDeleteFollower = {
   description: '[Feishu/Lark]-历史版本（不推荐）-任务-关注人-批量删除关注人-该接口用于批量删除关注人',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({ id_list: z.array(z.string()).describe('要删除的关注人ID列表').optional() }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    data: z.object({ id_list: z.array(z.string()).describe('要删除的关注人ID列表').optional() }).optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('任务ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -70,28 +76,26 @@ export const taskV1TaskCollaboratorCreate = {
     '[Feishu/Lark]-历史版本（不推荐）-任务-执行者-新增执行者-该接口用于新增任务执行者，一次性可以添加多个执行者。只有任务的创建者和执行者才能添加执行者，关注人无权限添加',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      id: z
-        .string()
-        .describe(
-          '任务执行者的 ID。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档[如何获取不同的用户 ID]。<md-alert>已经废弃，为了向前兼容早期只支持单次添加一个人的情况而保留，但不再推荐使用，建议使用id_list字段</md-alert>',
-        )
-        .optional(),
-      id_list: z
-        .array(z.string())
-        .describe(
-          '执行者的用户ID列表。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档[如何获取不同的用户 ID]',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      task_id: z
-        .string()
-        .describe(
-          '任务 ID，可通过[创建任务]时响应体中的id字段获取',
-        ),
-    }),
+    data: z
+      .object({
+        id: z
+          .string()
+          .describe(
+            '任务执行者的 ID。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档[如何获取不同的用户 ID]。<md-alert>已经废弃，为了向前兼容早期只支持单次添加一个人的情况而保留，但不再推荐使用，建议使用id_list字段</md-alert>',
+          )
+          .optional(),
+        id_list: z
+          .array(z.string())
+          .describe(
+            '执行者的用户ID列表。传入的值为 user_id 或 open_id，由user_id_type 决定。user_id和open_id的获取可见文档[如何获取不同的用户 ID]',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ task_id: z.string().describe('任务 ID，可通过[创建任务]时响应体中的id字段获取') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -104,7 +108,9 @@ export const taskV1TaskCollaboratorDelete = {
   description: '[Feishu/Lark]-历史版本（不推荐）-任务-执行者-删除指定执行者-该接口用于删除任务执行者',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({
       task_id: z.string().describe('任务 ID'),
       collaborator_id: z.string().describe('任务执行者 ID（Open ID或User ID，由user_id_type指定）'),
@@ -122,17 +128,19 @@ export const taskV1TaskCollaboratorList = {
     '[Feishu/Lark]-历史版本（不推荐）-任务-执行者-获取执行者列表-该接口用于查询任务执行者列表，支持分页，最大值为50',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({ task_id: z.string().describe('任务 ID').optional() }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ task_id: z.string().describe('任务 ID').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -146,21 +154,20 @@ export const taskV1TaskCommentCreate = {
     '[Feishu/Lark]-历史版本（不推荐）-任务-评论-创建评论-该接口用于创建和回复任务的评论。当parent_id字段为0时，为创建评论；当parent_id不为0时，为回复某条评论',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      content: z
-        .string()
-        .describe('评论内容。<md-alert>评论内容和富文本评论内容同时存在时只使用富文本评论内容。</md-alert>')
-        .optional(),
-      parent_id: z.string().describe('评论的父ID，创建评论时若不为空则为某条评论的回复，若为空则不是回复').optional(),
-      create_milli_time: z.string().describe('评论创建的时间戳，单位为毫秒，用于展示，创建时不用填写').optional(),
-      rich_content: z
-        .string()
-        .describe(
-          '富文本评论内容。语法格式参见[Markdown模块]',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    data: z
+      .object({
+        content: z
+          .string()
+          .describe('评论内容。<md-alert>评论内容和富文本评论内容同时存在时只使用富文本评论内容。</md-alert>')
+          .optional(),
+        parent_id: z.string().describe('评论的父ID，创建评论时若不为空则为某条评论的回复，若为空则不是回复').optional(),
+        create_milli_time: z.string().describe('评论创建的时间戳，单位为毫秒，用于展示，创建时不用填写').optional(),
+        rich_content: z.string().describe('富文本评论内容。语法格式参见[Markdown模块]').optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('任务 ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -187,7 +194,9 @@ export const taskV1TaskCommentGet = {
   description: '[Feishu/Lark]-历史版本（不推荐）-任务-评论-获取评论详情-该接口用于通过评论ID获取评论详情',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('任务ID'), comment_id: z.string().describe('评论ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -202,23 +211,25 @@ export const taskV1TaskCommentList = {
     '[Feishu/Lark]-历史版本（不推荐）-任务-评论-获取评论列表-该接口用于查询任务评论列表，支持分页，最大值为100',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      list_direction: z
-        .number()
-        .describe(
-          '评论排序标记，可按照评论时间从小到大查询，或者评论时间从大到小查询，不填默认按照从小到大 Options:0(Down 按照回复时间从小到大查询),1(Up 按照回复时间从大到小查询)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
-    path: z.object({ task_id: z.string().describe('任务id').optional() }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        list_direction: z
+          .number()
+          .describe(
+            '评论排序标记，可按照评论时间从小到大查询，或者评论时间从大到小查询，不填默认按照从小到大 Options:0(Down 按照回复时间从小到大查询),1(Up 按照回复时间从大到小查询)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ task_id: z.string().describe('任务id').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -231,11 +242,15 @@ export const taskV1TaskCommentUpdate = {
   description: '[Feishu/Lark]-历史版本（不推荐）-任务-评论-更新评论-该接口用于更新评论内容',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      content: z.string().describe('新的评论内容').optional(),
-      rich_content: z.string().describe('新的富文本评论内容（优先使用）').optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    data: z
+      .object({
+        content: z.string().describe('新的评论内容').optional(),
+        rich_content: z.string().describe('新的富文本评论内容（优先使用）').optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('任务ID'), comment_id: z.string().describe('评论 ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -250,13 +265,7 @@ export const taskV1TaskComplete = {
     '[Feishu/Lark]-历史版本（不推荐）-任务-任务管理-完成任务-该接口用于将任务状态修改为“已完成”。完成任务是指整个任务全部完成，而不支持执行者分别完成任务，执行成功后，任务对所有关联用户都变为完成状态',
   accessTokens: ['tenant', 'user'],
   schema: {
-    path: z.object({
-      task_id: z
-        .string()
-        .describe(
-          '任务 ID，可通过[创建任务]时响应体中的id字段获取',
-        ),
-    }),
+    path: z.object({ task_id: z.string().describe('任务 ID，可通过[创建任务]时响应体中的id字段获取') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -294,9 +303,7 @@ export const taskV1TaskCreate = {
           time: z.string().describe('表示截止时间的Unix时间戳（单位为秒）').optional(),
           timezone: z
             .string()
-            .describe(
-              '截止时间对应的时区。传入值需要符合IANA Time Zone Database标准，规范见[Time Zone Database]',
-            )
+            .describe('截止时间对应的时区。传入值需要符合IANA Time Zone Database标准，规范见[Time Zone Database]')
             .optional(),
           is_all_day: z
             .boolean()
@@ -318,9 +325,7 @@ export const taskV1TaskCreate = {
             .object({
               url: z
                 .string()
-                .describe(
-                  '具体链接地址。URL仅支持解析http、https。详细参见：[任务字段补充说明]',
-                )
+                .describe('具体链接地址。URL仅支持解析http、https。详细参见：[任务字段补充说明]')
                 .optional(),
               title: z.string().describe('链接对应的标题').optional(),
             })
@@ -336,9 +341,7 @@ export const taskV1TaskCreate = {
         .optional(),
       custom: z
         .string()
-        .describe(
-          '自定义完成配置。此字段用于设置完成任务时的页面跳转，或展示提示语。详细参见：[任务字段补充说明]',
-        )
+        .describe('自定义完成配置。此字段用于设置完成任务时的页面跳转，或展示提示语。详细参见：[任务字段补充说明]')
         .optional(),
       collaborator_ids: z
         .array(z.string())
@@ -352,24 +355,18 @@ export const taskV1TaskCreate = {
           '创建任务时添加的关注者用户id列表。传入的值为 user_id 或 open_id ，由user_id_type 决定。user_id和open_id的获取可见文档：[如何获取不同的用户 ID]',
         )
         .optional(),
-      repeat_rule: z
-        .string()
-        .describe('重复任务的规则表达式。语法格式参见[RRule语法规范] 4.3.10小节')
-        .optional(),
+      repeat_rule: z.string().describe('重复任务的规则表达式。语法格式参见[RRule语法规范] 4.3.10小节').optional(),
       rich_summary: z
         .string()
         .describe(
           '富文本任务标题。语法格式参见[Markdown模块]。创建任务时，任务标题(summary字段)和任务富文本标题(rich_summary字段)不能同时为空，需要至少填充其中一个字段',
         )
         .optional(),
-      rich_description: z
-        .string()
-        .describe(
-          '富文本任务备注。语法格式参见[Markdown模块]',
-        )
-        .optional(),
+      rich_description: z.string().describe('富文本任务备注。语法格式参见[Markdown模块]').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -396,11 +393,15 @@ export const taskV1TaskFollowerCreate = {
     '[Feishu/Lark]-历史版本（不推荐）-任务-关注人-新增关注人-该接口用于新增任务关注人。可以一次性添加多位关注人。关注人ID要使用表示用户的ID',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      id: z.string().describe('任务关注人 ID').optional(),
-      id_list: z.array(z.string()).describe('要删除的关注人ID列表').optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    data: z
+      .object({
+        id: z.string().describe('任务关注人 ID').optional(),
+        id_list: z.array(z.string()).describe('要删除的关注人ID列表').optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('任务 ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -414,7 +415,9 @@ export const taskV1TaskFollowerDelete = {
   description: '[Feishu/Lark]-历史版本（不推荐）-任务-关注人-删除指定关注人-该接口用于删除任务关注人',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({
       task_id: z.string().describe('任务 ID'),
       follower_id: z.string().describe('任务关注人 ID（Open ID或User ID，由user_id_type指定）'),
@@ -431,16 +434,18 @@ export const taskV1TaskFollowerList = {
   description: '[Feishu/Lark]-历史版本（不推荐）-任务-关注人-获取关注人列表',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     path: z.object({ task_id: z.string().describe('任务 ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -455,7 +460,9 @@ export const taskV1TaskGet = {
     '[Feishu/Lark]-历史版本（不推荐）-任务-任务管理-查询指定任务-该接口用于获取任务详情，包括任务标题、描述、时间、来源等信息',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('任务 ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -470,30 +477,32 @@ export const taskV1TaskList = {
     '[Feishu/Lark]-历史版本（不推荐）-任务-任务管理-查询所有任务-以分页的方式获取任务列表。当使用user_access_token时，获取与该用户身份相关的所有任务。当使用tenant_access_token时，获取以该应用身份通过“创建任务“接口创建的所有任务（并非获取该应用所在租户下所有用户创建的任务）。本接口支持通过任务创建时间以及任务的完成状态对任务进行过滤',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      start_create_time: z
-        .string()
-        .describe('范围查询任务时，查询的起始时间。不填时默认起始时间为第一个任务的创建时间')
-        .optional(),
-      end_create_time: z
-        .string()
-        .describe('范围查询任务时，查询的结束时间。不填时默认结束时间为最后一个任务的创建时间')
-        .optional(),
-      task_completed: z
-        .boolean()
-        .describe(
-          '可用于查询时过滤任务完成状态。true表示只返回已完成的任务，false表示只返回未完成的任务。不填时表示同时返回两种完成状态的任务',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        start_create_time: z
+          .string()
+          .describe('范围查询任务时，查询的起始时间。不填时默认起始时间为第一个任务的创建时间')
+          .optional(),
+        end_create_time: z
+          .string()
+          .describe('范围查询任务时，查询的结束时间。不填时默认结束时间为最后一个任务的创建时间')
+          .optional(),
+        task_completed: z
+          .boolean()
+          .describe(
+            '可用于查询时过滤任务完成状态。true表示只返回已完成的任务，false表示只返回未完成的任务。不填时表示同时返回两种完成状态的任务',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -533,9 +542,7 @@ export const taskV1TaskPatch = {
               time: z.string().describe('表示截止时间的Unix时间戳（单位为秒）').optional(),
               timezone: z
                 .string()
-                .describe(
-                  '截止时间对应的时区。传入值需要符合IANA Time Zone Database标准，规范见[Time Zone Database]',
-                )
+                .describe('截止时间对应的时区。传入值需要符合IANA Time Zone Database标准，规范见[Time Zone Database]')
                 .optional(),
               is_all_day: z
                 .boolean()
@@ -557,9 +564,7 @@ export const taskV1TaskPatch = {
                 .object({
                   url: z
                     .string()
-                    .describe(
-                      '具体链接地址。URL仅支持解析http、https。详细参见：[任务字段补充说明]',
-                    )
+                    .describe('具体链接地址。URL仅支持解析http、https。详细参见：[任务字段补充说明]')
                     .optional(),
                   title: z.string().describe('链接对应的标题').optional(),
                 })
@@ -576,9 +581,7 @@ export const taskV1TaskPatch = {
             .optional(),
           custom: z
             .string()
-            .describe(
-              '自定义完成配置。此字段用于设置完成任务时的页面跳转，或展示提示语。详细参见：[任务字段补充说明]',
-            )
+            .describe('自定义完成配置。此字段用于设置完成任务时的页面跳转，或展示提示语。详细参见：[任务字段补充说明]')
             .optional(),
           followers: z
             .array(
@@ -620,24 +623,14 @@ export const taskV1TaskPatch = {
               '创建任务时添加的关注者用户id列表。传入的值为 user_id 或 open_id ，由user_id_type 决定。user_id和open_id的获取可见文档：[如何获取不同的用户 ID]',
             )
             .optional(),
-          repeat_rule: z
-            .string()
-            .describe(
-              '重复任务的规则表达式。语法格式参见[RRule语法规范] 4.3.10小节',
-            )
-            .optional(),
+          repeat_rule: z.string().describe('重复任务的规则表达式。语法格式参见[RRule语法规范] 4.3.10小节').optional(),
           rich_summary: z
             .string()
             .describe(
               '富文本任务标题。语法格式参见[Markdown模块]。创建任务时，任务标题(summary字段)和任务富文本标题(rich_summary字段)不能同时为空，需要至少填充其中一个字段',
             )
             .optional(),
-          rich_description: z
-            .string()
-            .describe(
-              '富文本任务备注。语法格式参见[Markdown模块]',
-            )
-            .optional(),
+          rich_description: z.string().describe('富文本任务备注。语法格式参见[Markdown模块]').optional(),
         })
         .describe('被更新的任务实体基础信息'),
       update_fields: z
@@ -646,7 +639,9 @@ export const taskV1TaskPatch = {
           '指定需要更新的任务字段。可以更新的字段包括：<md-enum><md-enum-item key="summary" >任务标题（普通文本）</md-enum-item><md-enum-item key="rich_summary" >任务标题（富文本）</md-enum-item><md-enum-item key="description" >任务描述（普通文本）</md-enum-item><md-enum-item key="rich_description" >任务描述（富文本）</md-enum-item><md-enum-item key="due" >任务截止时间</md-enum-item><md-enum-item key="extra" >任务附属信息</md-enum-item><md-enum-item key="custom" >任务自定义完成规则</md-enum-item><md-enum-item key="follower_ids" >任务关注人ID列表</md-enum-item><md-enum-item key="collaborator_ids" >任务执行者ID列表</md-enum-item><md-enum-item key="repeat_rule" >任务重复规则</md-enum-item></md-enum>',
         ),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ task_id: z.string().describe('任务 ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -697,16 +692,18 @@ export const taskV1TaskReminderList = {
   description: '[Feishu/Lark]-历史版本（不推荐）-任务-提醒-查询提醒时间列表-返回提醒时间列表，支持分页，最大值为50',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-    }),
-    path: z.object({ task_id: z.string().describe('任务 ID').optional() }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ task_id: z.string().describe('任务 ID').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };

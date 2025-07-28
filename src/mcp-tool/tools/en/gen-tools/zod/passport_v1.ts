@@ -43,7 +43,9 @@ export const passportV1SessionLogout = {
         .describe('The session that needs to be logged out accurately, required when logout_type = 3')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const passportV1SessionQuery = {
@@ -56,8 +58,10 @@ export const passportV1SessionQuery = {
     "[Feishu/Lark]-Authenticate and Authorize-Login state management-Obtain desensitized user login information in batches-This interface is used to query the user's login information",
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({ user_ids: z.array(z.string()).describe('User ID').optional() }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z.object({ user_ids: z.array(z.string()).describe('User ID').optional() }).optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const passportV1Tools = [passportV1SessionLogout, passportV1SessionQuery];

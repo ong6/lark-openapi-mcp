@@ -25,16 +25,18 @@ export const searchV2AppCreate = {
   accessTokens: ['user'],
   schema: {
     data: z.object({ query: z.string().describe('Search keywords') }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      page_size: z.number().describe('Page size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        page_size: z.number().describe('Page size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -182,15 +184,17 @@ export const searchV2DataSourceItemGet = {
   description: '[Feishu/Lark]-Search-Search Connector-Data item-Get data item-Get a single data record',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      data_source_id: z.string().describe('The id of the data source').optional(),
-      item_id: z
-        .string()
-        .describe(
-          'Unique identification of data records**Notice**:- This field is case sensitive.- If the call is successful but the return result is empty data, please check whether the value passed to this field is correct',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        data_source_id: z.string().describe('The id of the data source').optional(),
+        item_id: z
+          .string()
+          .describe(
+            'Unique identification of data records**Notice**:- This field is case sensitive.- If the call is successful but the return result is empty data, please check whether the value passed to this field is correct',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const searchV2DataSourceList = {
@@ -202,16 +206,18 @@ export const searchV2DataSourceList = {
   description: '[Feishu/Lark]-Search-Search Connector-Data source-Batch get data sources',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      view: z
-        .number()
-        .describe(
-          'Return packet data format, 0-full data; 1-summary data.**Note**: The summary data only contains "id", "name", "state". Options:0(FULL 全量数据),1(BASIC 摘要数据)',
-        )
-        .optional(),
-      page_size: z.number().optional(),
-      page_token: z.string().optional(),
-    }),
+    params: z
+      .object({
+        view: z
+          .number()
+          .describe(
+            'Return packet data format, 0-full data 1-summary data.**Note**: The summary data only contains "id", "name", "state". Options:0(FULL 全量数据),1(BASIC 摘要数据)',
+          )
+          .optional(),
+        page_size: z.number().optional(),
+        page_token: z.string().optional(),
+      })
+      .optional(),
   },
 };
 export const searchV2DataSourcePatch = {
@@ -223,39 +229,41 @@ export const searchV2DataSourcePatch = {
   description: '[Feishu/Lark]-Search-Search Connector-Data source-Modify data source',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      name: z.string().describe('The display name of the data source').optional(),
-      state: z
-        .number()
-        .describe('Data source status, 0-online, 1-offline Options:0(Online 已上线),1(Offline 未上线)')
-        .optional(),
-      description: z.string().describe('Description of the data source').optional(),
-      icon_url: z.string().describe('The path of the display icon of the data source on the search tab').optional(),
-      i18n_name: z
-        .object({ zh_cn: z.string().optional(), en_us: z.string().optional(), ja_jp: z.string().optional() })
-        .describe(
-          'Data source name Multilingual configuration, json format, key is language locale, value is corresponding copy, for example {"zh_cn": "Test Data Source", "en_us": "Test DataSource"}',
-        )
-        .optional(),
-      i18n_description: z
-        .object({ zh_cn: z.string().optional(), en_us: z.string().optional(), ja_jp: z.string().optional() })
-        .describe(
-          'Data source description Multilingual configuration, json format, key is language locale, value is corresponding copy, for example {"zh_cn": "Search test data source related data", "en_us": "Search data from Test DataSource"}',
-        )
-        .optional(),
-      connector_param: z
-        .object({
-          callback_user_id_type: z
-            .number()
-            .describe(
-              'Options:0(Unknown 不合法),1(UserID 用户在租户内的身份),2(OpenID 用户在应用内的身份),3(UnionID 用户在同一应用服务商所开发的多个应用下的统一身份)',
-            )
-            .optional(),
-          callback_endpoint: z.string().optional(),
-        })
-        .optional(),
-      enable_answer: z.boolean().optional(),
-    }),
+    data: z
+      .object({
+        name: z.string().describe('The display name of the data source').optional(),
+        state: z
+          .number()
+          .describe('Data source status, 0-online, 1-offline Options:0(Online 已上线),1(Offline 未上线)')
+          .optional(),
+        description: z.string().describe('Description of the data source').optional(),
+        icon_url: z.string().describe('The path of the display icon of the data source on the search tab').optional(),
+        i18n_name: z
+          .object({ zh_cn: z.string().optional(), en_us: z.string().optional(), ja_jp: z.string().optional() })
+          .describe(
+            'Data source name Multilingual configuration, json format, key is language locale, value is corresponding copy, for example {"zh_cn": "Test Data Source", "en_us": "Test DataSource"}',
+          )
+          .optional(),
+        i18n_description: z
+          .object({ zh_cn: z.string().optional(), en_us: z.string().optional(), ja_jp: z.string().optional() })
+          .describe(
+            'Data source description Multilingual configuration, json format, key is language locale, value is corresponding copy, for example {"zh_cn": "Search test data source related data", "en_us": "Search data from Test DataSource"}',
+          )
+          .optional(),
+        connector_param: z
+          .object({
+            callback_user_id_type: z
+              .number()
+              .describe(
+                'Options:0(Unknown 不合法),1(UserID 用户在租户内的身份),2(OpenID 用户在应用内的身份),3(UnionID 用户在同一应用服务商所开发的多个应用下的统一身份)',
+              )
+              .optional(),
+            callback_endpoint: z.string().optional(),
+          })
+          .optional(),
+        enable_answer: z.boolean().optional(),
+      })
+      .optional(),
     path: z.object({ data_source_id: z.string().describe('Unique identification of the data source') }),
   },
 };
@@ -289,16 +297,18 @@ export const searchV2MessageCreate = {
       start_time: z.string().describe('Message Start Time').optional(),
       end_time: z.string().describe('Message End Time').optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      page_size: z.number().describe('Page size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        page_size: z.number().describe('Page size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -407,9 +417,9 @@ export const searchV2SchemaCreate = {
       }),
       schema_id: z.string(),
     }),
-    params: z.object({
-      validate_only: z.boolean().describe('Whether it is only used to verify the legality').optional(),
-    }),
+    params: z
+      .object({ validate_only: z.boolean().describe('Whether it is only used to verify the legality').optional() })
+      .optional(),
   },
 };
 export const searchV2SchemaDelete = {
@@ -445,26 +455,28 @@ export const searchV2SchemaPatch = {
   description: '[Feishu/Lark]-Search-Search Connector-Data schema-Modify data schema',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      display: z
-        .object({
-          card_key: z.literal('search_common_card').describe('Options:search_common_card(Common 普通 common 卡片)'),
-          fields_mapping: z.array(z.object({ display_field: z.string(), data_field: z.string() })).optional(),
-        })
-        .describe('Data display related configuration')
-        .optional(),
-      properties: z
-        .array(
-          z.object({
-            name: z.string(),
-            desc: z.string().optional(),
-            answer_option: z
-              .object({ is_searchable: z.boolean().optional(), is_returnable: z.boolean().optional() })
-              .optional(),
-          }),
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        display: z
+          .object({
+            card_key: z.literal('search_common_card').describe('Options:search_common_card(Common 普通 common 卡片)'),
+            fields_mapping: z.array(z.object({ display_field: z.string(), data_field: z.string() })).optional(),
+          })
+          .describe('Data display related configuration')
+          .optional(),
+        properties: z
+          .array(
+            z.object({
+              name: z.string(),
+              desc: z.string().optional(),
+              answer_option: z
+                .object({ is_searchable: z.boolean().optional(), is_returnable: z.boolean().optional() })
+                .optional(),
+            }),
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ schema_id: z.string().describe('Unique identification of user-defined data schema') }),
   },
 };

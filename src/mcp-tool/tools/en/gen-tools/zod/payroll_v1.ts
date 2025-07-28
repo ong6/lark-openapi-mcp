@@ -1,10 +1,40 @@
 import { z } from 'zod';
 export type payrollV1ToolName =
+  | 'payroll.v1.costAllocationDetail.list'
   | 'payroll.v1.costAllocationPlan.list'
   | 'payroll.v1.costAllocationReport.list'
   | 'payroll.v1.datasourceRecord.query'
   | 'payroll.v1.datasourceRecord.save'
   | 'payroll.v1.datasource.list';
+export const payrollV1CostAllocationDetailList = {
+  project: 'payroll',
+  name: 'payroll.v1.costAllocationDetail.list',
+  sdkName: 'payroll.v1.costAllocationDetail.list',
+  path: '/open-apis/payroll/v1/cost_allocation_details',
+  httpMethod: 'GET',
+  description:
+    '[Feishu/Lark]-Payroll-cost allocation detail-query details on cost allocation reports-Obtain detailed cost allocation data based on report plan, period and report type. Before invoking the interface, the "financial Posting" switch should be turned on and the cost allocation report should be published',
+  accessTokens: ['tenant', 'user'],
+  schema: {
+    params: z.object({
+      page_size: z.number().describe('paging size'),
+      page_token: z
+        .string()
+        .describe(
+          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+        )
+        .optional(),
+      cost_allocation_plan_id: z
+        .string()
+        .describe('Cost sharing scheme ID, get the id by[batch query cost allocation plans]'),
+      pay_period: z
+        .string()
+        .describe('Period, the month corresponding to the cost allocation statement,the length is 7'),
+      report_type: z.number().describe('Report type Options:0(Default),1(Accrued),2(Paid)'),
+    }),
+    useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
+  },
+};
 export const payrollV1CostAllocationPlanList = {
   project: 'payroll',
   name: 'payroll.v1.costAllocationPlan.list',
@@ -49,9 +79,7 @@ export const payrollV1CostAllocationReportList = {
         .optional(),
       cost_allocation_plan_id: z
         .string()
-        .describe(
-          'Cost-sharing scheme ID, obtained through [Bulk query cost-sharing scheme]',
-        ),
+        .describe('Cost-sharing scheme ID, obtained through [Bulk query cost-sharing scheme]'),
       pay_period: z
         .string()
         .describe(
@@ -185,6 +213,7 @@ export const payrollV1DatasourceList = {
   },
 };
 export const payrollV1Tools = [
+  payrollV1CostAllocationDetailList,
   payrollV1CostAllocationPlanList,
   payrollV1CostAllocationReportList,
   payrollV1DatasourceRecordQuery,

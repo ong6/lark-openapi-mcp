@@ -56,7 +56,7 @@ export const driveV1ExportTaskCreate = {
   path: '/open-apis/drive/v1/export_tasks',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-云空间-文件-导出云文档-创建导出任务-该接口用于创建导出文件的任务，并返回导出任务 ID。导出文件指将飞书文档、电子表格、多维表格导出为本地文件，包括 Word、Excel、PDF、CSV 格式。该接口为异步接口，需要继续调用[查询导出任务结果]接口获取导出结果。了解完整的导出步骤，参考[导出云文档概述]',
+    '[Feishu/Lark]-云文档-云空间-文件-导出云文档-创建导出任务-该接口用于创建导出文件的任务，并返回导出任务 ID。导出文件指将飞书文档、电子表格、多维表格导出为本地文件，包括 Word、Excel、PDF、CSV 格式。该接口为异步接口，需要继续调用[查询导出任务结果]接口获取导出结果。了解完整的导出步骤，参考[导出云文档概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -65,11 +65,7 @@ export const driveV1ExportTaskCreate = {
         .describe(
           '将云文档导出为本地文件后，本地文件的扩展名。了解各类云文档支持导出的文件格式，参考[导出云文档概述]。 Options:docx(Microsoft Word 格式),pdf(PDF 格式),xlsx(Microsoft Excel 格式),csv(CSV 格式)',
         ),
-      token: z
-        .string()
-        .describe(
-          '要导出的云文档的 token。获取方式参考 [如何获取云文档相关 token]',
-        ),
+      token: z.string().describe('要导出的云文档的 token。获取方式参考 [如何获取云文档相关 token]'),
       type: z
         .enum(['doc', 'sheet', 'bitable', 'docx'])
         .describe(
@@ -92,7 +88,7 @@ export const driveV1ExportTaskGet = {
   path: '/open-apis/drive/v1/export_tasks/:ticket',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-云空间-文件-导出云文档-查询导出任务结果-根据[创建导出任务]返回的导出任务 ID（ticket）轮询导出任务结果，并返回导出文件的 token。你可使用该 token 继续调用[下载导出文件]接口将导出的产物下载到本地。了解完整的导出文件步骤，参考[导出飞书云文档概述]',
+    '[Feishu/Lark]-云文档-云空间-文件-导出云文档-查询导出任务结果-根据[创建导出任务]返回的导出任务 ID（ticket）轮询导出任务结果，并返回导出文件的 token。你可使用该 token 继续调用[下载导出文件]接口将导出的产物下载到本地。了解完整的导出文件步骤，参考[导出飞书云文档概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -102,13 +98,7 @@ export const driveV1ExportTaskGet = {
           '要导出的云文档的 token。获取方式参考[如何获取云文档相关 token]。你可参考以下请求示例了解如何使用查询参数',
         ),
     }),
-    path: z.object({
-      ticket: z
-        .string()
-        .describe(
-          '导出任务 ID。调用[创建导出任务] 获取',
-        ),
-    }),
+    path: z.object({ ticket: z.string().describe('导出任务 ID。调用[创建导出任务] 获取') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -135,7 +125,7 @@ export const driveV1FileCommentBatchQuery = {
         ),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
     }),
-    path: z.object({ file_token: z.string().describe('文档 Token').optional() }),
+    path: z.object({ file_token: z.string().describe('文档 Token').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -148,46 +138,48 @@ export const driveV1FileCommentCreate = {
   description: '[Feishu/Lark]-云文档-评论-添加全文评论-在文档中添加一条全局评论，不支持局部评论',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      reply_list: z
-        .object({
-          replies: z
-            .array(
-              z.object({
-                content: z
-                  .object({
-                    elements: z
-                      .array(
-                        z.object({
-                          type: z
-                            .enum(['text_run', 'docs_link', 'person'])
-                            .describe(
-                              '回复内容的元素类型 Options:text_run(普通文本),docs_link(云文档链接),person(at 联系人)',
-                            ),
-                          text_run: z
-                            .object({ text: z.string().describe('添加普通文本') })
-                            .describe('普通文本')
-                            .optional(),
-                          docs_link: z
-                            .object({ url: z.string().describe('添加云文档链接') })
-                            .describe('云文档链接')
-                            .optional(),
-                          person: z
-                            .object({ user_id: z.string().describe('添加用户的 user_id 以@用户') })
-                            .describe('at 联系人')
-                            .optional(),
-                        }),
-                      )
-                      .describe('回复内容的元素列表'),
-                  })
-                  .describe('回复内容'),
-              }),
-            )
-            .describe('回复列表'),
-        })
-        .describe('评论里的回复列表')
-        .optional(),
-    }),
+    data: z
+      .object({
+        reply_list: z
+          .object({
+            replies: z
+              .array(
+                z.object({
+                  content: z
+                    .object({
+                      elements: z
+                        .array(
+                          z.object({
+                            type: z
+                              .enum(['text_run', 'docs_link', 'person'])
+                              .describe(
+                                '回复内容的元素类型 Options:text_run(普通文本),docs_link(云文档链接),person(at 联系人)',
+                              ),
+                            text_run: z
+                              .object({ text: z.string().describe('添加普通文本') })
+                              .describe('普通文本')
+                              .optional(),
+                            docs_link: z
+                              .object({ url: z.string().describe('添加云文档链接') })
+                              .describe('云文档链接')
+                              .optional(),
+                            person: z
+                              .object({ user_id: z.string().describe('添加用户的 user_id 以@用户') })
+                              .describe('at 联系人')
+                              .optional(),
+                          }),
+                        )
+                        .describe('回复内容的元素列表'),
+                    })
+                    .describe('回复内容'),
+                }),
+              )
+              .describe('回复列表'),
+          })
+          .describe('评论里的回复列表')
+          .optional(),
+      })
+      .optional(),
     params: z.object({
       file_type: z.enum(['doc', 'docx']).describe('云文档类型 Options:doc(旧版文档，已不推荐使用),docx(新版文档)'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
@@ -242,13 +234,7 @@ export const driveV1FileCommentList = {
       page_size: z.number().describe('分页大小，默认每页返回 50 个评论').optional(),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
     }),
-    path: z.object({
-      file_token: z
-        .string()
-        .describe(
-          '云文档的 token。获取方式参考 [如何获取云文档相关 token]',
-        ),
-    }),
+    path: z.object({ file_token: z.string().describe('云文档的 token。获取方式参考 [如何获取云文档相关 token]') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -384,8 +370,7 @@ export const driveV1FileCopy = {
   sdkName: 'drive.v1.file.copy',
   path: '/open-apis/drive/v1/files/:file_token/copy',
   httpMethod: 'POST',
-  description:
-    '[Feishu/Lark]-云文档-云空间-文件-复制文件-该接口用于将用户云空间中的文件复制至其它文件夹下。不支持复制文件夹。该接口为异步接口',
+  description: '[Feishu/Lark]-云文档-云空间-文件-复制文件-将用户云空间中的文件复制至其它文件夹下。该接口为异步接口',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -393,7 +378,7 @@ export const driveV1FileCopy = {
       type: z
         .enum(['file', 'doc', 'sheet', 'bitable', 'docx', 'mindnote', 'slides'])
         .describe(
-          '被复制的源文件的类型。该参数为必填，请忽略左侧必填列的“否”。若该参数值为空或与实际文件类型不匹配，接口将返回失败。 Options:file(文件类型),doc(文档类型),sheet(电子表格类型),bitable(多维表格类型),docx(新版文档类型),mindnote(思维笔记类型),slides(幻灯片类型)',
+          '被复制的源文件的类型。必须与 `file_token` 对应的源文件实际类型一致。**注意**：该参数为必填，请忽略左侧必填列的“否”。若该参数值为空或与实际文件类型不匹配，接口将返回失败。 Options:file(文件类型),doc(旧版文档。了解更多，参考[新旧版本文档说明]。),sheet(电子表格类型),bitable(多维表格类型),docx(新版文档类型),mindnote(思维笔记类型),slides(幻灯片类型)',
         )
         .optional(),
       folder_token: z
@@ -408,15 +393,14 @@ export const driveV1FileCopy = {
         .describe('自定义请求附加参数，用于实现特殊的复制语义')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      file_token: z
-        .string()
-        .describe(
-          '被复制的源文件的 token。了解如何获取文件 token，参考[文件概述]',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z
+      .object({
+        file_token: z.string().describe('被复制的源文件的 token。了解如何获取文件 token，参考[文件概述]').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -450,18 +434,10 @@ export const driveV1FileCreateShortcut = {
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
-      parent_token: z
-        .string()
-        .describe(
-          '目标父文件夹的 token，获取方式见[文件夹概述]',
-        ),
+      parent_token: z.string().describe('目标父文件夹的 token，获取方式见[文件夹概述]'),
       refer_entity: z
         .object({
-          refer_token: z
-            .string()
-            .describe(
-              '源文件的 token。获取方式见[文件概述]',
-            ),
+          refer_token: z.string().describe('源文件的 token。获取方式见[文件概述]'),
           refer_type: z
             .enum(['file', 'docx', 'bitable', 'doc', 'sheet', 'mindnote', 'slides'])
             .describe(
@@ -470,7 +446,9 @@ export const driveV1FileCreateShortcut = {
         })
         .describe('源文件的信息'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -491,14 +469,16 @@ export const driveV1FileDelete = {
           '被删除文件的类型 Options:file(文件类型),docx(新版文档类型),bitable(多维表格类型),folder(文件夹类型),doc(文档类型),sheet(电子表格类型),mindnote(思维笔记类型),shortcut(快捷方式类型),slides(幻灯片)',
         ),
     }),
-    path: z.object({
-      file_token: z
-        .string()
-        .describe(
-          '需要删除的文件或文件夹 token。了解如何获取文件 token，参考[文件概述]。了解如何获取文件夹 token，参考[文件夹概述]',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        file_token: z
+          .string()
+          .describe(
+            '需要删除的文件或文件夹 token。了解如何获取文件 token，参考[文件概述]。了解如何获取文件夹 token，参考[文件夹概述]',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -524,11 +504,7 @@ export const driveV1FileDeleteSubscribe = {
         .optional(),
     }),
     path: z.object({
-      file_token: z
-        .string()
-        .describe(
-          '云文档的 token。了解如何获取各类云文档的token，参考[云空间常见问题]',
-        ),
+      file_token: z.string().describe('云文档的 token。了解如何获取各类云文档的token，参考[云空间常见问题]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -555,11 +531,7 @@ export const driveV1FileGetSubscribe = {
         .optional(),
     }),
     path: z.object({
-      file_token: z
-        .string()
-        .describe(
-          '云文档的 token。了解如何获取各类云文档的 token，参考[云空间常见问题]',
-        ),
+      file_token: z.string().describe('云文档的 token。了解如何获取各类云文档的 token，参考[云空间常见问题]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -574,30 +546,32 @@ export const driveV1FileList = {
     '[Feishu/Lark]-云文档-云空间-文件夹-获取文件夹中的文件清单-该接口用于获取用户云空间指定文件夹中文件信息清单。文件的信息包括名称、类型、token、创建时间、所有者 ID 等',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('指定每页显示的数据项的数量。若获取根目录下的清单，将返回全部数据').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      folder_token: z
-        .string()
-        .describe(
-          '文件夹的 token。不填写或填空字符串，将获取用户云空间根目录下的清单，且不支持分页。了解如何获取文件夹 token，参考[文件夹概述]',
-        )
-        .optional(),
-      order_by: z
-        .enum(['EditedTime', 'CreatedTime'])
-        .describe('定义清单中文件的排序方式 Options:EditedTime(按编辑时间排序),CreatedTime(按创建时间排序)')
-        .optional(),
-      direction: z
-        .enum(['ASC', 'DESC'])
-        .describe('定义清单中文件的排序规则 Options:ASC(按升序排序),DESC(按降序排序)')
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('指定每页显示的数据项的数量。若获取根目录下的清单，将返回全部数据').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        folder_token: z
+          .string()
+          .describe(
+            '文件夹的 token。不填写或填空字符串，将获取用户云空间根目录下的清单，且不支持分页。了解如何获取文件夹 token，参考[文件夹概述]',
+          )
+          .optional(),
+        order_by: z
+          .enum(['EditedTime', 'CreatedTime'])
+          .describe('定义清单中文件的排序方式 Options:EditedTime(按编辑时间排序),CreatedTime(按创建时间排序)')
+          .optional(),
+        direction: z
+          .enum(['ASC', 'DESC'])
+          .describe('定义清单中文件的排序规则 Options:ASC(按升序排序),DESC(按降序排序)')
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -610,20 +584,17 @@ export const driveV1FileMove = {
   description: '[Feishu/Lark]-云文档-云空间-文件-移动文件或文件夹-将文件或者文件夹移动到用户云空间的其他位置',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      type: z
-        .enum(['file', 'docx', 'bitable', 'doc', 'sheet', 'mindnote', 'folder', 'slides'])
-        .describe(
-          '文件类型。该参数为必填，请忽略左侧必填列的“否”。如果该值为空或者与文件实际类型不匹配，接口会返回失败。 Options:file(普通文件类型),docx(新版文档类型),bitable(多维表格类型),doc(文档类型),sheet(电子表格类型),mindnote(思维笔记类型),folder(文件夹类型),slides(幻灯片类型)',
-        )
-        .optional(),
-      folder_token: z
-        .string()
-        .describe(
-          '目标文件夹的 token。了解如何获取文件夹 token，参考[文件夹概述]',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        type: z
+          .enum(['file', 'docx', 'bitable', 'doc', 'sheet', 'mindnote', 'folder', 'slides'])
+          .describe(
+            '文件类型。该参数为必填，请忽略左侧必填列的“否”。如果该值为空或者与文件实际类型不匹配，接口会返回失败。 Options:file(普通文件类型),docx(新版文档类型),bitable(多维表格类型),doc(文档类型),sheet(电子表格类型),mindnote(思维笔记类型),folder(文件夹类型),slides(幻灯片类型)',
+          )
+          .optional(),
+        folder_token: z.string().describe('目标文件夹的 token。了解如何获取文件夹 token，参考[文件夹概述]').optional(),
+      })
+      .optional(),
     path: z.object({
       file_token: z
         .string()
@@ -651,14 +622,9 @@ export const driveV1FileStatisticsGet = {
           '文件类型 Options:doc(旧版文档),sheet(电子表格),mindnote(思维笔记),bitable(多维表格),wiki(知识库文档),file(文件),docx(新版文档)',
         ),
     }),
-    path: z.object({
-      file_token: z
-        .string()
-        .describe(
-          '文件 token。了解如何获取文件 token，参考[文件概述]',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({ file_token: z.string().describe('文件 token。了解如何获取文件 token，参考[文件概述]').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -669,7 +635,7 @@ export const driveV1FileSubscribe = {
   path: '/open-apis/drive/v1/files/:file_token/subscribe',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-云文档-云空间-事件-订阅云文档事件-该接口用于订阅云文档的各类通知事件。了解事件订阅的配置流程和使用场景，参考[事件概述]。了解云文档支持的事件类型，参考[事件列表]',
+    '[Feishu/Lark]-云文档-云空间-事件-订阅云文档事件-订阅云文档的各类通知事件。调用该接口并在开发者后台添加事件后，当云文档发生指定事件时，系统会向配置的地址发送事件',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -680,15 +646,13 @@ export const driveV1FileSubscribe = {
         ),
       event_type: z
         .string()
-        .describe('事件类型，`file_type` 为 `folder `（文件夹）时必填 `file.created_in_folder_v1`')
+        .describe(
+          '事件类型。- 若 `file_type` 为 `folder`，需要填写该字段，且字段必须填写为 `file.created_in_folder_v1`，表示订阅[文件夹下文件创建]事件- 若 `file_type` 不为 `folder`，请勿填写该字段。对于文档、电子表格、多维表格等云文档类型，目前仅支持订阅所有相关的云文档事件，暂不支持只订阅该云文档类型下的某个或某些事件',
+        )
         .optional(),
     }),
     path: z.object({
-      file_token: z
-        .string()
-        .describe(
-          '云文档的 token。了解如何获取各类云文档的 token，参考[云空间常见问题]',
-        ),
+      file_token: z.string().describe('云文档的 token。了解如何获取各类云文档的 token，参考[云空间常见问题]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -727,10 +691,12 @@ export const driveV1FileSubscriptionGet = {
         .enum(['doc', 'docx', 'wiki'])
         .describe('文档类型 Options:doc(Docs 旧版文档),docx(Upgraded Docs 新版文档),wiki(云空间)'),
     }),
-    path: z.object({
-      file_token: z.string().describe('文档token').optional(),
-      subscription_id: z.string().describe('订阅关系ID').optional(),
-    }),
+    path: z
+      .object({
+        file_token: z.string().describe('文档token').optional(),
+        subscription_id: z.string().describe('订阅关系ID').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -747,10 +713,12 @@ export const driveV1FileSubscriptionPatch = {
       is_subscribe: z.boolean().describe('是否订阅'),
       file_type: z.enum(['doc', 'docx', 'wiki']).describe('文档类型 Options:doc(文档),docx(新版文档),wiki(知识库wiki)'),
     }),
-    path: z.object({
-      file_token: z.string().describe('文档token').optional(),
-      subscription_id: z.string().describe('订阅关系ID').optional(),
-    }),
+    path: z
+      .object({
+        file_token: z.string().describe('文档token').optional(),
+        subscription_id: z.string().describe('订阅关系ID').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -781,20 +749,12 @@ export const driveV1FileUploadFinish = {
   path: '/open-apis/drive/v1/files/upload_finish',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-文件-上传文件-分片上传文件-分片上传文件-完成上传-调用[上传分片]接口将分片全部上传完毕后，你需调用本接口触发完成上传。否则将上传失败。了解完整的上传文件流程，参考[上传文件概述]',
+    '[Feishu/Lark]-云文档-云空间-文件-上传文件-分片上传文件-分片上传文件-完成上传-调用[上传分片]接口将分片全部上传完毕后，你需调用本接口触发完成上传。否则将上传失败。了解完整的上传文件流程，参考[上传文件概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
-      upload_id: z
-        .string()
-        .describe(
-          '分片上传事务 ID。通过调用[分片上传文件-预上传]接口获取',
-        ),
-      block_num: z
-        .number()
-        .describe(
-          '分片的数量。通过调用[分片上传文件-预上传]接口获取',
-        ),
+      upload_id: z.string().describe('分片上传事务 ID。通过调用[分片上传文件-预上传]接口获取'),
+      block_num: z.number().describe('分片的数量。通过调用[分片上传文件-预上传]接口获取'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -806,7 +766,7 @@ export const driveV1FileUploadPrepare = {
   path: '/open-apis/drive/v1/files/upload_prepare',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-文件-上传文件-分片上传文件-分片上传文件-预上传-发送初始化请求，以获取上传事务 ID 和分片策略，为[上传分片]做准备。平台固定以 4MB 的大小对文件进行分片。了解完整的上传文件流程，参考[上传文件概述]',
+    '[Feishu/Lark]-云文档-云空间-文件-上传文件-分片上传文件-分片上传文件-预上传-发送初始化请求，以获取上传事务 ID 和分片策略，为[上传分片]做准备。平台固定以 4MB 的大小对文件进行分片。了解完整的上传文件流程，参考[上传文件概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -814,11 +774,7 @@ export const driveV1FileUploadPrepare = {
       parent_type: z
         .literal('explorer')
         .describe('上传点的类型。取固定值 explorer，表示将文件上传至云空间中。 Options:explorer(云空间)'),
-      parent_node: z
-        .string()
-        .describe(
-          '云空间中文件夹的 token。了解如何获取文件夹 token，参考[文件夹概述]',
-        ),
+      parent_node: z.string().describe('云空间中文件夹的 token。了解如何获取文件夹 token，参考[文件夹概述]'),
       size: z.number().describe('文件的大小，单位为字节'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -834,28 +790,26 @@ export const driveV1FileVersionCreate = {
     '[Feishu/Lark]-云文档-云空间-文档版本-创建文档版本-创建文档版本。文档支持在线文档或电子表格。该接口为异步接口',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      name: z
-        .string()
-        .describe(
-          '创建的版本文档的标题。最大长度 1024 个 Unicode 码点。通常情况下，一个英文或中文字符对应一个码点，但是某些特殊符号可能会对应多个码点。例如，家庭组合「👨‍👩‍👧」这个表情符号对应 5 个码点。**注意**：该参数必填，请忽略左侧必填列显示的“否”',
-        )
-        .optional(),
-      obj_type: z
-        .enum(['docx', 'sheet'])
-        .describe(
-          '源文档的类型**注意**：该参数必填，请忽略左侧必填列显示的“否”。 Options:docx(新版文档),sheet(电子表格)',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
-    path: z.object({
-      file_token: z
-        .string()
-        .describe(
-          '源文档的 token，获取方式参考 [如何获取云文档相关 token]',
-        ),
-    }),
+    data: z
+      .object({
+        name: z
+          .string()
+          .describe(
+            '创建的版本文档的标题。最大长度 1024 个 Unicode 码点。通常情况下，一个英文或中文字符对应一个码点，但是某些特殊符号可能会对应多个码点。例如，家庭组合「👨‍👩‍👧」这个表情符号对应 5 个码点。**注意**：该参数必填，请忽略左侧必填列显示的“否”',
+          )
+          .optional(),
+        obj_type: z
+          .enum(['docx', 'sheet'])
+          .describe(
+            '源文档的类型**注意**：该参数必填，请忽略左侧必填列显示的“否”。 Options:docx(新版文档),sheet(电子表格)',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
+    path: z.object({ file_token: z.string().describe('源文档的 token，获取方式参考 [如何获取云文档相关 token]') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -873,11 +827,7 @@ export const driveV1FileVersionDelete = {
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
     }),
     path: z.object({
-      file_token: z
-        .string()
-        .describe(
-          '当前版本对应的源文档的 token。获取方式参考[如何获取云文档相关 token]',
-        ),
+      file_token: z.string().describe('当前版本对应的源文档的 token。获取方式参考[如何获取云文档相关 token]'),
       version_id: z.string().describe('版本文档版本标识'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -898,11 +848,7 @@ export const driveV1FileVersionGet = {
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
     }),
     path: z.object({
-      file_token: z
-        .string()
-        .describe(
-          '源文档的 token。获取方式参考 [如何获取云文档相关 token]',
-        ),
+      file_token: z.string().describe('源文档的 token。获取方式参考 [如何获取云文档相关 token]'),
       version_id: z.string().describe('版本文档的版本标识'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
@@ -928,13 +874,7 @@ export const driveV1FileVersionList = {
       obj_type: z.enum(['docx', 'sheet']).describe('源文档的类型 Options:docx(新版文档),sheet(电子表格)'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
     }),
-    path: z.object({
-      file_token: z
-        .string()
-        .describe(
-          '源文档的 token。获取方式参考 [如何获取云文档相关 token]',
-        ),
-    }),
+    path: z.object({ file_token: z.string().describe('源文档的 token。获取方式参考 [如何获取云文档相关 token]') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -968,13 +908,7 @@ export const driveV1FileViewRecordList = {
         )
         .optional(),
     }),
-    path: z.object({
-      file_token: z
-        .string()
-        .describe(
-          '文件 token。获取方式参考[文件概述]',
-        ),
-    }),
+    path: z.object({ file_token: z.string().describe('文件 token。获取方式参考[文件概述]') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -985,7 +919,7 @@ export const driveV1ImportTaskCreate = {
   path: '/open-apis/drive/v1/import_tasks',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-云空间-文件-导入文件-创建导入任务-该接口用于创建导入文件的任务，并返回导入任务 ID。导入文件指将本地文件如 Word、TXT、Markdown、Excel 等格式的文件导入为某种格式的飞书在线云文档。该接口为异步接口，需要继续调用[查询导入任务结果]接口获取导入结果。了解完整的导入文件步骤，参考[导入文件概述]',
+    '[Feishu/Lark]-云文档-云空间-文件-导入文件-创建导入任务-该接口用于创建导入文件的任务，并返回导入任务 ID。导入文件指将本地文件如 Word、TXT、Markdown、Excel 等格式的文件导入为某种格式的飞书在线云文档。该接口为异步接口，需要继续调用[查询导入任务结果]接口获取导入结果。了解完整的导入文件步骤，参考[导入文件概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1028,16 +962,10 @@ export const driveV1ImportTaskGet = {
   path: '/open-apis/drive/v1/import_tasks/:ticket',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-云空间-文件-导入文件-查询导入任务结果-根据[创建导入任务]返回的导入任务 ID（ticket）轮询导入结果。了解完整的导入文件步骤，参考[导入文件概述]',
+    '[Feishu/Lark]-云文档-云空间-文件-导入文件-查询导入任务结果-根据[创建导入任务]返回的导入任务 ID（ticket）轮询导入结果。了解完整的导入文件步骤，参考[导入文件概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
-    path: z.object({
-      ticket: z
-        .string()
-        .describe(
-          '导入任务 ID。调用[创建导入任务] 获取',
-        ),
-    }),
+    path: z.object({ ticket: z.string().describe('导入任务 ID。调用[创建导入任务] 获取') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1074,20 +1002,12 @@ export const driveV1MediaUploadFinish = {
   path: '/open-apis/drive/v1/medias/upload_finish',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-云空间-素材-上传素材-分片上传素材-完成上传-调用[上传分片]接口将分片全部上传完毕后，你需调用本接口触发完成上传。了解完整的分片上传素材流程，参考[素材概述]',
+    '[Feishu/Lark]-云文档-云空间-素材-上传素材-分片上传素材-完成上传-调用[上传分片]接口将分片全部上传完毕后，你需调用本接口触发完成上传。了解完整的分片上传素材流程，参考[素材概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
-      upload_id: z
-        .string()
-        .describe(
-          '分片上传事务 ID。通过调用[分片上传素材（预上传）]接口获取',
-        ),
-      block_num: z
-        .number()
-        .describe(
-          '分片数量。通过调用[分片上传素材（预上传）]接口获取',
-        ),
+      upload_id: z.string().describe('分片上传事务 ID。通过调用[分片上传素材（预上传）]接口获取'),
+      block_num: z.number().describe('分片数量。通过调用[分片上传素材（预上传）]接口获取'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1099,7 +1019,7 @@ export const driveV1MediaUploadPrepare = {
   path: '/open-apis/drive/v1/medias/upload_prepare',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-云空间-素材-上传素材-分片上传素材-预上传-发送初始化请求，以获取上传事务 ID 和分片策略，为[上传素材分片]做准备。平台固定以 4MB 的大小对素材进行分片。了解完整的分片上传素材流程，参考[素材概述]',
+    '[Feishu/Lark]-云文档-云空间-素材-上传素材-分片上传素材-预上传-发送初始化请求，以获取上传事务 ID 和分片策略，为[上传素材分片]做准备。平台固定以 4MB 的大小对素材进行分片。了解完整的分片上传素材流程，参考[素材概述]',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1151,11 +1071,7 @@ export const driveV1MetaBatchQuery = {
       request_docs: z
         .array(
           z.object({
-            doc_token: z
-              .string()
-              .describe(
-                '文件的 token，获取方式见[文件概述]',
-              ),
+            doc_token: z.string().describe('文件的 token，获取方式见[文件概述]'),
             doc_type: z
               .enum(['doc', 'sheet', 'bitable', 'mindnote', 'file', 'wiki', 'docx', 'folder', 'synced_block'])
               .describe(
@@ -1166,7 +1082,9 @@ export const driveV1MetaBatchQuery = {
         .describe('请求的文件的 token 和类型。一次请求中不可超过 200 个'),
       with_url: z.boolean().describe('是否获取文件的访问链接').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1177,14 +1095,14 @@ export const driveV1PermissionMemberAuth = {
   path: '/open-apis/drive/v1/permissions/:token/members/auth',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-云文档-权限-成员-判断当前用户是否有某权限-该接口用于根据 filetoken 判断当前登录用户是否具有某权限',
+    '[Feishu/Lark]-云文档-权限-成员-判断用户云文档权限-判断当前请求的应用或用户是否具有指定云文档的指定权限，权限包括阅读、编辑、分享、评论、导出等权限',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
       type: z
         .enum(['doc', 'sheet', 'file', 'wiki', 'bitable', 'docx', 'mindnote', 'minutes', 'slides'])
         .describe(
-          '文件类型，需要与文件的 token 相匹配 Options:doc(文档),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙记),slides(幻灯片)',
+          '云文档类型，需要与云文档的 token 相匹配。 Options:doc(旧版文档。了解更多，参考[新旧版本文档说明]。),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙记),slides(幻灯片)',
         ),
       action: z
         .enum(['view', 'edit', 'share', 'comment', 'export', 'copy', 'print', 'manage_public'])
@@ -1192,7 +1110,11 @@ export const driveV1PermissionMemberAuth = {
           '需要判断的权限 Options:view(阅读),edit(编辑),share(分享),comment(评论),export(导出),copy(拷贝),print(打印),manage_public(ManagePublic 管理权限设置)',
         ),
     }),
-    path: z.object({ token: z.string().describe('文件的 token') }),
+    path: z.object({
+      token: z
+        .string()
+        .describe('云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考[如何获取云文档资源相关 token]'),
+    }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1203,7 +1125,7 @@ export const driveV1PermissionMemberBatchCreate = {
   path: '/open-apis/drive/v1/permissions/:token/members/batch_create',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-云文档-权限-成员-批量增加协作者权限-该接口可根据云文档 token 批量将用户添加为云文档的协作者',
+    '[Feishu/Lark]-云文档-权限-成员-批量增加协作者权限-为指定云文档批量添加多个协作者，协作者可以是用户、群组、部门、用户组等',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1213,16 +1135,18 @@ export const driveV1PermissionMemberBatchCreate = {
             member_type: z
               .enum(['email', 'openid', 'unionid', 'openchat', 'opendepartmentid', 'userid', 'groupid', 'wikispaceid'])
               .describe(
-                '协作者 ID 类型 Options:email(飞书邮箱),openid(open_id 开放平台 ID),unionid(union_id 开放平台 UnionID),openchat(open_chat 开放平台群组 ID),opendepartmentid(open_department_id 开放平台部门 ID。仅当使用 <md-tag mode="inline" type="token-user">user_access_token</md-tag> 调用时有效),userid(user_id 用户自定义 ID),groupid(group_id 自定义用户组 ID),wikispaceid(wiki_space_id 知识空间 ID。仅知识库文档支持该参数，当需要操作知识库文档里的「知识库成员」类型协作者时传该参数)',
+                '协作者 ID 类型，与协作者 ID （member_id）的类型需要保持一致。 Options:email(飞书邮箱),openid(open_id 开放平台 Open ID - 获取应用 OpenID，参考[如何获取应用 open_id] - 获取用户 OpenID，参考[如何获取不同的用户 ID]),unionid(union_id 开放平台 Union ID。获取方式参考[如何获取不同的用户 ID]),openchat(open_chat 开放平台群组 ID。获取方式参考[群 ID 说明]),opendepartmentid(open_department_id 开放平台部门 ID。仅当使用 <md-tag mode="inline" type="token-user">user_access_token</md-tag> 调用时有效。获取方式参考[部门资源介绍]),userid(user_id 用户 ID。获取方式参考[如何获取不同的用户 ID]),groupid(group_id 自定义用户组 ID。获取方式参考[用户组资源介绍]),wikispaceid(wiki_space_id 知识空间 ID。仅知识库文档支持该参数，当需要操作知识库文档里的「知识库成员」类型协作者时传该参数。获取方式参考[知识库概述])',
               ),
-            member_id: z.string().describe('协作者 ID，与协作者 ID 类型需要对应'),
+            member_id: z.string().describe('协作者 ID，该 ID 的类型与 member_type 指定的值需要保持一致'),
             perm: z
               .enum(['view', 'edit', 'full_access'])
-              .describe('协作者的权限角色 Options:view(可阅读角色),edit(可编辑角色),full_access(可管理角色)'),
+              .describe(
+                '协作者对应的权限角色。 **注意：** 妙记还不支持可管理角色 Options:view(可阅读角色),edit(可编辑角色),full_access(可管理角色)',
+              ),
             perm_type: z
               .enum(['container', 'single_page'])
               .describe(
-                '协作者的权限角色类型 Options:container(当前页面及子页面),single_page(仅当前页面，当且仅当在知识库文档中该参数有效)',
+                '协作者的权限角色类型。当云文档类型为 wiki 即知识库节点时，该参数有效 Options:container(当前页面及子页面),single_page(仅当前页面，当且仅当在知识库文档中该参数有效)',
               )
               .optional(),
             type: z
@@ -1236,7 +1160,7 @@ export const driveV1PermissionMemberBatchCreate = {
                 'wiki_space_editor',
               ])
               .describe(
-                '协作者类型**注意**：当 `member_type` 参数为 `wikispaceid` 时必须传该参数**默认值**："" Options:user(用户),chat(群组),department(组织架构),group(用户组),wiki_space_member(知识库成员。在知识库启用了成员分组功能后不支持该参数),wiki_space_viewer(知识库可阅读成员。仅在知识库启用了成员分组功能后才支持该参数),wiki_space_editor(知识库可编辑成员。仅在知识库启用了成员分组功能后才支持该参数)',
+                '协作者类型。**注意**：当 `member_type` 参数为 `wikispaceid` 时，该参数必填。**默认值**："" Options:user(用户),chat(群组),department(组织架构),group(用户组),wiki_space_member(知识库成员。在知识库启用了成员分组功能后不支持该参数),wiki_space_viewer(知识库可阅读成员。仅在知识库启用了成员分组功能后才支持该参数),wiki_space_editor(知识库可编辑成员。仅在知识库启用了成员分组功能后才支持该参数)',
               )
               .optional(),
           }),
@@ -1247,21 +1171,19 @@ export const driveV1PermissionMemberBatchCreate = {
       type: z
         .enum(['doc', 'sheet', 'file', 'wiki', 'bitable', 'docx', 'folder', 'mindnote', 'minutes', 'slides'])
         .describe(
-          '云文档类型，需要与云文档的 token 相匹配。 Options:doc(旧版文档),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),folder(文件夹。使用 <md-tag mode="inline" type="token-tenant">tenant_access_token</md-tag> 调用时，需确保文件夹所有者为应用或应用拥有文件夹的可管理权限，你需要将应用作为群机器人添加至群内，然后授予该群组可管理权限。),mindnote(思维笔记),minutes(妙记。目前妙记还不支持 `full_access` 权限角色),slides(幻灯片)',
+          '云文档类型，需要与云文档的 token 相匹配。 Options:doc(旧版文档。了解更多，参考[新旧版本文档说明]。),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),folder(文件夹。使用 <md-tag mode="inline" type="token-tenant">tenant_access_token</md-tag> 调用时，需确保文件夹所有者为应用或应用拥有文件夹的可管理权限，你需要将应用作为群机器人添加至群内，然后授予该群组可管理权限。详细步骤参考[如何为应用开通云文档相关资源的权限]),mindnote(思维笔记),minutes(妙记。目前妙记还不支持 full_access 权限角色),slides(幻灯片)',
         ),
       need_notification: z
         .boolean()
         .describe(
-          '添加权限后是否通知对方。仅当使用 <md-tag mode="inline" type="token-user">user_access_token</md-tag> 调用时有效',
+          '添加权限后是否通知对方。仅当使用 <md-tag mode="inline" type="token-user">user_access_token</md-tag> 调用时有效。可选值：- true：通知对方- false：不通知',
         )
         .optional(),
     }),
     path: z.object({
       token: z
         .string()
-        .describe(
-          '云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考 [如何获取云文档相关 token]',
-        ),
+        .describe('云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考 [如何获取云文档相关 token]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1272,31 +1194,32 @@ export const driveV1PermissionMemberCreate = {
   sdkName: 'drive.v1.permissionMember.create',
   path: '/open-apis/drive/v1/permissions/:token/members',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-云文档-权限-成员-增加协作者权限-该接口用于根据云文档的 token 给用户增加文档的权限',
+  description:
+    '[Feishu/Lark]-云文档-权限-成员-增加协作者权限-为指定云文档添加协作者，协作者可以是用户、群组、部门、用户组等',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       member_type: z
         .enum(['email', 'openid', 'unionid', 'openchat', 'opendepartmentid', 'userid', 'groupid', 'wikispaceid'])
         .describe(
-          '协作者 ID 类型，与协作者 ID 需要对应 Options:email(飞书邮箱),openid(open_id 应用或用户的 Open ID。 - 获取应用 OpenID，参考[如何获取应用 open_id] - 获取用户 OpenID，参考[如何获取不同的用户 ID]),unionid(union_id 开放平台 UnionID),openchat(open_chat 开放平台群组 ID),opendepartmentid(open_department_id 开放平台部门 ID。仅当使用 <md-tag mode="inline" type="token-user">user_access_token</md-tag> 调用时有效),userid(user_id 用户自定义 ID),groupid(group_id 自定义用户组 ID),wikispaceid(wiki_space_id 知识空间 ID。仅知识库文档支持该参数，当需要操作知识库文档里的「知识库成员」类型协作者时传该参数)',
+          '协作者 ID 类型，与协作者 ID 需要对应 Options:email(飞书邮箱),openid(open_id 开放平台 Open ID - 获取应用 OpenID，参考[如何获取应用 open_id] - 获取用户 OpenID，参考[如何获取不同的用户 ID]),unionid(union_id 开放平台 Union ID。获取方式参考[如何获取不同的用户 ID]),openchat(open_chat 开放平台群组 ID。获取方式参考[群 ID 说明]),opendepartmentid(open_department_id 开放平台部门 ID。仅当使用 <md-tag mode="inline" type="token-user">user_access_token</md-tag> 调用时，该参数有效。获取方式参考[部门资源介绍]),userid(user_id 用户 ID。获取方式参考[如何获取不同的用户 ID]),groupid(group_id 自定义用户组 ID。获取方式参考[用户组资源介绍]),wikispaceid(wiki_space_id 知识空间 ID。仅知识库文档支持该参数，当需要操作知识库文档里的「知识库成员」类型协作者时传该参数。获取方式参考[知识库概述])',
         ),
-      member_id: z.string().describe('协作者 ID，与协作者 ID 类型需要对应'),
+      member_id: z.string().describe('协作者 ID，该 ID 的类型与 member_type 指定的值需要保持一致'),
       perm: z
         .enum(['view', 'edit', 'full_access'])
         .describe(
-          '协作者对应的权限角色 **注意：** 妙记还不支持可管理角色 Options:view(可阅读角色),edit(可编辑角色),full_access(可管理角色)',
+          '协作者对应的权限角色。 Options:view(可阅读角色),edit(可编辑角色),full_access(可管理角色。暂不支持妙记。)',
         ),
       perm_type: z
         .enum(['container', 'single_page'])
         .describe(
-          '协作者的权限角色类型 Options:container(当前页面及子页面),single_page(仅当前页面，当且仅当在知识库文档中该参数有效)',
+          '协作者的权限角色类型。当云文档类型为 wiki 即知识库节点时，该参数有效。 Options:container(当前页面及子页面),single_page(仅当前页面，当且仅当在知识库文档中该参数有效)',
         )
         .optional(),
       type: z
         .enum(['user', 'chat', 'department', 'group', 'wiki_space_member', 'wiki_space_viewer', 'wiki_space_editor'])
         .describe(
-          '协作者类型**注意**：当 `member_type` 参数为 `wikispaceid` 时必须传该参数**默认值**："" Options:user(用户),chat(群组),department(组织架构),group(用户组),wiki_space_member(知识库成员。在知识库启用了成员分组功能后不支持该参数),wiki_space_viewer(知识库可阅读成员。仅在知识库启用了成员分组功能后才支持该参数),wiki_space_editor(知识库可编辑成员。仅在知识库启用了成员分组功能后才支持该参数)',
+          '协作者类型。**注意**：当 `member_type` 参数为 `wikispaceid` 时，该参数必填，且必须在 `wiki_space_member`、`wiki_space_viewer`、`wiki_space_editor` 中选择。**默认值**："" Options:user(用户),chat(群组),department(组织架构),group(用户组),wiki_space_member(知识库成员。即知识库 **成员设置** 中的成员角色。若在知识库 **成员设置** 页面中，成员分为了 **可编辑成员** 和 **可阅读成员**，则不再支持该参数。你需选择下方参数),wiki_space_viewer(知识库可阅读成员组。仅当知识库成员分为 **可编辑成员** 和 **可阅读成员** 时，支持该参数。),wiki_space_editor(知识库可编辑成员组。仅当知识库成员分为 **可编辑成员** 和 **可阅读成员** 时，支持该参数)',
         )
         .optional(),
     }),
@@ -1304,21 +1227,19 @@ export const driveV1PermissionMemberCreate = {
       type: z
         .enum(['doc', 'sheet', 'file', 'wiki', 'bitable', 'docx', 'folder', 'mindnote', 'minutes', 'slides'])
         .describe(
-          '云文档类型，需要与云文档的 token 相匹配 Options:doc(文档),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),folder(文件夹。使用 <md-tag mode="inline" type="token-tenant">tenant_access_token</md-tag> 调用时，需确保文件夹所有者为应用或应用拥有文件夹的可管理权限，你需要将应用作为群机器人添加至群内，然后授予该群组可管理权限。),mindnote(思维笔记),minutes(妙记),slides(幻灯片)',
+          '云文档类型，需要与云文档的 token 相匹配。 Options:doc(旧版文档。了解更多，参考[新旧版本文档说明]。),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),folder(文件夹。使用 <md-tag mode="inline" type="token-tenant">tenant_access_token</md-tag> 调用时，需确保文件夹所有者为应用或应用拥有文件夹的可管理权限，你需要将应用作为群机器人添加至群内，然后授予该群组可管理权限。详细步骤参考[如何为应用开通云文档相关资源的权限]),mindnote(思维笔记),minutes(妙记。目前妙记还不支持 full_access 权限角色),slides(幻灯片)',
         ),
       need_notification: z
         .boolean()
         .describe(
-          '添加权限后是否通知对方。仅当使用 <md-tag mode="inline" type="token-user">user_access_token</md-tag> 调用时有效',
+          '添加权限后是否通知对方。可选值：- true：通知对方- false：不通知注意：仅当使用 <md-tag mode="inline" type="token-user">user_access_token</md-tag> 调用时，该参数有效',
         )
         .optional(),
     }),
     path: z.object({
       token: z
         .string()
-        .describe(
-          '云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考[如何获取云文档资源相关 token]',
-        ),
+        .describe('云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考[如何获取云文档资源相关 token]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1329,42 +1250,43 @@ export const driveV1PermissionMemberDelete = {
   sdkName: 'drive.v1.permissionMember.delete',
   path: '/open-apis/drive/v1/permissions/:token/members/:member_id',
   httpMethod: 'DELETE',
-  description: '[Feishu/Lark]-云文档-权限-成员-移除协作者权限-该接口用于根据文件的 token 移除文档协作者的权限',
+  description:
+    '[Feishu/Lark]-云文档-权限-成员-移除云文档协作者权限-通过云文档 token 和协作者 ID 移除指定云文档协作者的权限',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      type: z
-        .enum(['user', 'chat', 'department', 'group', 'wiki_space_member', 'wiki_space_viewer', 'wiki_space_editor'])
-        .describe(
-          '协作者类型**注意**：当 `member_type` 参数为 `wikispaceid` 时必须传该参数**默认值**："" Options:user(用户),chat(群组),department(组织架构),group(用户组),wiki_space_member(知识库成员 - **注意**：在知识库启用了成员分组功能后不支持该参数),wiki_space_viewer(知识库可阅读成员 - **注意**：仅在知识库启用了成员分组功能后才支持该参数),wiki_space_editor(知识库可编辑成员 - **注意**：仅在知识库启用了成员分组功能后才支持该参数)',
-        )
-        .optional(),
-      perm_type: z
-        .enum(['container', 'single_page'])
-        .describe(
-          '协作者的权限角色类型 Options:container(当前页面及子页面),single_page(仅当前页面，当且仅当在知识库文档中该参数有效)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        type: z
+          .enum(['user', 'chat', 'department', 'group', 'wiki_space_member', 'wiki_space_viewer', 'wiki_space_editor'])
+          .describe(
+            '协作者类型**注意**：当 `member_type` 参数为 `wikispaceid` 时必须传该参数**默认值**："" Options:user(用户),chat(群组),department(组织架构),group(用户组),wiki_space_member(知识库成员。在知识库启用了成员分组功能后不支持该参数),wiki_space_viewer(知识库可阅读成员。仅在知识库启用了成员分组功能后才支持该参数),wiki_space_editor(知识库可编辑成员。仅在知识库启用了成员分组功能后才支持该参数)',
+          )
+          .optional(),
+        perm_type: z
+          .enum(['container', 'single_page'])
+          .describe(
+            '协作者的权限角色类型。当云文档类型为 wiki 即知识库节点时，该参数有效。 Options:container(当前页面及子页面),single_page(仅当前页面，当且仅当在知识库文档中该参数有效)',
+          )
+          .optional(),
+      })
+      .optional(),
     params: z.object({
       type: z
         .enum(['doc', 'sheet', 'file', 'wiki', 'bitable', 'docx', 'folder', 'mindnote', 'minutes', 'slides'])
         .describe(
-          '文件类型，需要与文件的 token 相匹配 Options:doc(文档),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),folder(文件夹),mindnote(思维笔记),minutes(妙记),slides(幻灯片)',
+          '云文档类型，需要与云文档的 token 相匹配。 Options:doc(旧版文档。了解更多，参考[新旧版本文档说明]。),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),folder(文件夹。使用 <md-tag mode="inline" type="token-tenant">tenant_access_token</md-tag> 调用时，需确保文件夹所有者为应用或应用拥有文件夹的可管理权限，你需要将应用作为群机器人添加至群内，然后授予该群组可管理权限。详细步骤参考[如何为应用开通云文档相关资源的权限]),mindnote(思维笔记),minutes(妙记),slides(幻灯片)',
         ),
       member_type: z
         .enum(['email', 'openid', 'openchat', 'opendepartmentid', 'userid', 'unionid', 'groupid', 'wikispaceid'])
         .describe(
-          '协作者 ID 类型，与协作者 ID 需要对应 Options:email(邮箱地址),openid(开放平台 ID),openchat(OpenChatID 开放平台群组 ID),opendepartmentid(开放平台部门 ID),userid(用户自定义 ID),unionid(开放平台 UnionID),groupid(自定义用户组 ID),wikispaceid(知识空间 ID - **注意**：仅知识库文档支持该参数，当需要操作知识库文档里的「知识库成员」类型协作者时传该参数)',
+          '协作者 ID 类型，与协作者 ID （member_id）需要对应。 Options:email(邮箱地址),openid(开放平台 Open ID - 获取应用 OpenID，参考[如何获取应用 open_id] - 获取用户 OpenID，参考[如何获取不同的用户 ID]),openchat(OpenChatID 开放平台群组 ID。获取方式参考[群 ID 说明]),opendepartmentid(开放平台部门 ID。仅当使用 <md-tag mode="inline" type="token-user">user_access_token</md-tag> 调用时有效。获取方式参考[部门资源介绍]),userid(用户 ID。获取方式参考[如何获取不同的用户 ID]),unionid(开放平台 Union ID。获取方式参考[如何获取不同的用户 ID]),groupid(自定义用户组 ID。获取方式参考[用户组资源介绍]),wikispaceid(知识空间 ID。仅知识库文档支持该参数，当需要操作知识库文档里的「知识库成员」类型协作者时传该参数。获取方式参考[知识库概述])',
         ),
     }),
     path: z.object({
       token: z
         .string()
-        .describe(
-          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
-        ),
-      member_id: z.string().describe('协作者 ID，与协作者 ID 类型需要对应'),
+        .describe('云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考[如何获取云文档资源相关 token]'),
+      member_id: z.string().describe('协作者 ID，与协作者 ID 类型（member_type）需要对应'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1375,34 +1297,33 @@ export const driveV1PermissionMemberList = {
   sdkName: 'drive.v1.permissionMember.list',
   path: '/open-apis/drive/v1/permissions/:token/members',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-云文档-权限-成员-获取协作者列表-该接口用于根据文件的 token 查询协作者',
+  description:
+    '[Feishu/Lark]-云文档-权限-成员-获取云文档协作者-获取指定云文档的协作者，支持查询人、群、组织架构、用户组、知识库成员五种类型的协作者',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
       type: z
         .enum(['doc', 'sheet', 'file', 'wiki', 'bitable', 'docx', 'mindnote', 'minutes', 'slides'])
         .describe(
-          '文件类型，需要与文件的 token 相匹配 Options:doc(文档),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙记),slides(幻灯片)',
+          '云文档类型，需要与云文档的 token 相匹配。 Options:doc(旧版文档。了解更多，参考[新旧版本文档说明]。),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙记),slides(幻灯片)',
         ),
       fields: z
         .string()
         .describe(
-          '指定返回的协作者字段信息，如无指定则默认不返回**可选值有：** - `name`：协作者名- `type`：协作者类型- `avatar`：头像- `external_label`：外部标签**注意：** - 你可以使用特殊值`*`指定返回目前支持的所有字段- 你可以使用`,`分隔若干个你想指定返回的字段，如：`name,avatar`- 按需指定返回字段接口性能更好',
+          '指定返回的协作者字段信息，如无指定则默认不返回。**可选值有：** - `name`：协作者名- `type`：协作者类型- `avatar`：头像- `external_label`：外部标签**注意**：- 你可以使用特殊值`*`指定返回目前支持的所有字段- 你可以使用`,`分隔若干个你想指定返回的字段，如：`name,avatar`- 按需指定返回字段接口性能更好',
         )
         .optional(),
       perm_type: z
         .enum(['container', 'single_page'])
         .describe(
-          '协作者的权限角色类型 Options:container(当前页面及子页面),single_page(仅当前页面，当且仅当在知识库文档中该参数有效)',
+          '协作者的权限角色类型。当云文档类型为 wiki 即知识库节点时，该参数有效。**默认值**：container Options:container(当前页面及子页面),single_page(仅当前页面，当且仅当在知识库文档中该参数有效)',
         )
         .optional(),
     }),
     path: z.object({
       token: z
         .string()
-        .describe(
-          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
-        ),
+        .describe('云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考[如何获取云文档资源相关 token]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1413,14 +1334,14 @@ export const driveV1PermissionMemberTransferOwner = {
   sdkName: 'drive.v1.permissionMember.transferOwner',
   path: '/open-apis/drive/v1/permissions/:token/members/transfer_owner',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-云文档-权限-成员-转移所有者-该接口用于根据云文档 token 和用户信息转移文件的所有者',
+  description: '[Feishu/Lark]-云文档-权限-成员-转移云文档所有者-转移指定云文档的所有者',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       member_type: z
         .enum(['email', 'openid', 'userid'])
         .describe(
-          '文件所有者的 ID 类型 Options:email(飞书邮箱),openid(open_id 开放平台ID),userid(user_id 用户自定义ID)',
+          '文件所有者的 ID 类型 Options:email(飞书邮箱),openid(open_id 开放平台 Open ID。参考[如何获取不同的用户 ID]),userid(user_id 用户 ID。获取方式参考[如何获取不同的用户 ID])',
         ),
       member_id: z.string().describe('文件所有者的 ID，与文件所有者的 ID 类型需要对应'),
     }),
@@ -1428,22 +1349,38 @@ export const driveV1PermissionMemberTransferOwner = {
       type: z
         .enum(['doc', 'sheet', 'file', 'wiki', 'bitable', 'docx', 'mindnote', 'minutes', 'slides', 'folder'])
         .describe(
-          '文件类型，需要与文件的 token 相匹配 Options:doc(文档),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙记),slides(幻灯片),folder(文件夹)',
+          '云文档类型，需要与云文档的 token 相匹配。 Options:doc(旧版文档。了解更多，参考[新旧版本文档说明]。),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙记),slides(幻灯片),folder(文件夹)',
         ),
-      need_notification: z.boolean().describe('是否需要通知新的文件所有者').optional(),
-      remove_old_owner: z.boolean().describe('转移后是否需要移除原文件所有者的权限').optional(),
+      need_notification: z
+        .boolean()
+        .describe(
+          '是否需要通知新的文件所有者。仅当使用 <md-tag mode="inline" type="token-user">user_access_token</md-tag> 调用时有效。可选值：- `true`：通知对方- `false`：不通知',
+        )
+        .optional(),
+      remove_old_owner: z
+        .boolean()
+        .describe(
+          '转移后是否需要移除原云文档所有者的权限。可选值：- `true`：移除原所有者权限- `false`：不移除原所有者权限',
+        )
+        .optional(),
       stay_put: z
         .boolean()
         .describe(
-          '仅当文件在个人文件夹下，此参数才会生效。如果设为`false`，系统会将该内容移至新所有者的空间下。如果设为`true`，则留在原位置',
+          '在个人文件夹下的云文档是否仍留在原所有者个人文件夹下。可选值：- `true`：云文档留在原位置不变- `false`：系统会将该内容移至新所有者的空间下**注意**：仅当云文档在个人文件夹下时参数生效',
         )
         .optional(),
       old_owner_perm: z
         .string()
-        .describe('仅当 remove_old_owner = false 时，此参数才会生效 保留原文件所有者指定的权限角色')
+        .describe(
+          '为原云文档所有者保留的具体权限。可选值：- `view`：可阅读角色- `edit`：可编辑角色- `full_access`：可管理角色**注意**：仅当 `remove_old_owner` 为 `false` 时，此参数才会生效',
+        )
         .optional(),
     }),
-    path: z.object({ token: z.string().describe('文件的 token') }),
+    path: z.object({
+      token: z
+        .string()
+        .describe('云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考[如何获取云文档资源相关 token]'),
+    }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1453,19 +1390,20 @@ export const driveV1PermissionMemberUpdate = {
   sdkName: 'drive.v1.permissionMember.update',
   path: '/open-apis/drive/v1/permissions/:token/members/:member_id',
   httpMethod: 'PUT',
-  description: '[Feishu/Lark]-云文档-权限-成员-更新协作者权限-该接口用于根据文件的 token 更新文档协作者的权限',
+  description:
+    '[Feishu/Lark]-云文档-权限-成员-更新协作者权限-更新指定云文档中指定协作者的权限，包括可阅读、可编辑、可管理权限',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
       member_type: z
         .enum(['email', 'openid', 'unionid', 'openchat', 'opendepartmentid', 'userid', 'groupid', 'wikispaceid'])
         .describe(
-          '协作者 ID 类型，与协作者 ID 需要对应 Options:email(飞书邮箱),openid(open_id 开放平台 ID),unionid(union_id 开放平台 UnionID),openchat(open_chat 开放平台群组 ID),opendepartmentid(open_department_id 开放平台部门 ID),userid(user_id 用户自定义 ID),groupid(group_id 自定义用户组 ID),wikispaceid(wiki_space_id 知识空间 ID - **注意**：仅知识库文档支持该参数，当需要操作知识库文档里的「知识库成员」类型协作者时传该参数)',
+          '协作者 ID 类型，与协作者 ID 需要对应。 Options:email(飞书邮箱),openid(open_id 开放平台 Open ID - 获取应用 OpenID，参考[如何获取应用 open_id] - 获取用户 OpenID，参考[如何获取不同的用户 ID]),unionid(union_id 开放平台 Union ID。获取方式参考[如何获取不同的用户 ID]),openchat(open_chat 开放平台群组 ID。获取方式参考[群 ID 说明]),opendepartmentid(open_department_id 开放平台部门 ID。仅当使用 <md-tag mode="inline" type="token-user">user_access_token</md-tag> 调用时有效。获取方式参考[部门资源介绍]),userid(user_id 用户 ID。获取方式参考[如何获取不同的用户 ID]),groupid(group_id 自定义用户组 ID。获取方式参考[用户组资源介绍]),wikispaceid(wiki_space_id 知识空间 ID。仅知识库文档支持该参数，当需要操作知识库文档里的「知识库成员」类型协作者时传该参数。获取方式参考[知识库概述])',
         ),
       perm: z
         .enum(['view', 'edit', 'full_access'])
         .describe(
-          '协作者对应的权限角色 **注意：** 妙记还不支持可管理角色 Options:view(可阅读角色),edit(可编辑角色),full_access(可管理角色)',
+          '协作者对应的权限角色。 **注意：** 妙记还不支持可管理角色 Options:view(可阅读角色),edit(可编辑角色),full_access(可管理角色)',
         ),
       perm_type: z
         .enum(['container', 'single_page'])
@@ -1483,21 +1421,21 @@ export const driveV1PermissionMemberUpdate = {
     params: z.object({
       need_notification: z
         .boolean()
-        .describe('更新权限后是否通知对方**注意：** 使用`tenant_access_token`访问不支持该参数')
+        .describe(
+          '添加权限后是否通知对方。仅当使用 <md-tag mode="inline" type="token-user">user_access_token</md-tag> 调用时有效。可选值：- true：通知对方- false：不通知',
+        )
         .optional(),
       type: z
         .enum(['doc', 'sheet', 'file', 'wiki', 'bitable', 'docx', 'mindnote', 'minutes', 'slides'])
         .describe(
-          '文件类型，需要与文件的 token 相匹配 Options:doc(文档),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙记),slides(幻灯片)',
+          '云文档类型，需要与云文档的 token 相匹配。 Options:doc(旧版文档。了解更多，参考[新旧版本文档说明]。),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙记),slides(幻灯片)',
         ),
     }),
     path: z.object({
       token: z
         .string()
-        .describe(
-          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
-        ),
-      member_id: z.string().describe('协作者 ID，与协作者 ID 类型需要对应'),
+        .describe('云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考[如何获取云文档资源相关 token]'),
+      member_id: z.string().describe('协作者 ID，该 ID 的类型与 member_type 指定的值需要保持一致'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1508,22 +1446,21 @@ export const driveV1PermissionPublicGet = {
   sdkName: 'drive.v1.permissionPublic.get',
   path: '/open-apis/drive/v1/permissions/:token/public',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-云文档-权限-设置 v1-获取云文档权限设置-该接口用于根据 filetoken 获取云文档的权限设置',
+  description:
+    '[Feishu/Lark]-历史版本（不推荐）-云文档-权限设置 v1-获取云文档权限设置-获取指定云文档的权限设置，包括是否允许内容被分享到组织外、谁可以查看、添加、移除协作者等设置',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
       type: z
         .enum(['doc', 'sheet', 'file', 'wiki', 'bitable', 'docx', 'mindnote', 'minutes', 'slides'])
         .describe(
-          '文件类型，需要与文件的 token 相匹配 Options:doc(文档),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙记),slides(幻灯片)',
+          '云文档类型，需要与云文档的 token 相匹配。 Options:doc(旧版文档。了解更多，参考[新旧版本文档说明]。),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙记),slides(幻灯片)',
         ),
     }),
     path: z.object({
       token: z
         .string()
-        .describe(
-          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
-        ),
+        .describe('云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考[如何获取云文档资源相关 token]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1534,24 +1471,25 @@ export const driveV1PermissionPublicPasswordCreate = {
   sdkName: 'drive.v1.permissionPublicPassword.create',
   path: '/open-apis/drive/v1/permissions/:token/public/password',
   httpMethod: 'POST',
-  description: '[Feishu/Lark]-权限-设置 v1-密码-开启密码-该接口用于根据 filetoken 开启云文档的密码',
+  description:
+    '[Feishu/Lark]-云文档-权限-密码-启用云文档密码-启用指定云文档的密码。密码启用后，组织外用户需要密码访问，组织内用户无需密码可直接访问',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
       type: z
         .enum(['doc', 'sheet', 'file', 'wiki', 'bitable', 'docx', 'mindnote', 'minutes', 'slides'])
         .describe(
-          '文件类型，需要与文件的 token 相匹配 Options:doc(文档),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙计（暂不支持）),slides(幻灯片)',
+          '云文档类型，需要与云文档的 token 相匹配。 Options:doc(旧版文档。了解更多，参考[新旧版本文档说明]。),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙计（暂不支持）),slides(幻灯片)',
         ),
     }),
-    path: z.object({
-      token: z
-        .string()
-        .describe(
-          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        token: z
+          .string()
+          .describe('云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考[如何获取云文档资源相关 token]')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1561,24 +1499,25 @@ export const driveV1PermissionPublicPasswordDelete = {
   sdkName: 'drive.v1.permissionPublicPassword.delete',
   path: '/open-apis/drive/v1/permissions/:token/public/password',
   httpMethod: 'DELETE',
-  description: '[Feishu/Lark]-权限-设置 v1-密码-关闭密码-该接口用于根据 filetoken 关闭云文档的密码',
+  description:
+    '[Feishu/Lark]-云文档-权限-密码-停用云文档密码-停用指定云文档的密码。密码停用后，组织外用户访问文档将无需输入密码',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
       type: z
         .enum(['doc', 'sheet', 'file', 'wiki', 'bitable', 'docx', 'mindnote', 'minutes', 'slides'])
         .describe(
-          '文件类型，需要与文件的 token 相匹配 Options:doc(文档),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙计（暂不支持）),slides(幻灯片)',
+          '云文档类型，需要与云文档的 token 相匹配。 Options:doc(旧版文档。了解更多，参考[新旧版本文档说明]。),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙计（暂不支持）),slides(幻灯片)',
         ),
     }),
-    path: z.object({
-      token: z
-        .string()
-        .describe(
-          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        token: z
+          .string()
+          .describe('云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考[如何获取云文档资源相关 token]')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1588,24 +1527,25 @@ export const driveV1PermissionPublicPasswordUpdate = {
   sdkName: 'drive.v1.permissionPublicPassword.update',
   path: '/open-apis/drive/v1/permissions/:token/public/password',
   httpMethod: 'PUT',
-  description: '[Feishu/Lark]-权限-设置 v1-密码-刷新密码-该接口用于根据 filetoken 刷新云文档的密码',
+  description:
+    '[Feishu/Lark]-云文档-权限-密码-刷新云文档密码-刷新指定云文档的密码。密码刷新后，旧密码将失效，并生成新密码',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
       type: z
         .enum(['doc', 'sheet', 'file', 'wiki', 'bitable', 'docx', 'mindnote', 'minutes', 'slides'])
         .describe(
-          '文件类型，需要与文件的 token 相匹配 Options:doc(文档),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙计（暂不支持）),slides(幻灯片)',
+          '云文档类型，需要与云文档的 token 相匹配。 Options:doc(旧版文档。了解更多，参考[新旧版本文档说明]。),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙计（暂不支持）),slides(幻灯片)',
         ),
     }),
-    path: z.object({
-      token: z
-        .string()
-        .describe(
-          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        token: z
+          .string()
+          .describe('云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考[如何获取云文档资源相关 token]')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1615,50 +1555,61 @@ export const driveV1PermissionPublicPatch = {
   sdkName: 'drive.v1.permissionPublic.patch',
   path: '/open-apis/drive/v1/permissions/:token/public',
   httpMethod: 'PATCH',
-  description: '[Feishu/Lark]-云文档-权限-设置 v1-更新云文档权限设置-该接口用于根据 filetoken 更新云文档的权限设置',
+  description:
+    '[Feishu/Lark]-历史版本（不推荐）-云文档-权限设置 v1-更新云文档权限设置-更新指定云文档的权限设置，包括是否允许内容被分享到组织外、谁可以查看、添加、移除协作者、谁可以复制内容等设置',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      external_access: z.boolean().describe('允许内容被分享到组织外').optional(),
-      security_entity: z
-        .enum(['anyone_can_view', 'anyone_can_edit', 'only_full_access'])
-        .describe(
-          '谁可以复制内容、创建副本、打印、下载 Options:anyone_can_view(AnyoneCanView 拥有可阅读权限的用户),anyone_can_edit(AnyoneCanEdit 拥有可编辑权限的用户),only_full_access(OnlyFullAccess 拥有可管理权限（包括我）的用户)',
-        )
-        .optional(),
-      comment_entity: z
-        .enum(['anyone_can_view', 'anyone_can_edit'])
-        .describe(
-          '谁可以评论 Options:anyone_can_view(AnyoneCanView 拥有可阅读权限的用户),anyone_can_edit(AnyoneCanEdit 拥有可编辑权限的用户)',
-        )
-        .optional(),
-      share_entity: z
-        .enum(['anyone', 'same_tenant', 'only_full_access'])
-        .describe(
-          '谁可以添加和管理协作者 Options:anyone(所有可阅读或编辑此文档的用户),same_tenant(SameTenant 组织内所有可阅读或编辑此文档的用户),only_full_access(OnlyFullAccess 拥有可管理权限（包括我）的用户)',
-        )
-        .optional(),
-      link_share_entity: z
-        .enum(['tenant_readable', 'tenant_editable', 'anyone_readable', 'anyone_editable', 'closed'])
-        .describe(
-          '链接分享设置 Options:tenant_readable(TenantReadable 组织内获得链接的人可阅读),tenant_editable(TenantEditable 组织内获得链接的人可编辑),anyone_readable(AnyoneReadable 互联网上获得链接的任何人可阅读),anyone_editable(AnyoneEditable 互联网上获得链接的任何人可编辑),closed(关闭链接分享)',
-        )
-        .optional(),
-      invite_external: z.boolean().describe('允许非「可管理权限」的人分享到组织外').optional(),
-    }),
+    data: z
+      .object({
+        external_access: z
+          .boolean()
+          .describe(
+            '是否允许内容被分享到组织外。当云文档类型为 wiki 时，不支持传入该参数。**可选值有：** - `true`: 允许- `false`: 不允许',
+          )
+          .optional(),
+        security_entity: z
+          .enum(['anyone_can_view', 'anyone_can_edit', 'only_full_access'])
+          .describe(
+            '谁可以复制内容、创建副本、打印、下载 Options:anyone_can_view(AnyoneCanView 拥有可阅读权限的用户),anyone_can_edit(AnyoneCanEdit 拥有可编辑权限的用户),only_full_access(OnlyFullAccess 拥有可管理权限（包括我）的用户)',
+          )
+          .optional(),
+        comment_entity: z
+          .enum(['anyone_can_view', 'anyone_can_edit'])
+          .describe(
+            '谁可以评论 Options:anyone_can_view(AnyoneCanView 拥有可阅读权限的用户),anyone_can_edit(AnyoneCanEdit 拥有可编辑权限的用户)',
+          )
+          .optional(),
+        share_entity: z
+          .enum(['anyone', 'same_tenant', 'only_full_access'])
+          .describe(
+            '谁可以查看、添加、移除协作者。当云文档类型为 wiki 时，不支持传入该参数。 Options:anyone(所有可阅读或编辑此文档的用户),same_tenant(SameTenant 组织内所有可阅读或编辑此文档的用户),only_full_access(OnlyFullAccess 拥有可管理权限（包括我）的用户)',
+          )
+          .optional(),
+        link_share_entity: z
+          .enum(['tenant_readable', 'tenant_editable', 'anyone_readable', 'anyone_editable', 'closed'])
+          .describe(
+            '链接分享设置。 Options:tenant_readable(TenantReadable 组织内获得链接的人可阅读),tenant_editable(TenantEditable 组织内获得链接的人可编辑),anyone_readable(AnyoneReadable 互联网上获得链接的任何人可阅读。当云文档类型为 wiki 时，不支持传入该值),anyone_editable(AnyoneEditable 互联网上获得链接的任何人可编辑。当云文档类型为 wiki 时，不支持传入该值),closed(关闭链接分享)',
+          )
+          .optional(),
+        invite_external: z
+          .boolean()
+          .describe(
+            '是否允许非「可管理权限」的人分享到组织外。当云文档类型为 wiki 时，不支持该参数。**可选值有：** - `true`: 允许- `false`: 不允许',
+          )
+          .optional(),
+      })
+      .optional(),
     params: z.object({
       type: z
         .enum(['doc', 'sheet', 'file', 'wiki', 'bitable', 'docx', 'mindnote', 'minutes', 'slides'])
         .describe(
-          '文件类型，需要与文件的 token 相匹配 Options:doc(文档),sheet(电子表格),file(云空间文件),wiki(知识库节点),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙记),slides(幻灯片)',
+          '云文档类型，需要与云文档的 token 相匹配。 Options:doc(旧版文档。了解更多，参考[新旧版本文档说明]。),sheet(电子表格),file(云空间文件),wiki(知识库节点。该枚举值不支持以下设置： - `external_access`: 允许内容被分享到组织外 - `share_entity`: 谁可以添加协作者 - `invite_external`: 允许非「可管理权限」的人分享到组织外 - `link_share_entity`: 链接分享设置 - `anyone_readable`: 互联网上获得链接的人可阅读 - `anyone_editable`: 互联网上获得链接的人可编辑),bitable(多维表格),docx(新版文档),mindnote(思维笔记),minutes(妙记),slides(幻灯片)',
         ),
     }),
     path: z.object({
       token: z
         .string()
-        .describe(
-          '文件的 token，获取方式见 [如何获取云文档资源相关 token]',
-        ),
+        .describe('云文档的 token，需要与 type 参数指定的云文档类型相匹配。可参考[如何获取云文档资源相关 token]'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },

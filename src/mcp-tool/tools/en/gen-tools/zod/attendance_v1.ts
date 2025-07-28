@@ -81,9 +81,7 @@ export const attendanceV1ArchiveRuleDelReport = {
       operator_id: z.string().describe('Operator ID, corresponding employee_type'),
       archive_rule_id: z
         .string()
-        .describe(
-          'Archive rule id, which can be obtained according to [Query all archive rules]',
-        ),
+        .describe('Archive rule id, which can be obtained according to [Query all archive rules]'),
       user_ids: z.array(z.string()).describe('User ID, corresponding to employee_type').optional(),
     }),
     params: z.object({
@@ -106,15 +104,17 @@ export const attendanceV1ArchiveRuleList = {
     '[Feishu/Lark]-Attendance-archive_report-Query all archived reports-Query all archiving rules, corresponding to the background fake attendance management - attendance statistics - reports - [archived reports] function',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('Page size, required parameters').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('Page size, required parameters').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -142,9 +142,7 @@ export const attendanceV1ArchiveRuleUploadReport = {
                 z.object({
                   code: z
                     .string()
-                    .describe(
-                      'Field code, which can be obtained according to [Query Archive Report Header]',
-                    ),
+                    .describe('Field code, which can be obtained according to [Query Archive Report Header]'),
                   value: z.string().describe('field result value').optional(),
                 }),
               )
@@ -156,9 +154,7 @@ export const attendanceV1ArchiveRuleUploadReport = {
         .optional(),
       archive_rule_id: z
         .string()
-        .describe(
-          'Archive rule id, which can be obtained according to [Query all archive rules]',
-        ),
+        .describe('Archive rule id, which can be obtained according to [Query all archive rules]'),
     }),
     params: z.object({
       employee_type: z
@@ -188,9 +184,7 @@ export const attendanceV1ArchiveRuleUserStatsFieldsQuery = {
       month: z.string().describe('Month, date format is yyyyMM'),
       archive_rule_id: z
         .string()
-        .describe(
-          'Archive rule id, which can be obtained according to [Query all archive rules]',
-        ),
+        .describe('Archive rule id, which can be obtained according to [Query all archive rules]'),
       operator_id: z.string().describe('Operator id, corresponding to employee_type'),
     }),
     params: z.object({
@@ -489,9 +483,7 @@ export const attendanceV1GroupCreate = {
                 punch_day: z.number().describe('Clock in the format yyyMMdd'),
                 shift_id: z
                   .string()
-                  .describe(
-                    'Shift ID, you can check all shifts according to [query]And [query shift by name] get',
-                  ),
+                  .describe('Shift ID, you can check all shifts according to [query]And [query shift by name] get'),
               }),
             )
             .describe('Special dates must be clocked in')
@@ -502,9 +494,7 @@ export const attendanceV1GroupCreate = {
                 punch_day: z.number().describe('Clock in the format yyyMMdd'),
                 shift_id: z
                   .string()
-                  .describe(
-                    'Shift ID, you can check all shifts according to [query]And [query shift by name] get',
-                  ),
+                  .describe('Shift ID, you can check all shifts according to [query]And [query shift by name] get'),
               }),
             )
             .describe('No special dates in the clock')
@@ -898,15 +888,17 @@ export const attendanceV1GroupList = {
     '[Feishu/Lark]-Attendance-Attendance group-Query all attendance groups-Turn the page to get a list of all attendance groups. Include attendance group name and attendance group id',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const attendanceV1GroupListUser = {
@@ -979,15 +971,9 @@ export const attendanceV1LeaveAccrualRecordPatch = {
     data: z.object({
       leave_granting_record_id: z
         .string()
-        .describe(
-          'The unique ID of the issuance record, which can be created by [Create a holiday issuance record]',
-        ),
+        .describe('The unique ID of the issuance record, which can be created by [Create a holiday issuance record]'),
       employment_id: z.string().describe('Employee ID, type corresponding user_id_type'),
-      leave_type_id: z
-        .string()
-        .describe(
-          'The holiday type ID can be obtained by [Get a list of holiday types]',
-        ),
+      leave_type_id: z.string().describe('The holiday type ID can be obtained by [Get a list of holiday types]'),
       reason: z
         .array(
           z.object({
@@ -1000,17 +986,22 @@ export const attendanceV1LeaveAccrualRecordPatch = {
       expiration_date: z.string().describe('Expiration date, format "2020-01-01"').optional(),
       quantity: z.string().describe('Modify the number of releases').optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
-    }),
-    path: z.object({
-      leave_id: z
-        .string()
-        .describe(
-          'The holiday type ID can be obtained by [Get a list of holiday types]',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+      })
+      .optional(),
+    path: z
+      .object({
+        leave_id: z
+          .string()
+          .describe('The holiday type ID can be obtained by [Get a list of holiday types]')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const attendanceV1LeaveEmployExpireRecordGet = {
@@ -1025,11 +1016,7 @@ export const attendanceV1LeaveEmployExpireRecordGet = {
   schema: {
     data: z.object({
       employment_id: z.string().describe('Employee ID, consistent with user_id_type'),
-      leave_type_id: z
-        .string()
-        .describe(
-          'The holiday type ID can be obtained by [Get a list of holiday types]',
-        ),
+      leave_type_id: z.string().describe('The holiday type ID can be obtained by [Get a list of holiday types]'),
       start_expiration_date: z.string().describe('The earliest expiration date in the format yyyy-MM-dd'),
       end_expiration_date: z.string().describe('The latest expiration date in the format yyyy-MM-dd'),
       time_offset: z
@@ -1039,17 +1026,22 @@ export const attendanceV1LeaveEmployExpireRecordGet = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
-    }),
-    path: z.object({
-      leave_id: z
-        .string()
-        .describe(
-          'The holiday type ID can be obtained by [Get a list of holiday types]',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+      })
+      .optional(),
+    path: z
+      .object({
+        leave_id: z
+          .string()
+          .describe('The holiday type ID can be obtained by [Get a list of holiday types]')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const attendanceV1ShiftCreate = {
@@ -1229,19 +1221,19 @@ export const attendanceV1ShiftCreate = {
         .optional(),
       id: z
         .string()
-        .describe(
-          'Shift id (need to pass when updating shift), get method: 1) [query shift by name] 2) [create shift]',
-        )
+        .describe('Shift id (need to pass when updating shift), get method: 1) [query shift by name] 2) [create shift]')
         .optional(),
     }),
-    params: z.object({
-      employee_type: z
-        .enum(['employee_id', 'employee_no'])
-        .describe(
-          "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details,you can also get from [Get user ID by mobile phone number or email]),employee_no(Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        employee_type: z
+          .enum(['employee_id', 'employee_no'])
+          .describe(
+            "The user_ids in the request body and the employee ID type of the user_id in the response body. If you don't have background administrative privileges, you can use [Get user ID by mobile phone number or email] Options:employee_id(Employee ID, which is the user ID in [Feishu admin background] > organizational structure > members and departments > member details,you can also get from [Get user ID by mobile phone number or email]),employee_no(Employee job number, that is, the job number in [Feishu management background] > organizational structure > members and departments > member details)",
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const attendanceV1ShiftDelete = {
@@ -1257,9 +1249,7 @@ export const attendanceV1ShiftDelete = {
     path: z.object({
       shift_id: z
         .string()
-        .describe(
-          'Shift ID, which can be obtained as follows: 1) [Search shift by name] 2) [Create a shift]',
-        ),
+        .describe('Shift ID, which can be obtained as follows: 1) [Search shift by name] 2) [Create a shift]'),
     }),
   },
 };
@@ -1276,9 +1266,7 @@ export const attendanceV1ShiftGet = {
     path: z.object({
       shift_id: z
         .string()
-        .describe(
-          'Shift ID, which can be obtained as follows: 1) [Search shift by name] 2) [Create a shift]',
-        ),
+        .describe('Shift ID, which can be obtained as follows: 1) [Search shift by name] 2) [Create a shift]'),
     }),
   },
 };
@@ -1292,15 +1280,17 @@ export const attendanceV1ShiftList = {
     '[Feishu/Lark]-Attendance-Attendance shift-Query all shifts-Fake duty settings in Feishu personnel management background - [Shift configuration] page turn query all shift functions, showing shift name, clock in rules, flexible shift rules, rest rules, etc',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const attendanceV1ShiftQuery = {
@@ -1326,220 +1316,207 @@ export const attendanceV1UserApprovalCreate = {
     "[Feishu/Lark]-Attendance-Attendance approval-Add approval result-Since some companies may use their own approval system instead of Feishu Approval, employees' leave and overtime data cannot flow into the Feishu Attendance. As a result, employees still receive check-in reminders during the leave period and are recorded as No Record.For these companies that only use the Feishu Attendance, but not the Feishu Approval, they can import 3rd party approval data to Feishu Attendance using this attendance API",
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      user_approval: z
-        .object({
-          user_id: z
-            .string()
-            .describe('Approval Submitter ID. The incoming ID type needs to match the value of the employee_type'),
-          date: z.string().describe('Approval date in the format yyyMMdd'),
-          outs: z
-            .array(
-              z.object({
-                uniq_id: z
-                  .string()
-                  .describe(
-                    'Outgoing type unique ID, representing an outgoing type, with a length less than 14* How to get it? You can choose to fill in the outgoing type id of the three parties. Such as the id of going out in the city and going out outside the city',
-                  ),
-                unit: z
-                  .number()
-                  .describe('Unit of time spent away Options:1(Day),2(Hour),3(HalfDay Half day),4(HalfHour Half hour)'),
-                interval: z
-                  .number()
-                  .describe(
-                    'The time for the associated approval form to go out, the unit is seconds, and it has nothing to do with the unit',
-                  ),
-                start_time: z.string().describe('Start time, time format is yyyy-MM-dd HH:mm:ss'),
-                end_time: z.string().describe('End time, time format is yyyy-MM-dd HH:mm:ss'),
-                i18n_names: z
-                  .object({
-                    ch: z.string().describe('Chinese description').optional(),
-                    en: z.string().describe('English description').optional(),
-                    ja: z.string().describe('Japanese description').optional(),
-                  })
-                  .describe(
-                    'Out of office multi-language present, with the format is map, and the key is ["ch", "en", "ja"], where ch stands for Chinese, en stands for English, ja stands for Japanese',
-                  ),
-                default_locale: z
-                  .string()
-                  .describe(
-                    'Default language type. Since Chinese, English, and Japanese are available on Feishu apps, when user switches language, if there is no corresponding language name, it will use the name of default language',
-                  ),
-                reason: z.string().describe('Out of office reason'),
-                idempotent_id: z
-                  .string()
-                  .describe(
-                    'The unique idempotent key of the outgoing record, which is used to avoid repeated creation of the outgoing record. You can fill in the outgoing record id of the three parties',
-                  )
-                  .optional(),
-                correct_process_id: z
-                  .array(z.string())
-                  .describe(
-                    'Correct process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
-                  )
-                  .optional(),
-                cancel_process_id: z
-                  .array(z.string())
-                  .describe(
-                    'Revoke process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
-                  )
-                  .optional(),
-                process_id: z
-                  .array(z.string())
-                  .describe(
-                    'initiating process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
-                  )
-                  .optional(),
-              }),
-            )
-            .describe('Out of office info')
-            .optional(),
-          leaves: z
-            .array(
-              z.object({
-                uniq_id: z
-                  .string()
-                  .describe(
-                    'Vacation type unique ID, representing a vacation type, less than 14 in length* This ID corresponds to the holiday type (ie: i18n_names), so it needs to be guaranteed to be unique. You can get [Get Holiday Type]',
-                  )
-                  .optional(),
-                unit: z
-                  .number()
-                  .describe('Holiday duration unit Options:1(Day),2(Hour),3(HalfDay Half day),4(HalfHour Half hour)'),
-                interval: z
-                  .number()
-                  .describe(
-                    'The holiday duration of the associated approval order is seconds, which has nothing to do with unit',
-                  ),
-                start_time: z.string().describe('Start time, time format is yyyy-MM-dd HH:mm:ss'),
-                end_time: z.string().describe('End time, time format is yyyy-MM-dd HH:mm:ss'),
-                i18n_names: z
-                  .object({
-                    ch: z.string().describe('Chinese description').optional(),
-                    en: z.string().describe('English description').optional(),
-                    ja: z.string().describe('Japanese description').optional(),
-                  })
-                  .describe(
-                    'Leave multi-language present, with the format is map, and the key is ["ch", "en", "ja"], where ch stands for Chinese, en stands for English, ja stands for Japanese',
-                  ),
-                default_locale: z
-                  .enum(['ch', 'en', 'ja'])
-                  .describe(
-                    'Default language type. Since Chinese, English, and Japanese are available on Feishu apps, when user switches language, if there is no corresponding language name, it will use the name of default language Options:ch(Chinese description),en(English description),ja(Japanese description)',
-                  ),
-                reason: z.string().describe('Leave reason'),
-                idempotent_id: z
-                  .string()
-                  .describe(
-                    'The unique idempotent key of the leave record, which is used to avoid repeated creation of leave records. You can fill in the leave record id of the three parties',
-                  )
-                  .optional(),
-              }),
-            )
-            .describe('Leave info')
-            .optional(),
-          overtime_works: z
-            .array(
-              z.object({
-                duration: z
-                  .number()
-                  .describe(
-                    'If you need to use this field to calculate overtime hours, please contact [Technical Support] to open. start_time and end_time calculation are used by default',
-                  ),
-                unit: z
-                  .number()
-                  .describe('Overtime duration unit Options:1(Day),2(Hour),3(HalfDay Half day),4(HalfHour Half hour)'),
-                category: z
-                  .number()
-                  .describe('Overtime date type Options:1(Workday Working day),2(Weekend Rest day),3(Holiday)'),
-                type: z
-                  .number()
-                  .describe(
-                    'Overtime rule type Options:0(None record only),1(DaysOff Counted as compensatory leave),2(Fee Counted as overtime pay),3(Bind [This optional value has been deprecated])',
-                  ),
-                start_time: z.string().describe('Start time, time format is yyyy-MM-dd HH:mm:ss'),
-                end_time: z.string().describe('End time, time format is yyyy-MM-dd HH:mm:ss'),
-                reason: z.string().describe('overwork reason').optional(),
-                idempotent_id: z
-                  .string()
-                  .describe(
-                    'The unique idempotent key for overtime records, which is used to avoid repeated creation of overtime records. You can fill in the overtime record id of the three parties',
-                  )
-                  .optional(),
-                correct_process_id: z
-                  .array(z.string())
-                  .describe(
-                    'Correct process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
-                  )
-                  .optional(),
-                cancel_process_id: z
-                  .array(z.string())
-                  .describe(
-                    'Revoke process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
-                  )
-                  .optional(),
-                process_id: z
-                  .array(z.string())
-                  .describe(
-                    'initiating process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
-                  )
-                  .optional(),
-              }),
-            )
-            .describe('Overtime info')
-            .optional(),
-          trips: z
-            .array(
-              z.object({
-                start_time: z.string().describe('Start time, time format is yyyy-MM-dd HH:mm:ss'),
-                end_time: z.string().describe('End time, time format is yyyy-MM-dd HH:mm:ss'),
-                reason: z.string().describe('Business trip reason'),
-                approve_pass_time: z.string().describe('Approved time, time format is yyyy-MM-dd HH:mm:ss'),
-                approve_apply_time: z.string().describe('Application time, time format is yyyy-MM-dd HH:mm:ss'),
-                idempotent_id: z
-                  .string()
-                  .describe(
-                    'The unique idempotent key of the business trip record, which is used to avoid repeated creation of business trip records. You can fill in the business trip record id of the three parties',
-                  )
-                  .optional(),
-                correct_process_id: z
-                  .array(z.string())
-                  .describe(
-                    'Correct process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
-                  )
-                  .optional(),
-                cancel_process_id: z
-                  .array(z.string())
-                  .describe(
-                    'Revoke process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
-                  )
-                  .optional(),
-                process_id: z
-                  .array(z.string())
-                  .describe(
-                    'initiating process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
-                  )
-                  .optional(),
-                departure: z
-                  .object({
-                    region_level: z
-                      .string()
-                      .describe(
-                        'Geographical level (country | province | city | district)l1: Countryl2: Provincel3: Cityl4: District/County',
-                      )
-                      .optional(),
-                    region_id: z
-                      .string()
-                      .describe(
-                        'Geographic ID, it can be obtained by [querying district/county information] or [querying city information] (only supported by Feishu People Enterprise)',
-                      )
-                      .optional(),
-                  })
-                  .describe('Departure point (only one)')
-                  .optional(),
-                destinations: z
-                  .array(
-                    z.object({
+    data: z
+      .object({
+        user_approval: z
+          .object({
+            user_id: z
+              .string()
+              .describe('Approval Submitter ID. The incoming ID type needs to match the value of the employee_type'),
+            date: z.string().describe('Approval date in the format yyyMMdd'),
+            outs: z
+              .array(
+                z.object({
+                  uniq_id: z
+                    .string()
+                    .describe(
+                      'Outgoing type unique ID, representing an outgoing type, with a length less than 14* How to get it? You can choose to fill in the outgoing type id of the three parties. Such as the id of going out in the city and going out outside the city',
+                    ),
+                  unit: z
+                    .number()
+                    .describe(
+                      'Unit of time spent away Options:1(Day),2(Hour),3(HalfDay Half day),4(HalfHour Half hour)',
+                    ),
+                  interval: z
+                    .number()
+                    .describe(
+                      'The time for the associated approval form to go out, the unit is seconds, and it has nothing to do with the unit',
+                    ),
+                  start_time: z.string().describe('Start time, time format is yyyy-MM-dd HH:mm:ss'),
+                  end_time: z.string().describe('End time, time format is yyyy-MM-dd HH:mm:ss'),
+                  i18n_names: z
+                    .object({
+                      ch: z.string().describe('Chinese description').optional(),
+                      en: z.string().describe('English description').optional(),
+                      ja: z.string().describe('Japanese description').optional(),
+                    })
+                    .describe(
+                      'Out of office multi-language present, with the format is map, and the key is ["ch", "en", "ja"], where ch stands for Chinese, en stands for English, ja stands for Japanese',
+                    ),
+                  default_locale: z
+                    .string()
+                    .describe(
+                      'Default language type. Since Chinese, English, and Japanese are available on Feishu apps, when user switches language, if there is no corresponding language name, it will use the name of default language',
+                    ),
+                  reason: z.string().describe('Out of office reason'),
+                  idempotent_id: z
+                    .string()
+                    .describe(
+                      'The unique idempotent key of the outgoing record, which is used to avoid repeated creation of the outgoing record. You can fill in the outgoing record id of the three parties',
+                    )
+                    .optional(),
+                  correct_process_id: z
+                    .array(z.string())
+                    .describe(
+                      'Correct process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
+                    )
+                    .optional(),
+                  cancel_process_id: z
+                    .array(z.string())
+                    .describe(
+                      'Revoke process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
+                    )
+                    .optional(),
+                  process_id: z
+                    .array(z.string())
+                    .describe(
+                      'initiating process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
+                    )
+                    .optional(),
+                }),
+              )
+              .describe('Out of office info')
+              .optional(),
+            leaves: z
+              .array(
+                z.object({
+                  uniq_id: z
+                    .string()
+                    .describe(
+                      'Vacation type unique ID, representing a vacation type, less than 14 in length* This ID corresponds to the holiday type (ie: i18n_names), so it needs to be guaranteed to be unique. You can get [Get Holiday Type]',
+                    )
+                    .optional(),
+                  unit: z
+                    .number()
+                    .describe('Holiday duration unit Options:1(Day),2(Hour),3(HalfDay Half day),4(HalfHour Half hour)'),
+                  interval: z
+                    .number()
+                    .describe(
+                      'The holiday duration of the associated approval order is seconds, which has nothing to do with unit',
+                    ),
+                  start_time: z.string().describe('Start time, time format is yyyy-MM-dd HH:mm:ss'),
+                  end_time: z.string().describe('End time, time format is yyyy-MM-dd HH:mm:ss'),
+                  i18n_names: z
+                    .object({
+                      ch: z.string().describe('Chinese description').optional(),
+                      en: z.string().describe('English description').optional(),
+                      ja: z.string().describe('Japanese description').optional(),
+                    })
+                    .describe(
+                      'Leave multi-language present, with the format is map, and the key is ["ch", "en", "ja"], where ch stands for Chinese, en stands for English, ja stands for Japanese',
+                    ),
+                  default_locale: z
+                    .enum(['ch', 'en', 'ja'])
+                    .describe(
+                      'Default language type. Since Chinese, English, and Japanese are available on Feishu apps, when user switches language, if there is no corresponding language name, it will use the name of default language Options:ch(Chinese description),en(English description),ja(Japanese description)',
+                    ),
+                  reason: z.string().describe('Leave reason'),
+                  idempotent_id: z
+                    .string()
+                    .describe(
+                      'The unique idempotent key of the leave record, which is used to avoid repeated creation of leave records. You can fill in the leave record id of the three parties',
+                    )
+                    .optional(),
+                }),
+              )
+              .describe('Leave info')
+              .optional(),
+            overtime_works: z
+              .array(
+                z.object({
+                  duration: z
+                    .number()
+                    .describe(
+                      'If you need to use this field to calculate overtime hours, please contact [Technical Support] to open. start_time and end_time calculation are used by default',
+                    ),
+                  unit: z
+                    .number()
+                    .describe(
+                      'Overtime duration unit Options:1(Day),2(Hour),3(HalfDay Half day),4(HalfHour Half hour)',
+                    ),
+                  category: z
+                    .number()
+                    .describe('Overtime date type Options:1(Workday Working day),2(Weekend Rest day),3(Holiday)'),
+                  type: z
+                    .number()
+                    .describe(
+                      'Overtime rule type Options:0(None record only),1(DaysOff Counted as compensatory leave),2(Fee Counted as overtime pay),3(Bind [This optional value has been deprecated])',
+                    ),
+                  start_time: z.string().describe('Start time, time format is yyyy-MM-dd HH:mm:ss'),
+                  end_time: z.string().describe('End time, time format is yyyy-MM-dd HH:mm:ss'),
+                  reason: z.string().describe('overwork reason').optional(),
+                  idempotent_id: z
+                    .string()
+                    .describe(
+                      'The unique idempotent key for overtime records, which is used to avoid repeated creation of overtime records. You can fill in the overtime record id of the three parties',
+                    )
+                    .optional(),
+                  correct_process_id: z
+                    .array(z.string())
+                    .describe(
+                      'Correct process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
+                    )
+                    .optional(),
+                  cancel_process_id: z
+                    .array(z.string())
+                    .describe(
+                      'Revoke process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
+                    )
+                    .optional(),
+                  process_id: z
+                    .array(z.string())
+                    .describe(
+                      'initiating process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
+                    )
+                    .optional(),
+                }),
+              )
+              .describe('Overtime info')
+              .optional(),
+            trips: z
+              .array(
+                z.object({
+                  start_time: z.string().describe('Start time, time format is yyyy-MM-dd HH:mm:ss'),
+                  end_time: z.string().describe('End time, time format is yyyy-MM-dd HH:mm:ss'),
+                  reason: z.string().describe('Business trip reason'),
+                  approve_pass_time: z.string().describe('Approved time, time format is yyyy-MM-dd HH:mm:ss'),
+                  approve_apply_time: z.string().describe('Application time, time format is yyyy-MM-dd HH:mm:ss'),
+                  idempotent_id: z
+                    .string()
+                    .describe(
+                      'The unique idempotent key of the business trip record, which is used to avoid repeated creation of business trip records. You can fill in the business trip record id of the three parties',
+                    )
+                    .optional(),
+                  correct_process_id: z
+                    .array(z.string())
+                    .describe(
+                      'Correct process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
+                    )
+                    .optional(),
+                  cancel_process_id: z
+                    .array(z.string())
+                    .describe(
+                      'Revoke process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
+                    )
+                    .optional(),
+                  process_id: z
+                    .array(z.string())
+                    .describe(
+                      'initiating process instance ID.This field is automatically generated by the system and should not be included when submitting approval results',
+                    )
+                    .optional(),
+                  departure: z
+                    .object({
                       region_level: z
                         .string()
                         .describe(
@@ -1552,32 +1529,51 @@ export const attendanceV1UserApprovalCreate = {
                           'Geographic ID, it can be obtained by [querying district/county information] or [querying city information] (only supported by Feishu People Enterprise)',
                         )
                         .optional(),
-                    }),
-                  )
-                  .describe('Destination (multiple can be written)')
-                  .optional(),
-                transportation: z
-                  .array(z.number())
-                  .describe('Transportation (1 plane, 2 trains, 3 cars, 4 high-speed trains, 5 boats, 6 others)')
-                  .optional(),
-                trip_type: z.number().describe('Business trip type (1: one way 2: round trip)').optional(),
-                remarks: z.string().describe('Business trip remarks').optional(),
-              }),
-            )
-            .describe(
-              'Travel information.Currently only full-day travel is supported (less than full days are counted as full days). If you need to support half-day travel, please consult [Technical Support]',
-            )
-            .optional(),
-          time_zone: z
-            .string()
-            .describe(
-              'This field is no longer used, subject to the time zone of the attendance group matched by the user',
-            )
-            .optional(),
-        })
-        .describe('Approval info')
-        .optional(),
-    }),
+                    })
+                    .describe('Departure point (only one)')
+                    .optional(),
+                  destinations: z
+                    .array(
+                      z.object({
+                        region_level: z
+                          .string()
+                          .describe(
+                            'Geographical level (country | province | city | district)l1: Countryl2: Provincel3: Cityl4: District/County',
+                          )
+                          .optional(),
+                        region_id: z
+                          .string()
+                          .describe(
+                            'Geographic ID, it can be obtained by [querying district/county information] or [querying city information] (only supported by Feishu People Enterprise)',
+                          )
+                          .optional(),
+                      }),
+                    )
+                    .describe('Destination (multiple can be written)')
+                    .optional(),
+                  transportation: z
+                    .array(z.number())
+                    .describe('Transportation (1 plane, 2 trains, 3 cars, 4 high-speed trains, 5 boats, 6 others)')
+                    .optional(),
+                  trip_type: z.number().describe('Business trip type (1: one way 2: round trip)').optional(),
+                  remarks: z.string().describe('Business trip remarks').optional(),
+                }),
+              )
+              .describe(
+                'Travel information.Currently only full-day travel is supported (less than full days are counted as full days). If you need to support half-day travel, please consult [Technical Support]',
+              )
+              .optional(),
+            time_zone: z
+              .string()
+              .describe(
+                'This field is no longer used, subject to the time zone of the attendance group matched by the user',
+              )
+              .optional(),
+          })
+          .describe('Approval info')
+          .optional(),
+      })
+      .optional(),
     params: z.object({
       employee_type: z
         .enum(['employee_id', 'employee_no', 'open_id'])
@@ -1944,23 +1940,21 @@ export const attendanceV1UserSettingModify = {
     "[Feishu/Lark]-Attendance-Attendance user management-Modify user face recognition information-Modify the user settings information of the employee within the authorization, including the face photo file ID. Modifying the user's facial recognition information currently only supports API modification, and the management background cannot be modified",
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      user_setting: z
-        .object({
-          user_id: z.string().describe('User ID'),
-          face_key: z
-            .string()
-            .describe(
-              'Face photo file ID, get method: [Upload user facial recognition photo]',
-            ),
-          face_key_update_time: z
-            .string()
-            .describe('Time of face photo updates, with the timestamp accurate to seconds')
-            .optional(),
-        })
-        .describe('User settings')
-        .optional(),
-    }),
+    data: z
+      .object({
+        user_setting: z
+          .object({
+            user_id: z.string().describe('User ID'),
+            face_key: z.string().describe('Face photo file ID, get method: [Upload user facial recognition photo]'),
+            face_key_update_time: z
+              .string()
+              .describe('Time of face photo updates, with the timestamp accurate to seconds')
+              .optional(),
+          })
+          .describe('User settings')
+          .optional(),
+      })
+      .optional(),
     params: z.object({
       employee_type: z
         .enum(['employee_id', 'employee_no'])
@@ -2147,11 +2141,7 @@ export const attendanceV1UserStatsViewUpdate = {
         ),
     }),
     path: z.object({
-      user_stats_view_id: z
-        .string()
-        .describe(
-          'User view ID is obtained as follows: 1) [Query statistics settings]',
-        ),
+      user_stats_view_id: z.string().describe('User view ID is obtained as follows: 1) [Query statistics settings]'),
     }),
   },
 };

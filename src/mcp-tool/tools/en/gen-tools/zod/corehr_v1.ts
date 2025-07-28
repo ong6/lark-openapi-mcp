@@ -144,9 +144,14 @@ export const corehrV1AssignedUserSearch = {
         .optional(),
       page_size: z.string().describe('Page size'),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1AuthorizationAddRoleAssign = {
@@ -219,23 +224,28 @@ export const corehrV1AuthorizationQuery = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-User authorization-Batch query user authorization-Batch query the authorization information of a single user in the "Permission Settings" in Feishu\'s personnel management backend. You can find the corresponding location by following "Feishu Personnel" - "Permission Settings". Authorization information includes employee ID, authorized roles and other information',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      employment_id_list: z
-        .array(z.string())
-        .describe('Employee ID list, up to 100 (if not passed, all employees will be queried by default)')
-        .optional(),
-      role_id_list: z.array(z.string()).describe('Role ID list, up to 100').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.string().describe('Number of records fetched per page, up to 100').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
-      updated_at_gte: z.string().describe('Authorization time is greater than').optional(),
-      updated_at_lte: z.string().describe('Authorization time is less than').optional(),
-    }),
+    params: z
+      .object({
+        employment_id_list: z
+          .array(z.string())
+          .describe('Employee ID list, up to 100 (if not passed, all employees will be queried by default)')
+          .optional(),
+        role_id_list: z.array(z.string()).describe('Role ID list, up to 100').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.string().describe('Number of records fetched per page, up to 100').optional(),
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+        updated_at_gte: z.string().describe('Authorization time is greater than').optional(),
+        updated_at_lte: z.string().describe('Authorization time is less than').optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1AuthorizationRemoveRoleAssign = {
@@ -371,12 +381,14 @@ export const corehrV1CommonDataMetaDataAddEnumOption = {
         )
         .describe('Add enumeration options list'),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1CommonDataMetaDataEditEnumOption = {
@@ -405,12 +417,14 @@ export const corehrV1CommonDataMetaDataEditEnumOption = {
         })
         .describe('Enumeration options'),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1CompanyCreate = {
@@ -621,22 +635,10 @@ export const corehrV1CompanyCreate = {
             ),
           region_id: z
             .string()
-            .describe(
-              'main administrative region ID.[Request Interface]Query and obtain',
-            )
+            .describe('main administrative region ID.[Request Interface]Query and obtain')
             .optional(),
-          city_id: z
-            .string()
-            .describe(
-              'City ID.[Request Interface]Query and obtain',
-            )
-            .optional(),
-          distinct_id: z
-            .string()
-            .describe(
-              'District/County ID,[Request Interface]Query and obtain',
-            )
-            .optional(),
+          city_id: z.string().describe('City ID.[Request Interface]Query and obtain').optional(),
+          distinct_id: z.string().describe('District/County ID,[Request Interface]Query and obtain').optional(),
           address_line1: z.string().describe('Address line 1').optional(),
           address_line2: z.string().describe('Address line 2').optional(),
           address_line3: z.string().describe('Address line 3').optional(),
@@ -668,22 +670,10 @@ export const corehrV1CompanyCreate = {
             ),
           region_id: z
             .string()
-            .describe(
-              'main administrative region ID.[Request Interface]Query and obtain',
-            )
+            .describe('main administrative region ID.[Request Interface]Query and obtain')
             .optional(),
-          city_id: z
-            .string()
-            .describe(
-              'City ID.[Request Interface]Query and obtain',
-            )
-            .optional(),
-          distinct_id: z
-            .string()
-            .describe(
-              'District/County Id. [Request Interface]Query and obtain',
-            )
-            .optional(),
+          city_id: z.string().describe('City ID.[Request Interface]Query and obtain').optional(),
+          distinct_id: z.string().describe('District/County Id. [Request Interface]Query and obtain').optional(),
           address_line1: z.string().describe('Address line 1').optional(),
           address_line2: z.string().describe('Address line 2').optional(),
           address_line3: z.string().describe('Address line 3').optional(),
@@ -707,12 +697,14 @@ export const corehrV1CompanyCreate = {
         .describe('Office address details. Public field, required if the request is for a company')
         .optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1CompanyDelete = {
@@ -784,260 +776,243 @@ export const corehrV1CompanyPatch = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Organization management-Company-Update company-Update company information, including basic information, registered address, office address, etc',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      hiberarchy_common: z
-        .object({
-          parent_id: z.string().describe('parent organization').optional(),
-          name: z
-            .array(
-              z.object({
-                lang: z
-                  .string()
-                  .describe(
-                    'language.This supports Chinese and English. For Chinese, use zh-CN; for English, use en-US',
-                  ),
-                value: z.string().describe('content.This supports Chinese and English'),
-              }),
-            )
-            .describe(
-              'name- There will be a globally unique check for the Chinese and English names of the Job level- Name cannot contain 「/」「；」「;」 characters',
-            )
-            .optional(),
-          active: z.boolean().describe('Whether to enable').optional(),
-          effective_time: z
-            .string()
-            .describe(
-              'Version effective date- Fill in the format: YYYY-MM-DD 00:00:00 (the system will automatically change the hours, minutes and seconds to 00:00:00)- The system defaults to take effect at 00:00:00 on the day when the date is filled in- This interface only supports the smallest unit of day- Date range requirements: 1900-01-01 00:00:00～9999-12-31 23:59:59',
-            ),
-          code: z
-            .string()
-            .describe(
-              'Company Code (cannot be repeated with the encoding of other records), this field will be invalid when automatic encoding is turned on',
-            )
-            .optional(),
-          description: z
-            .array(
-              z.object({
-                lang: z
-                  .string()
-                  .describe(
-                    'language.This supports Chinese and English. For Chinese, use zh-CN; for English, use en-US',
-                  ),
-                value: z.string().describe('content.This supports Chinese and English'),
-              }),
-            )
-            .describe('describe')
-            .optional(),
-        })
-        .describe('Hierarchical relationship, see entity for inner fields')
-        .optional(),
-      type: z
-        .object({ enum_name: z.string().describe('enumeration value') })
-        .describe(
-          'Company properties, enumeration values are available in the document [Feishu personnel enumeration constants] Company type (company_type) enumeration definition section',
-        )
-        .optional(),
-      industry_list: z
-        .array(z.object({ enum_name: z.string().describe('enumeration value') }))
-        .describe(
-          'The industry is located, and it is obtained through the Get Field Details query. Request parameters: object_api_name = company; custom_api_name = industry',
-        )
-        .optional(),
-      legal_representative: z
-        .array(
-          z.object({
-            lang: z
+    data: z
+      .object({
+        hiberarchy_common: z
+          .object({
+            parent_id: z.string().describe('parent organization').optional(),
+            name: z
+              .array(
+                z.object({
+                  lang: z
+                    .string()
+                    .describe(
+                      'language.This supports Chinese and English. For Chinese, use zh-CN for English, use en-US',
+                    ),
+                  value: z.string().describe('content.This supports Chinese and English'),
+                }),
+              )
+              .describe(
+                'name- There will be a globally unique check for the Chinese and English names of the Job level- Name cannot contain 「/」「；」「;」 characters',
+              )
+              .optional(),
+            active: z.boolean().describe('Whether to enable').optional(),
+            effective_time: z
               .string()
-              .describe('language.This supports Chinese and English. For Chinese, use zh-CN; for English, use en-US'),
-            value: z.string().describe('content.This supports Chinese and English'),
-          }),
-        )
-        .describe(
-          'legal representative.Only when the country/region in the registered address is Chinese mainland, the legal representative field is valid.If the country/region in the registered address is not Chinese mainland, then filling in the legal representative field is invalid',
-        )
-        .optional(),
-      post_code: z.string().describe('zip code').optional(),
-      tax_payer_id: z.string().describe('Taxpayer identification number').optional(),
-      confidential: z.boolean().describe('Confidential').optional(),
-      sub_type_list: z
-        .array(z.object({ enum_name: z.string().describe('enumeration value') }))
-        .describe(
-          'Company principal type, obtained by Get Field Details query. Request parameters: object_api_name = company; custom_api_name = subtype',
-        )
-        .optional(),
-      branch_company: z.boolean().describe('Is it a branch office?').optional(),
-      primary_manager: z
-        .array(
-          z.object({
-            lang: z
+              .describe(
+                'Version effective date- Fill in the format: YYYY-MM-DD 00:00:00 (the system will automatically change the hours, minutes and seconds to 00:00:00)- The system defaults to take effect at 00:00:00 on the day when the date is filled in- This interface only supports the smallest unit of day- Date range requirements: 1900-01-01 00:00:00～9999-12-31 23:59:59',
+              ),
+            code: z
               .string()
-              .describe('language.This supports Chinese and English. For Chinese, use zh-CN; for English, use en-US'),
-            value: z.string().describe('content.This supports Chinese and English'),
-          }),
-        )
-        .describe('main person in charge')
-        .optional(),
-      currency: z
-        .object({
-          currency_name: z
-            .array(
-              z.object({
-                lang: z
+              .describe(
+                'Company Code (cannot be repeated with the encoding of other records), this field will be invalid when automatic encoding is turned on',
+              )
+              .optional(),
+            description: z
+              .array(
+                z.object({
+                  lang: z
+                    .string()
+                    .describe(
+                      'language.This supports Chinese and English. For Chinese, use zh-CN; for English, use en-US',
+                    ),
+                  value: z.string().describe('content.This supports Chinese and English'),
+                }),
+              )
+              .describe('describe')
+              .optional(),
+          })
+          .describe('Hierarchical relationship, see entity for inner fields')
+          .optional(),
+        type: z
+          .object({ enum_name: z.string().describe('enumeration value') })
+          .describe(
+            'Company properties, enumeration values are available in the document [Feishu personnel enumeration constants] Company type (company_type) enumeration definition section',
+          )
+          .optional(),
+        industry_list: z
+          .array(z.object({ enum_name: z.string().describe('enumeration value') }))
+          .describe(
+            'The industry is located, and it is obtained through the Get Field Details query. Request parameters: object_api_name = company; custom_api_name = industry',
+          )
+          .optional(),
+        legal_representative: z
+          .array(
+            z.object({
+              lang: z
+                .string()
+                .describe('language.This supports Chinese and English. For Chinese, use zh-CN; for English, use en-US'),
+              value: z.string().describe('content.This supports Chinese and English'),
+            }),
+          )
+          .describe(
+            'legal representative.Only when the country/region in the registered address is Chinese mainland, the legal representative field is valid.If the country/region in the registered address is not Chinese mainland, then filling in the legal representative field is invalid',
+          )
+          .optional(),
+        post_code: z.string().describe('zip code').optional(),
+        tax_payer_id: z.string().describe('Taxpayer identification number').optional(),
+        confidential: z.boolean().describe('Confidential').optional(),
+        sub_type_list: z
+          .array(z.object({ enum_name: z.string().describe('enumeration value') }))
+          .describe(
+            'Company principal type, obtained by Get Field Details query. Request parameters: object_api_name = company; custom_api_name = subtype',
+          )
+          .optional(),
+        branch_company: z.boolean().describe('Is it a branch office?').optional(),
+        primary_manager: z
+          .array(
+            z.object({
+              lang: z
+                .string()
+                .describe('language.This supports Chinese and English. For Chinese, use zh-CN; for English, use en-US'),
+              value: z.string().describe('content.This supports Chinese and English'),
+            }),
+          )
+          .describe('main person in charge')
+          .optional(),
+        currency: z
+          .object({
+            currency_name: z
+              .array(
+                z.object({
+                  lang: z
+                    .string()
+                    .describe(
+                      'language.This supports Chinese and English. For Chinese, use zh-CN; for English, use en-US',
+                    ),
+                  value: z.string().describe('content.This supports Chinese and English'),
+                }),
+              )
+              .describe('currency name')
+              .optional(),
+            numeric_code: z
+              .number()
+              .describe(
+                'The reference code of the corresponding currency can be found through the internal system.obtained through the[Search currency information v2]',
+              )
+              .optional(),
+            currency_alpha_3_code: z
+              .string()
+              .describe(
+                'Legal tender corresponding codes, such as CNY, USD, etc.obtained through the [Search currency information v2]',
+              )
+              .optional(),
+          })
+          .describe('Default currency')
+          .optional(),
+        phone: z
+          .object({
+            area_code: z
+              .object({
+                enum_name: z
                   .string()
                   .describe(
-                    'language.This supports Chinese and English. For Chinese, use zh-CN; for English, use en-US',
+                    'enumeration value.[Request Interface]Query and obtain. Request parameters: object_api_name = phone; custom_api_name = international_area_code',
                   ),
-                value: z.string().describe('content.This supports Chinese and English'),
-              }),
-            )
-            .describe('currency name')
-            .optional(),
-          numeric_code: z
-            .number()
-            .describe(
-              'The reference code of the corresponding currency can be found through the internal system.obtained through the[Search currency information v2]',
-            )
-            .optional(),
-          currency_alpha_3_code: z
-            .string()
-            .describe(
-              'Legal tender corresponding codes, such as CNY, USD, etc.obtained through the [Search currency information v2]',
-            )
-            .optional(),
-        })
-        .describe('Default currency')
-        .optional(),
-      phone: z
-        .object({
-          area_code: z
-            .object({
-              enum_name: z
-                .string()
-                .describe(
-                  'enumeration value.[Request Interface]Query and obtain. Request parameters: object_api_name = phone; custom_api_name = international_area_code',
-                ),
-            })
-            .describe('area code'),
-          phone_number: z.string().describe('number'),
-        })
-        .describe('Telephone')
-        .optional(),
-      fax: z
-        .object({
-          area_code: z
-            .object({
-              enum_name: z
-                .string()
-                .describe(
-                  'enumeration value.[Request Interface]Query and obtain. Request parameters: object_api_name = phone; custom_api_name = international_area_code',
-                ),
-            })
-            .describe('area code'),
-          phone_number: z.string().describe('number'),
-        })
-        .describe('fax')
-        .optional(),
-      registered_office_address_info: z
-        .object({
-          country_region_id: z
-            .string()
-            .describe(
-              'Country/Region ID. The fields for each country/region can be queried by referring to[Address Filling Rules]。.[Request Interface]Query and obtain',
-            ),
-          region_id: z
-            .string()
-            .describe(
-              'main administrative region ID.[Request Interface]Query and obtain',
-            )
-            .optional(),
-          city_id: z
-            .string()
-            .describe(
-              'City ID, [Request Interface]Query and obtain',
-            )
-            .optional(),
-          distinct_id: z
-            .string()
-            .describe(
-              'District/County ID, [Request Interface]Query and obtain.this field is pending',
-            )
-            .optional(),
-          address_line1: z.string().describe('Address line 1').optional(),
-          address_line2: z.string().describe('Address line 2').optional(),
-          address_line3: z.string().describe('Address line 3').optional(),
-          address_line4: z.string().describe('Address line 4').optional(),
-          address_line5: z.string().describe('Address line 5').optional(),
-          address_line6: z.string().describe('Address line 6').optional(),
-          address_line7: z.string().describe('Address line 7').optional(),
-          address_line8: z.string().describe('Address line 8').optional(),
-          address_line9: z.string().describe('Address line 9').optional(),
-          local_address_line1: z.string().describe('Address line 1 (non-Latin native characters)').optional(),
-          local_address_line2: z.string().describe('Address line 2 (non-Latin native characters)').optional(),
-          local_address_line3: z.string().describe('Address line 3 (non-Latin native characters)').optional(),
-          local_address_line4: z.string().describe('Address line 4 (non-Latin native characters)').optional(),
-          local_address_line5: z.string().describe('Address line 5 (non-Latin native characters)').optional(),
-          local_address_line6: z.string().describe('Address line 6 (non-Latin native characters)').optional(),
-          local_address_line7: z.string().describe('Address line 7 (non-Latin native characters)').optional(),
-          local_address_line8: z.string().describe('Address line 8 (non-Latin native characters)').optional(),
-          local_address_line9: z.string().describe('Address line 9 (non-Latin native characters)').optional(),
-          postal_code: z.string().describe('Postal Code').optional(),
-        })
-        .describe('Registered address details. Public field, required if the request is for a company')
-        .optional(),
-      office_address_info: z
-        .object({
-          country_region_id: z
-            .string()
-            .describe(
-              'Country/Region ID. The fields for each country/region can be queried by referring to[Address Filling Rules]。[Request Interface]Query and obtain',
-            ),
-          region_id: z
-            .string()
-            .describe(
-              'main administrative region ID.[Request Interface]Query and obtain',
-            )
-            .optional(),
-          city_id: z
-            .string()
-            .describe(
-              'City ID,[Request Interface]Query and obtain',
-            )
-            .optional(),
-          distinct_id: z
-            .string()
-            .describe(
-              'District/County ID,[Request Interface]Query and obtain',
-            )
-            .optional(),
-          address_line1: z.string().describe('Address line 1').optional(),
-          address_line2: z.string().describe('Address line 2').optional(),
-          address_line3: z.string().describe('Address line 3').optional(),
-          address_line4: z.string().describe('Address line 4').optional(),
-          address_line5: z.string().describe('Address line 5').optional(),
-          address_line6: z.string().describe('Address line 6').optional(),
-          address_line7: z.string().describe('Address line 7').optional(),
-          address_line8: z.string().describe('Address line 8').optional(),
-          address_line9: z.string().describe('Address line 9').optional(),
-          local_address_line1: z.string().describe('Address line 1 (non-Latin native characters)').optional(),
-          local_address_line2: z.string().describe('Address line 2 (non-Latin native characters)').optional(),
-          local_address_line3: z.string().describe('Address line 3 (non-Latin native characters)').optional(),
-          local_address_line4: z.string().describe('Address line 4 (non-Latin native characters)').optional(),
-          local_address_line5: z.string().describe('Address line 5 (non-Latin native characters)').optional(),
-          local_address_line6: z.string().describe('Address line 6 (non-Latin native characters)').optional(),
-          local_address_line7: z.string().describe('Address line 7 (non-Latin native characters)').optional(),
-          local_address_line8: z.string().describe('Address line 8 (non-Latin native characters)').optional(),
-          local_address_line9: z.string().describe('Address line 9 (non-Latin native characters)').optional(),
-          postal_code: z.string().describe('Postal Code').optional(),
-        })
-        .describe('Office address details. Public field, required if the request is for a company')
-        .optional(),
-    }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether the same request is based on whether the client_token are consistent')
-        .optional(),
-    }),
+              })
+              .describe('area code'),
+            phone_number: z.string().describe('number'),
+          })
+          .describe('Telephone')
+          .optional(),
+        fax: z
+          .object({
+            area_code: z
+              .object({
+                enum_name: z
+                  .string()
+                  .describe(
+                    'enumeration value.[Request Interface]Query and obtain. Request parameters: object_api_name = phone; custom_api_name = international_area_code',
+                  ),
+              })
+              .describe('area code'),
+            phone_number: z.string().describe('number'),
+          })
+          .describe('fax')
+          .optional(),
+        registered_office_address_info: z
+          .object({
+            country_region_id: z
+              .string()
+              .describe(
+                'Country/Region ID. The fields for each country/region can be queried by referring to[Address Filling Rules]。.[Request Interface]Query and obtain',
+              ),
+            region_id: z
+              .string()
+              .describe('main administrative region ID.[Request Interface]Query and obtain')
+              .optional(),
+            city_id: z.string().describe('City ID, [Request Interface]Query and obtain').optional(),
+            distinct_id: z
+              .string()
+              .describe('District/County ID, [Request Interface]Query and obtain.this field is pending')
+              .optional(),
+            address_line1: z.string().describe('Address line 1').optional(),
+            address_line2: z.string().describe('Address line 2').optional(),
+            address_line3: z.string().describe('Address line 3').optional(),
+            address_line4: z.string().describe('Address line 4').optional(),
+            address_line5: z.string().describe('Address line 5').optional(),
+            address_line6: z.string().describe('Address line 6').optional(),
+            address_line7: z.string().describe('Address line 7').optional(),
+            address_line8: z.string().describe('Address line 8').optional(),
+            address_line9: z.string().describe('Address line 9').optional(),
+            local_address_line1: z.string().describe('Address line 1 (non-Latin native characters)').optional(),
+            local_address_line2: z.string().describe('Address line 2 (non-Latin native characters)').optional(),
+            local_address_line3: z.string().describe('Address line 3 (non-Latin native characters)').optional(),
+            local_address_line4: z.string().describe('Address line 4 (non-Latin native characters)').optional(),
+            local_address_line5: z.string().describe('Address line 5 (non-Latin native characters)').optional(),
+            local_address_line6: z.string().describe('Address line 6 (non-Latin native characters)').optional(),
+            local_address_line7: z.string().describe('Address line 7 (non-Latin native characters)').optional(),
+            local_address_line8: z.string().describe('Address line 8 (non-Latin native characters)').optional(),
+            local_address_line9: z.string().describe('Address line 9 (non-Latin native characters)').optional(),
+            postal_code: z.string().describe('Postal Code').optional(),
+          })
+          .describe('Registered address details. Public field, required if the request is for a company')
+          .optional(),
+        office_address_info: z
+          .object({
+            country_region_id: z
+              .string()
+              .describe(
+                'Country/Region ID. The fields for each country/region can be queried by referring to[Address Filling Rules]。[Request Interface]Query and obtain',
+              ),
+            region_id: z
+              .string()
+              .describe('main administrative region ID.[Request Interface]Query and obtain')
+              .optional(),
+            city_id: z.string().describe('City ID,[Request Interface]Query and obtain').optional(),
+            distinct_id: z.string().describe('District/County ID,[Request Interface]Query and obtain').optional(),
+            address_line1: z.string().describe('Address line 1').optional(),
+            address_line2: z.string().describe('Address line 2').optional(),
+            address_line3: z.string().describe('Address line 3').optional(),
+            address_line4: z.string().describe('Address line 4').optional(),
+            address_line5: z.string().describe('Address line 5').optional(),
+            address_line6: z.string().describe('Address line 6').optional(),
+            address_line7: z.string().describe('Address line 7').optional(),
+            address_line8: z.string().describe('Address line 8').optional(),
+            address_line9: z.string().describe('Address line 9').optional(),
+            local_address_line1: z.string().describe('Address line 1 (non-Latin native characters)').optional(),
+            local_address_line2: z.string().describe('Address line 2 (non-Latin native characters)').optional(),
+            local_address_line3: z.string().describe('Address line 3 (non-Latin native characters)').optional(),
+            local_address_line4: z.string().describe('Address line 4 (non-Latin native characters)').optional(),
+            local_address_line5: z.string().describe('Address line 5 (non-Latin native characters)').optional(),
+            local_address_line6: z.string().describe('Address line 6 (non-Latin native characters)').optional(),
+            local_address_line7: z.string().describe('Address line 7 (non-Latin native characters)').optional(),
+            local_address_line8: z.string().describe('Address line 8 (non-Latin native characters)').optional(),
+            local_address_line9: z.string().describe('Address line 9 (non-Latin native characters)').optional(),
+            postal_code: z.string().describe('Postal Code').optional(),
+          })
+          .describe('Office address details. Public field, required if the request is for a company')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether the same request is based on whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       company_id: z
         .string()
@@ -1085,45 +1060,25 @@ export const corehrV1CompensationStandardMatch = {
         ),
       department_id: z
         .string()
-        .describe(
-          'Department ID，obtain through the interface[【Get department list】]',
-        )
+        .describe('Department ID，obtain through the interface[【Get department list】]')
         .optional(),
       work_location_id: z
         .string()
-        .describe(
-          'Workplace ID，obtain through the interface[【Get location list】]',
-        )
+        .describe('Workplace ID，obtain through the interface[【Get location list】]')
         .optional(),
-      company_id: z
-        .string()
-        .describe(
-          'Company ID，obtain through the interface[【Get company list】]',
-        )
-        .optional(),
+      company_id: z.string().describe('Company ID，obtain through the interface[【Get company list】]').optional(),
       job_family_id: z
         .string()
-        .describe(
-          'Job Serial ID，obtain through the interface[【Get the list of job family】]',
-        )
+        .describe('Job Serial ID，obtain through the interface[【Get the list of job family】]')
         .optional(),
-      job_id: z
-        .string()
-        .describe(
-          'Job ID，obtain through the interface[【Get the list of job profile】]',
-        )
-        .optional(),
+      job_id: z.string().describe('Job ID，obtain through the interface[【Get the list of job profile】]').optional(),
       job_level_id: z
         .string()
-        .describe(
-          'Rank ID，obtain through the interface[【Get the list of job level】]',
-        )
+        .describe('Rank ID，obtain through the interface[【Get the list of job level】]')
         .optional(),
       employee_type_id: z
         .string()
-        .describe(
-          'Person type ID，obtain through the interface[【Get the list of workforce type】]',
-        )
+        .describe('Person type ID，obtain through the interface[【Get the list of workforce type】]')
         .optional(),
       recruitment_type: z
         .enum(['experienced_professionals', 'recent_graduates', 'routine_intern'])
@@ -1139,9 +1094,7 @@ export const corehrV1CompensationStandardMatch = {
         .optional(),
       cpst_plan_id: z
         .string()
-        .describe(
-          'Salary Plan ID, obtain through the interface[【Batch query compensation plan】]',
-        )
+        .describe('Salary Plan ID, obtain through the interface[【Batch query compensation plan】]')
         .optional(),
       cpst_salary_level_id: z.string().describe('Salary Scale Salary Level ID').optional(),
       effective_time: z.string().describe('Effective time(Millisecond-level timestamp)').optional(),
@@ -1162,11 +1115,7 @@ export const corehrV1ContractCreate = {
     data: z.object({
       effective_time: z.string().describe('Contract start date'),
       expiration_time: z.string().describe('Actual end date').optional(),
-      employment_id: z
-        .string()
-        .describe(
-          'Employment ID, you can get more information by[get employment infomation]',
-        ),
+      employment_id: z.string().describe('Employment ID, you can get more information by[get employment infomation]'),
       contract_type: z
         .object({ enum_name: z.string().describe('Enumeration value') })
         .describe(
@@ -1174,14 +1123,10 @@ export const corehrV1ContractCreate = {
         ),
       first_party_company_id: z
         .string()
-        .describe(
-          'Company ID, Company Info can be obtained through the document [Get company by ID]',
-        ),
+        .describe('Company ID, Company Info can be obtained through the document [Get company by ID]'),
       person_id: z
         .string()
-        .describe(
-          'Person Info can be obtained through the document [Get personal information by ID]',
-        )
+        .describe('Person Info can be obtained through the document [Get personal information by ID]')
         .optional(),
       custom_fields: z
         .array(
@@ -1211,12 +1156,14 @@ export const corehrV1ContractCreate = {
         )
         .optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1ContractDelete = {
@@ -1230,11 +1177,7 @@ export const corehrV1ContractDelete = {
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
-      contract_id: z
-        .string()
-        .describe(
-          'Contract ID to be deleted, which can be obtained through [Get contract list]',
-        ),
+      contract_id: z.string().describe('Contract ID to be deleted, which can be obtained through [Get contract list]'),
     }),
   },
 };
@@ -1249,11 +1192,7 @@ export const corehrV1ContractGet = {
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
-      contract_id: z
-        .string()
-        .describe(
-          'Contract ID, which can be obtained through [Get contract list]',
-        ),
+      contract_id: z.string().describe('Contract ID, which can be obtained through [Get contract list]'),
     }),
   },
 };
@@ -1288,69 +1227,67 @@ export const corehrV1ContractPatch = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Contract-Update contract-Information related to employee contracts can be updated through this interface, and parameters that have not been modified will retain their original values',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      effective_time: z.string().describe('Contract start date').optional(),
-      expiration_time: z.string().describe('Actual end date').optional(),
-      employment_id: z
-        .string()
-        .describe('You should not use this parameter; otherwise, the interface will give an error')
-        .optional(),
-      contract_type: z
-        .object({ enum_name: z.string().describe('Enumeration value') })
-        .describe(
-          'Contract type can be obtained through the document [Feishu CoreHR enumeration constants]contract_type enumeration definition section',
-        )
-        .optional(),
-      first_party_company_id: z
-        .string()
-        .describe(
-          'Company ID, Company Info can be obtained through the document [Get company by ID]',
-        )
-        .optional(),
-      person_id: z
-        .string()
-        .describe('You should not use this parameter; otherwise, the interface will give an error')
-        .optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('Field name'),
-            value: z
-              .string()
-              .describe(
-                'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe('Custom fields')
-        .optional(),
-      duration_type: z
-        .object({ enum_name: z.string().describe('Enumeration value') })
-        .describe(
-          'Duration type can be obtained through the document [Feishu CoreHR enumeration constants]duration type enumeration definition section',
-        )
-        .optional(),
-      contract_end_date: z.string().describe('Contract end date').optional(),
-      contract_number: z.string().describe('Contract Number').optional(),
-      signing_type: z
-        .object({ enum_name: z.string().describe('Enumeration value') })
-        .describe(
-          'Signing type can be obtained through the document [Feishu CoreHR enumeration constants]signing type enumeration definition section',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    data: z
+      .object({
+        effective_time: z.string().describe('Contract start date').optional(),
+        expiration_time: z.string().describe('Actual end date').optional(),
+        employment_id: z
+          .string()
+          .describe('You should not use this parameter otherwise, the interface will give an error')
+          .optional(),
+        contract_type: z
+          .object({ enum_name: z.string().describe('Enumeration value') })
+          .describe(
+            'Contract type can be obtained through the document [Feishu CoreHR enumeration constants]contract_type enumeration definition section',
+          )
+          .optional(),
+        first_party_company_id: z
+          .string()
+          .describe('Company ID, Company Info can be obtained through the document [Get company by ID]')
+          .optional(),
+        person_id: z
+          .string()
+          .describe('You should not use this parameter; otherwise, the interface will give an error')
+          .optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('Field name'),
+              value: z
+                .string()
+                .describe(
+                  'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('Custom fields')
+          .optional(),
+        duration_type: z
+          .object({ enum_name: z.string().describe('Enumeration value') })
+          .describe(
+            'Duration type can be obtained through the document [Feishu CoreHR enumeration constants]duration type enumeration definition section',
+          )
+          .optional(),
+        contract_end_date: z.string().describe('Contract end date').optional(),
+        contract_number: z.string().describe('Contract Number').optional(),
+        signing_type: z
+          .object({ enum_name: z.string().describe('Enumeration value') })
+          .describe(
+            'Signing type can be obtained through the document [Feishu CoreHR enumeration constants]signing type enumeration definition section',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
     path: z.object({
-      contract_id: z
-        .string()
-        .describe(
-          'Contract ID, which can be obtained through [Get contract list]',
-        ),
+      contract_id: z.string().describe('Contract ID, which can be obtained through [Get contract list]'),
     }),
   },
 };
@@ -1361,7 +1298,7 @@ export const corehrV1CountryRegionGet = {
   path: '/open-apis/corehr/v1/country_regions/:country_region_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu People-basic data-Location data-Search a single country/region information-Search a single country/region information',
+    '[Feishu/Lark]-Deprecated Version (Not Recommended)-Feishu People-basic data-Location data-Search a single country/region information-Search a single country/region information',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({ country_region_id: z.string().describe('Country/Region ID') }),
@@ -1374,7 +1311,7 @@ export const corehrV1CountryRegionList = {
   path: '/open-apis/corehr/v1/country_regions',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu People-basic data-Location data-Query country/region information in batches-Query country/region information in batches',
+    '[Feishu/Lark]-Deprecated Version (Not Recommended)-Feishu People-basic data-Location data-Query country/region information in batches-Query country/region information in batches',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -1395,7 +1332,7 @@ export const corehrV1CurrencyGet = {
   path: '/open-apis/corehr/v1/currencies/:currency_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu People-basic data-Currency information-Query single currency information-Query single currency information',
+    '[Feishu/Lark]-Deprecated Version (Not Recommended)-Feishu People-basic data-Currency information-Query single currency information-Query single currency information',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({ currency_id: z.string().describe('Currency ID') }),
@@ -1408,7 +1345,7 @@ export const corehrV1CurrencyList = {
   path: '/open-apis/corehr/v1/currencies',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu People-basic data-Currency information-Query currency information in batches-Query currency information in batches',
+    '[Feishu/Lark]-Deprecated Version (Not Recommended)-Feishu People-basic data-Currency information-Query currency information in batches-Query currency information in batches',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -1555,9 +1492,7 @@ export const corehrV1DepartmentCreate = {
               ),
           }),
         )
-        .describe(
-          'custom field type，See [Get custom field list]',
-        )
+        .describe('custom field type，See [Get custom field list]')
         .optional(),
       cost_center_id: z
         .string()
@@ -1572,19 +1507,24 @@ export const corehrV1DepartmentCreate = {
         )
         .optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1DepartmentDelete = {
@@ -1616,15 +1556,20 @@ export const corehrV1DepartmentGet = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Feishu People-Organization management-Get department information-The interface supports batch query of department details of the day by department id, including name, description, enable status, etc',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       department_id: z
         .string()
@@ -1744,19 +1689,24 @@ export const corehrV1DepartmentPatch = {
         )
         .optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ department_id: z.string().describe('Department ID to be updated') }),
   },
 };
@@ -1791,12 +1741,14 @@ export const corehrV1EmployeeTypeCreate = {
         .describe('Custom fields')
         .optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1EmployeeTypeDelete = {
@@ -1856,34 +1808,38 @@ export const corehrV1EmployeeTypePatch = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Basic infomation-Employee type-Update employee type-Update employee type',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      name: z
-        .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
-        .describe('Name')
-        .optional(),
-      default_employee_type: z.boolean().describe('Default employee type').optional(),
-      active: z.boolean().describe('Enable').optional(),
-      code: z.string().describe('Encoding').optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('Field name'),
-            value: z
-              .string()
-              .describe(
-                'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe('Custom fields')
-        .optional(),
-    }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    data: z
+      .object({
+        name: z
+          .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
+          .describe('Name')
+          .optional(),
+        default_employee_type: z.boolean().describe('Default employee type').optional(),
+        active: z.boolean().describe('Enable').optional(),
+        code: z.string().describe('Encoding').optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('Field name'),
+              value: z
+                .string()
+                .describe(
+                  'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('Custom fields')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
     path: z.object({ employee_type_id: z.string().describe('Employee type ID') }),
   },
 };
@@ -1962,12 +1918,14 @@ export const corehrV1EmploymentCreate = {
         .optional(),
       rehire_employment_id: z.string().describe('Historical Employment Information ID').optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1EmploymentDelete = {
@@ -1980,9 +1938,14 @@ export const corehrV1EmploymentDelete = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Employee information-Employment information-Delete employment information-Delete employment information of personnel',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       employment_id: z.string().describe('The ID corresponding to the employment information that needs to be deleted'),
     }),
@@ -1998,81 +1961,88 @@ export const corehrV1EmploymentPatch = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Employee information-Employment information-Update employment information-Update employment information',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      seniority_date: z.string().describe('Seniority start date').optional(),
-      employee_number: z.string().describe('Employee number').optional(),
-      employment_type: z
-        .object({ enum_name: z.string().describe('Enumeration value') })
-        .describe('Type of employment')
-        .optional(),
-      person_id: z
-        .string()
-        .describe(
-          'Person ID, person detailed information can be obtained through [Query individual personal information] API',
-        )
-        .optional(),
-      primary_employment: z.boolean().describe('Is it the main employment information').optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('Field name'),
-            value: z
-              .string()
-              .describe(
-                'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe('Custom fields')
-        .optional(),
-      work_email_list: z
-        .array(
-          z.object({
-            email: z.string().describe('Mailbox number'),
-            is_primary: z.boolean().describe('Main mailbox').optional(),
-            is_public: z.boolean().describe('Public mailbox').optional(),
-            email_usage: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('Mailbox Purpose')
-              .optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('Field name'),
-                  value: z
-                    .string()
-                    .describe(
-                      'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('Custom fields')
-              .optional(),
-          }),
-        )
-        .describe(
-          'Work email List , the email is visible on the profile page only if all of the following conditions are met:- is_primary = `"true"` - is_public = `"true"`- email_usage = `"work"`',
-        )
-        .optional(),
-      reason_for_offboarding: z
-        .object({ enum_name: z.string().describe('Enumeration value') })
-        .describe('Reasons for leaving')
-        .optional(),
-      ats_application_id: z.string().describe('ATS application ID').optional(),
-    }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        seniority_date: z.string().describe('Seniority start date').optional(),
+        employee_number: z.string().describe('Employee number').optional(),
+        employment_type: z
+          .object({ enum_name: z.string().describe('Enumeration value') })
+          .describe('Type of employment')
+          .optional(),
+        person_id: z
+          .string()
+          .describe(
+            'Person ID, person detailed information can be obtained through [Query individual personal information] API',
+          )
+          .optional(),
+        primary_employment: z.boolean().describe('Is it the main employment information').optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('Field name'),
+              value: z
+                .string()
+                .describe(
+                  'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('Custom fields')
+          .optional(),
+        work_email_list: z
+          .array(
+            z.object({
+              email: z.string().describe('Mailbox number'),
+              is_primary: z.boolean().describe('Main mailbox').optional(),
+              is_public: z.boolean().describe('Public mailbox').optional(),
+              email_usage: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('Mailbox Purpose')
+                .optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('Field name'),
+                    value: z
+                      .string()
+                      .describe(
+                        'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('Custom fields')
+                .optional(),
+            }),
+          )
+          .describe(
+            'Work email List , the email is visible on the profile page only if all of the following conditions are met:- is_primary = `"true"` - is_public = `"true"`- email_usage = `"work"`',
+          )
+          .optional(),
+        reason_for_offboarding: z
+          .object({ enum_name: z.string().describe('Enumeration value') })
+          .describe('Reasons for leaving')
+          .optional(),
+        ats_application_id: z.string().describe('ATS application ID').optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ employment_id: z.string().describe('Employee ID') }),
   },
 };
@@ -2244,18 +2214,20 @@ export const corehrV1JobChangeCreate = {
       transfer_key: z.string().describe('transfer record identifier').optional(),
       initiator_id: z.string().describe('Transaction Promoter ID').optional(),
     }),
-    params: z.object({
-      user_id_type: z
-        .enum(['open_id', 'union_id', 'user_id', 'people_admin_id', 'people_corehr_id'])
-        .describe('User ID type')
-        .optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_admin_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1JobDataCreate = {
@@ -2312,19 +2284,24 @@ export const corehrV1JobDataCreate = {
         .describe('Custom fields')
         .optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1JobDataDelete = {
@@ -2350,15 +2327,20 @@ export const corehrV1JobDataGet = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Employee information-Job data-Get job information-Obtain employee job information with ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ job_data_id: z.string().describe('Job Information ID') }),
   },
 };
@@ -2415,81 +2397,91 @@ export const corehrV1JobDataPatch = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Employee information-Job data-Update job information-Update job data',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      version_id: z
-        .string()
-        .describe(
-          'Job record version ID- When the ID is not empty, the job record content of the specified version will be updated- When the ID is empty, a new version will be addedFunction grey release, if you need to update the specified version, please contact [technical support]',
-        )
-        .optional(),
-      job_level_id: z.string().describe('Level').optional(),
-      job_grade_id: z
-        .string()
-        .describe(
-          'The grade ID, enumeration value and detailed information can be obtained through the [query grade] interface query',
-        )
-        .optional(),
-      employee_type_id: z.string().describe('Type of employee').optional(),
-      working_hours_type_id: z.string().describe('Working hours system').optional(),
-      work_location_id: z.string().describe('Work location').optional(),
-      department_id: z.string().describe('Department').optional(),
-      job_id: z.string().describe('Position').optional(),
-      probation_start_date: z.string().describe('Trial period start date').optional(),
-      probation_end_date: z.string().describe('Trial period').optional(),
-      primary_job_data: z.boolean().describe('Director post').optional(),
-      employment_id: z.string().describe('Employment ID').optional(),
-      effective_time: z.string().describe('Effective time').optional(),
-      expiration_time: z.string().describe('Failure time').optional(),
-      job_family_id: z.string().describe('Job classification ID').optional(),
-      assignment_start_reason: z
-        .object({ enum_name: z.string().describe('Enumeration value') })
-        .describe(
-          "Assignment start reason can be obtained by [Enum constant].Please note that 'assignment start reason' cannot be filled as 'onboarding'. When the previous job data version's 'assignment start reason' is 'onboarding', 'assignment start reason' is required",
-        )
-        .optional(),
-      probation_expected_end_date: z.string().describe('End date of probation period').optional(),
-      direct_manager_id: z.string().describe("Solid Line Supervisor's Employment Record ID").optional(),
-      dotted_line_manager_id_list: z.array(z.string()).describe("Dotted supervisor's employment record ID").optional(),
-      second_direct_manager_id: z.string().describe("Second solid line supervisor's employment record ID").optional(),
-      cost_center_rate: z
-        .array(
-          z.object({
-            cost_center_id: z.string().describe('Supported cost center id').optional(),
-            rate: z.number().describe('Apportionment ratio').optional(),
-          }),
-        )
-        .describe(
-          'Cost center informationWhen the version_id is not empty, updating the field value is not supported for the time being',
-        )
-        .optional(),
-      work_shift: z
-        .object({ enum_name: z.string().describe('Enumeration value. Customization required') })
-        .describe('Shift type')
-        .optional(),
-      compensation_type: z
-        .object({ enum_name: z.string().describe('Enumeration value. Customization required') })
-        .describe('Salary type')
-        .optional(),
-      service_company: z
-        .string()
-        .describe(
-          'The company ID, the detailed information can be obtained through the [Query a single company] interface query',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        version_id: z
+          .string()
+          .describe(
+            'Job record version ID- When the ID is not empty, the job record content of the specified version will be updated- When the ID is empty, a new version will be addedFunction grey release, if you need to update the specified version, please contact [technical support]',
+          )
+          .optional(),
+        job_level_id: z.string().describe('Level').optional(),
+        job_grade_id: z
+          .string()
+          .describe(
+            'The grade ID, enumeration value and detailed information can be obtained through the [query grade] interface query',
+          )
+          .optional(),
+        employee_type_id: z.string().describe('Type of employee').optional(),
+        working_hours_type_id: z.string().describe('Working hours system').optional(),
+        work_location_id: z.string().describe('Work location').optional(),
+        department_id: z.string().describe('Department').optional(),
+        job_id: z.string().describe('Position').optional(),
+        probation_start_date: z.string().describe('Trial period start date').optional(),
+        probation_end_date: z.string().describe('Trial period').optional(),
+        primary_job_data: z.boolean().describe('Director post').optional(),
+        employment_id: z.string().describe('Employment ID').optional(),
+        effective_time: z.string().describe('Effective time').optional(),
+        expiration_time: z.string().describe('Failure time').optional(),
+        job_family_id: z.string().describe('Job classification ID').optional(),
+        assignment_start_reason: z
+          .object({ enum_name: z.string().describe('Enumeration value') })
+          .describe(
+            "Assignment start reason can be obtained by [Enum constant].Please note that 'assignment start reason' cannot be filled as 'onboarding'. When the previous job data version's 'assignment start reason' is 'onboarding', 'assignment start reason' is required",
+          )
+          .optional(),
+        probation_expected_end_date: z.string().describe('End date of probation period').optional(),
+        direct_manager_id: z.string().describe("Solid Line Supervisor's Employment Record ID").optional(),
+        dotted_line_manager_id_list: z
+          .array(z.string())
+          .describe("Dotted supervisor's employment record ID")
+          .optional(),
+        second_direct_manager_id: z.string().describe("Second solid line supervisor's employment record ID").optional(),
+        cost_center_rate: z
+          .array(
+            z.object({
+              cost_center_id: z.string().describe('Supported cost center id').optional(),
+              rate: z.number().describe('Apportionment ratio').optional(),
+            }),
+          )
+          .describe(
+            'Cost center informationWhen the version_id is not empty, updating the field value is not supported for the time being',
+          )
+          .optional(),
+        work_shift: z
+          .object({ enum_name: z.string().describe('Enumeration value. Customization required') })
+          .describe('Shift type')
+          .optional(),
+        compensation_type: z
+          .object({ enum_name: z.string().describe('Enumeration value. Customization required') })
+          .describe('Salary type')
+          .optional(),
+        service_company: z
+          .string()
+          .describe(
+            'The company ID, the detailed information can be obtained through the [Query a single company] interface query',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            'The department ID type used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id),people_corehr_department_id(Identify departments people_corehr_department_id)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ job_data_id: z.string().describe('Job Information ID') }),
   },
 };
@@ -2526,9 +2518,7 @@ export const corehrV1JobFamilyCreate = {
         .optional(),
       pathway_ids: z
         .array(z.string())
-        .describe(
-          'Pathway ID, for details, please refer to [Get Pathway information]',
-        )
+        .describe('Pathway ID, for details, please refer to [Get Pathway information]')
         .optional(),
       effective_time: z
         .string()
@@ -2564,12 +2554,14 @@ export const corehrV1JobFamilyCreate = {
         .describe('Custom field (this field is temporarily unsupported)')
         .optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1JobFamilyDelete = {
@@ -2641,70 +2633,72 @@ export const corehrV1JobFamilyPatch = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Job management-Job family-Update job sequence-Individual Job family details such as sequence name, parent sequence ID, etc. can be updated by sequence ID',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      name: z
-        .array(
-          z.object({
-            lang: z.string().describe('Language of name information, zh-CN in Chinese, en-US in English'),
-            value: z
-              .string()
-              .describe(
-                'content of Job faimly name- There will be a globally unique check for the Chinese and English names of the Job family- Name cannot contain 「/」「；」「;」 characters',
-              ),
-          }),
-        )
-        .describe('Name')
-        .optional(),
-      active: z.boolean().describe('Enable').optional(),
-      selectable: z.boolean().describe('Selectable').optional(),
-      parent_id: z
-        .string()
-        .describe(
-          'Senior Job Family ID. ID acquisition method:- Call [Create Job Family ID] [Query the sequence information of the tenant] and other interfaces to return the Job Family ID',
-        )
-        .optional(),
-      pathway_ids: z
-        .array(z.string())
-        .describe(
-          'Pathway ID, for details, please refer to [Get Pathway information]',
-        )
-        .optional(),
-      effective_time: z
-        .string()
-        .describe(
-          'Effective date- Fill in the format: YYYY-MM-DD 00:00:00 (the system will automatically change the hours, minutes and seconds to 00:00:00)- The system defaults to take effect at 00:00:00 on the day when the date is filled in- This interface only supports the smallest unit of day- Date range requirements: 1900-01-01 00:00:00～9999-12-31 23:59:59',
-        )
-        .optional(),
-      code: z.string().describe('Custom field (this field is temporarily unsupported)').optional(),
-      description: z
-        .array(
-          z.object({
-            lang: z.string().describe("description's language,zh-CN in Chinese, en-US in English"),
-            value: z.string().describe("description's value"),
-          }),
-        )
-        .describe('Description')
-        .optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('Custom field API Name, the unique identifier of the custom field'),
-            value: z
-              .string()
-              .describe(
-                'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe('Custom field (this field is temporarily unsupported)')
-        .optional(),
-    }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    data: z
+      .object({
+        name: z
+          .array(
+            z.object({
+              lang: z.string().describe('Language of name information, zh-CN in Chinese, en-US in English'),
+              value: z
+                .string()
+                .describe(
+                  'content of Job faimly name- There will be a globally unique check for the Chinese and English names of the Job family- Name cannot contain 「/」「；」「」 characters',
+                ),
+            }),
+          )
+          .describe('Name')
+          .optional(),
+        active: z.boolean().describe('Enable').optional(),
+        selectable: z.boolean().describe('Selectable').optional(),
+        parent_id: z
+          .string()
+          .describe(
+            'Senior Job Family ID. ID acquisition method:- Call [Create Job Family ID] [Query the sequence information of the tenant] and other interfaces to return the Job Family ID',
+          )
+          .optional(),
+        pathway_ids: z
+          .array(z.string())
+          .describe('Pathway ID, for details, please refer to [Get Pathway information]')
+          .optional(),
+        effective_time: z
+          .string()
+          .describe(
+            'Effective date- Fill in the format: YYYY-MM-DD 00:00:00 (the system will automatically change the hours, minutes and seconds to 00:00:00)- The system defaults to take effect at 00:00:00 on the day when the date is filled in- This interface only supports the smallest unit of day- Date range requirements: 1900-01-01 00:00:00～9999-12-31 23:59:59',
+          )
+          .optional(),
+        code: z.string().describe('Custom field (this field is temporarily unsupported)').optional(),
+        description: z
+          .array(
+            z.object({
+              lang: z.string().describe("description's language,zh-CN in Chinese, en-US in English"),
+              value: z.string().describe("description's value"),
+            }),
+          )
+          .describe('Description')
+          .optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('Custom field API Name, the unique identifier of the custom field'),
+              value: z
+                .string()
+                .describe(
+                  'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('Custom field (this field is temporarily unsupported)')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
     path: z.object({ job_family_id: z.string().describe('Job family ID') }),
   },
 };
@@ -2764,17 +2758,17 @@ export const corehrV1JobLevelCreate = {
       job_grade: z.array(z.string()).describe('Job grade IDs').optional(),
       pathway_ids: z
         .array(z.string())
-        .describe(
-          'Pathway ID, for details, please refer to [Get Pathway information]',
-        )
+        .describe('Pathway ID, for details, please refer to [Get Pathway information]')
         .optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether the same request is based on whether the client_token are consistent')
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether the same request is based on whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1JobLevelDelete = {
@@ -2846,64 +2840,66 @@ export const corehrV1JobLevelPatch = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Job management-Job level-Update job level-You can update individual rank information by Job level ID, including Job level values, names, and other information',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      level_order: z.number().describe('The Job level code, if not passed, is set to null by default').optional(),
-      code: z
-        .string()
-        .describe(
-          'Job level code. Non-required field, if a non-null value will be checked for global uniqueness, if a null value is passed, it will not participate in global verification',
-        )
-        .optional(),
-      name: z
-        .array(
-          z.object({
-            lang: z.string().describe('Language of name information, zh-CN in Chinese, en-US in English'),
-            value: z.string().describe('Content'),
-          }),
-        )
-        .describe('Job level name')
-        .optional(),
-      description: z
-        .array(
-          z.object({
-            lang: z.string().describe('Language'),
-            value: z
-              .string()
-              .describe(
-                'Job level name- There will be a globally unique check for the Chinese and English names of the Job level- Name cannot contain 「/」「；」「;」 characters',
-              ),
-          }),
-        )
-        .describe('Description')
-        .optional(),
-      active: z.boolean().describe('Enable').optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('Field name'),
-            value: z
-              .string()
-              .describe(
-                'Field value, which is the string escaped by json, according to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2\\"], "2006-01-02 15:04:05")- See [Get custom field list] for details of custom fields (https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/custom_field/query)',
-              ),
-          }),
-        )
-        .describe('Custom field (this field is temporarily unsupported)')
-        .optional(),
-      job_grade: z.array(z.string()).describe('Job grade IDs').optional(),
-      pathway_ids: z
-        .array(z.string())
-        .describe(
-          'Pathway ID, for details, please refer to [Get Pathway information]',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    data: z
+      .object({
+        level_order: z.number().describe('The Job level code, if not passed, is set to null by default').optional(),
+        code: z
+          .string()
+          .describe(
+            'Job level code. Non-required field, if a non-null value will be checked for global uniqueness, if a null value is passed, it will not participate in global verification',
+          )
+          .optional(),
+        name: z
+          .array(
+            z.object({
+              lang: z.string().describe('Language of name information, zh-CN in Chinese, en-US in English'),
+              value: z.string().describe('Content'),
+            }),
+          )
+          .describe('Job level name')
+          .optional(),
+        description: z
+          .array(
+            z.object({
+              lang: z.string().describe('Language'),
+              value: z
+                .string()
+                .describe(
+                  'Job level name- There will be a globally unique check for the Chinese and English names of the Job level- Name cannot contain 「/」「；」「」 characters',
+                ),
+            }),
+          )
+          .describe('Description')
+          .optional(),
+        active: z.boolean().describe('Enable').optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('Field name'),
+              value: z
+                .string()
+                .describe(
+                  'Field value, which is the string escaped by json, according to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2\\"], "2006-01-02 15:04:05")- See [Get custom field list] for details of custom fields (https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/reference/corehr-v1/custom_field/query)',
+                ),
+            }),
+          )
+          .describe('Custom field (this field is temporarily unsupported)')
+          .optional(),
+        job_grade: z.array(z.string()).describe('Job grade IDs').optional(),
+        pathway_ids: z
+          .array(z.string())
+          .describe('Pathway ID, for details, please refer to [Get Pathway information]')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       job_level_id: z
         .string()
@@ -2959,23 +2955,14 @@ export const corehrV1JobCreate = {
         )
         .describe('job title')
         .optional(),
-      pathway_id: z
-        .string()
-        .describe(
-          'Pathway ID, for details, please refer to [Get Pathway information]',
-        )
-        .optional(),
+      pathway_id: z.string().describe('Pathway ID, for details, please refer to [Get Pathway information]').optional(),
       job_family_id_list: z
         .array(z.string())
-        .describe(
-          'Job sequence ID list- Details can be obtained by [Batch Query Sequence]',
-        )
+        .describe('Job sequence ID list- Details can be obtained by [Batch Query Sequence]')
         .optional(),
       job_level_id_list: z
         .array(z.string())
-        .describe(
-          'Job Level ID List- Details can be obtained by [Batch Query Job level]',
-        )
+        .describe('Job Level ID List- Details can be obtained by [Batch Query Job level]')
         .optional(),
       working_hours_type_id: z
         .string()
@@ -2999,17 +2986,17 @@ export const corehrV1JobCreate = {
               ),
           }),
         )
-        .describe(
-          'Custom field, format reference:[Custom Field Description]Position, Job, Custom Organization Module',
-        )
+        .describe('Custom field, format reference:[Custom Field Description]Position, Job, Custom Organization Module')
         .optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether the same request is based on whether the client_token are consistent')
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether the same request is based on whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1JobDelete = {
@@ -3077,95 +3064,97 @@ export const corehrV1JobPatch = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Job management-Job-Update Job-You can update a job through this interface',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      code: z
-        .string()
-        .describe(
-          "Job code (cannot be duplicated with other records' codes), when automatic encoding is enabled, this field will be invalid",
-        )
-        .optional(),
-      name: z
-        .array(
-          z.object({
-            lang: z.string().describe('Language information, Chinese with zh-CN, English with en-US'),
-            value: z.string().describe('Content of name information'),
-          }),
-        )
-        .describe(
-          'Job title- Name cannot contain 「/」「；」「;」 characters- Xx Chinese and English names will have a globally unique check(Deactivated jobs will also be verified.)',
-        )
-        .optional(),
-      description: z
-        .array(
-          z.object({
-            lang: z.string().describe('Language information, Chinese with zh-CN, English with en-US'),
-            value: z.string().describe('Content of name information'),
-          }),
-        )
-        .describe('describe')
-        .optional(),
-      active: z.boolean().describe('Whether to enable, true to deactivate, fasle to enable').optional(),
-      job_title: z
-        .array(
-          z.object({
-            lang: z.string().describe('Language information, Chinese with zh-CN, English with en-US'),
-            value: z.string().describe('Content of name information'),
-          }),
-        )
-        .describe('job title')
-        .optional(),
-      pathway_id: z
-        .string()
-        .describe(
-          'Pathway ID, for details, please refer to [Get Pathway information]',
-        )
-        .optional(),
-      job_family_id_list: z
-        .array(z.string())
-        .describe(
-          'List of job sequence IDs. How to get the ID:- Call [New Job family] [Query the sequence information of the tenant] and other interfaces to return the sequence ID',
-        )
-        .optional(),
-      job_level_id_list: z
-        .array(z.string())
-        .describe(
-          'List of job level IDs. How to get the ID:- Call [Create Job Level][Query the rank information of the tenant] and other interfaces to return the rank ID',
-        )
-        .optional(),
-      working_hours_type_id: z
-        .string()
-        .describe(
-          'The working hour system ID, enumeration value and detailed information can be obtained through the [batch query working hour system] interface query',
-        )
-        .optional(),
-      effective_time: z
-        .string()
-        .describe(
-          'Version effective date- Fill in the format: YYYY-MM-DD 00:00:00 (the system will automatically change the time and seconds to 00:00:00)- The system defaults to 00:00:00 on the day of filling in the date.The interface is only supported up to the smallest unit for the day- Date range requirements: 1900-01-01 00:00:00~ 9999-12-31 23:59:59',
-        )
-        .optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('Custom field API Name, the unique identifier of the custom field'),
-            value: z
-              .string()
-              .describe(
-                'The field value is a string escaped from JSON. The field format varies depending on the metadata definition. For example: ```("\\"123\\"", "\\"123.23\\"", "\\"true\\"", [\\"id1\\",\\"id2\\"], \\"2006-01-02 15:04:05\\")```',
-              ),
-          }),
-        )
-        .describe(
-          'Custom field, format reference:[Custom Field Description]Position, Job, Custom Organization Module',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether the same request is based on whether the client_token are consistent')
-        .optional(),
-    }),
+    data: z
+      .object({
+        code: z
+          .string()
+          .describe(
+            "Job code (cannot be duplicated with other records' codes), when automatic encoding is enabled, this field will be invalid",
+          )
+          .optional(),
+        name: z
+          .array(
+            z.object({
+              lang: z.string().describe('Language information, Chinese with zh-CN, English with en-US'),
+              value: z.string().describe('Content of name information'),
+            }),
+          )
+          .describe(
+            'Job title- Name cannot contain 「/」「；」「」 characters- Xx Chinese and English names will have a globally unique check(Deactivated jobs will also be verified.)',
+          )
+          .optional(),
+        description: z
+          .array(
+            z.object({
+              lang: z.string().describe('Language information, Chinese with zh-CN, English with en-US'),
+              value: z.string().describe('Content of name information'),
+            }),
+          )
+          .describe('describe')
+          .optional(),
+        active: z.boolean().describe('Whether to enable, true to deactivate, fasle to enable').optional(),
+        job_title: z
+          .array(
+            z.object({
+              lang: z.string().describe('Language information, Chinese with zh-CN, English with en-US'),
+              value: z.string().describe('Content of name information'),
+            }),
+          )
+          .describe('job title')
+          .optional(),
+        pathway_id: z
+          .string()
+          .describe('Pathway ID, for details, please refer to [Get Pathway information]')
+          .optional(),
+        job_family_id_list: z
+          .array(z.string())
+          .describe(
+            'List of job sequence IDs. How to get the ID:- Call [New Job family] [Query the sequence information of the tenant] and other interfaces to return the sequence ID',
+          )
+          .optional(),
+        job_level_id_list: z
+          .array(z.string())
+          .describe(
+            'List of job level IDs. How to get the ID:- Call [Create Job Level][Query the rank information of the tenant] and other interfaces to return the rank ID',
+          )
+          .optional(),
+        working_hours_type_id: z
+          .string()
+          .describe(
+            'The working hour system ID, enumeration value and detailed information can be obtained through the [batch query working hour system] interface query',
+          )
+          .optional(),
+        effective_time: z
+          .string()
+          .describe(
+            'Version effective date- Fill in the format: YYYY-MM-DD 00:00:00 (the system will automatically change the time and seconds to 00:00:00)- The system defaults to 00:00:00 on the day of filling in the date.The interface is only supported up to the smallest unit for the day- Date range requirements: 1900-01-01 00:00:00~ 9999-12-31 23:59:59',
+          )
+          .optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('Custom field API Name, the unique identifier of the custom field'),
+              value: z
+                .string()
+                .describe(
+                  'The field value is a string escaped from JSON. The field format varies depending on the metadata definition. For example: ```("\\"123\\"", "\\"123.23\\"", "\\"true\\"", [\\"id1\\",\\"id2\\"], \\"2006-01-02 15:04:05\\")```',
+                ),
+            }),
+          )
+          .describe(
+            'Custom field, format reference:[Custom Field Description]Position, Job, Custom Organization Module',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether the same request is based on whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       job_id: z
         .string()
@@ -3212,9 +3201,14 @@ export const corehrV1LeaveGrantingRecordCreate = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1LeaveGrantingRecordDelete = {
@@ -3230,9 +3224,7 @@ export const corehrV1LeaveGrantingRecordDelete = {
     path: z.object({
       leave_granting_record_id: z
         .string()
-        .describe(
-          'Vacation Issuance Record ID, which can be obtained from [Create Vacation Issuance Record]',
-        ),
+        .describe('Vacation Issuance Record ID, which can be obtained from [Create Vacation Issuance Record]'),
     }),
   },
 };
@@ -3246,50 +3238,44 @@ export const corehrV1LeaveCalendarByScope = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Leave management-query calendar by scope-Get the work calendar id according to the scope of the calendar.The scope of application includes work location, working hours system, etc',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      wk_department_id: z
-        .string()
-        .describe(
-          'List of IDs of the department to which the user belongs.You can obtain the ID of the department through [Batch query of job information]',
-        )
-        .optional(),
-      wk_country_region_id: z
-        .string()
-        .describe(
-          'Country ID.You can get the country/region ID through [Batch query of job information]',
-        )
-        .optional(),
-      wk_employee_type_id: z
-        .string()
-        .describe(
-          'Employee Type ID.You can obtain the personnel type ID through [Batch query of job information]',
-        )
-        .optional(),
-      wk_work_location_id: z
-        .string()
-        .describe(
-          'Work Location ID.You can obtain the work location ID through [Batch query of employment information]',
-        )
-        .optional(),
-      wk_working_hours_type_id: z
-        .string()
-        .describe(
-          'Working hours system ID.You can obtain the working hours system ID through [Batch query of job information]',
-        )
-        .optional(),
-      wk_job_family_id: z
-        .string()
-        .describe(
-          'Job Family ID.You can obtain the job sequence ID through [Batch query of job information]',
-        )
-        .optional(),
-      wk_company_id: z
-        .string()
-        .describe(
-          'Company ID.You can get the company ID through [Batch query of job information]',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        wk_department_id: z
+          .string()
+          .describe(
+            'List of IDs of the department to which the user belongs.You can obtain the ID of the department through [Batch query of job information]',
+          )
+          .optional(),
+        wk_country_region_id: z
+          .string()
+          .describe('Country ID.You can get the country/region ID through [Batch query of job information]')
+          .optional(),
+        wk_employee_type_id: z
+          .string()
+          .describe('Employee Type ID.You can obtain the personnel type ID through [Batch query of job information]')
+          .optional(),
+        wk_work_location_id: z
+          .string()
+          .describe(
+            'Work Location ID.You can obtain the work location ID through [Batch query of employment information]',
+          )
+          .optional(),
+        wk_working_hours_type_id: z
+          .string()
+          .describe(
+            'Working hours system ID.You can obtain the working hours system ID through [Batch query of job information]',
+          )
+          .optional(),
+        wk_job_family_id: z
+          .string()
+          .describe('Job Family ID.You can obtain the job sequence ID through [Batch query of job information]')
+          .optional(),
+        wk_company_id: z
+          .string()
+          .describe('Company ID.You can get the company ID through [Batch query of job information]')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -3660,9 +3646,7 @@ export const corehrV1LocationCreate = {
           z.object({
             country_region_id: z
               .string()
-              .describe(
-                'Country IDIt can be obtained through the [Query country/region information] interface',
-              ),
+              .describe('Country IDIt can be obtained through the [Query country/region information] interface'),
             region_id: z
               .string()
               .describe(
@@ -3671,9 +3655,7 @@ export const corehrV1LocationCreate = {
               .optional(),
             city_id: z
               .string()
-              .describe(
-                'City ID.- It can be obtained through the [Query City Information] interface',
-              )
+              .describe('City ID.- It can be obtained through the [Query City Information] interface')
               .optional(),
             distinct_id: z
               .string()
@@ -3683,57 +3665,39 @@ export const corehrV1LocationCreate = {
               .optional(),
             address_line1: z
               .string()
-              .describe(
-                'Address line 1- The filling rules can be seen in [Address Filling Guide]',
-              )
+              .describe('Address line 1- The filling rules can be seen in [Address Filling Guide]')
               .optional(),
             address_line2: z
               .string()
-              .describe(
-                'Address line 2- The filling rules can be seen in [Address Filling Guide]',
-              )
+              .describe('Address line 2- The filling rules can be seen in [Address Filling Guide]')
               .optional(),
             address_line3: z
               .string()
-              .describe(
-                'Address line 3- The filling rules can be seen in [Address Filling Guide]',
-              )
+              .describe('Address line 3- The filling rules can be seen in [Address Filling Guide]')
               .optional(),
             address_line4: z
               .string()
-              .describe(
-                'Address line 4- The filling rules can be seen in [Address Filling Guide]',
-              )
+              .describe('Address line 4- The filling rules can be seen in [Address Filling Guide]')
               .optional(),
             address_line5: z
               .string()
-              .describe(
-                'Address line 5- The filling rules can be seen in [Address Filling Guide]',
-              )
+              .describe('Address line 5- The filling rules can be seen in [Address Filling Guide]')
               .optional(),
             address_line6: z
               .string()
-              .describe(
-                'Address line 6- The filling rules can be seen in [Address Filling Guide]',
-              )
+              .describe('Address line 6- The filling rules can be seen in [Address Filling Guide]')
               .optional(),
             address_line7: z
               .string()
-              .describe(
-                'Address line 7- The filling rules can be seen in [Address Filling Guide]',
-              )
+              .describe('Address line 7- The filling rules can be seen in [Address Filling Guide]')
               .optional(),
             address_line8: z
               .string()
-              .describe(
-                'Address line 8- The filling rules can be seen in [Address Filling Guide]',
-              )
+              .describe('Address line 8- The filling rules can be seen in [Address Filling Guide]')
               .optional(),
             address_line9: z
               .string()
-              .describe(
-                'Address line 9- The filling rules can be seen in [Address Filling Guide]',
-              )
+              .describe('Address line 9- The filling rules can be seen in [Address Filling Guide]')
               .optional(),
             local_address_line1: z
               .string()
@@ -3822,14 +3786,16 @@ export const corehrV1LocationCreate = {
       time_zone_id: z.string().describe('Time zone').optional(),
       display_language_id: z.string().describe('Default Language').optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe(
-          'A unique identifier for an idempotent perform update operation in the standard UUIDV4 format. This value is null to indicate that a new request will be initiated, and this value is non-null to indicate an idempotent perform update operation',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe(
+            'A unique identifier for an idempotent perform update operation in the standard UUIDV4 format. This value is null to indicate that a new request will be initiated, and this value is non-null to indicate an idempotent perform update operation',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1LocationDelete = {
@@ -3930,12 +3896,14 @@ export const corehrV1NationalIdTypeCreate = {
         .describe('Custom fields')
         .optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1NationalIdTypeDelete = {
@@ -3998,43 +3966,47 @@ export const corehrV1NationalIdTypePatch = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Basic infomation-Type of national certificate-Update national document type-Update national document type',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      country_region_id: z.string().describe('Country/Region').optional(),
-      name: z
-        .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
-        .describe('Name')
-        .optional(),
-      active: z.boolean().describe('Enable').optional(),
-      validation_rule: z.string().describe('Verification rule').optional(),
-      validation_rule_description: z
-        .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
-        .describe('Verification rule description')
-        .optional(),
-      code: z.string().describe('Encoding').optional(),
-      identification_type: z
-        .object({ enum_name: z.string().describe('Enumeration value') })
-        .describe('Type of certificate')
-        .optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('Field name'),
-            value: z
-              .string()
-              .describe(
-                'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe('Custom fields')
-        .optional(),
-    }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    data: z
+      .object({
+        country_region_id: z.string().describe('Country/Region').optional(),
+        name: z
+          .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
+          .describe('Name')
+          .optional(),
+        active: z.boolean().describe('Enable').optional(),
+        validation_rule: z.string().describe('Verification rule').optional(),
+        validation_rule_description: z
+          .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
+          .describe('Verification rule description')
+          .optional(),
+        code: z.string().describe('Encoding').optional(),
+        identification_type: z
+          .object({ enum_name: z.string().describe('Enumeration value') })
+          .describe('Type of certificate')
+          .optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('Field name'),
+              value: z
+                .string()
+                .describe(
+                  'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('Custom fields')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
     path: z.object({ national_id_type_id: z.string().describe('Type ID') }),
   },
 };
@@ -4048,20 +4020,22 @@ export const corehrV1OffboardingQuery = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Employee turnover-Query the list of reasons for employees offboarding-This interface is used to query the option information of [Offboarding configuration] > reason for offboarding, which return the unique identity, name and enabled status of the reason for offboarding option',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      active: z
-        .boolean()
-        .describe(
-          'Enable status.Search the reason for offboarding in all status when empty. Options are:1. true2. false',
-        )
-        .optional(),
-      offboarding_reason_unique_identifier: z
-        .array(z.string())
-        .describe(
-          'Reason for offboarding unique identifier list, used to filter reason for offboarding, search for all reasons for offboarding when empty, up to 20 supported',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        active: z
+          .boolean()
+          .describe(
+            'Enable status.Search the reason for offboarding in all status when empty. Options are:1. true2. false',
+          )
+          .optional(),
+        offboarding_reason_unique_identifier: z
+          .array(z.string())
+          .describe(
+            'Reason for offboarding unique identifier list, used to filter reason for offboarding, search for all reasons for offboarding when empty, up to 20 supported',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1OffboardingSearch = {
@@ -4074,86 +4048,88 @@ export const corehrV1OffboardingSearch = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Employee turnover-search offboarding information-This interface supports searching for offboarding information in fields such as employee ID, resignation approval start time, and resignation date, which can obtain information including resignation date, reason for resignation, resignation status, and process approval status',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      employment_ids: z
-        .array(z.string())
-        .describe(
-          'Employment ID list.The ID type is consistent with the value of the query parameter user_id_type:1. When the value of user_id_type is open_id, please refer to [How to obtain your own Open ID] for the ID acquisition method.2. When the value of user_id_type is user_id, please refer to [How to obtain your own User ID] for the ID acquisition method.3. When the value of user_id_type is union_id, please refer to [How to obtain your own Union ID] for the ID acquisition method.4. When the value of user_id_type is people_corehr_id, first refer to [How to obtain your own User ID] to obtain the User ID. Then obtain the employment ID through [ID conversion]',
-        )
-        .optional(),
-      apply_initiating_time_start: z
-        .string()
-        .describe(
-          'Offboarding approval initiation time(the start of the search range).This field is optional and need to be used together with the end of the search range. please pass in the second-level timestamp format',
-        )
-        .optional(),
-      apply_initiating_time_end: z
-        .string()
-        .describe(
-          'Offboarding approval initiation time(the end of the search range).This field is optional and need to be used together with the start of the search range. Please pass in in the second-level timestamp format',
-        )
-        .optional(),
-      apply_finished_time_start: z
-        .string()
-        .describe(
-          'Exit approval end time (start range of search), please pass in the second-level timestamp format. This field is not required and needs to be used in conjunction with exit approval end time (end range of search)',
-        )
-        .optional(),
-      apply_finished_time_end: z
-        .string()
-        .describe(
-          'Exit approval end time (end range of search), please pass in the second-level timestamp format. This field is not required and needs to be used with exit approval end time (start range of search)',
-        )
-        .optional(),
-      expected_offboarding_date_start: z
-        .string()
-        .describe(
-          'Expected offboarding date(the start of the search range).This field is optional and need to be used together with the end of the search range.please enter in date format',
-        )
-        .optional(),
-      expected_offboarding_date_end: z
-        .string()
-        .describe(
-          'Expected offboarding date(the end of the search range).This field is optional and need to be used together with the start of the search range.please enter in date format',
-        )
-        .optional(),
-      offboarding_date_start: z
-        .string()
-        .describe(
-          'Offboarding date(the start of the search range).This field is optional and need to be used together with the end of the search range.please enter in date format',
-        )
-        .optional(),
-      offboarding_date_end: z
-        .string()
-        .describe(
-          'Offboarding date(the start of the search range).This field is optional and need to be used together with the start of the search range.please enter in date format',
-        )
-        .optional(),
-      statuses: z
-        .array(
-          z
-            .enum(['Approving', 'Approved', 'Offboarded', 'Rejected', 'Withdrawn', 'NoNeedApproval'])
-            .describe(
-              'Options:Approving(Approving approval),Approved(Approved),Offboarded(Offboarded),Rejected(Rejected Rejected),Withdrawn(Withdrawn),NoNeedApproval(NoNeedApproval is not required)',
-            ),
-        )
-        .describe(
-          'Separation status, an "or" relationship between multiple states.It will searching offboarding information in all status when the value is empty',
-        )
-        .optional(),
-      reasons: z
-        .array(z.string())
-        .describe(
-          'The reason for leaving list can be obtained through the [Query employee reason for leaving list] interface, and the departure information related to the lower-level reasons is not returned when querying.It will searching offboarding information in all reason when the value is empty. <b> Field permission requirements: </b> <md-perm name="corehr:employment.offboarding_reason.search:read" desc="Search by reason for offboarding" support_app_types="custom,isv" tags="">Search by reason for offboarding</md-perm>',
-        )
-        .optional(),
-      employee_reasons: z
-        .array(z.string())
-        .describe(
-          'The reason for leaving (employee) list can be obtained through the [Query the employee reason for leaving list] interface, and the departure information related to the subordinate reason is not returned when querying.It will searching offboarding information in all reason when the value is empty. <b> Field permission requirements: </b><md-perm name="corehr:employment.offboarding_reason.search:read" desc="Search by reason for offboarding" support_app_types="custom,isv" tags="">Search by reason for offboarding</md-perm>',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        employment_ids: z
+          .array(z.string())
+          .describe(
+            'Employment ID list.The ID type is consistent with the value of the query parameter user_id_type:1. When the value of user_id_type is open_id, please refer to [How to obtain your own Open ID] for the ID acquisition method.2. When the value of user_id_type is user_id, please refer to [How to obtain your own User ID] for the ID acquisition method.3. When the value of user_id_type is union_id, please refer to [How to obtain your own Union ID] for the ID acquisition method.4. When the value of user_id_type is people_corehr_id, first refer to [How to obtain your own User ID] to obtain the User ID. Then obtain the employment ID through [ID conversion]',
+          )
+          .optional(),
+        apply_initiating_time_start: z
+          .string()
+          .describe(
+            'Offboarding approval initiation time(the start of the search range).This field is optional and need to be used together with the end of the search range. please pass in the second-level timestamp format',
+          )
+          .optional(),
+        apply_initiating_time_end: z
+          .string()
+          .describe(
+            'Offboarding approval initiation time(the end of the search range).This field is optional and need to be used together with the start of the search range. Please pass in in the second-level timestamp format',
+          )
+          .optional(),
+        apply_finished_time_start: z
+          .string()
+          .describe(
+            'Exit approval end time (start range of search), please pass in the second-level timestamp format. This field is not required and needs to be used in conjunction with exit approval end time (end range of search)',
+          )
+          .optional(),
+        apply_finished_time_end: z
+          .string()
+          .describe(
+            'Exit approval end time (end range of search), please pass in the second-level timestamp format. This field is not required and needs to be used with exit approval end time (start range of search)',
+          )
+          .optional(),
+        expected_offboarding_date_start: z
+          .string()
+          .describe(
+            'Expected offboarding date(the start of the search range).This field is optional and need to be used together with the end of the search range.please enter in date format',
+          )
+          .optional(),
+        expected_offboarding_date_end: z
+          .string()
+          .describe(
+            'Expected offboarding date(the end of the search range).This field is optional and need to be used together with the start of the search range.please enter in date format',
+          )
+          .optional(),
+        offboarding_date_start: z
+          .string()
+          .describe(
+            'Offboarding date(the start of the search range).This field is optional and need to be used together with the end of the search range.please enter in date format',
+          )
+          .optional(),
+        offboarding_date_end: z
+          .string()
+          .describe(
+            'Offboarding date(the start of the search range).This field is optional and need to be used together with the start of the search range.please enter in date format',
+          )
+          .optional(),
+        statuses: z
+          .array(
+            z
+              .enum(['Approving', 'Approved', 'Offboarded', 'Rejected', 'Withdrawn', 'NoNeedApproval'])
+              .describe(
+                'Options:Approving(Approving approval),Approved(Approved),Offboarded(Offboarded),Rejected(Rejected Rejected),Withdrawn(Withdrawn),NoNeedApproval(NoNeedApproval is not required)',
+              ),
+          )
+          .describe(
+            'Separation status, an "or" relationship between multiple states.It will searching offboarding information in all status when the value is empty',
+          )
+          .optional(),
+        reasons: z
+          .array(z.string())
+          .describe(
+            'The reason for leaving list can be obtained through the [Query employee reason for leaving list] interface, and the departure information related to the lower-level reasons is not returned when querying.It will searching offboarding information in all reason when the value is empty. <b> Field permission requirements: </b> <md-perm name="corehr:employment.offboarding_reason.search:read" desc="Search by reason for offboarding" support_app_types="custom,isv" tags="">Search by reason for offboarding</md-perm>',
+          )
+          .optional(),
+        employee_reasons: z
+          .array(z.string())
+          .describe(
+            'The reason for leaving (employee) list can be obtained through the [Query the employee reason for leaving list] interface, and the departure information related to the subordinate reason is not returned when querying.It will searching offboarding information in all reason when the value is empty. <b> Field permission requirements: </b><md-perm name="corehr:employment.offboarding_reason.search:read" desc="Search by reason for offboarding" support_app_types="custom,isv" tags="">Search by reason for offboarding</md-perm>',
+          )
+          .optional(),
+      })
+      .optional(),
     params: z.object({
       page_size: z.number().describe('Page size, up to 100'),
       page_token: z
@@ -4241,9 +4217,14 @@ export const corehrV1OffboardingSubmit = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_corehr_id'])
+          .describe('User ID type')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1PersonCreate = {
@@ -4919,12 +4900,14 @@ export const corehrV1PersonCreate = {
         .describe('Personal Data')
         .optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1PersonDelete = {
@@ -4950,7 +4933,7 @@ export const corehrV1PersonGet = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Feishu People-Personal information-Get personal information-Obtain personal information with ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ user_id_type: z.literal('people_employee_id').describe('User ID type').optional() }),
+    params: z.object({ user_id_type: z.literal('people_employee_id').describe('User ID type').optional() }).optional(),
     path: z.object({ person_id: z.string().describe('Person ID') }),
   },
 };
@@ -4964,411 +4947,380 @@ export const corehrV1PersonPatch = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Feishu People-Personal information-Update personal information-Update personal information',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      name_list: z
-        .array(
-          z.object({
-            local_primary: z.string().describe('Last name-local text').optional(),
-            local_first_name: z.string().describe('Name-local text').optional(),
-            country_region_id: z.string().describe('Country/Region'),
-            name_type: z.object({ enum_name: z.string().describe('Enumeration value') }).describe('Name Type'),
-            local_first_name_2: z.string().describe('Name-second local text').optional(),
-            local_primary_2: z.string().describe('Last name-second local text').optional(),
-            additional_name_type: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('Supplementary name type')
-              .optional(),
-            first_name: z.string().describe('Name').optional(),
-            full_name: z.string().describe('Full name').optional(),
-            hereditary: z.string().describe('Name').optional(),
-            custom_name: z
-              .string()
-              .describe(
-                'Custom name (when not passed in, the name will be spliced according to the rules of the country/region to which it belongs)',
-              )
-              .optional(),
-            custom_local_name: z
-              .string()
-              .describe(
-                'Custom name of local text (when not passed in, the name of the local text will be stitched together with the relevant last name and first name field of the local text according to the rules of the country/region to which it belongs)',
-              )
-              .optional(),
-            middle_name: z.string().describe('Middle name').optional(),
-            name_primary: z.string().describe('Last name').optional(),
-            secondary: z.string().describe('Second surname').optional(),
-            social: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('Honorific title')
-              .optional(),
-            tertiary: z.string().describe('Married surname').optional(),
-            title: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('Title')
-              .optional(),
-            local_middle_name: z.string().describe('Local middle name').optional(),
-            local_secondary: z.string().describe('Second surname-local text').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('Field name'),
-                  value: z
-                    .string()
-                    .describe(
-                      'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('Custom fields')
-              .optional(),
-          }),
-        )
-        .describe('Name')
-        .optional(),
-      gender: z
-        .object({ enum_name: z.string().describe('Enumeration value') })
-        .describe('Gender')
-        .optional(),
-      date_of_birth: z.string().describe('Date of birth').optional(),
-      nationality_id: z.string().describe('ID number').optional(),
-      race: z
-        .object({ enum_name: z.string().describe('Enumeration value') })
-        .describe('Ethnicity/race')
-        .optional(),
-      marital_status: z
-        .object({ enum_name: z.string().describe('Enumeration value') })
-        .describe('Marital status')
-        .optional(),
-      phone_list: z
-        .array(
-          z.object({
-            international_area_code: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe(
-                'Country area code Common such as: 86_china (China), 852_hong_kong (Hong Kong, China), 886_taiwan (Taiwan, China), 853_macao (Macao, China), 1_united_states_of_america (United States of America), 7_russian_federation (Russian Federation), 44_united_kingdom (United Kingdom), 81_japan (Japan), 82_korea_republic_of (Republic of Korea), 91_india (India)',
-              )
-              .optional(),
-            phone_number: z.string().describe('Phone number'),
-            device_type: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('Device Type')
-              .optional(),
-            phone_usage: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('Telephone use')
-              .optional(),
-            is_primary: z.boolean().describe('Main phone').optional(),
-            is_public: z.boolean().describe('Public call').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('Field name'),
-                  value: z
-                    .string()
-                    .describe(
-                      'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('Custom fields')
-              .optional(),
-          }),
-        )
-        .describe(
-          'Phone list , The phone is visible on the profile page only if all of the following conditions are met:- phone_number is not null- is_primary = `"true"` - phone_usage = `"home"`',
-        )
-        .optional(),
-      address_list: z
-        .array(
-          z.object({
-            country_region_id: z.string().describe('Country/Region'),
-            region_id: z.string().describe('Main Administrative Region').optional(),
-            city_id: z.string().describe('City').optional(),
-            distinct_id: z.string().describe('District/County').optional(),
-            local_address_line1: z.string().describe('Address line 1 (non-Latin native text)').optional(),
-            local_address_line2: z.string().describe('Address line 2 (non-Latin native text)').optional(),
-            local_address_line3: z.string().describe('Address line 3 (non-Latin native text)').optional(),
-            local_address_line4: z.string().describe('Address line 4 (non-Latin native text)').optional(),
-            local_address_line5: z.string().describe('Address line 5 (non-Latin native text)').optional(),
-            local_address_line6: z.string().describe('Address line 6 (non-Latin native text)').optional(),
-            local_address_line7: z.string().describe('Address line 7 (non-Latin native text)').optional(),
-            local_address_line8: z.string().describe('Address line 8 (non-Latin native text)').optional(),
-            local_address_line9: z.string().describe('Address line 9 (non-Latin native text)').optional(),
-            postal_code: z.string().describe('Postal Code').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('Field name'),
-                  value: z
-                    .string()
-                    .describe(
-                      'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('Custom fields')
-              .optional(),
-          }),
-        )
-        .describe('Address')
-        .optional(),
-      email_list: z
-        .array(
-          z.object({
-            email: z.string().describe('Mailbox number'),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('Field name'),
-                  value: z
-                    .string()
-                    .describe(
-                      'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('Custom fields')
-              .optional(),
-          }),
-        )
-        .describe('Mail')
-        .optional(),
-      work_experience_list: z
-        .array(
-          z.object({
-            company_organization: z
-              .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
-              .describe('Company/organization')
-              .optional(),
-            department: z
-              .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
-              .describe('Department')
-              .optional(),
-            job: z
-              .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
-              .describe('Position')
-              .optional(),
-            description: z
-              .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
-              .describe('Job description')
-              .optional(),
-            start_date: z.string().describe('Start date').optional(),
-            end_date: z.string().describe('End date').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('Field name'),
-                  value: z
-                    .string()
-                    .describe(
-                      'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('Custom fields')
-              .optional(),
-          }),
-        )
-        .describe('Work history')
-        .optional(),
-      education_list: z
-        .array(
-          z.object({
-            school: z
-              .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
-              .describe('School'),
-            level_of_education: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('Education')
-              .optional(),
-            start_date: z.string().describe('Start date').optional(),
-            end_date: z.string().describe('End date').optional(),
-            field_of_study: z
-              .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
-              .describe('Professional')
-              .optional(),
-            degree: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('Degree')
-              .optional(),
-            school_name: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('School name')
-              .optional(),
-            field_of_study_name: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('Professional name')
-              .optional(),
-            country_region_id: z.string().describe('Country Area ID').optional(),
-            expected_end_date: z.string().describe('Expected end date').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('Field name'),
-                  value: z
-                    .string()
-                    .describe(
-                      'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('Custom fields')
-              .optional(),
-          }),
-        )
-        .describe('Educational experience')
-        .optional(),
-      bank_account_list: z
-        .array(
-          z.object({
-            bank_name: z
-              .string()
-              .describe("Bank name , which can be empty if the field 'bank' has been filled in")
-              .optional(),
-            bank_account_number: z.string().describe('Bank account number'),
-            account_holder: z.string().describe('Name of account holder'),
-            bank: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('Enum of banks , such as bank-5 (Bank of Communications)')
-              .optional(),
-            branch_name: z.string().describe('Branch name').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('Field name'),
-                  value: z
-                    .string()
-                    .describe(
-                      'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('Custom fields')
-              .optional(),
-            country_region_id: z
-              .string()
-              .describe(
-                'Country/region id, detailed information can be obtained through the [Query Country/Region Information] interface',
-              )
-              .optional(),
-            bank_account_usage: z
-              .array(z.object({ enum_name: z.string().describe('Enumeration value') }))
-              .describe(
-                'Bank card usage, the emuneration value can be obtained through the document [Feishu Personnel Enumeration Constant] Bank card usage (bank_account_usage) enumeration definition section',
-              )
-              .optional(),
-            bank_account_type: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe(
-                'The bank card type and emuneration value can be obtained through the document [Feishu Personnel Enumeration Constant] bank card type (bank_account_type) enumeration definition section',
-              )
-              .optional(),
-            currency_id: z.string().describe('Currency id').optional(),
-          }),
-        )
-        .describe('Bank account number')
-        .optional(),
-      national_id_list: z
-        .array(
-          z.object({
-            national_id_type_id: z.string().describe('Type of national document'),
-            national_id_number: z.string().describe('ID number'),
-            issue_date: z.string().describe('Date of issuance').optional(),
-            expiration_date: z.string().describe('Certificate expiration date').optional(),
-            country_region_id: z.string().describe('Country/Region'),
-            issued_by: z.string().describe('Document issuing agency').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('Field name'),
-                  value: z
-                    .string()
-                    .describe(
-                      'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('Custom fields')
-              .optional(),
-          }),
-        )
-        .describe('ID number')
-        .optional(),
-      dependent_list: z
-        .array(
-          z.object({
-            name: z
-              .object({
-                local_primary: z.string().describe('Last name-local text').optional(),
-                local_first_name: z.string().describe('Name-local text').optional(),
-                country_region_id: z.string().describe('Country/Region'),
-                name_type: z.object({ enum_name: z.string().describe('Enumeration value') }).describe('Name Type'),
-                local_first_name_2: z.string().describe('Name-second local text').optional(),
-                local_primary_2: z.string().describe('Last name-second local text').optional(),
-                additional_name_type: z
-                  .object({ enum_name: z.string().describe('Enumeration value') })
-                  .describe('Supplementary name type')
-                  .optional(),
-                first_name: z.string().describe('Name').optional(),
-                full_name: z.string().describe('Full name').optional(),
-                hereditary: z.string().describe('Name').optional(),
-                custom_name: z
-                  .string()
-                  .describe(
-                    'Custom name (when not passed in, the name will be spliced according to the rules of the country/region to which it belongs)',
-                  )
-                  .optional(),
-                custom_local_name: z
-                  .string()
-                  .describe(
-                    'Custom name of local text (when not passed in, the name of the local text will be stitched together with the relevant last name and first name field of the local text according to the rules of the country/region to which it belongs)',
-                  )
-                  .optional(),
-                middle_name: z.string().describe('Middle name').optional(),
-                name_primary: z.string().describe('Last name').optional(),
-                secondary: z.string().describe('Second surname').optional(),
-                social: z
-                  .object({ enum_name: z.string().describe('Enumeration value') })
-                  .describe('Honorific title')
-                  .optional(),
-                tertiary: z.string().describe('Married surname').optional(),
-                title: z
-                  .object({ enum_name: z.string().describe('Enumeration value') })
-                  .describe('Title')
-                  .optional(),
-                local_middle_name: z.string().describe('Local middle name').optional(),
-                local_secondary: z.string().describe('Second surname-local text').optional(),
-                custom_fields: z
-                  .array(
-                    z.object({
-                      field_name: z.string().describe('Field name'),
-                      value: z
-                        .string()
-                        .describe(
-                          'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-                        ),
-                    }),
-                  )
-                  .describe('Custom fields')
-                  .optional(),
-              })
-              .describe('Name')
-              .optional(),
-            relationship: z.object({ enum_name: z.string().describe('Enumeration value') }).describe('Relationship'),
-            gender: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('Gender')
-              .optional(),
-            date_of_birth: z.string().describe('Birthday').optional(),
-            nationality_id: z.string().describe('Nationality').optional(),
-            national_id_list: z
-              .array(
-                z.object({
-                  national_id_type_id: z.string().describe('Type of national document'),
-                  national_id_number: z.string().describe('ID number'),
-                  issue_date: z.string().describe('Date of issuance').optional(),
-                  expiration_date: z.string().describe('Certificate expiration date').optional(),
+    data: z
+      .object({
+        name_list: z
+          .array(
+            z.object({
+              local_primary: z.string().describe('Last name-local text').optional(),
+              local_first_name: z.string().describe('Name-local text').optional(),
+              country_region_id: z.string().describe('Country/Region'),
+              name_type: z.object({ enum_name: z.string().describe('Enumeration value') }).describe('Name Type'),
+              local_first_name_2: z.string().describe('Name-second local text').optional(),
+              local_primary_2: z.string().describe('Last name-second local text').optional(),
+              additional_name_type: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('Supplementary name type')
+                .optional(),
+              first_name: z.string().describe('Name').optional(),
+              full_name: z.string().describe('Full name').optional(),
+              hereditary: z.string().describe('Name').optional(),
+              custom_name: z
+                .string()
+                .describe(
+                  'Custom name (when not passed in, the name will be spliced according to the rules of the country/region to which it belongs)',
+                )
+                .optional(),
+              custom_local_name: z
+                .string()
+                .describe(
+                  'Custom name of local text (when not passed in, the name of the local text will be stitched together with the relevant last name and first name field of the local text according to the rules of the country/region to which it belongs)',
+                )
+                .optional(),
+              middle_name: z.string().describe('Middle name').optional(),
+              name_primary: z.string().describe('Last name').optional(),
+              secondary: z.string().describe('Second surname').optional(),
+              social: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('Honorific title')
+                .optional(),
+              tertiary: z.string().describe('Married surname').optional(),
+              title: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('Title')
+                .optional(),
+              local_middle_name: z.string().describe('Local middle name').optional(),
+              local_secondary: z.string().describe('Second surname-local text').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('Field name'),
+                    value: z
+                      .string()
+                      .describe(
+                        'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('Custom fields')
+                .optional(),
+            }),
+          )
+          .describe('Name')
+          .optional(),
+        gender: z
+          .object({ enum_name: z.string().describe('Enumeration value') })
+          .describe('Gender')
+          .optional(),
+        date_of_birth: z.string().describe('Date of birth').optional(),
+        nationality_id: z.string().describe('ID number').optional(),
+        race: z
+          .object({ enum_name: z.string().describe('Enumeration value') })
+          .describe('Ethnicity/race')
+          .optional(),
+        marital_status: z
+          .object({ enum_name: z.string().describe('Enumeration value') })
+          .describe('Marital status')
+          .optional(),
+        phone_list: z
+          .array(
+            z.object({
+              international_area_code: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe(
+                  'Country area code Common such as: 86_china (China), 852_hong_kong (Hong Kong, China), 886_taiwan (Taiwan, China), 853_macao (Macao, China), 1_united_states_of_america (United States of America), 7_russian_federation (Russian Federation), 44_united_kingdom (United Kingdom), 81_japan (Japan), 82_korea_republic_of (Republic of Korea), 91_india (India)',
+                )
+                .optional(),
+              phone_number: z.string().describe('Phone number'),
+              device_type: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('Device Type')
+                .optional(),
+              phone_usage: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('Telephone use')
+                .optional(),
+              is_primary: z.boolean().describe('Main phone').optional(),
+              is_public: z.boolean().describe('Public call').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('Field name'),
+                    value: z
+                      .string()
+                      .describe(
+                        'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('Custom fields')
+                .optional(),
+            }),
+          )
+          .describe(
+            'Phone list , The phone is visible on the profile page only if all of the following conditions are met:- phone_number is not null- is_primary = `"true"` - phone_usage = `"home"`',
+          )
+          .optional(),
+        address_list: z
+          .array(
+            z.object({
+              country_region_id: z.string().describe('Country/Region'),
+              region_id: z.string().describe('Main Administrative Region').optional(),
+              city_id: z.string().describe('City').optional(),
+              distinct_id: z.string().describe('District/County').optional(),
+              local_address_line1: z.string().describe('Address line 1 (non-Latin native text)').optional(),
+              local_address_line2: z.string().describe('Address line 2 (non-Latin native text)').optional(),
+              local_address_line3: z.string().describe('Address line 3 (non-Latin native text)').optional(),
+              local_address_line4: z.string().describe('Address line 4 (non-Latin native text)').optional(),
+              local_address_line5: z.string().describe('Address line 5 (non-Latin native text)').optional(),
+              local_address_line6: z.string().describe('Address line 6 (non-Latin native text)').optional(),
+              local_address_line7: z.string().describe('Address line 7 (non-Latin native text)').optional(),
+              local_address_line8: z.string().describe('Address line 8 (non-Latin native text)').optional(),
+              local_address_line9: z.string().describe('Address line 9 (non-Latin native text)').optional(),
+              postal_code: z.string().describe('Postal Code').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('Field name'),
+                    value: z
+                      .string()
+                      .describe(
+                        'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('Custom fields')
+                .optional(),
+            }),
+          )
+          .describe('Address')
+          .optional(),
+        email_list: z
+          .array(
+            z.object({
+              email: z.string().describe('Mailbox number'),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('Field name'),
+                    value: z
+                      .string()
+                      .describe(
+                        'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('Custom fields')
+                .optional(),
+            }),
+          )
+          .describe('Mail')
+          .optional(),
+        work_experience_list: z
+          .array(
+            z.object({
+              company_organization: z
+                .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
+                .describe('Company/organization')
+                .optional(),
+              department: z
+                .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
+                .describe('Department')
+                .optional(),
+              job: z
+                .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
+                .describe('Position')
+                .optional(),
+              description: z
+                .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
+                .describe('Job description')
+                .optional(),
+              start_date: z.string().describe('Start date').optional(),
+              end_date: z.string().describe('End date').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('Field name'),
+                    value: z
+                      .string()
+                      .describe(
+                        'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('Custom fields')
+                .optional(),
+            }),
+          )
+          .describe('Work history')
+          .optional(),
+        education_list: z
+          .array(
+            z.object({
+              school: z
+                .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
+                .describe('School'),
+              level_of_education: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('Education')
+                .optional(),
+              start_date: z.string().describe('Start date').optional(),
+              end_date: z.string().describe('End date').optional(),
+              field_of_study: z
+                .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
+                .describe('Professional')
+                .optional(),
+              degree: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('Degree')
+                .optional(),
+              school_name: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('School name')
+                .optional(),
+              field_of_study_name: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('Professional name')
+                .optional(),
+              country_region_id: z.string().describe('Country Area ID').optional(),
+              expected_end_date: z.string().describe('Expected end date').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('Field name'),
+                    value: z
+                      .string()
+                      .describe(
+                        'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('Custom fields')
+                .optional(),
+            }),
+          )
+          .describe('Educational experience')
+          .optional(),
+        bank_account_list: z
+          .array(
+            z.object({
+              bank_name: z
+                .string()
+                .describe("Bank name , which can be empty if the field 'bank' has been filled in")
+                .optional(),
+              bank_account_number: z.string().describe('Bank account number'),
+              account_holder: z.string().describe('Name of account holder'),
+              bank: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('Enum of banks , such as bank-5 (Bank of Communications)')
+                .optional(),
+              branch_name: z.string().describe('Branch name').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('Field name'),
+                    value: z
+                      .string()
+                      .describe(
+                        'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('Custom fields')
+                .optional(),
+              country_region_id: z
+                .string()
+                .describe(
+                  'Country/region id, detailed information can be obtained through the [Query Country/Region Information] interface',
+                )
+                .optional(),
+              bank_account_usage: z
+                .array(z.object({ enum_name: z.string().describe('Enumeration value') }))
+                .describe(
+                  'Bank card usage, the emuneration value can be obtained through the document [Feishu Personnel Enumeration Constant] Bank card usage (bank_account_usage) enumeration definition section',
+                )
+                .optional(),
+              bank_account_type: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe(
+                  'The bank card type and emuneration value can be obtained through the document [Feishu Personnel Enumeration Constant] bank card type (bank_account_type) enumeration definition section',
+                )
+                .optional(),
+              currency_id: z.string().describe('Currency id').optional(),
+            }),
+          )
+          .describe('Bank account number')
+          .optional(),
+        national_id_list: z
+          .array(
+            z.object({
+              national_id_type_id: z.string().describe('Type of national document'),
+              national_id_number: z.string().describe('ID number'),
+              issue_date: z.string().describe('Date of issuance').optional(),
+              expiration_date: z.string().describe('Certificate expiration date').optional(),
+              country_region_id: z.string().describe('Country/Region'),
+              issued_by: z.string().describe('Document issuing agency').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('Field name'),
+                    value: z
+                      .string()
+                      .describe(
+                        'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('Custom fields')
+                .optional(),
+            }),
+          )
+          .describe('ID number')
+          .optional(),
+        dependent_list: z
+          .array(
+            z.object({
+              name: z
+                .object({
+                  local_primary: z.string().describe('Last name-local text').optional(),
+                  local_first_name: z.string().describe('Name-local text').optional(),
                   country_region_id: z.string().describe('Country/Region'),
-                  issued_by: z.string().describe('Document issuing agency').optional(),
+                  name_type: z.object({ enum_name: z.string().describe('Enumeration value') }).describe('Name Type'),
+                  local_first_name_2: z.string().describe('Name-second local text').optional(),
+                  local_primary_2: z.string().describe('Last name-second local text').optional(),
+                  additional_name_type: z
+                    .object({ enum_name: z.string().describe('Enumeration value') })
+                    .describe('Supplementary name type')
+                    .optional(),
+                  first_name: z.string().describe('Name').optional(),
+                  full_name: z.string().describe('Full name').optional(),
+                  hereditary: z.string().describe('Name').optional(),
+                  custom_name: z
+                    .string()
+                    .describe(
+                      'Custom name (when not passed in, the name will be spliced according to the rules of the country/region to which it belongs)',
+                    )
+                    .optional(),
+                  custom_local_name: z
+                    .string()
+                    .describe(
+                      'Custom name of local text (when not passed in, the name of the local text will be stitched together with the relevant last name and first name field of the local text according to the rules of the country/region to which it belongs)',
+                    )
+                    .optional(),
+                  middle_name: z.string().describe('Middle name').optional(),
+                  name_primary: z.string().describe('Last name').optional(),
+                  secondary: z.string().describe('Second surname').optional(),
+                  social: z
+                    .object({ enum_name: z.string().describe('Enumeration value') })
+                    .describe('Honorific title')
+                    .optional(),
+                  tertiary: z.string().describe('Married surname').optional(),
+                  title: z
+                    .object({ enum_name: z.string().describe('Enumeration value') })
+                    .describe('Title')
+                    .optional(),
+                  local_middle_name: z.string().describe('Local middle name').optional(),
+                  local_secondary: z.string().describe('Second surname-local text').optional(),
                   custom_fields: z
                     .array(
                       z.object({
@@ -5382,177 +5334,72 @@ export const corehrV1PersonPatch = {
                     )
                     .describe('Custom fields')
                     .optional(),
-                }),
-              )
-              .describe('ID number')
-              .optional(),
-            spouses_working_status: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('Spouse working status')
-              .optional(),
-            is_this_person_covered_by_health_insurance: z
-              .boolean()
-              .describe('Including family medical insurance')
-              .optional(),
-            is_this_person_allowed_for_tax_deduction: z
-              .boolean()
-              .describe('Allowing family members to deduct taxes')
-              .optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('Field name'),
-                  value: z
-                    .string()
-                    .describe(
-                      'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('Custom fields')
-              .optional(),
-            dependent_name: z.string().describe('Family member name').optional(),
-            employer: z.string().describe('work unit').optional(),
-            job: z.string().describe('post').optional(),
-            phone: z
-              .object({
-                international_area_code: z
-                  .object({ enum_name: z.string().describe('Enumeration value') })
-                  .describe(
-                    'Country area code Common such as: 86_china (China), 852_hong_kong (Hong Kong, China), 886_taiwan (Taiwan, China), 853_macao (Macao, China), 1_united_states_of_america (United States of America), 7_russian_federation (Russian Federation), 44_united_kingdom (United Kingdom), 81_japan (Japan), 82_korea_republic_of (Republic of Korea), 91_india (India)',
-                  )
-                  .optional(),
-                phone_number: z.string().describe('Phone number'),
-                custom_fields: z
-                  .array(
-                    z.object({
-                      field_name: z.string().describe('Field name'),
-                      value: z
-                        .string()
-                        .describe(
-                          'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-                        ),
-                    }),
-                  )
-                  .describe('Custom fields')
-                  .optional(),
-              })
-              .describe('Telephone')
-              .optional(),
-            address: z
-              .object({
-                id: z.string().describe('Address id').optional(),
-                country_region_id: z.string().describe('Country/Region'),
-                region_id: z.string().describe('Main Administrative Region').optional(),
-                city_id: z.string().describe('City').optional(),
-                distinct_id: z.string().describe('District/County').optional(),
-                local_address_line1: z
-                  .string()
-                  .describe('City, you can check through the [Query City Information] interface')
-                  .optional(),
-                local_address_line2: z
-                  .string()
-                  .describe('District/county, you can check through the [Query District/County Information] interface')
-                  .optional(),
-                local_address_line3: z.string().describe('Address line 1 (non-Latin native text)').optional(),
-                local_address_line4: z.string().describe('Address line 2 (non-Latin native text)').optional(),
-                local_address_line5: z.string().describe('Address line 3 (non-Latin native text)').optional(),
-                local_address_line6: z.string().describe('Address line 4 (non-Latin native text)').optional(),
-                local_address_line7: z.string().describe('Address line 5 (non-Latin native text)').optional(),
-                local_address_line8: z.string().describe('Address line 6 (non-Latin native text)').optional(),
-                local_address_line9: z.string().describe('Address line 7 (non-Latin native text)').optional(),
-                postal_code: z.string().describe('Address line 8 (non-Latin native text)').optional(),
-                custom_fields: z
-                  .array(
-                    z.object({
-                      field_name: z.string().describe('Field name'),
-                      value: z
-                        .string()
-                        .describe(
-                          'The field value is a string escaped by json. According to the metadata definition, the field format is different (123,123.23, true, [\\ "id1\\",\\ "id2\\], 2006-01-02 15:04:05])',
-                        ),
-                    }),
-                  )
-                  .describe('Address line 9 (non-Latin native text)')
-                  .optional(),
-              })
-              .describe('Contact address')
-              .optional(),
-            birth_certificate_of_child: z
-              .array(z.object({ id: z.string().describe('Upload file ID').optional() }))
-              .describe('Birth certificate')
-              .optional(),
-          }),
-        )
-        .describe('Relatives')
-        .optional(),
-      emergency_contact_list: z
-        .array(
-          z.object({
-            name: z
-              .object({
-                local_primary: z.string().describe('Last name-local text').optional(),
-                local_first_name: z.string().describe('Name-local text').optional(),
-                country_region_id: z.string().describe('Country/Region'),
-                name_type: z.object({ enum_name: z.string().describe('Enumeration value') }).describe('Name Type'),
-                local_first_name_2: z.string().describe('Name-second local text').optional(),
-                local_primary_2: z.string().describe('Last name-second local text').optional(),
-                additional_name_type: z
-                  .object({ enum_name: z.string().describe('Enumeration value') })
-                  .describe('Supplementary name type')
-                  .optional(),
-                first_name: z.string().describe('Name').optional(),
-                full_name: z.string().describe('Full name').optional(),
-                hereditary: z.string().describe('Name').optional(),
-                custom_name: z
-                  .string()
-                  .describe(
-                    'Custom name (when not passed in, the name will be spliced according to the rules of the country/region to which it belongs)',
-                  )
-                  .optional(),
-                custom_local_name: z
-                  .string()
-                  .describe(
-                    'Custom name of local text (when not passed in, the name of the local text will be stitched together with the relevant last name and first name field of the local text according to the rules of the country/region to which it belongs)',
-                  )
-                  .optional(),
-                middle_name: z.string().describe('Middle name').optional(),
-                name_primary: z.string().describe('Last name').optional(),
-                secondary: z.string().describe('Second surname').optional(),
-                social: z
-                  .object({ enum_name: z.string().describe('Enumeration value') })
-                  .describe('Honorific title')
-                  .optional(),
-                tertiary: z.string().describe('Married surname').optional(),
-                title: z
-                  .object({ enum_name: z.string().describe('Enumeration value') })
-                  .describe('Title')
-                  .optional(),
-                local_middle_name: z.string().describe('Local middle name').optional(),
-                local_secondary: z.string().describe('Second surname-local text').optional(),
-                custom_fields: z
-                  .array(
-                    z.object({
-                      field_name: z.string().describe('Field name'),
-                      value: z
-                        .string()
-                        .describe(
-                          'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-                        ),
-                    }),
-                  )
-                  .describe('Custom fields')
-                  .optional(),
-              })
-              .describe('Name')
-              .optional(),
-            relationship: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('Relationship')
-              .optional(),
-            phone_ist: z
-              .array(
-                z.object({
+                })
+                .describe('Name')
+                .optional(),
+              relationship: z.object({ enum_name: z.string().describe('Enumeration value') }).describe('Relationship'),
+              gender: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('Gender')
+                .optional(),
+              date_of_birth: z.string().describe('Birthday').optional(),
+              nationality_id: z.string().describe('Nationality').optional(),
+              national_id_list: z
+                .array(
+                  z.object({
+                    national_id_type_id: z.string().describe('Type of national document'),
+                    national_id_number: z.string().describe('ID number'),
+                    issue_date: z.string().describe('Date of issuance').optional(),
+                    expiration_date: z.string().describe('Certificate expiration date').optional(),
+                    country_region_id: z.string().describe('Country/Region'),
+                    issued_by: z.string().describe('Document issuing agency').optional(),
+                    custom_fields: z
+                      .array(
+                        z.object({
+                          field_name: z.string().describe('Field name'),
+                          value: z
+                            .string()
+                            .describe(
+                              'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                            ),
+                        }),
+                      )
+                      .describe('Custom fields')
+                      .optional(),
+                  }),
+                )
+                .describe('ID number')
+                .optional(),
+              spouses_working_status: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('Spouse working status')
+                .optional(),
+              is_this_person_covered_by_health_insurance: z
+                .boolean()
+                .describe('Including family medical insurance')
+                .optional(),
+              is_this_person_allowed_for_tax_deduction: z
+                .boolean()
+                .describe('Allowing family members to deduct taxes')
+                .optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('Field name'),
+                    value: z
+                      .string()
+                      .describe(
+                        'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('Custom fields')
+                .optional(),
+              dependent_name: z.string().describe('Family member name').optional(),
+              employer: z.string().describe('work unit').optional(),
+              job: z.string().describe('post').optional(),
+              phone: z
+                .object({
                   international_area_code: z
                     .object({ enum_name: z.string().describe('Enumeration value') })
                     .describe(
@@ -5573,67 +5420,209 @@ export const corehrV1PersonPatch = {
                     )
                     .describe('Custom fields')
                     .optional(),
-                }),
-              )
-              .describe('Phone')
-              .optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('Field name'),
-                  value: z
+                })
+                .describe('Telephone')
+                .optional(),
+              address: z
+                .object({
+                  id: z.string().describe('Address id').optional(),
+                  country_region_id: z.string().describe('Country/Region'),
+                  region_id: z.string().describe('Main Administrative Region').optional(),
+                  city_id: z.string().describe('City').optional(),
+                  distinct_id: z.string().describe('District/County').optional(),
+                  local_address_line1: z
+                    .string()
+                    .describe('City, you can check through the [Query City Information] interface')
+                    .optional(),
+                  local_address_line2: z
                     .string()
                     .describe(
-                      'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('Custom fields')
-              .optional(),
-            legal_name: z.string().describe('Legal name').optional(),
-          }),
-        )
-        .describe('Emergency Contact')
-        .optional(),
-      date_entered_workforce: z.string().describe('Date of entry to workplace').optional(),
-      profile_image_id: z.string().describe('The id of the avatar resource').optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('Field name'),
-            value: z
-              .string()
-              .describe(
-                'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe('Custom fields')
-        .optional(),
-      resident_tax_id_list: z.array(z.string()).describe('Tax identity information').optional(),
-      age: z.number().describe('Age').optional(),
-      personal_profile: z
-        .array(
-          z.object({
-            personal_profile_type: z
-              .object({ enum_name: z.string().describe('Enumeration value') })
-              .describe('Data type')
-              .optional(),
-            files: z
-              .array(z.object({ id: z.string().describe('Upload file ID').optional() }))
-              .describe('Upload file list')
-              .optional(),
-          }),
-        )
-        .describe('Personal Data')
-        .optional(),
-    }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+                      'District/county, you can check through the [Query District/County Information] interface',
+                    )
+                    .optional(),
+                  local_address_line3: z.string().describe('Address line 1 (non-Latin native text)').optional(),
+                  local_address_line4: z.string().describe('Address line 2 (non-Latin native text)').optional(),
+                  local_address_line5: z.string().describe('Address line 3 (non-Latin native text)').optional(),
+                  local_address_line6: z.string().describe('Address line 4 (non-Latin native text)').optional(),
+                  local_address_line7: z.string().describe('Address line 5 (non-Latin native text)').optional(),
+                  local_address_line8: z.string().describe('Address line 6 (non-Latin native text)').optional(),
+                  local_address_line9: z.string().describe('Address line 7 (non-Latin native text)').optional(),
+                  postal_code: z.string().describe('Address line 8 (non-Latin native text)').optional(),
+                  custom_fields: z
+                    .array(
+                      z.object({
+                        field_name: z.string().describe('Field name'),
+                        value: z
+                          .string()
+                          .describe(
+                            'The field value is a string escaped by json. According to the metadata definition, the field format is different (123,123.23, true, [\\ "id1\\",\\ "id2\\], 2006-01-02 15:04:05])',
+                          ),
+                      }),
+                    )
+                    .describe('Address line 9 (non-Latin native text)')
+                    .optional(),
+                })
+                .describe('Contact address')
+                .optional(),
+              birth_certificate_of_child: z
+                .array(z.object({ id: z.string().describe('Upload file ID').optional() }))
+                .describe('Birth certificate')
+                .optional(),
+            }),
+          )
+          .describe('Relatives')
+          .optional(),
+        emergency_contact_list: z
+          .array(
+            z.object({
+              name: z
+                .object({
+                  local_primary: z.string().describe('Last name-local text').optional(),
+                  local_first_name: z.string().describe('Name-local text').optional(),
+                  country_region_id: z.string().describe('Country/Region'),
+                  name_type: z.object({ enum_name: z.string().describe('Enumeration value') }).describe('Name Type'),
+                  local_first_name_2: z.string().describe('Name-second local text').optional(),
+                  local_primary_2: z.string().describe('Last name-second local text').optional(),
+                  additional_name_type: z
+                    .object({ enum_name: z.string().describe('Enumeration value') })
+                    .describe('Supplementary name type')
+                    .optional(),
+                  first_name: z.string().describe('Name').optional(),
+                  full_name: z.string().describe('Full name').optional(),
+                  hereditary: z.string().describe('Name').optional(),
+                  custom_name: z
+                    .string()
+                    .describe(
+                      'Custom name (when not passed in, the name will be spliced according to the rules of the country/region to which it belongs)',
+                    )
+                    .optional(),
+                  custom_local_name: z
+                    .string()
+                    .describe(
+                      'Custom name of local text (when not passed in, the name of the local text will be stitched together with the relevant last name and first name field of the local text according to the rules of the country/region to which it belongs)',
+                    )
+                    .optional(),
+                  middle_name: z.string().describe('Middle name').optional(),
+                  name_primary: z.string().describe('Last name').optional(),
+                  secondary: z.string().describe('Second surname').optional(),
+                  social: z
+                    .object({ enum_name: z.string().describe('Enumeration value') })
+                    .describe('Honorific title')
+                    .optional(),
+                  tertiary: z.string().describe('Married surname').optional(),
+                  title: z
+                    .object({ enum_name: z.string().describe('Enumeration value') })
+                    .describe('Title')
+                    .optional(),
+                  local_middle_name: z.string().describe('Local middle name').optional(),
+                  local_secondary: z.string().describe('Second surname-local text').optional(),
+                  custom_fields: z
+                    .array(
+                      z.object({
+                        field_name: z.string().describe('Field name'),
+                        value: z
+                          .string()
+                          .describe(
+                            'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                          ),
+                      }),
+                    )
+                    .describe('Custom fields')
+                    .optional(),
+                })
+                .describe('Name')
+                .optional(),
+              relationship: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('Relationship')
+                .optional(),
+              phone_ist: z
+                .array(
+                  z.object({
+                    international_area_code: z
+                      .object({ enum_name: z.string().describe('Enumeration value') })
+                      .describe(
+                        'Country area code Common such as: 86_china (China), 852_hong_kong (Hong Kong, China), 886_taiwan (Taiwan, China), 853_macao (Macao, China), 1_united_states_of_america (United States of America), 7_russian_federation (Russian Federation), 44_united_kingdom (United Kingdom), 81_japan (Japan), 82_korea_republic_of (Republic of Korea), 91_india (India)',
+                      )
+                      .optional(),
+                    phone_number: z.string().describe('Phone number'),
+                    custom_fields: z
+                      .array(
+                        z.object({
+                          field_name: z.string().describe('Field name'),
+                          value: z
+                            .string()
+                            .describe(
+                              'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                            ),
+                        }),
+                      )
+                      .describe('Custom fields')
+                      .optional(),
+                  }),
+                )
+                .describe('Phone')
+                .optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('Field name'),
+                    value: z
+                      .string()
+                      .describe(
+                        'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('Custom fields')
+                .optional(),
+              legal_name: z.string().describe('Legal name').optional(),
+            }),
+          )
+          .describe('Emergency Contact')
+          .optional(),
+        date_entered_workforce: z.string().describe('Date of entry to workplace').optional(),
+        profile_image_id: z.string().describe('The id of the avatar resource').optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('Field name'),
+              value: z
+                .string()
+                .describe(
+                  'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('Custom fields')
+          .optional(),
+        resident_tax_id_list: z.array(z.string()).describe('Tax identity information').optional(),
+        age: z.number().describe('Age').optional(),
+        personal_profile: z
+          .array(
+            z.object({
+              personal_profile_type: z
+                .object({ enum_name: z.string().describe('Enumeration value') })
+                .describe('Data type')
+                .optional(),
+              files: z
+                .array(z.object({ id: z.string().describe('Upload file ID').optional() }))
+                .describe('Upload file list')
+                .optional(),
+            }),
+          )
+          .describe('Personal Data')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
     path: z.object({ person_id: z.string().describe('Person ID') }),
   },
 };
@@ -5731,12 +5720,14 @@ export const corehrV1PreHirePatch = {
         .object({ enum_name: z.string().describe('Enumeration value') })
         .describe('Entry status - Preboarding - deleted - Ready (day_one) - withdrawn - Completed'),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
     path: z.object({ pre_hire_id: z.string().describe('Onboarding ID') }),
   },
 };
@@ -5808,14 +5799,16 @@ export const corehrV1SecurityGroupQuery = {
       updated_at_gte: z.string().describe('Authorization time is greater than').optional(),
       updated_at_lte: z.string().describe('Authorization time is less than').optional(),
     }),
-    params: z.object({
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          'The department ID type used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id),people_corehr_department_id(Identify departments by people_corehr_department_id)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            'The department ID type used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id),people_corehr_department_id(Identify departments by people_corehr_department_id)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1SubdivisionGet = {
@@ -5825,7 +5818,7 @@ export const corehrV1SubdivisionGet = {
   path: '/open-apis/corehr/v1/subdivisions/:subdivision_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu People-basic data-Location data-Query a single province/administrative region information-Query single province/administrative region information',
+    '[Feishu/Lark]-Deprecated Version (Not Recommended)-Feishu People-basic data-Location data-Query a single province/administrative region information-Query single province/administrative region information',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({ subdivision_id: z.string().describe('Province/Administrative Region ID') }),
@@ -5838,7 +5831,7 @@ export const corehrV1SubdivisionList = {
   path: '/open-apis/corehr/v1/subdivisions',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu People-basic data-Location data-Query province/administrative region information in batches-Query province/administrative region information in batches',
+    '[Feishu/Lark]-Deprecated Version (Not Recommended)-Feishu People-basic data-Location data-Query province/administrative region information in batches-Query province/administrative region information in batches',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -5865,7 +5858,7 @@ export const corehrV1SubregionGet = {
   path: '/open-apis/corehr/v1/subregions/:subregion_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu People-basic data-Location data-Query single city/region information-Query single city/region information',
+    '[Feishu/Lark]-Deprecated Version (Not Recommended)-Feishu People-basic data-Location data-Query single city/region information-Query single city/region information',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({ subregion_id: z.string().describe('City/Region ID') }),
@@ -5878,7 +5871,7 @@ export const corehrV1SubregionList = {
   path: '/open-apis/corehr/v1/subregions',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Feishu People-basic data-Location data-Query city/region information in batches-Query city/region information in batches',
+    '[Feishu/Lark]-Deprecated Version (Not Recommended)-Feishu People-basic data-Location data-Query city/region information in batches-Query city/region information in batches',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -5908,13 +5901,15 @@ export const corehrV1TransferReasonQuery = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Job change-Get a list of reasons for the change-Get a list of reasons for the change',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      active: z.boolean().describe('Change cause state').optional(),
-      transfer_reason_unique_identifier: z
-        .array(z.string())
-        .describe('Unique identification of the cause of the change, the maximum number of multiple pieces is 10')
-        .optional(),
-    }),
+    params: z
+      .object({
+        active: z.boolean().describe('Change cause state').optional(),
+        transfer_reason_unique_identifier: z
+          .array(z.string())
+          .describe('Unique identification of the cause of the change, the maximum number of multiple pieces is 10')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1TransferTypeQuery = {
@@ -5927,13 +5922,15 @@ export const corehrV1TransferTypeQuery = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Job change-Get a list of change types-Get a list of change types',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      active: z.boolean().describe('Change type state').optional(),
-      transfer_type_unique_identifier: z
-        .array(z.string())
-        .describe('Unique identification of the type of change, the maximum number of multiple bars is 10')
-        .optional(),
-    }),
+    params: z
+      .object({
+        active: z.boolean().describe('Change type state').optional(),
+        transfer_type_unique_identifier: z
+          .array(z.string())
+          .describe('Unique identification of the type of change, the maximum number of multiple bars is 10')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1WorkingHoursTypeCreate = {
@@ -5968,12 +5965,14 @@ export const corehrV1WorkingHoursTypeCreate = {
         .describe('Custom fields')
         .optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1WorkingHoursTypeDelete = {
@@ -6035,35 +6034,39 @@ export const corehrV1WorkingHoursTypePatch = {
     '[Feishu/Lark]-Feishu People（Enterprise Edition）-Basic infomation-Working hours type-Update working hours type-Update the working hours system',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      code: z.string().describe('Encoding').optional(),
-      name: z
-        .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
-        .describe('Name')
-        .optional(),
-      country_region_id_list: z.array(z.string()).describe('Country/Region').optional(),
-      default_for_job: z.boolean().describe('Job default').optional(),
-      active: z.boolean().describe('Enable').optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('Field name'),
-            value: z
-              .string()
-              .describe(
-                'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe('Custom fields')
-        .optional(),
-    }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe('Determine whether it is the same request according to whether the client_token are consistent')
-        .optional(),
-    }),
+    data: z
+      .object({
+        code: z.string().describe('Encoding').optional(),
+        name: z
+          .array(z.object({ lang: z.string().describe('Language'), value: z.string().describe('Content') }))
+          .describe('Name')
+          .optional(),
+        country_region_id_list: z.array(z.string()).describe('Country/Region').optional(),
+        default_for_job: z.boolean().describe('Job default').optional(),
+        active: z.boolean().describe('Enable').optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('Field name'),
+              value: z
+                .string()
+                .describe(
+                  'The field value is the character string after json escape. According to the metadata definition, the field format is different (such as 123, 123.23, "true", [\\ "id1\\",\\ "id2 \\"], " 2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('Custom fields')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe('Determine whether it is the same request according to whether the client_token are consistent')
+          .optional(),
+      })
+      .optional(),
     path: z.object({ working_hours_type_id: z.string().describe('Working hours system ID') }),
   },
 };

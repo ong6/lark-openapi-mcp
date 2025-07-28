@@ -184,7 +184,7 @@ export const hireV1AdvertisementPublish = {
   description: '[Feishu/Lark]-Hire-Recruitment related configuration-Job-Publish job post-Publish advertisement',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({ job_channel_id: z.string().describe('Job channel ID').optional() }),
+    data: z.object({ job_channel_id: z.string().describe('Job channel ID').optional() }).optional(),
     path: z.object({ advertisement_id: z.string().describe('Job ID') }),
   },
 };
@@ -198,48 +198,52 @@ export const hireV1AgencyBatchQuery = {
     '[Feishu/Lark]-Hire-Get candidates-Agency-Search supplier list-Supplier information can be queried according to headhunting supplier ID list or keywords and filters',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      agency_supplier_id_list: z
-        .array(z.string())
-        .describe(
-          'Headhunting supplier ID list, when passing this value, this value shall prevail, and the rest of the query fields shall be invalid',
-        )
-        .optional(),
-      keyword: z.string().describe('Search for keywords, you can pass in a name or email address').optional(),
-      filter_list: z
-        .array(
-          z.object({
-            key: z.string().describe('Filter key'),
-            value_type: z
-              .number()
-              .describe(
-                'filter value type Options:1(Value filtering, populating value_list fields),2(Range filtering, populating range_filter fields)',
-              ),
-            value_list: z.array(z.string()).describe('list of filter values').optional(),
-            range_filter: z
-              .object({
-                from: z.string().describe('starting value').optional(),
-                to: z.string().describe('stop value').optional(),
-              })
-              .describe('range filter')
-              .optional(),
-          }),
-        )
-        .describe(
-          'Filter items, the same Key can only be passed once, and the field value can be viewed in the "Filter Field Description" section of this article',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('number of records fetched per page').optional(),
-    }),
+    data: z
+      .object({
+        agency_supplier_id_list: z
+          .array(z.string())
+          .describe(
+            'Headhunting supplier ID list, when passing this value, this value shall prevail, and the rest of the query fields shall be invalid',
+          )
+          .optional(),
+        keyword: z.string().describe('Search for keywords, you can pass in a name or email address').optional(),
+        filter_list: z
+          .array(
+            z.object({
+              key: z.string().describe('Filter key'),
+              value_type: z
+                .number()
+                .describe(
+                  'filter value type Options:1(Value filtering, populating value_list fields),2(Range filtering, populating range_filter fields)',
+                ),
+              value_list: z.array(z.string()).describe('list of filter values').optional(),
+              range_filter: z
+                .object({
+                  from: z.string().describe('starting value').optional(),
+                  to: z.string().describe('stop value').optional(),
+                })
+                .describe('range filter')
+                .optional(),
+            }),
+          )
+          .describe(
+            'Filter items, the same Key can only be passed once, and the field value can be viewed in the "Filter Field Description" section of this article',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('number of records fetched per page').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1AgencyGet = {
@@ -251,10 +255,12 @@ export const hireV1AgencyGet = {
   description: '[Feishu/Lark]-Hire-Get candidates-Agency-Get agency information-Get agency information by ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
-    path: z.object({ agency_id: z.string().describe('Agency Supplier ID').optional() }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
+    path: z.object({ agency_id: z.string().describe('Agency Supplier ID').optional() }).optional(),
   },
 };
 export const hireV1AgencyGetAgencyAccount = {
@@ -281,16 +287,18 @@ export const hireV1AgencyGetAgencyAccount = {
         .optional(),
       role: z.number().describe('role Options:0(Manager administrator),1(Consultant)').optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id']).describe('User ID type').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('number of records fetched per page').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id']).describe('User ID type').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('number of records fetched per page').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1AgencyOperateAgencyAccount = {
@@ -333,9 +341,11 @@ export const hireV1AgencyProtect = {
       current_salary: z.string().describe('Current salary').optional(),
       expected_salary: z.string().describe('Expected salary').optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1AgencyProtectSearch = {
@@ -348,13 +358,7 @@ export const hireV1AgencyProtectSearch = {
     '[Feishu/Lark]-Hire-Get candidates-Agency-Query agency protection period information-Query agency protection period information',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          'Talent ID, [「Get talent ID by mobile or email」]',
-        ),
-    }),
+    data: z.object({ talent_id: z.string().describe('Talent ID, [「Get talent ID by mobile or email」]') }),
   },
 };
 export const hireV1AgencyQuery = {
@@ -379,7 +383,7 @@ export const hireV1ApplicationCancelOnboard = {
   path: '/open-apis/hire/v1/applications/:application_id/cancel_onboard',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Onboard-Cancel candidate enrollment-The operation candidate cancels the entry, which is applicable to cancel the entry in the waiting stage',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Onboard-Cancel candidate enrollment-The operation candidate cancels the entry, which is applicable to cancel the entry in the waiting stage',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -406,7 +410,7 @@ export const hireV1ApplicationCreate = {
   path: '/open-apis/hire/v1/applications',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Delivery management-Create application-Create application by job ID and talent ID',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Delivery management-Create application-Create application by job ID and talent ID',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -435,7 +439,9 @@ export const hireV1ApplicationCreate = {
         .describe('Application method Options:1(HR_visit Sourced by HR),2(candidate_delivery Talent applied)')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const hireV1ApplicationGet = {
@@ -445,24 +451,26 @@ export const hireV1ApplicationGet = {
   path: '/open-apis/hire/v1/applications/:application_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Delivery management-Get application information-Get application by application ID',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Delivery management-Get application information-Get application by application ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      options: z
-        .array(
-          z
-            .literal('get_latest_application_on_chain')
-            .describe(
-              'Options:get_latest_application_on_chain(GetLatestApplicationOnChain Only effective for virtual job applications. - If the application is not assigned, the virtual job application is considered the latest application. The information of the specified virtual job application in the request will be returned. - If the application is assigned, it will return the information of the latest real job application on the assignment chain, not the specified application in the request.)',
-            ),
-        )
-        .describe(
-          'Request control parameters to control the interface response logic.If you need to query multiple user IDs at once, you can pass the same parameter name multiple times, each time with a different parameter value. For example: https://{url}?options={option1}&options={option2}',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        options: z
+          .array(
+            z
+              .literal('get_latest_application_on_chain')
+              .describe(
+                'Options:get_latest_application_on_chain(GetLatestApplicationOnChain Only effective for virtual job applications. - If the application is not assigned, the virtual job application is considered the latest application. The information of the specified virtual job application in the request will be returned. - If the application is assigned, it will return the information of the latest real job application on the assignment chain, not the specified application in the request.)',
+              ),
+          )
+          .describe(
+            'Request control parameters to control the interface response logic.If you need to query multiple user IDs at once, you can pass the same parameter name multiple times, each time with a different parameter value. For example: https://{url}?options={option1}&options={option2}',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ application_id: z.string().describe('Application ID') }),
   },
 };
@@ -473,66 +481,68 @@ export const hireV1ApplicationGetDetail = {
   path: '/open-apis/hire/v1/applications/:application_id/get_detail',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Delivery management-Get application detail-Call the interface to obtain the application information and other entity information related to the delivery according to the delivery ID. The information of which related entities can be obtained on demand through the options parameter',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Delivery management-Get application detail-Call the interface to obtain the application information and other entity information related to the delivery according to the delivery ID. The information of which related entities can be obtained on demand through the options parameter',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The department ID type used in this call Options:open_department_id(Identify the department by open_department_id, and get it through the [batch acquisition department information] interface),department_id(Identify the department by department_id, and get it through the [batch acquisition department information] interface)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "rank ID" used in this call Options:people_admin_job_level_id("HR system management background" applicable rank ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),job_level_id(The rank ID applicable to "Feishu Management Background" is obtained through the [Get Tenant Rank List] interface)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "sequence ID" used in this call Options:people_admin_job_category_id("HR system management background" applicable serial ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),job_family_id(The sequence ID applicable to "Feishu Management Background" is obtained through the [Get Tenant Sequence List] interface)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          'The type of "person type ID" used in this call Options:people_admin_employee_type_id("HR system management background" applicable personnel type ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),employee_type_enum_id(The person type ID applicable to "Feishu Management Background" is obtained through the [Query Person Type] interface)',
-        )
-        .optional(),
-      options: z
-        .array(
-          z
-            .enum([
-              'with_job',
-              'with_talent',
-              'with_interview',
-              'with_offer',
-              'with_evaluation',
-              'with_employee',
-              'with_agency',
-              'with_referral',
-              'with_portal',
-            ])
-            .describe(
-              'Options:with_job(Return to job entity information),with_talent(Return to talent entity information),with_interview(Return to Interview Aggregate Entity Information),with_offer(Return Offer Entity Information),with_evaluation(Return to evaluation entity information),with_employee(Return to employee entity information),with_agency(Return to headhunter entity information),with_referral(Return referral entity information),with_portal(Return to the official website entity information)',
-            ),
-        )
-        .describe(
-          'The associated entity information acquisition parameter is used to specify which associated entity information to obtain. When not transmitted, only the delivery information is returned by default. If you need to query multiple entity information at one time, you can pass the same parameter name multiple times and pass different parameter values each time.For example: https://{url}? options = {option1} & options = {option2}',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      application_id: z
-        .string()
-        .describe(
-          'Delivery ID, which can be obtained through the [Get Delivery List] interface',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The department ID type used in this call Options:open_department_id(Identify the department by open_department_id, and get it through the [batch acquisition department information] interface),department_id(Identify the department by department_id, and get it through the [batch acquisition department information] interface)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "rank ID" used in this call Options:people_admin_job_level_id("HR system management background" applicable rank ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),job_level_id(The rank ID applicable to "Feishu Management Background" is obtained through the [Get Tenant Rank List] interface)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "sequence ID" used in this call Options:people_admin_job_category_id("HR system management background" applicable serial ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),job_family_id(The sequence ID applicable to "Feishu Management Background" is obtained through the [Get Tenant Sequence List] interface)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            'The type of "person type ID" used in this call Options:people_admin_employee_type_id("HR system management background" applicable personnel type ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),employee_type_enum_id(The person type ID applicable to "Feishu Management Background" is obtained through the [Query Person Type] interface)',
+          )
+          .optional(),
+        options: z
+          .array(
+            z
+              .enum([
+                'with_job',
+                'with_talent',
+                'with_interview',
+                'with_offer',
+                'with_evaluation',
+                'with_employee',
+                'with_agency',
+                'with_referral',
+                'with_portal',
+              ])
+              .describe(
+                'Options:with_job(Return to job entity information),with_talent(Return to talent entity information),with_interview(Return to Interview Aggregate Entity Information),with_offer(Return Offer Entity Information),with_evaluation(Return to evaluation entity information),with_employee(Return to employee entity information),with_agency(Return to headhunter entity information),with_referral(Return referral entity information),with_portal(Return to the official website entity information)',
+              ),
+          )
+          .describe(
+            'The associated entity information acquisition parameter is used to specify which associated entity information to obtain. When not transmitted, only the delivery information is returned by default. If you need to query multiple entity information at one time, you can pass the same parameter name multiple times and pass different parameter values each time.For example: https://{url}? options = {option1} & options = {option2}',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z
+      .object({
+        application_id: z
+          .string()
+          .describe('Delivery ID, which can be obtained through the [Get Delivery List] interface')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ApplicationInterviewList = {
@@ -570,32 +580,34 @@ export const hireV1ApplicationList = {
   path: '/open-apis/hire/v1/applications',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Delivery management-Get application list-Get application list by query condition',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Delivery management-Get application list-Get application list by query condition',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      process_id: z.string().describe('Filter by process').optional(),
-      stage_id: z.string().describe('Filter by stage').optional(),
-      talent_id: z.string().describe('Filter by talent').optional(),
-      active_status: z
-        .string()
-        .describe('Filter by active status 1 = active application, 2 = inactive application, 3 = all,')
-        .optional(),
-      job_id: z.string().describe('Job ID').optional(),
-      lock_status: z
-        .array(z.number().describe('Options:1(Not locked),2(Locking in other jobs),3(Locking in the current job)'))
-        .describe('Locking status')
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Page size').optional(),
-      update_start_time: z.string().describe('The earliest update time, millisecond timestamp').optional(),
-      update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
-    }),
+    params: z
+      .object({
+        process_id: z.string().describe('Filter by process').optional(),
+        stage_id: z.string().describe('Filter by stage').optional(),
+        talent_id: z.string().describe('Filter by talent').optional(),
+        active_status: z
+          .string()
+          .describe('Filter by active status 1 = active application, 2 = inactive application, 3 = all,')
+          .optional(),
+        job_id: z.string().describe('Job ID').optional(),
+        lock_status: z
+          .array(z.number().describe('Options:1(Not locked),2(Locking in other jobs),3(Locking in the current job)'))
+          .describe('Locking status')
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Page size').optional(),
+        update_start_time: z.string().describe('The earliest update time, millisecond timestamp').optional(),
+        update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ApplicationOffer = {
@@ -605,43 +617,39 @@ export const hireV1ApplicationOffer = {
   path: '/open-apis/hire/v1/applications/:application_id/offer',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Offer-Get offer information-Get offer information application ID',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Offer-Get offer information-Get offer information application ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The Type Of Department ID Used In This Call Options:open_department_id(Identify Departments By open_department_id),department_id(Identify Departments By department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "rank ID" used in this call Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      application_id: z
-        .string()
-        .describe(
-          'Application ID,please refer to: [Get application list]',
-        ),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The Type Of Department ID Used In This Call Options:open_department_id(Identify Departments By open_department_id),department_id(Identify Departments By department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "rank ID" used in this call Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ application_id: z.string().describe('Application ID,please refer to: [Get application list]') }),
   },
 };
 export const hireV1ApplicationRecover = {
@@ -651,16 +659,10 @@ export const hireV1ApplicationRecover = {
   path: '/open-apis/hire/v1/applications/:application_id/recover',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Delivery management-Recover Application-Recover "terminated" deliveries according to the application ID',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Delivery management-Recover Application-Recover "terminated" deliveries according to the application ID',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      application_id: z
-        .string()
-        .describe(
-          'Application ID, please refer to: [Get application list]',
-        ),
-    }),
+    path: z.object({ application_id: z.string().describe('Application ID, please refer to: [Get application list]') }),
   },
 };
 export const hireV1ApplicationTerminate = {
@@ -670,7 +672,7 @@ export const hireV1ApplicationTerminate = {
   path: '/open-apis/hire/v1/applications/:application_id/terminate',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Delivery management-Terminate application-Modify the application status to "terminated" according to the application ID',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Delivery management-Terminate application-Modify the application status to "terminated" according to the application ID',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -687,13 +689,7 @@ export const hireV1ApplicationTerminate = {
         .optional(),
       termination_reason_note: z.string().describe('Termination remarks').optional(),
     }),
-    path: z.object({
-      application_id: z
-        .string()
-        .describe(
-          'Application ID, please refer to [Get Application List]',
-        ),
-    }),
+    path: z.object({ application_id: z.string().describe('Application ID, please refer to [Get Application List]') }),
   },
 };
 export const hireV1ApplicationTransferOnboard = {
@@ -703,61 +699,65 @@ export const hireV1ApplicationTransferOnboard = {
   path: '/open-apis/hire/v1/applications/:application_id/transfer_onboard',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Onboard-Transfer talent to onboarding-Manage candidate onboarding and create employees according to the delivery ID. The delivery must be in the "Prehire" stage, and the delivery status can be changed through the "Transfer Stage" interface',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Onboard-Transfer talent to onboarding-Manage candidate onboarding and create employees according to the delivery ID. The delivery must be in the "Prehire" stage, and the delivery status can be changed through the "Transfer Stage" interface',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      actual_onboard_time: z.number().describe('Actual onboard time').optional(),
-      expected_conversion_time: z.number().describe('Expected confirmation time').optional(),
-      job_requirement_id: z
-        .string()
-        .describe(
-          'Job requirement ID. It can be obtained through the interface [Get job requirement list]. Whether it must be entered depends on the configuration of "Recruitment request association settings" by the admin in the system backend. After onboarding is completed, the "Onboarded" number for the recruitment request will increase by 1',
-        )
-        .optional(),
-      operator_id: z
-        .string()
-        .describe('Operator UserID，Consistent with the type of the entry `user_id_type`')
-        .optional(),
-      onboard_city_code: z.string().describe('Office location').optional(),
-      department: z.string().describe('Entry Department').optional(),
-      leader: z.string().describe('Direct manager，Consistent with the type of the entry `user_id_type`').optional(),
-      sequence: z.string().describe('Sequence').optional(),
-      level: z.string().describe('Rank').optional(),
-      employee_type: z
-        .string()
-        .describe(
-          'Candidate entry type ID, which can be obtained through the interface human resource planning platform "Get Employee Type List", which will be used for candidate referral award rule judgment',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_admin_department_id'])
-        .describe(
-          'The type of department ID used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id),people_admin_department_id(Identify departments by people_admin_department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        actual_onboard_time: z.number().describe('Actual onboard time').optional(),
+        expected_conversion_time: z.number().describe('Expected confirmation time').optional(),
+        job_requirement_id: z
+          .string()
+          .describe(
+            'Job requirement ID. It can be obtained through the interface [Get job requirement list]. Whether it must be entered depends on the configuration of "Recruitment request association settings" by the admin in the system backend. After onboarding is completed, the "Onboarded" number for the recruitment request will increase by 1',
+          )
+          .optional(),
+        operator_id: z
+          .string()
+          .describe('Operator UserID，Consistent with the type of the entry `user_id_type`')
+          .optional(),
+        onboard_city_code: z.string().describe('Office location').optional(),
+        department: z.string().describe('Entry Department').optional(),
+        leader: z.string().describe('Direct manager，Consistent with the type of the entry `user_id_type`').optional(),
+        sequence: z.string().describe('Sequence').optional(),
+        level: z.string().describe('Rank').optional(),
+        employee_type: z
+          .string()
+          .describe(
+            'Candidate entry type ID, which can be obtained through the interface human resource planning platform "Get Employee Type List", which will be used for candidate referral award rule judgment',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_admin_department_id'])
+          .describe(
+            'The type of department ID used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id),people_admin_department_id(Identify departments by people_admin_department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ application_id: z.string().describe('Application ID') }),
   },
 };
@@ -768,7 +768,7 @@ export const hireV1ApplicationTransferStage = {
   path: '/open-apis/hire/v1/applications/:application_id/transfer_stage',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Delivery management-Transfer delivery stage-Transfer delivery stage. When "All positions require offer approval" is turned on, the offer will be transferred to the waiting stage that requires approval',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Delivery management-Transfer delivery stage-Transfer delivery stage. When "All positions require offer approval" is turned on, the offer will be transferred to the waiting stage that requires approval',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -791,14 +791,16 @@ export const hireV1AttachmentGet = {
     '[Feishu/Lark]-Hire-Attachment-Get attachment information-Obtain the meta-information of the attachment in the recruitment system according to the ID of the talent resume attachment, such as file name, creation time, file URL, etc., The resume attachment of the talent can be obtained through the [Access Talent Information] Interface',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      type: z
-        .number()
-        .describe(
-          'Attachment type Options:1(附件简历 Attachment Resume),2(候选人作品 Candidate works),3(自定义附件 Custom attachments)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        type: z
+          .number()
+          .describe(
+            'Attachment type Options:1(附件简历 Attachment Resume),2(候选人作品 Candidate works),3(自定义附件 Custom attachments)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ attachment_id: z.string().describe('Attachment id') }),
   },
 };
@@ -812,13 +814,7 @@ export const hireV1AttachmentPreview = {
     '[Feishu/Lark]-Hire-Attachment-Get attachment PDF download link-Obtain the attachment preview information according to the ID of the talent resume attachment, and obtain the resume attachment of the talent through the [Get talent] api',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      attachment_id: z
-        .string()
-        .describe(
-          'Attachment id, please refer to [Get talent]',
-        ),
-    }),
+    path: z.object({ attachment_id: z.string().describe('Attachment id, please refer to [Get talent]') }),
   },
 };
 export const hireV1BackgroundCheckOrderList = {
@@ -828,22 +824,24 @@ export const hireV1BackgroundCheckOrderList = {
   path: '/open-apis/hire/v1/background_check_orders',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Background check-Get background check info list-Get the background check order information in batches according to the application ID or background check update time',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Background check-Get background check info list-Get the background check order information in batches according to the application ID or background check update time',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Page size').optional(),
-      application_id: z.string().describe('Delivery ID').optional(),
-      update_start_time: z.string().describe('The earliest update time, millisecond timestamp').optional(),
-      update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Page size').optional(),
+        application_id: z.string().describe('Delivery ID').optional(),
+        update_start_time: z.string().describe('The earliest update time, millisecond timestamp').optional(),
+        update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1DiversityInclusionSearch = {
@@ -853,23 +851,25 @@ export const hireV1DiversityInclusionSearch = {
   path: '/open-apis/hire/v1/applications/diversity_inclusions/search',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Delivery management-Get Additional Info in Application Form-Get application form additional information of candidates. You can query by Application ID or Talent ID',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Delivery management-Get Additional Info in Application Form-Get application form additional information of candidates. You can query by Application ID or Talent ID',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      talent_ids: z
-        .array(z.string())
-        .describe(
-          'List of talent IDs that need to query DI data, please refer to [Get talent list] to get talent IDs',
-        )
-        .optional(),
-      application_ids: z
-        .array(z.string())
-        .describe(
-          'List of application IDs that need to query DI data, please refer to[Get application list] to get application IDs',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        talent_ids: z
+          .array(z.string())
+          .describe(
+            'List of talent IDs that need to query DI data, please refer to [Get talent list] to get talent IDs',
+          )
+          .optional(),
+        application_ids: z
+          .array(z.string())
+          .describe(
+            'List of application IDs that need to query DI data, please refer to[Get application list] to get application IDs',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1EcoAccountCustomFieldBatchDelete = {
@@ -979,11 +979,7 @@ export const hireV1EcoBackgroundCheckCustomFieldBatchDelete = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      account_id: z
-        .string()
-        .describe(
-          'The account ID can be obtained through the [account binding] event',
-        ),
+      account_id: z.string().describe('The account ID can be obtained through the [account binding] event'),
     }),
   },
 };
@@ -998,11 +994,7 @@ export const hireV1EcoBackgroundCheckCustomFieldBatchUpdate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      account_id: z
-        .string()
-        .describe(
-          'The account ID can be obtained through the [account binding] event',
-        ),
+      account_id: z.string().describe('The account ID can be obtained through the [account binding] event'),
       custom_field_list: z
         .array(
           z.object({
@@ -1114,11 +1106,7 @@ export const hireV1EcoBackgroundCheckPackageBatchDelete = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      account_id: z
-        .string()
-        .describe(
-          'The account ID can be obtained through the [account binding] event',
-        ),
+      account_id: z.string().describe('The account ID can be obtained through the [account binding] event'),
       package_id_list: z
         .array(z.string())
         .describe('List of package IDs to delete. Deleting a package does not affect scheduled backups')
@@ -1177,11 +1165,7 @@ export const hireV1EcoBackgroundCheckPackageCreate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      account_id: z
-        .string()
-        .describe(
-          'The account ID can be obtained through the [account binding] event',
-        ),
+      account_id: z.string().describe('The account ID can be obtained through the [account binding] event'),
       package_list: z
         .array(
           z.object({
@@ -1215,11 +1199,7 @@ export const hireV1EcoBackgroundCheckCancel = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      background_check_id: z
-        .string()
-        .describe(
-          'Backtone ID. Can be obtained by the [Create Backtone] event',
-        ),
+      background_check_id: z.string().describe('Backtone ID. Can be obtained by the [Create Backtone] event'),
     }),
   },
 };
@@ -1234,11 +1214,7 @@ export const hireV1EcoBackgroundCheckUpdateProgress = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      background_check_id: z
-        .string()
-        .describe(
-          'Backtone ID. Can be obtained by the [Create Backtone] event',
-        ),
+      background_check_id: z.string().describe('Backtone ID. Can be obtained by the [Create Backtone] event'),
       stage_id: z
         .string()
         .describe('Stage ID. This ID cannot be repeated for the same back order and is customized by the caller'),
@@ -1288,11 +1264,7 @@ export const hireV1EcoBackgroundCheckUpdateResult = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      background_check_id: z
-        .string()
-        .describe(
-          'Backtone ID. Can be obtained by the [Create Backtone] event',
-        ),
+      background_check_id: z.string().describe('Backtone ID. Can be obtained by the [Create Backtone] event'),
       result: z.string().describe('Result'),
       result_time: z.string().describe('Result Time. Millisecond timestamp'),
       report_file_list: z
@@ -1330,14 +1302,8 @@ export const hireV1EcoExamPaperBatchDelete = {
     data: z.object({
       account_id: z
         .string()
-        .describe(
-          'The account ID of the written test can be obtained through the [account binding] event',
-        ),
-      paper_id_list: z
-        .array(z.string())
-        .describe(
-          'List of paper IDs. The ID passed in by [Create Paper List]',
-        ),
+        .describe('The account ID of the written test can be obtained through the [account binding] event'),
+      paper_id_list: z.array(z.string()).describe('List of paper IDs. The ID passed in by [Create Paper List]'),
     }),
   },
 };
@@ -1354,17 +1320,11 @@ export const hireV1EcoExamPaperBatchUpdate = {
     data: z.object({
       account_id: z
         .string()
-        .describe(
-          'The account ID of the written test can be obtained through the [account binding] event',
-        ),
+        .describe('The account ID of the written test can be obtained through the [account binding] event'),
       paper_list: z
         .array(
           z.object({
-            id: z
-              .string()
-              .describe(
-                'Paper ID, which is the ID passed in through [Create Paper List]',
-              ),
+            id: z.string().describe('Paper ID, which is the ID passed in through [Create Paper List]'),
             name: z
               .string()
               .describe(
@@ -1403,9 +1363,7 @@ export const hireV1EcoExamPaperCreate = {
     data: z.object({
       account_id: z
         .string()
-        .describe(
-          'The account ID of the written test can be obtained through the [account binding] event',
-        ),
+        .describe('The account ID of the written test can be obtained through the [account binding] event'),
       paper_list: z
         .array(
           z.object({
@@ -1478,11 +1436,7 @@ export const hireV1EcoExamLoginInfo = {
         .describe('Login Info'),
     }),
     path: z.object({
-      exam_id: z
-        .string()
-        .describe(
-          'Written test ID. Can be obtained by the [Create Written Test] event',
-        ),
+      exam_id: z.string().describe('Written test ID. Can be obtained by the [Create Written Test] event'),
     }),
   },
 };
@@ -1529,11 +1483,7 @@ export const hireV1EcoExamUpdateResult = {
         .optional(),
     }),
     path: z.object({
-      exam_id: z
-        .string()
-        .describe(
-          'Written test ID, which can be obtained by the [Create Written Test] event',
-        ),
+      exam_id: z.string().describe('Written test ID, which can be obtained by the [Create Written Test] event'),
     }),
   },
 };
@@ -1544,7 +1494,7 @@ export const hireV1EhrImportTaskPatch = {
   path: '/open-apis/hire/v1/ehr_import_tasks/:ehr_import_task_id',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Onboard-Update e-HR importing task-Update e-HR importing task',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Onboard-Update e-HR importing task-Update e-HR importing task',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1573,42 +1523,40 @@ export const hireV1EmployeeGet = {
   path: '/open-apis/hire/v1/employees/:employee_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Onboard-Get onboard information by employee ID-Get employee info by employee ID',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Onboard-Get onboard information by employee ID-Get employee info by employee ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_admin_department_id'])
-        .describe(
-          'The Type Of Department ID Used In This Call Options:open_department_id(Identify Departments By open_department_id),department_id(Identify departments by department_id),people_admin_department_id(Identify Departments By people_admin_department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_admin_department_id'])
+          .describe(
+            'The Type Of Department ID Used In This Call Options:open_department_id(Identify Departments By open_department_id),department_id(Identify departments by department_id),people_admin_department_id(Identify Departments By people_admin_department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
-      employee_id: z
-        .string()
-        .describe(
-          'Employee ID,please refer to:[Get onboard information by application ID]',
-        ),
+      employee_id: z.string().describe('Employee ID,please refer to:[Get onboard information by application ID]'),
     }),
   },
 };
@@ -1619,15 +1567,11 @@ export const hireV1EmployeeGetByApplication = {
   path: '/open-apis/hire/v1/employees/get_by_application',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Onboard-Get onboard information by application ID-Get employee info by application ID',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Onboard-Get onboard information by application ID-Get employee info by application ID',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
-      application_id: z
-        .string()
-        .describe(
-          'Application ID, please refer to: [Get application list]',
-        ),
+      application_id: z.string().describe('Application ID, please refer to: [Get application list]'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
       department_id_type: z
         .enum(['open_department_id', 'department_id', 'people_admin_department_id'])
@@ -1663,7 +1607,7 @@ export const hireV1EmployeePatch = {
   path: '/open-apis/hire/v1/employees/:employee_id',
   httpMethod: 'PATCH',
   description:
-    "[Feishu/Lark]-Candidate management-Delivery process-Onboard-Update talent onboarding status-Update employee's employment status and resignation status by employee ID",
+    "[Feishu/Lark]-Hire-Candidate management-Delivery process-Onboard-Update talent onboarding status-Update employee's employment status and resignation status by employee ID",
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1684,33 +1628,35 @@ export const hireV1EmployeePatch = {
         .describe('Overboard info，Required when operating employees Overboard')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_admin_department_id'])
-        .describe(
-          'The Type Of Department ID Used In This Call Options:open_department_id(Identify Departments By open_department_id),department_id(Identify Departments By department_id),people_admin_department_id(Identify Departments By people_admin_department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_admin_department_id'])
+          .describe(
+            'The Type Of Department ID Used In This Call Options:open_department_id(Identify Departments By open_department_id),department_id(Identify Departments By department_id),people_admin_department_id(Identify Departments By people_admin_department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ employee_id: z.string().describe('Employee id') }),
   },
 };
@@ -1748,22 +1694,24 @@ export const hireV1EvaluationList = {
   path: '/open-apis/hire/v1/evaluations',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Evaluation-Get resume evaluation information list-Batch get resume evaluation information',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Evaluation-Get resume evaluation information list-Batch get resume evaluation information',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().optional(),
-      application_id: z.string().describe('Delivery ID').optional(),
-      update_start_time: z.string().describe('The earliest update time, millisecond timestamp').optional(),
-      update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().optional(),
+        application_id: z.string().describe('Delivery ID').optional(),
+        update_start_time: z.string().describe('The earliest update time, millisecond timestamp').optional(),
+        update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExamMarkingTaskList = {
@@ -1797,7 +1745,7 @@ export const hireV1ExamCreate = {
   path: '/open-apis/hire/v1/exams',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Exam-Add written test results-Add the written test result under the delivery according to the delivery ID',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Exam-Add written test results-Add the written test result under the delivery according to the delivery ID',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1812,9 +1760,11 @@ export const hireV1ExamCreate = {
         .optional(),
       operator_id: z.string().describe('Add person ID'),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalApplicationCreate = {
@@ -1824,7 +1774,7 @@ export const hireV1ExternalApplicationCreate = {
   path: '/open-apis/hire/v1/external_applications',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External application info-Create external application-Create external application',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External application info-Create external application-Create external application',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1857,11 +1807,11 @@ export const hireV1ExternalApplicationDelete = {
   path: '/open-apis/hire/v1/external_applications/:external_application_id',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External application info-Delete External Application-Delete external delivery',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External application info-Delete External Application-Delete external delivery',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ talent_id: z.string().describe('Talent ID').optional() }),
-    path: z.object({ external_application_id: z.string().describe('External delivery id').optional() }),
+    params: z.object({ talent_id: z.string().describe('Talent ID').optional() }).optional(),
+    path: z.object({ external_application_id: z.string().describe('External delivery id').optional() }).optional(),
   },
 };
 export const hireV1ExternalApplicationList = {
@@ -1871,19 +1821,21 @@ export const hireV1ExternalApplicationList = {
   path: '/open-apis/hire/v1/external_applications',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External application info-Get External Application Info list-Obtain external delivery information of talents according to talent ID',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External application info-Get External Application Info list-Obtain external delivery information of talents according to talent ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      talent_id: z.string().describe('Talent ID').optional(),
-      page_size: z.number().describe('page size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        talent_id: z.string().describe('Talent ID').optional(),
+        page_size: z.number().describe('page size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalApplicationUpdate = {
@@ -1893,31 +1845,33 @@ export const hireV1ExternalApplicationUpdate = {
   path: '/open-apis/hire/v1/external_applications/:external_application_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External application info-Update External Application Info-Update external delivery, overwrite and update the fields of external delivery',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External application info-Update External Application Info-Update external delivery, overwrite and update the fields of external delivery',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      job_recruitment_type: z
-        .number()
-        .describe(
-          'Job recruitment type Options:1(social_recruitment Social recruitment),2(campus_recruitment Campus recruitment)',
-        )
-        .optional(),
-      job_title: z.string().describe('Job title').optional(),
-      resume_source: z.string().describe('Resume source').optional(),
-      stage: z.string().describe('Stage').optional(),
-      termination_reason: z.string().describe('Reason for termination').optional(),
-      delivery_type: z
-        .number()
-        .describe(
-          'Delivery Type Options:1(HR_visit HR search),2(candidate_delivery Candidate unsolicited delivery),3(talent_recommend Talent recommendation),4(others Other)',
-        )
-        .optional(),
-      modify_time: z.number().describe('Termination time in the external system for the application').optional(),
-      create_time: z.number().describe('Creation time in the external system for the application').optional(),
-      termination_type: z.string().describe('Termination type').optional(),
-    }),
-    path: z.object({ external_application_id: z.string().describe('External delivery id').optional() }),
+    data: z
+      .object({
+        job_recruitment_type: z
+          .number()
+          .describe(
+            'Job recruitment type Options:1(social_recruitment Social recruitment),2(campus_recruitment Campus recruitment)',
+          )
+          .optional(),
+        job_title: z.string().describe('Job title').optional(),
+        resume_source: z.string().describe('Resume source').optional(),
+        stage: z.string().describe('Stage').optional(),
+        termination_reason: z.string().describe('Reason for termination').optional(),
+        delivery_type: z
+          .number()
+          .describe(
+            'Delivery Type Options:1(HR_visit HR search),2(candidate_delivery Candidate unsolicited delivery),3(talent_recommend Talent recommendation),4(others Other)',
+          )
+          .optional(),
+        modify_time: z.number().describe('Termination time in the external system for the application').optional(),
+        create_time: z.number().describe('Creation time in the external system for the application').optional(),
+        termination_type: z.string().describe('Termination type').optional(),
+      })
+      .optional(),
+    path: z.object({ external_application_id: z.string().describe('External delivery id').optional() }).optional(),
   },
 };
 export const hireV1ExternalBackgroundCheckBatchQuery = {
@@ -1927,30 +1881,34 @@ export const hireV1ExternalBackgroundCheckBatchQuery = {
   path: '/open-apis/hire/v1/external_background_checks/batch_query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External background info-Query external background-According to the external delivery ID or external backtone ID list, query the external backtone information',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External background info-Query external background-According to the external delivery ID or external backtone ID list, query the external backtone information',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      external_background_check_id_list: z
-        .array(z.string())
-        .describe('External backtone ID list, when this value is passed, this value shall prevail')
-        .optional(),
-    }),
-    params: z.object({
-      external_application_id: z
-        .string()
-        .describe(
-          'External delivery ID, which can be obtained through the [Get External Delivery Information] interface',
-        )
-        .optional(),
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        external_background_check_id_list: z
+          .array(z.string())
+          .describe('External backtone ID list, when this value is passed, this value shall prevail')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        external_application_id: z
+          .string()
+          .describe(
+            'External delivery ID, which can be obtained through the [Get External Delivery Information] interface',
+          )
+          .optional(),
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalBackgroundCheckCreate = {
@@ -1960,7 +1918,7 @@ export const hireV1ExternalBackgroundCheckCreate = {
   path: '/open-apis/hire/v1/external_background_checks',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External background info-Create external background check-Create external background check',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External background info-Create external background check-Create external background check',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -1980,15 +1938,13 @@ export const hireV1ExternalBackgroundCheckDelete = {
   path: '/open-apis/hire/v1/external_background_checks/:external_background_check_id',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External background info-Delete external background-Delete external accent',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External background info-Delete external background-Delete external accent',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       external_background_check_id: z
         .string()
-        .describe(
-          'External backtone ID, which can be obtained through the [Query External Backtone] interface',
-        ),
+        .describe('External backtone ID, which can be obtained through the [Query External Backtone] interface'),
     }),
   },
 };
@@ -1999,7 +1955,7 @@ export const hireV1ExternalBackgroundCheckUpdate = {
   path: '/open-apis/hire/v1/external_background_checks/:external_background_check_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External background info-Update external background-Update the external backtune, overwrite and update the fields of the external backtune',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External background info-Update external background-Update the external backtune, overwrite and update the fields of the external backtune',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2013,17 +1969,13 @@ export const hireV1ExternalBackgroundCheckUpdate = {
       result: z.string().describe('backtune result').optional(),
       attachment_id_list: z
         .array(z.string())
-        .describe(
-          'The list of attachment IDs can be returned through the [Create Attachment] interface',
-        )
+        .describe('The list of attachment IDs can be returned through the [Create Attachment] interface')
         .optional(),
     }),
     path: z.object({
       external_background_check_id: z
         .string()
-        .describe(
-          'External backtone ID, which can be obtained through the [Query External Backtone] interface',
-        ),
+        .describe('External backtone ID, which can be obtained through the [Query External Backtone] interface'),
     }),
   },
 };
@@ -2034,7 +1986,7 @@ export const hireV1ExternalInterviewAssessmentCreate = {
   path: '/open-apis/hire/v1/external_interview_assessments',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External interview info-Create external interview assessment-Create external interview assessment',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External interview info-Create external interview assessment-Create external interview assessment',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2084,48 +2036,50 @@ export const hireV1ExternalInterviewAssessmentPatch = {
   path: '/open-apis/hire/v1/external_interview_assessments/:external_interview_assessment_id',
   httpMethod: 'PATCH',
   description:
-    "[Feishu/Lark]-Get candidates-External system information-External interview info-Update the external review-Update the external review fields. Fields left empty won't be updated",
+    "[Feishu/Lark]-Hire-Get candidates-External system information-External interview info-Update the external review-Update the external review fields. Fields left empty won't be updated",
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      username: z.string().describe('Interviewer name').optional(),
-      conclusion: z
-        .number()
-        .describe('Interview results Options:1(Fail No pass),2(Pass passed),3(toBeDetermined To be determined)')
-        .optional(),
-      assessment_dimension_list: z
-        .array(
-          z.object({
-            score: z
-              .number()
-              .describe('Scoring question score (used when the question type is "scoring question")')
-              .optional(),
-            option: z
-              .string()
-              .describe('Radio option (used when the question type is "Multiple Choice Question")')
-              .optional(),
-            options: z
-              .array(z.string())
-              .describe('Multiple-select option (used when the question type is "multiple-select question")')
-              .optional(),
-            content: z
-              .string()
-              .describe('Description content (used when the question type is "Description Question")')
-              .optional(),
-            assessment_type: z
-              .number()
-              .describe(
-                'Topic type Options:1(Score Scoring questions),2(singleChoice Single Topic),3(text Description),4(multiChoice Multiple choice questions)',
-              )
-              .optional(),
-            title: z.string().describe('Topic Title').optional(),
-            description: z.string().describe('Topic description').optional(),
-          }),
-        )
-        .describe('List of evaluation dimensions')
-        .optional(),
-      content: z.string().describe('Comprehensive record').optional(),
-    }),
+    data: z
+      .object({
+        username: z.string().describe('Interviewer name').optional(),
+        conclusion: z
+          .number()
+          .describe('Interview results Options:1(Fail No pass),2(Pass passed),3(toBeDetermined To be determined)')
+          .optional(),
+        assessment_dimension_list: z
+          .array(
+            z.object({
+              score: z
+                .number()
+                .describe('Scoring question score (used when the question type is "scoring question")')
+                .optional(),
+              option: z
+                .string()
+                .describe('Radio option (used when the question type is "Multiple Choice Question")')
+                .optional(),
+              options: z
+                .array(z.string())
+                .describe('Multiple-select option (used when the question type is "multiple-select question")')
+                .optional(),
+              content: z
+                .string()
+                .describe('Description content (used when the question type is "Description Question")')
+                .optional(),
+              assessment_type: z
+                .number()
+                .describe(
+                  'Topic type Options:1(Score Scoring questions),2(singleChoice Single Topic),3(text Description),4(multiChoice Multiple choice questions)',
+                )
+                .optional(),
+              title: z.string().describe('Topic Title').optional(),
+              description: z.string().describe('Topic description').optional(),
+            }),
+          )
+          .describe('List of evaluation dimensions')
+          .optional(),
+        content: z.string().describe('Comprehensive record').optional(),
+      })
+      .optional(),
     path: z.object({ external_interview_assessment_id: z.string().describe('External Review ID') }),
   },
 };
@@ -2136,30 +2090,34 @@ export const hireV1ExternalInterviewBatchQuery = {
   path: '/open-apis/hire/v1/external_interviews/batch_query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External interview info-Query external interview-Query the external interview information based on the list of external delivery IDs or external interview IDs',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External interview info-Query external interview-Query the external interview information based on the list of external delivery IDs or external interview IDs',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      external_interview_id_list: z
-        .array(z.string())
-        .describe('List of external interview IDs, when this value is passed, this value shall prevail')
-        .optional(),
-    }),
-    params: z.object({
-      external_application_id: z
-        .string()
-        .describe(
-          'External delivery ID, which can be obtained through the [Get External Delivery Information] interface',
-        )
-        .optional(),
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        external_interview_id_list: z
+          .array(z.string())
+          .describe('List of external interview IDs, when this value is passed, this value shall prevail')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        external_application_id: z
+          .string()
+          .describe(
+            'External delivery ID, which can be obtained through the [Get External Delivery Information] interface',
+          )
+          .optional(),
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalInterviewCreate = {
@@ -2169,7 +2127,7 @@ export const hireV1ExternalInterviewCreate = {
   path: '/open-apis/hire/v1/external_interviews',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External interview info-Create external interview-Create external interview',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External interview info-Create external interview-Create external interview',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2234,15 +2192,13 @@ export const hireV1ExternalInterviewDelete = {
   path: '/open-apis/hire/v1/external_interviews/:external_interview_id',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External interview info-Delete external interview-Delete the external interview',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External interview info-Delete external interview-Delete the external interview',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
       external_interview_id: z
         .string()
-        .describe(
-          'The external interview ID can be obtained through the [query external interview] interface',
-        ),
+        .describe('The external interview ID can be obtained through the [query external interview] interface'),
     }),
   },
 };
@@ -2253,7 +2209,7 @@ export const hireV1ExternalInterviewUpdate = {
   path: '/open-apis/hire/v1/external_interviews/:external_interview_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External interview info-Update external interview-Update the external interview to overwrite the fields for the external interview',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External interview info-Update external interview-Update the external interview to overwrite the fields for the external interview',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2315,9 +2271,7 @@ export const hireV1ExternalInterviewUpdate = {
     path: z.object({
       external_interview_id: z
         .string()
-        .describe(
-          'The external interview ID can be obtained through the [query external interview] interface',
-        ),
+        .describe('The external interview ID can be obtained through the [query external interview] interface'),
     }),
   },
 };
@@ -2328,30 +2282,34 @@ export const hireV1ExternalOfferBatchQuery = {
   path: '/open-apis/hire/v1/external_offers/batch_query',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External offer info-Query external offer list-According to the external delivery ID or the external Offer ID list, query the external Offer information',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External offer info-Query external offer list-According to the external delivery ID or the external Offer ID list, query the external Offer information',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      external_offer_id_list: z
-        .array(z.string())
-        .describe('List of external Offer IDs, which, when passed, shall prevail')
-        .optional(),
-    }),
-    params: z.object({
-      external_application_id: z
-        .string()
-        .describe(
-          'External delivery ID, which can be obtained through the [Get External Delivery Information] interface',
-        )
-        .optional(),
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        external_offer_id_list: z
+          .array(z.string())
+          .describe('List of external Offer IDs, which, when passed, shall prevail')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        external_application_id: z
+          .string()
+          .describe(
+            'External delivery ID, which can be obtained through the [Get External Delivery Information] interface',
+          )
+          .optional(),
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalOfferCreate = {
@@ -2361,7 +2319,7 @@ export const hireV1ExternalOfferCreate = {
   path: '/open-apis/hire/v1/external_offers',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External offer info-Create external Offer-Import offer information from other systems and create it as an external offer',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External offer info-Create external Offer-Import offer information from other systems and create it as an external offer',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2376,9 +2334,7 @@ export const hireV1ExternalOfferCreate = {
       offer_status: z.string().describe('Offer Status').optional(),
       attachment_id_list: z
         .array(z.string())
-        .describe(
-          'Offer details A list of attachment IDs, which can be created by [Create Attachment]interface back',
-        )
+        .describe('Offer details A list of attachment IDs, which can be created by [Create Attachment]interface back')
         .optional(),
     }),
   },
@@ -2390,17 +2346,17 @@ export const hireV1ExternalOfferDelete = {
   path: '/open-apis/hire/v1/external_offers/:external_offer_id',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External offer info-Delete external offer-Remove External Offer',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External offer info-Delete external offer-Remove External Offer',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      external_offer_id: z
-        .string()
-        .describe(
-          'External Offer ID, which can be obtained through the [Query External Offer] interface',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        external_offer_id: z
+          .string()
+          .describe('External Offer ID, which can be obtained through the [Query External Offer] interface')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalOfferUpdate = {
@@ -2410,7 +2366,7 @@ export const hireV1ExternalOfferUpdate = {
   path: '/open-apis/hire/v1/external_offers/:external_offer_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External offer info-Update external offer-Update the external Offer to overwrite the fields of the external Offer',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External offer info-Update external offer-Update the external Offer to overwrite the fields of the external Offer',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2424,19 +2380,17 @@ export const hireV1ExternalOfferUpdate = {
       offer_status: z.string().describe('Offer Status').optional(),
       attachment_id_list: z
         .array(z.string())
-        .describe(
-          'Offer details A list of attachment IDs, which can be returned by the [Create Attachment] interface',
-        )
+        .describe('Offer details A list of attachment IDs, which can be returned by the [Create Attachment] interface')
         .optional(),
     }),
-    path: z.object({
-      external_offer_id: z
-        .string()
-        .describe(
-          'External Offer ID, which can be obtained through the [Query External Offer] interface',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        external_offer_id: z
+          .string()
+          .describe('External Offer ID, which can be obtained through the [Query External Offer] interface')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ExternalReferralRewardCreate = {
@@ -2446,15 +2400,13 @@ export const hireV1ExternalReferralRewardCreate = {
   path: '/open-apis/hire/v1/external_referral_rewards',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External referral reward info-Import external referral rewards-Supports the import of external referral rewards (credit/cash) into the referral account',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External referral reward info-Import external referral rewards-Supports the import of external referral rewards (credit/cash) into the referral account',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
       referral_user_id: z
         .string()
-        .describe(
-          "Referrer's IDThe unique identifier of the referrer, obtained from [Get User Information]",
-        ),
+        .describe("Referrer's IDThe unique identifier of the referrer, obtained from [Get User Information]"),
       create_user_id: z
         .string()
         .describe(
@@ -2569,7 +2521,9 @@ export const hireV1ExternalReferralRewardCreate = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const hireV1ExternalReferralRewardDelete = {
@@ -2579,10 +2533,10 @@ export const hireV1ExternalReferralRewardDelete = {
   path: '/open-apis/hire/v1/external_referral_rewards/:external_referral_reward_id',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External referral reward info-Delete External Referral Reward-- Support to delete the imported referral reward in "Import External Rewards" by ID. After deletion, the corresponding details in "Referral Rewards Management" in the recruitment system will disappear- If you delete the "confirmed" and "issued" rewards, the referral will disappear in the "My Rewards" details, please pay attention to communicating with the referrals involved in advance',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External referral reward info-Delete External Referral Reward-- Support to delete the imported referral reward in "Import External Rewards" by ID. After deletion, the corresponding details in "Referral Rewards Management" in the recruitment system will disappear- If you delete the "confirmed" and "issued" rewards, the referral will disappear in the "My Rewards" details, please pay attention to communicating with the referrals involved in advance',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({ external_referral_reward_id: z.string().describe('Referral Reward ID').optional() }),
+    path: z.object({ external_referral_reward_id: z.string().describe('Referral Reward ID').optional() }).optional(),
   },
 };
 export const hireV1InterviewFeedbackFormList = {
@@ -2595,19 +2549,21 @@ export const hireV1InterviewFeedbackFormList = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-Interview settings-Get Interview Feedback Form Details-Retrieve detailed information of the interview feedback form by ID, including question descriptions, question options, etc',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      interview_feedback_form_ids: z
-        .array(z.string())
-        .describe('Interview feedback form ID list, other parameters are ignored if this field is used')
-        .optional(),
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        interview_feedback_form_ids: z
+          .array(z.string())
+          .describe('Interview feedback form ID list, other parameters are ignored if this field is used')
+          .optional(),
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1InterviewRecordAttachmentGet = {
@@ -2617,7 +2573,7 @@ export const hireV1InterviewRecordAttachmentGet = {
   path: '/open-apis/hire/v1/interview_records/attachments',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Interview-Get interview feedback attachment-Get the interview feedback attachment in PDF format',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Interview-Get interview feedback attachment-Get the interview feedback attachment in PDF format',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -2634,10 +2590,12 @@ export const hireV1InterviewRecordGet = {
   path: '/open-apis/hire/v1/interview_records/:interview_record_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Interview-Get interview evaluation details-Get interview evaluation details',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Interview-Get interview evaluation details-Get interview evaluation details',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ interview_record_id: z.string().describe('Record ID') }),
   },
 };
@@ -2648,23 +2606,25 @@ export const hireV1InterviewRecordList = {
   path: '/open-apis/hire/v1/interview_records',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Interview-List interview assessment-Obtain interview evaluation details in batches. The returned results are sorted by ID by default',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Interview-List interview assessment-Obtain interview evaluation details in batches. The returned results are sorted by ID by default',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      ids: z
-        .array(z.string())
-        .describe('List of interview feedback IDs, not paginated when using this filter')
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        ids: z
+          .array(z.string())
+          .describe('List of interview feedback IDs, not paginated when using this filter')
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1InterviewRegistrationSchemaList = {
@@ -2677,15 +2637,17 @@ export const hireV1InterviewRegistrationSchemaList = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-Interview settings-Get interview registration schema list-Get interview registration schema list',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Number of records fetched per page, up to 10').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Number of records fetched per page, up to 10').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1InterviewRoundTypeList = {
@@ -2698,14 +2660,16 @@ export const hireV1InterviewRoundTypeList = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-Interview settings-Get a list of interview rounds-Get a list of interview rounds',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      process_type: z
-        .number()
-        .describe(
-          'Job Process Type Options:1(社招流程 Social recruitment process),2(校招流程 School recruitment process)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        process_type: z
+          .number()
+          .describe(
+            'Job Process Type Options:1(社招流程 Social recruitment process),2(校招流程 School recruitment process)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1InterviewTaskList = {
@@ -2744,7 +2708,7 @@ export const hireV1InterviewGetByTalent = {
   path: '/open-apis/hire/v1/interviews/get_by_talent',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Interview-Get talent interview information-Get talent interview information',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Interview-Get talent interview information-Get talent interview information',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -2766,49 +2730,51 @@ export const hireV1InterviewList = {
   path: '/open-apis/hire/v1/interviews',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Interview-Get interview information-Obtain interview information based on delivery ID or interview time',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Interview-Get interview information-Obtain interview information based on delivery ID or interview time',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('Page size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      application_id: z
-        .string()
-        .describe(
-          "Application ID, which can be obtained through the [Obtain Application Information API] (application_id, interview_id, start_time, and end_time can't all be empty at the same time)",
-        )
-        .optional(),
-      interview_id: z
-        .string()
-        .describe(
-          "Interview ID, which can be obtained through the [Obtain Application Information API] (application_id, interview_id, start_time, and end_time can't all be empty at the same time)",
-        )
-        .optional(),
-      start_time: z
-        .string()
-        .describe(
-          "Earliest start time (in milliseconds), which must be greater than 0 (application_id, interview_id, start_time, and end_time can't all be empty at the same time)",
-        )
-        .optional(),
-      end_time: z
-        .string()
-        .describe(
-          "Latest start time (in milliseconds), which must be greater than 0 (application_id, interview_id, start_time, and end_time can't all be empty at the same time)",
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('Page size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        application_id: z
+          .string()
+          .describe(
+            "Application ID, which can be obtained through the [Obtain Application Information API] (application_id, interview_id, start_time, and end_time can't all be empty at the same time)",
+          )
+          .optional(),
+        interview_id: z
+          .string()
+          .describe(
+            "Interview ID, which can be obtained through the [Obtain Application Information API] (application_id, interview_id, start_time, and end_time can't all be empty at the same time)",
+          )
+          .optional(),
+        start_time: z
+          .string()
+          .describe(
+            "Earliest start time (in milliseconds), which must be greater than 0 (application_id, interview_id, start_time, and end_time can't all be empty at the same time)",
+          )
+          .optional(),
+        end_time: z
+          .string()
+          .describe(
+            "Latest start time (in milliseconds), which must be greater than 0 (application_id, interview_id, start_time, and end_time can't all be empty at the same time)",
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1InterviewerList = {
@@ -2818,26 +2784,28 @@ export const hireV1InterviewerList = {
   path: '/open-apis/hire/v1/interviewers',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Recruitment related configuration-Interview settings-面试官管理-List Interviewer Info-Paged to query the list of interviewers, the interface will only return the data of the user who has performed "Update Interviewer Information", and the data that cannot be queried through the interface will default to "Uncertified" interviewers. The interface will be pulled sequentially by default according to the update time, user_id order',
+    '[Feishu/Lark]-Hire-Recruitment related configuration-Interview settings-面试官管理-List Interviewer Info-Paged to query the list of interviewers, the interface will only return the data of the user who has performed "Update Interviewer Information", and the data that cannot be queried through the interface will default to "Uncertified" interviewers. The interface will be pulled sequentially by default according to the update time, user_id order',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      user_ids: z.array(z.string()).describe('Interviewer userID list').optional(),
-      verify_status: z
-        .number()
-        .describe('authentication status Options:1(NotVarified not certified),2(Varified Verified)')
-        .optional(),
-      earliest_update_time: z.string().describe('Earliest update time, millisecond timestamp').optional(),
-      latest_update_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        user_ids: z.array(z.string()).describe('Interviewer userID list').optional(),
+        verify_status: z
+          .number()
+          .describe('authentication status Options:1(NotVarified not certified),2(Varified Verified)')
+          .optional(),
+        earliest_update_time: z.string().describe('Earliest update time, millisecond timestamp').optional(),
+        latest_update_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1InterviewerPatch = {
@@ -2847,7 +2815,7 @@ export const hireV1InterviewerPatch = {
   path: '/open-apis/hire/v1/interviewers/:interviewer_id',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Recruitment related configuration-Interview settings-面试官管理-Update Interviewer Info-For updating interviewer certification information',
+    '[Feishu/Lark]-Hire-Recruitment related configuration-Interview settings-面试官管理-Update Interviewer Info-For updating interviewer certification information',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -2860,8 +2828,10 @@ export const hireV1InterviewerPatch = {
         })
         .describe('Interviewer information'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
-    path: z.object({ interviewer_id: z.string().describe('Interviewer userID').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
+    path: z.object({ interviewer_id: z.string().describe('Interviewer userID').optional() }).optional(),
   },
 };
 export const hireV1JobFunctionList = {
@@ -2874,15 +2844,17 @@ export const hireV1JobFunctionList = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-Job-Get a list of functional categories-Get a list of functional categories',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobProcessList = {
@@ -2895,15 +2867,17 @@ export const hireV1JobProcessList = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-Recruitment Process-Get recruitment process information-Obtain all recruitment process information. Such as "Process Name", "Process Type" and "Stage Name", "Stage Type" and other information under the process',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('Page size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('Page size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobPublishRecordSearch = {
@@ -2917,34 +2891,36 @@ export const hireV1JobPublishRecordSearch = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ job_channel_id: z.string().describe('Channel ID') }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Page size').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID used in this call Options:open_department_id(By open_department_id),department_id(By department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Page size').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID used in this call Options:open_department_id(By open_department_id),department_id(By department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobRequirementSchemaList = {
@@ -2957,15 +2933,17 @@ export const hireV1JobRequirementSchemaList = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-Job requirement-Get job requirement template-Get the recruitment requirements template',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Page size').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Page size').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobRequirementCreate = {
@@ -3061,33 +3039,35 @@ export const hireV1JobRequirementCreate = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'department id type Options:open_department_id(od-5cefe25147a103456cf21a63b1132ad),department_id(od-5cefe25147a103456cf21a63b1132ad)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'department id type Options:open_department_id(od-5cefe25147a103456cf21a63b1132ad),department_id(od-5cefe25147a103456cf21a63b1132ad)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobRequirementDelete = {
@@ -3113,53 +3093,50 @@ export const hireV1JobRequirementList = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-Job requirement-Get job requirement list-Get recruitment requirements by job ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Page size').optional(),
-      job_id: z
-        .string()
-        .describe(
-          'Job ID,please refer to:[Get job list]',
-        )
-        .optional(),
-      create_time_begin: z.string().describe('Start creation time, pass in millisecond timestamp').optional(),
-      create_time_end: z
-        .string()
-        .describe('At the end of the creation time, pass in the millisecond timestamp')
-        .optional(),
-      update_time_begin: z.string().describe('Start update time, pass in millisecond timestamp').optional(),
-      update_time_end: z.string().describe('Deadline update time, pass in millisecond timestamp').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Page size').optional(),
+        job_id: z.string().describe('Job ID,please refer to:[Get job list]').optional(),
+        create_time_begin: z.string().describe('Start creation time, pass in millisecond timestamp').optional(),
+        create_time_end: z
+          .string()
+          .describe('At the end of the creation time, pass in the millisecond timestamp')
+          .optional(),
+        update_time_begin: z.string().describe('Start update time, pass in millisecond timestamp').optional(),
+        update_time_end: z.string().describe('Deadline update time, pass in millisecond timestamp').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobRequirementListById = {
@@ -3172,41 +3149,45 @@ export const hireV1JobRequirementListById = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-Job requirement-Search Job Requirement Info-Obtain recruitment demand information according to "Recruitment Demand ID", support batch inquiry',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      id_list: z
-        .array(z.string())
-        .describe(
-          'Recruitment Requirements ID List,please refer to:[Get job requirement list],and limit to 100 entries at a time. If not passed, empty will be returned',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        id_list: z
+          .array(z.string())
+          .describe(
+            'Recruitment Requirements ID List,please refer to:[Get job requirement list],and limit to 100 entries at a time. If not passed, empty will be returned',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobRequirementUpdate = {
@@ -3216,7 +3197,7 @@ export const hireV1JobRequirementUpdate = {
   path: '/open-apis/hire/v1/job_requirements/:job_requirement_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-Hire-Recruitment related configuration-Job requirement-Update job requirement-Update job requirement',
+    "[Feishu/Lark]-Hire-Recruitment related configuration-Job requirement-Update job requirement-Update the information of the specified recruitment request, including its name, status, requested headcount, etc. (Pending recruitment requests can't be updated.)",
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -3310,33 +3291,35 @@ export const hireV1JobRequirementUpdate = {
         .describe('Recruitment request modification confirmation control')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID used in this call Options:open_department_id(By open_department_id),department_id(By department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID used in this call Options:open_department_id(By open_department_id),department_id(By department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ job_requirement_id: z.string().describe('Recruitment Requirements ID') }),
   },
 };
@@ -3350,22 +3333,24 @@ export const hireV1JobSchemaList = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-Job-Get job templates-Get the job fields in the social recruitment and campus recruitment job templates. The returned results include system default fields and custom fields. Recruitment administrators can modify the job template in "Feishu Hire" - "Settings" - "Job Management" - "Job Field Management"',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z
-        .number()
-        .describe('Page size **Default value**: 10 **Data validation rules**: * Maximum value: 100')
-        .optional(),
-      scenario: z
-        .number()
-        .describe('Job Template Type Options:1(社招 Social Recruitment),2(校招 Campus Recruitment)')
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z
+          .number()
+          .describe('Page size **Default value**: 10 **Data validation rules**: * Maximum value: 100')
+          .optional(),
+        scenario: z
+          .number()
+          .describe('Job Template Type Options:1(社招 Social Recruitment),2(校招 Campus Recruitment)')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobTypeList = {
@@ -3378,15 +3363,17 @@ export const hireV1JobTypeList = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-Job-List job type-Obtain a list of job categories preset by the recruitment system, which can be used to operate positions (such as [New Job]), and backfill job category fields when operating recruitment requirements (such as [Create Job Requirement]. The return list is sorted in ascending order by creation time by default, and contains the hierarchical relationship of nodes (the parent node ID of the node). You can build their own job category tree after obtaining the full amount of data',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('Page size **Default value**: 10').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('Page size **Default value**: 10').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobClose = {
@@ -3467,15 +3454,9 @@ export const hireV1JobCombinedCreate = {
       description: z.string().describe('Job Description').optional(),
       highlight_list: z
         .array(z.string())
-        .describe(
-          'Job HighlightsPlease refer to [Enum constant]of recruitment',
-        )
+        .describe('Job HighlightsPlease refer to [Enum constant]of recruitment')
         .optional(),
-      job_type_id: z
-        .string()
-        .describe(
-          'Job category.The enumeration is available form [「List job type」]',
-        ),
+      job_type_id: z.string().describe('Job category.The enumeration is available form [「List job type」]'),
       max_level_id: z.string().describe('Highest rank').optional(),
       recruitment_type_id: z.string().describe('Type of employment'),
       required_degree: z
@@ -3518,27 +3499,29 @@ export const hireV1JobCombinedCreate = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID used in this call Options:open_department_id(Identify departments open_department_id),department_id(Identify departments department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobCombinedUpdate = {
@@ -3552,12 +3535,7 @@ export const hireV1JobCombinedUpdate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      id: z
-        .string()
-        .describe(
-          'Job ID , which can be queried through the [Get job list] interface',
-        )
-        .optional(),
+      id: z.string().describe('Job ID , which can be queried through the [Get job list] interface').optional(),
       experience: z
         .number()
         .describe(
@@ -3573,9 +3551,7 @@ export const hireV1JobCombinedUpdate = {
           z.object({
             object_id: z
               .string()
-              .describe(
-                'Structure ID, which can be queried through the [Get job info] interface',
-              )
+              .describe('Structure ID, which can be queried through the [Get job info] interface')
               .optional(),
             value: z.string().describe('Structure value').optional(),
           }),
@@ -3587,27 +3563,16 @@ export const hireV1JobCombinedUpdate = {
       title: z.string().describe('Job title').optional(),
       job_managers: z
         .object({
-          id: z
-            .string()
-            .describe(
-              'Job ID, which can be queried through the [Get job list] interface',
-            )
-            .optional(),
+          id: z.string().describe('Job ID, which can be queried through the [Get job list] interface').optional(),
           recruiter_id: z
             .string()
-            .describe(
-              'Recruitment Manager ID, which can be queried through the [Search users] interface',
-            ),
+            .describe('Recruitment Manager ID, which can be queried through the [Search users] interface'),
           hiring_manager_id_list: z
             .array(z.string())
-            .describe(
-              'List of Employer Manager IDs, which can be queried through the [Search users] interface',
-            ),
+            .describe('List of Employer Manager IDs, which can be queried through the [Search users] interface'),
           assistant_id_list: z
             .array(z.string())
-            .describe(
-              'Assistant ID List, which can be queried through the [Search users] interface',
-            )
+            .describe('Assistant ID List, which can be queried through the [Search users] interface')
             .optional(),
         })
         .describe('Position-related person in charge'),
@@ -3634,11 +3599,7 @@ export const hireV1JobCombinedUpdate = {
       requirement: z.string().describe('Job Requirements').optional(),
       description: z.string().describe('Description').optional(),
       highlight_list: z.array(z.string()).describe('Job Highlights').optional(),
-      job_type_id: z
-        .string()
-        .describe(
-          'Job category.The enumeration is available form [「List job type」]',
-        ),
+      job_type_id: z.string().describe('Job category.The enumeration is available form [「List job type」]'),
       max_level_id: z.string().describe('Highest rank').optional(),
       required_degree: z
         .number()
@@ -3662,33 +3623,31 @@ export const hireV1JobCombinedUpdate = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'Department Id Type Options:open_department_id(Open Department ID Type),department_id(Department ID Type)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'Department Id Type Options:open_department_id(Open Department ID Type),department_id(Department ID Type)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
-      job_id: z
-        .string()
-        .describe(
-          'Job ID , which can be queried through the [Get job list] interface',
-        ),
+      job_id: z.string().describe('Job ID , which can be queried through the [Get job list] interface'),
     }),
   },
 };
@@ -3701,9 +3660,11 @@ export const hireV1JobConfig = {
   description: '[Feishu/Lark]-Hire-Recruitment related configuration-Job-Get job config info-Get job config info',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({ job_id: z.string().describe('职位ID') }),
   },
 };
@@ -3716,25 +3677,27 @@ export const hireV1JobGet = {
   description: '[Feishu/Lark]-Hire-Recruitment related configuration-Job-Get job info-Get job info by ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe('Department Id Type Options:open_department_id(Open Department ID),department_id(Department ID)')
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe('Department Id Type Options:open_department_id(Open Department ID),department_id(Department ID)')
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ job_id: z.string().describe('Job ID, request Path') }),
   },
 };
@@ -3748,34 +3711,30 @@ export const hireV1JobGetDetail = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-Job-Get job details-Get the job details according to the job ID, including basic job information, job settings, and a list of related recruitment stores',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "rank ID" used in this call Options:people_admin_job_level_id("HR system management background" applicable rank ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),job_level_id(The rank ID applicable to the "Feishu Management Background" is obtained through the "Get Tenant Rank List" interface)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "sequence ID" used in this call Options:people_admin_job_category_id("HR system management background" applicable serial ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),job_family_id(The sequence ID applicable to the "Feishu Management Background" is obtained through the "Get Tenant Sequence List" interface)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      job_id: z
-        .string()
-        .describe(
-          'Job ID, for details, please refer to: [Get job list] interface',
-        ),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "rank ID" used in this call Options:people_admin_job_level_id("HR system management background" applicable rank ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),job_level_id(The rank ID applicable to the "Feishu Management Background" is obtained through the "Get Tenant Rank List" interface)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "sequence ID" used in this call Options:people_admin_job_category_id("HR system management background" applicable serial ID. HR system management background is gradually offline, it is recommended not to continue to use this ID.),job_family_id(The sequence ID applicable to the "Feishu Management Background" is obtained through the "Get Tenant Sequence List" interface)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ job_id: z.string().describe('Job ID, for details, please refer to: [Get job list] interface') }),
   },
 };
 export const hireV1JobList = {
@@ -3787,36 +3746,38 @@ export const hireV1JobList = {
   description: '[Feishu/Lark]-Hire-Recruitment related configuration-Job-Get job list-Get job list',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      update_start_time: z.string().describe('Earliest update time, millisecond timestamp').optional(),
-      update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
-      page_size: z.number().describe('Page size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The Type of department ID Options:open_department_id(By open_department_id),department_id(By department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        update_start_time: z.string().describe('Earliest update time, millisecond timestamp').optional(),
+        update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
+        page_size: z.number().describe('Page size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The Type of department ID Options:open_department_id(By open_department_id),department_id(By department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1JobManagerBatchUpdate = {
@@ -3846,7 +3807,9 @@ export const hireV1JobManagerBatchUpdate = {
         ),
       creator_id: z.string().describe('Operator ID').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ job_id: z.string().describe('Job ID') }),
   },
 };
@@ -3860,9 +3823,11 @@ export const hireV1JobManagerGet = {
     '[Feishu/Lark]-Deprecated Version (Not Recommended)-Hire-Job-Get job manager-Obtain the recruiter information on the position according to the position ID, such as the person in charge of the recruitment, the hiring manager',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({
       job_id: z.string().describe('Job ID'),
       manager_id: z.string().describe('Pass in the job ID here'),
@@ -3892,13 +3857,7 @@ export const hireV1JobOpen = {
           'Whether it is valid for a long time **Optional values are**: * `true`: valid for a long time* `false`: specify expiration date',
         ),
     }),
-    path: z.object({
-      job_id: z
-        .string()
-        .describe(
-          'Job ID, available via [Get Job List]',
-        ),
-    }),
+    path: z.object({ job_id: z.string().describe('Job ID, available via [Get Job List]') }),
   },
 };
 export const hireV1JobRecruiter = {
@@ -3911,7 +3870,9 @@ export const hireV1JobRecruiter = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-Job-Get job manager-Obtain the recruiter information on the position according to the position ID, such as the person in charge of the recruitment, the hiring manager',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ job_id: z.string().describe('Job ID') }),
   },
 };
@@ -4037,7 +3998,9 @@ export const hireV1JobUpdateConfig = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ job_id: z.string().describe('Job ID') }),
   },
 };
@@ -4103,7 +4066,7 @@ export const hireV1MinutesGet = {
   path: '/open-apis/hire/v1/minutes',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Interview-Get interview minutes details-Get interview minutes details for the assigned interview',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Interview-Get interview minutes details-Get interview minutes details for the assigned interview',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -4156,9 +4119,11 @@ export const hireV1NoteCreate = {
         .describe('@user list')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1NoteDelete = {
@@ -4170,7 +4135,7 @@ export const hireV1NoteDelete = {
   description: '[Feishu/Lark]-Hire-Candidate management-Note-Delete Note-Delete specified remarks',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({ note_id: z.string().describe('Remark ID').optional() }),
+    path: z.object({ note_id: z.string().describe('Remark ID').optional() }).optional(),
   },
 };
 export const hireV1NoteGet = {
@@ -4182,9 +4147,11 @@ export const hireV1NoteGet = {
   description: '[Feishu/Lark]-Hire-Candidate management-Note-Get note-Get note data by ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({ note_id: z.string().describe('Note ID') }),
   },
 };
@@ -4235,9 +4202,11 @@ export const hireV1NotePatch = {
         .describe('@user list')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({ note_id: z.string().describe('Note ID') }),
   },
 };
@@ -4248,10 +4217,10 @@ export const hireV1OfferApplicationFormGet = {
   path: '/open-apis/hire/v1/offer_application_forms/:offer_application_form_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Recruitment related configuration-Offer settings-Offer application form-Get offer application form template infomation-Get offer application form template infomation',
+    '[Feishu/Lark]-Hire-Recruitment related configuration-Offer settings-Offer application form-Get offer application form template infomation-Get offer application form template infomation',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({ offer_application_form_id: z.string().describe('Offer Application ID').optional() }),
+    path: z.object({ offer_application_form_id: z.string().describe('Offer Application ID').optional() }).optional(),
   },
 };
 export const hireV1OfferApplicationFormList = {
@@ -4261,18 +4230,20 @@ export const hireV1OfferApplicationFormList = {
   path: '/open-apis/hire/v1/offer_application_forms',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Recruitment related configuration-Offer settings-Offer application form-Get offer application form list-Get offer application form list',
+    '[Feishu/Lark]-Hire-Recruitment related configuration-Offer settings-Offer application form-Get offer application form list-Get offer application form list',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Page size').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Page size').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1OfferCustomFieldUpdate = {
@@ -4282,7 +4253,7 @@ export const hireV1OfferCustomFieldUpdate = {
   path: '/open-apis/hire/v1/offer_custom_fields/:offer_custom_field_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-Recruitment related configuration-Offer settings-Offer application form-Update offer apply form custom fields-- This document supports updating the custom field configuration of the Offer application form in "Feishu Hire" - "Settings" - "Offer Application Form Settings" through the interface; - After the current modification of the application form information (including updating the custom fields), the schema_id of all application forms will be updated, that is, a new version will be added to all application forms, and the schema_id of the application form will be used in creating and updating offers; - After the custom field of the Offer application form in "Feishu Hire" is created, it is not supported to modify the field type, and this interface does not support updating the field type; - If the current field type is "formula", it does not support updating through the interface',
+    '[Feishu/Lark]-Hire-Recruitment related configuration-Offer settings-Offer application form-Update offer apply form custom fields-- This document supports updating the custom field configuration of the Offer application form in "Feishu Hire" - "Settings" - "Offer Application Form Settings" through the interface; - After the current modification of the application form information (including updating the custom fields), the schema_id of all application forms will be updated, that is, a new version will be added to all application forms, and the schema_id of the application form will be used in creating and updating offers; - After the custom field of the Offer application form in "Feishu Hire" is created, it is not supported to modify the field type, and this interface does not support updating the field type; - If the current field type is "formula", it does not support updating through the interface',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -4311,14 +4282,16 @@ export const hireV1OfferCustomFieldUpdate = {
         )
         .optional(),
     }),
-    path: z.object({
-      offer_custom_field_id: z
-        .string()
-        .describe(
-          'Offer application form custom field ID, which can be obtained through the interface "Get Offer Application Form Template Information"',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        offer_custom_field_id: z
+          .string()
+          .describe(
+            'Offer application form custom field ID, which can be obtained through the interface "Get Offer Application Form Template Information"',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1OfferSchemaGet = {
@@ -4340,15 +4313,11 @@ export const hireV1OfferCreate = {
   path: '/open-apis/hire/v1/offers',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Offer-Create offer-Create offers from the application and apply form',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Offer-Create offer-Create offers from the application and apply form',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      application_id: z
-        .string()
-        .describe(
-          'Application ID,please refer to: [Get application list]',
-        ),
+      application_id: z.string().describe('Application ID,please refer to: [Get application list]'),
       schema_id: z
         .string()
         .describe(
@@ -4410,9 +4379,7 @@ export const hireV1OfferCreate = {
           job_offered: z.string().describe('entry position').optional(),
           job_grade_id: z
             .string()
-            .describe(
-              'Job Grade ID, available through [Check Grade] (for Feishu personnel tenants only)',
-            )
+            .describe('Job Grade ID, available through [Check Grade] (for Feishu personnel tenants only)')
             .optional(),
         })
         .describe('Offer basic information'),
@@ -4448,33 +4415,35 @@ export const hireV1OfferCreate = {
         .describe('Custom information')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The Type Of Department ID Used In This Call Options:open_department_id(Identify Departments By open_department_id),department_id(Identify Departments By department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The Type Of Department ID Used In This Call Options:open_department_id(Identify Departments By open_department_id),department_id(Identify Departments By department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1OfferGet = {
@@ -4484,44 +4453,41 @@ export const hireV1OfferGet = {
   path: '/open-apis/hire/v1/offers/:offer_id',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Offer-Get offer details-Get offer details based on offer ID',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Offer-Get offer details-Get offer details based on offer ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID Options:open_department_id(By open_department_id),department_id(By department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      offer_id: z
-        .string()
-        .describe(
-          'Offer ID,please refer to: [Get offer list]',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID Options:open_department_id(By open_department_id),department_id(By department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z
+      .object({ offer_id: z.string().describe('Offer ID,please refer to: [Get offer list]').optional() })
+      .optional(),
   },
 };
 export const hireV1OfferInternOfferStatus = {
@@ -4531,7 +4497,7 @@ export const hireV1OfferInternOfferStatus = {
   path: '/open-apis/hire/v1/offers/:offer_id/intern_offer_status',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Offer-Update internship offer entry/exit status-Confirmation or abandonment of an internship offer in the "Internship pending" status, or termination of an internship offer in the "Internship enrolled" status',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Offer-Update internship offer entry/exit status-Confirmation or abandonment of an internship offer in the "Internship pending" status, or termination of an internship offer in the "Internship enrolled" status',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -4554,7 +4520,7 @@ export const hireV1OfferInternOfferStatus = {
         .describe('Exit form information (this field is required when operation is offboard)')
         .optional(),
     }),
-    path: z.object({ offer_id: z.string().describe('Offer ID').optional() }),
+    path: z.object({ offer_id: z.string().describe('Offer ID').optional() }).optional(),
   },
 };
 export const hireV1OfferList = {
@@ -4564,7 +4530,7 @@ export const hireV1OfferList = {
   path: '/open-apis/hire/v1/offers',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Offer-Get offer list-Get offer list based on talent ID',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Offer-Get offer list-Get offer list based on talent ID',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -4593,7 +4559,7 @@ export const hireV1OfferOfferStatus = {
   path: '/open-apis/hire/v1/offers/:offer_id/offer_status',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Offer-Update Offer Status-Update the status of the candidate Offer with the Offer ID.- To update the approval status of the Offer, you need to open "Create and approve an Offer through the OA system" in "Settings - Offer Settings - Offer Rule Settings" in the system. If the current Offer has been approved through Feishu Hire, the approval status of the Offer cannot be updated through this interface- To update the sending and accepting status of the Offer, you need to enable "Send Offer through the OA system" in "Settings - Offer Settings - Offer Rule Settings" in the system; only the delivery stage is supported to be updated before "Pending onboarding"; if the current Offer has been sent through Feishu Hire If it has been sent to candidates, the sending and receiving status of the Offer cannot be updated through this interface',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Offer-Update Offer Status-Update the status of the candidate Offer with the Offer ID.- To update the approval status of the Offer, you need to open "Create and approve an Offer through the OA system" in "Settings - Offer Settings - Offer Rule Settings" in the system. If the current Offer has been approved through Feishu Hire, the approval status of the Offer cannot be updated through this interface- To update the sending and accepting status of the Offer, you need to enable "Send Offer through the OA system" in "Settings - Offer Settings - Offer Rule Settings" in the system; only the delivery stage is supported to be updated before "Pending onboarding"; if the current Offer has been sent through Feishu Hire If it has been sent to candidates, the sending and receiving status of the Offer cannot be updated through this interface',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -4614,7 +4580,7 @@ export const hireV1OfferOfferStatus = {
         .optional(),
       termination_reason_note: z.string().describe('Termination remarks').optional(),
     }),
-    path: z.object({ offer_id: z.string().describe('Offer ID').optional() }),
+    path: z.object({ offer_id: z.string().describe('Offer ID').optional() }).optional(),
   },
 };
 export const hireV1OfferUpdate = {
@@ -4624,7 +4590,7 @@ export const hireV1OfferUpdate = {
   path: '/open-apis/hire/v1/offers/:offer_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Offer-Update offer info-Update offer information, including basic information, salary information, and custom information',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Offer-Update offer info-Update offer information, including basic information, salary information, and custom information',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -4676,9 +4642,7 @@ export const hireV1OfferUpdate = {
           job_offered: z.string().describe('entry position').optional(),
           job_grade_id: z
             .string()
-            .describe(
-              'Job Grade ID, available through [Check Grade] (for Feishu personnel tenants only)',
-            )
+            .describe('Job Grade ID, available through [Check Grade] (for Feishu personnel tenants only)')
             .optional(),
         })
         .describe('Offer basic information'),
@@ -4714,34 +4678,36 @@ export const hireV1OfferUpdate = {
         .describe('Custom information')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The Type Of Department ID Used In This Call Options:open_department_id(Identify departments By Open_department_id),department_id(Identify Departments By Department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      job_family_id_type: z
-        .enum(['people_admin_job_category_id', 'job_family_id'])
-        .describe(
-          'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
-        )
-        .optional(),
-      employee_type_id_type: z
-        .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
-        .describe(
-          'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
-        )
-        .optional(),
-    }),
-    path: z.object({ offer_id: z.string().describe('Offer ID').optional() }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The Type Of Department ID Used In This Call Options:open_department_id(Identify departments By Open_department_id),department_id(Identify Departments By Department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        job_family_id_type: z
+          .enum(['people_admin_job_category_id', 'job_family_id'])
+          .describe(
+            'The type of "Job Family ID" used in this request Options:people_admin_job_category_id(The Job Family ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_family_id(The Job Family ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job family] interface.)',
+          )
+          .optional(),
+        employee_type_id_type: z
+          .enum(['people_admin_employee_type_id', 'employee_type_enum_id'])
+          .describe(
+            'The type of "Workforce Type ID" used in this request Options:people_admin_employee_type_id(The Workforce Type ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),employee_type_enum_id(The Workforce Type ID applicable to "Feishu Management Backend" can be obtained through the [Query the workforce type] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ offer_id: z.string().describe('Offer ID').optional() }).optional(),
   },
 };
 export const hireV1QuestionnaireList = {
@@ -4751,32 +4717,34 @@ export const hireV1QuestionnaireList = {
   path: '/open-apis/hire/v1/questionnaires',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Interview-Get a list of interview satisfaction questionnaires-Get a list of interview satisfaction questionnaires',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Interview-Get a list of interview satisfaction questionnaires-Get a list of interview satisfaction questionnaires',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Page size').optional(),
-      application_id: z
-        .string()
-        .describe(
-          'Delivery ID. When the Feishu Hire-Settings-Interview Feedback Questionnaire is set, the time to send the questionnaire is "After the interview process", and only inquiries through application_id are supported',
-        )
-        .optional(),
-      interview_id: z
-        .string()
-        .describe(
-          'Interview ID. when Feishu Hire - Settings - Interview Feedback Questionnaire is set, the questionnaire is sent "after each interview" or "after the first interview", and only supports inquiry through interview_id',
-        )
-        .optional(),
-      update_start_time: z.string().describe('Earliest update').optional(),
-      update_end_time: z.string().describe('Latest update time').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Page size').optional(),
+        application_id: z
+          .string()
+          .describe(
+            'Delivery ID. When the Feishu Hire-Settings-Interview Feedback Questionnaire is set, the time to send the questionnaire is "After the interview process", and only inquiries through application_id are supported',
+          )
+          .optional(),
+        interview_id: z
+          .string()
+          .describe(
+            'Interview ID. when Feishu Hire - Settings - Interview Feedback Questionnaire is set, the questionnaire is sent "after each interview" or "after the first interview", and only supports inquiry through interview_id',
+          )
+          .optional(),
+        update_start_time: z.string().describe('Earliest update').optional(),
+        update_end_time: z.string().describe('Latest update time').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ReferralAccountCreate = {
@@ -4789,16 +4757,21 @@ export const hireV1ReferralAccountCreate = {
     '[Feishu/Lark]-Hire-referral account-Register Referral Account for External System-You can register a "Referral reward account" with the referrer\'s phone number or email address to obtain the corresponding referrer\'s account ID and query and perform actions on the referrer\'s account balance (credits/rewards) by using ["Referral account balance change"] and ["Withdraw referral account balance"] interfaces. If you need to disable this account, call the ["Disable referral account"] interface',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      mobile: z
-        .object({
-          code: z.string().describe('Mobile country code').optional(),
-          number: z.string().describe('Mobile number').optional(),
-        })
-        .describe('Mobile')
-        .optional(),
-      email: z.string().describe('Email').optional(),
-    }),
+    data: z
+      .object({
+        mobile: z
+          .object({
+            code: z.string().describe('Mobile country code').optional(),
+            number: z.string().describe('Mobile number').optional(),
+          })
+          .describe('Mobile')
+          .optional(),
+        email: z.string().describe('Email').optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const hireV1ReferralAccountDeactivate = {
@@ -4811,7 +4784,7 @@ export const hireV1ReferralAccountDeactivate = {
     '[Feishu/Lark]-Hire-referral account-Disable Referral Account for External System-Once you disable this referral account, its information won\'t be able to be obtained or modified via the ["Referral account balance change"] or ["Withdraw referral account balance"] interface',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({ referral_account_id: z.string().describe('Account ID').optional() }),
+    path: z.object({ referral_account_id: z.string().describe('Account ID').optional() }).optional(),
   },
 };
 export const hireV1ReferralAccountEnable = {
@@ -4824,14 +4797,17 @@ export const hireV1ReferralAccountEnable = {
     '[Feishu/Lark]-Hire-referral account-Activate referral account-Enable the account according to the account ID. After activation, you can obtain and modify it through the interface ["referral account balance change event"], ["withdrawal of referral account balance"]',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      referral_account_id: z
-        .string()
-        .describe(
-          'Account ID, obtained after registering an account: [Register a referral account]',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        referral_account_id: z
+          .string()
+          .describe('Account ID, obtained after registering an account: [Register a referral account]')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const hireV1ReferralAccountGetAccountAssets = {
@@ -4847,9 +4823,7 @@ export const hireV1ReferralAccountGetAccountAssets = {
     params: z.object({
       referral_account_id: z
         .string()
-        .describe(
-          'Account ID, obtained after registering an account: [Register a referral account]',
-        ),
+        .describe('Account ID, obtained after registering an account: [Register a referral account]'),
       user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
     }),
   },
@@ -4906,7 +4880,7 @@ export const hireV1ReferralAccountWithdraw = {
           'The bill of lading ID is provided by the requesting party when requesting. The subsequent interaction about this withdrawal operation is carried out with this bill of lading ID as the identifier. It needs to be guaranteed to be unique and used to ensure the idempotence of the withdrawal. Passing in the duplicate ID will return the corresponding bill of lading. Extracted amount details',
         ),
     }),
-    path: z.object({ referral_account_id: z.string().describe('Account ID').optional() }),
+    path: z.object({ referral_account_id: z.string().describe('Account ID').optional() }).optional(),
   },
 };
 export const hireV1ReferralWebsiteJobPostGet = {
@@ -4919,21 +4893,23 @@ export const hireV1ReferralWebsiteJobPostGet = {
     '[Feishu/Lark]-Hire-Get candidates-Referral-Obtain Job Post Details of Referral Official Website-Obtain Job Post Details of Referral Official Website by Post ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ job_post_id: z.string().describe('Job Advertising ID') }),
   },
 };
@@ -4947,34 +4923,36 @@ export const hireV1ReferralWebsiteJobPostList = {
     '[Feishu/Lark]-Hire-Get candidates-Referral-Obtain Job List of Referral Official Website-Obtain the job list of the referral official website. Custom data can\'t be obtained from the interface. The job list with custom data can be obtained from "Obtain Job Post Details from Referral Official Website"',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      process_type: z
-        .number()
-        .describe(
-          'Types of recruitment processes Options:1(social_process Social Recruitment),2(campus_process Campus Recruitment)',
-        )
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('the number of records fetched per page,').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        process_type: z
+          .number()
+          .describe(
+            'Types of recruitment processes Options:1(social_process Social Recruitment),2(campus_process Campus Recruitment)',
+          )
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('the number of records fetched per page,').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ReferralGetByApplication = {
@@ -5003,11 +4981,7 @@ export const hireV1ReferralSearch = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          'Talent ID，[「Get talent ID by mobile or email」]',
-        ),
+      talent_id: z.string().describe('Talent ID，[「Get talent ID by mobile or email」]'),
       start_time: z
         .string()
         .describe(
@@ -5021,7 +4995,9 @@ export const hireV1ReferralSearch = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
   },
 };
 export const hireV1RegistrationSchemaList = {
@@ -5034,21 +5010,23 @@ export const hireV1RegistrationSchemaList = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-application-Obtain List of Information Registration Form Templates-Obtain List of Information Registration Form Templates',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      scenario: z
-        .number()
-        .describe(
-          'Applicable scenarios of registration forms. If this field is left empty, it means to obtain all types of information registration forms. Options:5(InterviewRegistration Interview registration form),6(OnboardRegistration Onboarding registration form),14(InfoUpdateRegistration Information update registration form)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        scenario: z
+          .number()
+          .describe(
+            'Applicable scenarios of registration forms. If this field is left empty, it means to obtain all types of information registration forms. Options:5(InterviewRegistration Interview registration form),6(OnboardRegistration Onboarding registration form),14(InfoUpdateRegistration Information update registration form)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1ResumeSourceList = {
@@ -5060,15 +5038,17 @@ export const hireV1ResumeSourceList = {
   description: '[Feishu/Lark]-Hire-Candidate management-Resume source-Get resume source list-Get resume source list',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1RoleGet = {
@@ -5081,14 +5061,9 @@ export const hireV1RoleGet = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-Permissions-Get Role Detail-Obtain role details, including name, description, permission list, etc(Applicable to new version permissions. Regarding the main differences between new and old version permissions: the new permission system distinguishes between campus and experienced hire and separates permissions into feature permissions, field permissions, and data permissions)',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      role_id: z
-        .string()
-        .describe(
-          'Role ID. Call [Obtain List of Roles] to obtain',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({ role_id: z.string().describe('Role ID. Call [Obtain List of Roles] to obtain').optional() })
+      .optional(),
   },
 };
 export const hireV1RoleList = {
@@ -5100,15 +5075,17 @@ export const hireV1RoleList = {
   description: '[Feishu/Lark]-Hire-Recruitment related configuration-Permissions-Get role list-Get a list of roles',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Number of records fetched per page, maximum 200').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Number of records fetched per page, maximum 200').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1SubjectList = {
@@ -5120,16 +5097,18 @@ export const hireV1SubjectList = {
   description: '[Feishu/Lark]-Hire-Recruitment related configuration-Subject-Get subject list-Get subject list',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Page size, not to exceed 200').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Page size, not to exceed 200').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentBlocklistChangeTalentBlock = {
@@ -5143,11 +5122,7 @@ export const hireV1TalentBlocklistChangeTalentBlock = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          'Talent ID, which can be obtained through the [Get Talent List] interface',
-        ),
+      talent_id: z.string().describe('Talent ID, which can be obtained through the [Get Talent List] interface'),
       option: z
         .number()
         .describe('operation type Options:1(Add Join the block list),2(Remove Remove from the blocked list)'),
@@ -5165,16 +5140,18 @@ export const hireV1TalentFolderList = {
     '[Feishu/Lark]-Hire-Candidate management-Talent-Get talent folder information-Used to obtain talent folder information in the recruitment system',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Number of records fetched per page').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Number of records fetched per page').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentObjectQuery = {
@@ -5202,16 +5179,18 @@ export const hireV1TalentOperationLogSearch = {
       operator_id_list: z.array(z.string()).describe('List of operator IDs'),
       operation_list: z.array(z.number()).describe('List of operation type IDs'),
     }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Page size').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Page size').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentPoolBatchChangeTalentPool = {
@@ -5225,24 +5204,14 @@ export const hireV1TalentPoolBatchChangeTalentPool = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      talent_id_list: z
-        .array(z.string())
-        .describe(
-          'Talent ID list, please check: [Get Talent List]',
-        ),
+      talent_id_list: z.array(z.string()).describe('Talent ID list, please check: [Get Talent List]'),
       option_type: z
         .number()
         .describe(
           'operation type Options:1(Add Join the designated talent pool operation),2(Remove Remove from the designated talent pool)',
         ),
     }),
-    path: z.object({
-      talent_pool_id: z
-        .string()
-        .describe(
-          'Talent pool ID, please check: [Get talent pool list]',
-        ),
-    }),
+    path: z.object({ talent_pool_id: z.string().describe('Talent pool ID, please check: [Get talent pool list]') }),
   },
 };
 export const hireV1TalentPoolMoveTalent = {
@@ -5261,7 +5230,7 @@ export const hireV1TalentPoolMoveTalent = {
         .number()
         .describe('Remove talents from the original talent pool. Options:1(OnlyAdd No),2(AddAndRemoveFromOrigin Yes)'),
     }),
-    path: z.object({ talent_pool_id: z.string().describe('Talent pool ID').optional() }),
+    path: z.object({ talent_pool_id: z.string().describe('Talent pool ID').optional() }).optional(),
   },
 };
 export const hireV1TalentPoolSearch = {
@@ -5273,19 +5242,21 @@ export const hireV1TalentPoolSearch = {
   description: '[Feishu/Lark]-Hire-Candidate management-Talent Pool-Get Talent Pool List-Get the list of talent pools',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      id_list: z
-        .array(z.string())
-        .describe('Talent pool ID. The information of all talent pools will be returned if this field is left empty')
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        id_list: z
+          .array(z.string())
+          .describe('Talent pool ID. The information of all talent pools will be returned if this field is left empty')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentTagList = {
@@ -5298,19 +5269,21 @@ export const hireV1TalentTagList = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-application-Get talent tag info list-You can obtain the talent tag information list by keyword, ID list, type, and active/inactive status. The list is arranged in reverse order by creation time',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      keyword: z.string().describe('Keyword').optional(),
-      id_list: z.array(z.string()).describe('ID list').optional(),
-      type: z.number().describe('Tag type Options:1(Manual-Tagging),2(Auto-Tagging)').optional(),
-      include_inactive: z.boolean().describe('Include inactive').optional(),
-      page_size: z.number().describe('Page size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        keyword: z.string().describe('Keyword').optional(),
+        id_list: z.array(z.string()).describe('ID list').optional(),
+        type: z.number().describe('Tag type Options:1(Manual-Tagging),2(Auto-Tagging)').optional(),
+        include_inactive: z.boolean().describe('Include inactive').optional(),
+        page_size: z.number().describe('Page size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentAddToFolder = {
@@ -5326,14 +5299,10 @@ export const hireV1TalentAddToFolder = {
     data: z.object({
       talent_id_list: z
         .array(z.string())
-        .describe(
-          'Talent ID List, which can be queried through the [Get talent list] interface',
-        ),
+        .describe('Talent ID List, which can be queried through the [Get talent list] interface'),
       folder_id: z
         .string()
-        .describe(
-          'Folder ID, which can be queried through the [Get talent folder information] interface',
-        ),
+        .describe('Folder ID, which can be queried through the [Get talent folder information] interface'),
     }),
   },
 };
@@ -5347,19 +5316,21 @@ export const hireV1TalentBatchGetId = {
     '[Feishu/Lark]-Hire-Candidate management-Talent-Get talent ID by mobile or email-Get talent ID by mobile phone number or email',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      mobile_code: z
-        .string()
-        .describe('Mobile phone country code, default value: 86, that is, the Chinese mainland')
-        .optional(),
-      mobile_number_list: z
-        .array(z.string())
-        .describe('The mobile phone number and area code all use the value of the mobile_code parameter, up to 100')
-        .optional(),
-      email_list: z.array(z.string()).describe('Mailbox information list, up to 100').optional(),
-      identification_type: z.number().describe('identification type').optional(),
-      identification_number_list: z.array(z.string()).describe('identification number').optional(),
-    }),
+    data: z
+      .object({
+        mobile_code: z
+          .string()
+          .describe('Mobile phone country code, default value: 86, that is, the Chinese mainland')
+          .optional(),
+        mobile_number_list: z
+          .array(z.string())
+          .describe('The mobile phone number and area code all use the value of the mobile_code parameter, up to 100')
+          .optional(),
+        email_list: z.array(z.string()).describe('Mailbox information list, up to 100').optional(),
+        identification_type: z.number().describe('identification type').optional(),
+        identification_number_list: z.array(z.string()).describe('identification number').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentCombinedCreate = {
@@ -5375,9 +5346,7 @@ export const hireV1TalentCombinedCreate = {
     data: z.object({
       init_source_id: z
         .string()
-        .describe(
-          'Resume source ID, which can be queried through the [Get Resume Source List] interface',
-        )
+        .describe('Resume source ID, which can be queried through the [Get Resume Source List] interface')
         .optional(),
       folder_id_list: z.array(z.string()).describe('List of folder IDs').optional(),
       creator_id: z.string().describe('Creator ID').optional(),
@@ -5709,9 +5678,11 @@ export const hireV1TalentCombinedCreate = {
         .describe('Custom module')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentCombinedUpdate = {
@@ -5728,9 +5699,7 @@ export const hireV1TalentCombinedUpdate = {
       talent_id: z.string().describe('Talent ID'),
       init_source_id: z
         .string()
-        .describe(
-          'Resume source ID, which can be queried through the [Get Resume Source List] interface',
-        )
+        .describe('Resume source ID, which can be queried through the [Get Resume Source List] interface')
         .optional(),
       folder_id_list: z.array(z.string()).describe('List of folder IDs').optional(),
       operator_id: z.string().describe('Update ID').optional(),
@@ -6062,9 +6031,11 @@ export const hireV1TalentCombinedUpdate = {
         .describe('Custom module')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentExternalInfoCreate = {
@@ -6074,7 +6045,7 @@ export const hireV1TalentExternalInfoCreate = {
   path: '/open-apis/hire/v1/talents/:talent_id/external_info',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External talent-Create talent external info-Create talent external information',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External talent-Create talent external info-Create talent external information',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ external_create_time: z.string().describe('Talent creation time in external systems') }),
@@ -6088,7 +6059,7 @@ export const hireV1TalentExternalInfoUpdate = {
   path: '/open-apis/hire/v1/talents/:talent_id/external_info',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-Get candidates-External system information-External talent-Update external talent info-Update external talent information',
+    '[Feishu/Lark]-Hire-Get candidates-External system information-External talent-Update external talent info-Update external talent information',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ external_create_time: z.string().describe('Talent creation time in external systems') }),
@@ -6104,15 +6075,13 @@ export const hireV1TalentGet = {
   description: '[Feishu/Lark]-Hire-Candidate management-Talent-Get talent V1-Get talent by ID',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          'Talent ID , which can be queried through the [Get talent list] interface',
-        ),
+      talent_id: z.string().describe('Talent ID , which can be queried through the [Get talent list] interface'),
     }),
   },
 };
@@ -6125,32 +6094,34 @@ export const hireV1TalentList = {
   description: '[Feishu/Lark]-Hire-Candidate management-Talent-Get talent list-Get talent list',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      keyword: z
-        .string()
-        .describe('Search keywords, support Boolean language (use and, or, not to connect keywords)')
-        .optional(),
-      update_start_time: z.string().describe('Earliest update time, millisecond timestamp').optional(),
-      update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
-      page_size: z.number().describe('Page size').optional(),
-      sort_by: z
-        .number()
-        .describe(
-          'collation Options:1(Descending by update date),2(in descending order of relevance),3(Descending order by delivery time),4(Descending by warehousing time)',
-        )
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-      query_option: z
-        .literal('ignore_empty_error')
-        .describe('request control parameter Options:ignore_empty_error(Ignore error when result is empty)')
-        .optional(),
-    }),
+    params: z
+      .object({
+        keyword: z
+          .string()
+          .describe('Search keywords, support Boolean language (use and, or, not to connect keywords)')
+          .optional(),
+        update_start_time: z.string().describe('Earliest update time, millisecond timestamp').optional(),
+        update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
+        page_size: z.number().describe('Page size').optional(),
+        sort_by: z
+          .number()
+          .describe(
+            'collation Options:1(Descending by update date),2(in descending order of relevance),3(Descending order by delivery time),4(Descending by warehousing time)',
+          )
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+        query_option: z
+          .literal('ignore_empty_error')
+          .describe('request control parameter Options:ignore_empty_error(Ignore error when result is empty)')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentOnboardStatus = {
@@ -6176,14 +6147,14 @@ export const hireV1TalentOnboardStatus = {
         .describe('Millisecond timestamp, required when the operation type is Resignation')
         .optional(),
     }),
-    path: z.object({
-      talent_id: z
-        .string()
-        .describe(
-          'Talent ID , which can be queried through the [Get talent list] interface',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        talent_id: z
+          .string()
+          .describe('Talent ID , which can be queried through the [Get talent list] interface')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TalentRemoveToFolder = {
@@ -6199,14 +6170,8 @@ export const hireV1TalentRemoveToFolder = {
     data: z.object({
       talent_id_list: z
         .array(z.string())
-        .describe(
-          'Talent ID list, which can be obtained through the [Get Talent List] interface',
-        ),
-      folder_id: z
-        .string()
-        .describe(
-          'Folder ID, which can be obtained through the [Get Talent Folder List] interface',
-        ),
+        .describe('Talent ID list, which can be obtained through the [Get Talent List] interface'),
+      folder_id: z.string().describe('Folder ID, which can be obtained through the [Get Talent Folder List] interface'),
     }),
   },
 };
@@ -6234,18 +6199,20 @@ export const hireV1TerminationReasonList = {
   path: '/open-apis/hire/v1/termination_reasons',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Delivery management-Get the reason for terminating delivery-Gets the default application termination reason in the system and the user-configured custom application termination reason',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Delivery management-Get the reason for terminating delivery-Gets the default application termination reason in the system and the user-configured custom application termination reason',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Number of records to get per page, default 10').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Number of records to get per page, default 10').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TestSearch = {
@@ -6255,27 +6222,31 @@ export const hireV1TestSearch = {
   path: '/open-apis/hire/v1/tests/search',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-Exam-Get a list of written exams-Batch obtain the written examination information of talents in a delivery process, such as answer status, written examination score, etc. (currently, only 1W pieces of data can be obtained. If the amount of data is large, the full amount of data can be obtained in batches by controlling the test_start_time query criteria.)',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-Exam-Get a list of written exams-Batch obtain the written examination information of talents in a delivery process, such as answer status, written examination score, etc. (currently, only 1W pieces of data can be obtained. If the amount of data is large, the full amount of data can be obtained in batches by controlling the test_start_time query criteria.)',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      application_id_list: z
-        .array(z.string())
-        .describe('Delivery ID list, up to 100, default query for all deliveries')
-        .optional(),
-      test_start_time_min: z.string().describe('Written test start time later than equal time').optional(),
-      test_start_time_max: z.string().describe('Written test start time earlier than equal time').optional(),
-    }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Number of records fetched per page, up to 100').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    data: z
+      .object({
+        application_id_list: z
+          .array(z.string())
+          .describe('Delivery ID list, up to 100, default query for all deliveries')
+          .optional(),
+        test_start_time_min: z.string().describe('Written test start time later than equal time').optional(),
+        test_start_time_max: z.string().describe('Written test start time earlier than equal time').optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Number of records fetched per page, up to 100').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TodoList = {
@@ -6319,7 +6290,7 @@ export const hireV1TripartiteAgreementCreate = {
   path: '/open-apis/hire/v1/tripartite_agreements',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-tripartite agreement-Create Tripartite Agreement-When the tenant enables the "Sync tripartite agreements via API" switch and configures "Tripartite agreement" at a specific stage in the campus hire process, a tripartite agreement and corresponding status can be created for campus hire with the offer location in Chinese mainland by using the application ID',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-tripartite agreement-Create Tripartite Agreement-When the tenant enables the "Sync tripartite agreements via API" switch and configures "Tripartite agreement" at a specific stage in the campus hire process, a tripartite agreement and corresponding status can be created for campus hire with the offer location in Chinese mainland by using the application ID',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -6340,10 +6311,10 @@ export const hireV1TripartiteAgreementDelete = {
   path: '/open-apis/hire/v1/tripartite_agreements/:tripartite_agreement_id',
   httpMethod: 'DELETE',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-tripartite agreement-Delete Tripartite Agreement-Delete the three-party agreement in the delivery through the interface',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-tripartite agreement-Delete Tripartite Agreement-Delete the three-party agreement in the delivery through the interface',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({ tripartite_agreement_id: z.string().describe('Tripartite Agreement ID').optional() }),
+    path: z.object({ tripartite_agreement_id: z.string().describe('Tripartite Agreement ID').optional() }).optional(),
   },
 };
 export const hireV1TripartiteAgreementList = {
@@ -6353,26 +6324,28 @@ export const hireV1TripartiteAgreementList = {
   path: '/open-apis/hire/v1/tripartite_agreements',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-tripartite agreement-List Tripartite Agreement-Obtain the tripartite agreement information according to the tripartite agreement ID or the application IDSort by id by default',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-tripartite agreement-List Tripartite Agreement-Obtain the tripartite agreement information according to the tripartite agreement ID or the application IDSort by id by default',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('paging size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      application_id: z
-        .string()
-        .describe('application ID, required application ID and one of the three-party agreement IDs')
-        .optional(),
-      tripartite_agreement_id: z
-        .string()
-        .describe('Tripartite agreement ID, required application id and one of the tripartite agreement IDs')
-        .optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('paging size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        application_id: z
+          .string()
+          .describe('application ID, required application ID and one of the three-party agreement IDs')
+          .optional(),
+        tripartite_agreement_id: z
+          .string()
+          .describe('Tripartite agreement ID, required application id and one of the tripartite agreement IDs')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1TripartiteAgreementUpdate = {
@@ -6382,7 +6355,7 @@ export const hireV1TripartiteAgreementUpdate = {
   path: '/open-apis/hire/v1/tripartite_agreements/:tripartite_agreement_id',
   httpMethod: 'PUT',
   description:
-    '[Feishu/Lark]-Candidate management-Delivery process-tripartite agreement-Update Tripartite Agreement-Update the three-party agreement in the delivery through the interface',
+    '[Feishu/Lark]-Hire-Candidate management-Delivery process-tripartite agreement-Update Tripartite Agreement-Update the three-party agreement in the delivery through the interface',
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
@@ -6397,12 +6370,14 @@ export const hireV1TripartiteAgreementUpdate = {
           'The three-party agreement modification timestamp cannot be less than the creation time or the current modification time',
         ),
     }),
-    path: z.object({
-      tripartite_agreement_id: z
-        .string()
-        .describe('Three-party agreement ID, returned by the "Create Three-Party Agreement" interface')
-        .optional(),
-    }),
+    path: z
+      .object({
+        tripartite_agreement_id: z
+          .string()
+          .describe('Three-party agreement ID, returned by the "Create Three-Party Agreement" interface')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1UserRoleList = {
@@ -6415,20 +6390,22 @@ export const hireV1UserRoleList = {
     '[Feishu/Lark]-Hire-Recruitment related configuration-Permissions-Get user role list-Get a list of user role',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Number of records fetched per page, maximum 10').optional(),
-      user_id: z.string().describe('User ID').optional(),
-      role_id: z.string().describe('Role ID').optional(),
-      update_start_time: z.string().describe('The earliest update time, millisecond timestamp').optional(),
-      update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Number of records fetched per page, maximum 10').optional(),
+        user_id: z.string().describe('User ID').optional(),
+        role_id: z.string().describe('Role ID').optional(),
+        update_start_time: z.string().describe('The earliest update time, millisecond timestamp').optional(),
+        update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1WebsiteChannelCreate = {
@@ -6442,7 +6419,7 @@ export const hireV1WebsiteChannelCreate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ channel_name: z.string().describe('Promotion channel name') }),
-    path: z.object({ website_id: z.string().describe('Official website ID').optional() }),
+    path: z.object({ website_id: z.string().describe('Official website ID').optional() }).optional(),
   },
 };
 export const hireV1WebsiteChannelDelete = {
@@ -6455,10 +6432,12 @@ export const hireV1WebsiteChannelDelete = {
     '[Feishu/Lark]-Hire-Get candidates-Website-Delete Promotion Channel of Official Recruitment Website-Delete the recruitment official website promotion channel according to the recruitment official website ID and promotion channel ID',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      website_id: z.string().describe('Official website ID').optional(),
-      channel_id: z.string().describe('Promotion Channel ID').optional(),
-    }),
+    path: z
+      .object({
+        website_id: z.string().describe('Official website ID').optional(),
+        channel_id: z.string().describe('Promotion Channel ID').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1WebsiteChannelList = {
@@ -6471,16 +6450,18 @@ export const hireV1WebsiteChannelList = {
     '[Feishu/Lark]-Hire-Get candidates-Website-Obtain Promotion Channel List of Official Recruitment Website-Get the list of promotion channels by pagination according to the ID of the recruitment official website',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.string().describe('Page size').optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
-    path: z.object({ website_id: z.string().describe('Official website ID').optional() }),
+    params: z
+      .object({
+        page_size: z.string().describe('Page size').optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ website_id: z.string().describe('Official website ID').optional() }).optional(),
   },
 };
 export const hireV1WebsiteChannelUpdate = {
@@ -6494,10 +6475,12 @@ export const hireV1WebsiteChannelUpdate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({ channel_name: z.string().describe('Promotion channel name') }),
-    path: z.object({
-      website_id: z.string().describe('Official website ID').optional(),
-      channel_id: z.string().describe('Promotion Channel ID').optional(),
-    }),
+    path: z
+      .object({
+        website_id: z.string().describe('Official website ID').optional(),
+        channel_id: z.string().describe('Promotion Channel ID').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1WebsiteDeliveryTaskGet = {
@@ -6925,7 +6908,9 @@ export const hireV1WebsiteDeliveryCreateByResume = {
         .optional(),
       channel_id: z.string().describe('Official website promotion channel ID').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({ website_id: z.string().describe('Official website ID') }),
   },
 };
@@ -6939,21 +6924,23 @@ export const hireV1WebsiteJobPostGet = {
     '[Feishu/Lark]-Hire-Get candidates-Website-Obtain Job Post Details of Official Recruitment Website-Obtain Job Post Details of Official Recruitment Website',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID Options:open_department_id(open_department_id),department_id(department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID Options:open_department_id(open_department_id),department_id(department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       website_id: z.string().describe('Official website ID'),
       job_post_id: z.string().describe('Job Advertising ID'),
@@ -6970,36 +6957,38 @@ export const hireV1WebsiteJobPostList = {
     '[Feishu/Lark]-Hire-Get candidates-Website-Obtain Job List of Official Recruitment Website-Get the job list under the recruitment official website. Custom data does not support list acquisition for the time being. Please get it from the "Get job advertisement details under the recruitment official website" interface',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z
-        .number()
-        .describe('The number of records fetched per page, up to 10,f not passed, the default value is 10')
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The type of department ID used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-      update_start_time: z.string().describe('Earliest update time, millisecond timestamp').optional(),
-      update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
-      create_start_time: z.string().describe('Earliest creation time, millisecond timestamp').optional(),
-      create_end_time: z.string().describe('Latest creation time, millisecond timestamp').optional(),
-    }),
-    path: z.object({ website_id: z.string().describe('Official website ID').optional() }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z
+          .number()
+          .describe('The number of records fetched per page, up to 10,f not passed, the default value is 10')
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The type of department ID used in this call Options:open_department_id(Identify departments by open_department_id),department_id(Identify departments by department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+        update_start_time: z.string().describe('Earliest update time, millisecond timestamp').optional(),
+        update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
+        create_start_time: z.string().describe('Earliest creation time, millisecond timestamp').optional(),
+        create_end_time: z.string().describe('Latest creation time, millisecond timestamp').optional(),
+      })
+      .optional(),
+    path: z.object({ website_id: z.string().describe('Official website ID').optional() }).optional(),
   },
 };
 export const hireV1WebsiteJobPostSearch = {
@@ -7012,48 +7001,50 @@ export const hireV1WebsiteJobPostSearch = {
     '[Feishu/Lark]-Hire-Get candidates-Website-Search for Job List of Official Recruitment Website-Search for Job List of Official Recruitment Website',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      job_type_id_list: z
-        .array(z.string())
-        .describe(
-          'Job Type List, For details, please refer to:[Get a list of job type]',
-        )
-        .optional(),
-      city_code_list: z.array(z.string()).describe('Job City List').optional(),
-      job_function_id_list: z.array(z.string()).describe('Function classification list').optional(),
-      subject_id_list: z.array(z.string()).describe('Job Project List').optional(),
-      keyword: z.string().describe('Keyword').optional(),
-      update_start_time: z.string().describe('Earliest update time, millisecond timestamp').optional(),
-      update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
-      create_start_time: z.string().describe('Earliest creation time, millisecond timestamp').optional(),
-      create_end_time: z.string().describe('Latest creation time, millisecond timestamp').optional(),
-    }),
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z
-        .number()
-        .describe('The number of records fetched per page, up to 10,if not passed, the default value is 10')
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id'])
-        .describe(
-          'The Type of Department ID Options:open_department_id(open_department_id),department_id(department_id)',
-        )
-        .optional(),
-      job_level_id_type: z
-        .enum(['people_admin_job_level_id', 'job_level_id'])
-        .describe(
-          'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
-        )
-        .optional(),
-    }),
-    path: z.object({ website_id: z.string().describe('Official ID').optional() }),
+    data: z
+      .object({
+        job_type_id_list: z
+          .array(z.string())
+          .describe('Job Type List, For details, please refer to:[Get a list of job type]')
+          .optional(),
+        city_code_list: z.array(z.string()).describe('Job City List').optional(),
+        job_function_id_list: z.array(z.string()).describe('Function classification list').optional(),
+        subject_id_list: z.array(z.string()).describe('Job Project List').optional(),
+        keyword: z.string().describe('Keyword').optional(),
+        update_start_time: z.string().describe('Earliest update time, millisecond timestamp').optional(),
+        update_end_time: z.string().describe('Latest update time, millisecond timestamp').optional(),
+        create_start_time: z.string().describe('Earliest creation time, millisecond timestamp').optional(),
+        create_end_time: z.string().describe('Latest creation time, millisecond timestamp').optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z
+          .number()
+          .describe('The number of records fetched per page, up to 10,if not passed, the default value is 10')
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id'])
+          .describe(
+            'The Type of Department ID Options:open_department_id(open_department_id),department_id(department_id)',
+          )
+          .optional(),
+        job_level_id_type: z
+          .enum(['people_admin_job_level_id', 'job_level_id'])
+          .describe(
+            'The type of "Job Level ID" used in this request Options:people_admin_job_level_id(The Job Level ID applicable to "HCM Platform". The HCM Platform is gradually being offline. It is recommended not to continue using this ID type.),job_level_id(The Job Level ID applicable to "Feishu Management Backend" can be obtained through the [Query the list of job level] interface.)',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ website_id: z.string().describe('Official ID').optional() }).optional(),
   },
 };
 export const hireV1WebsiteList = {
@@ -7066,15 +7057,17 @@ export const hireV1WebsiteList = {
     '[Feishu/Lark]-Hire-Get candidates-Website-Obtain List of Official Recruitment Websites-Obtain List of Official Recruitment Websites',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z.number().describe('Number of records fetched per page, limit 10').optional(),
-    }),
+    params: z
+      .object({
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z.number().describe('Number of records fetched per page, limit 10').optional(),
+      })
+      .optional(),
   },
 };
 export const hireV1WebsiteSiteUserCreate = {

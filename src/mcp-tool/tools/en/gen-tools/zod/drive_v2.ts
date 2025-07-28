@@ -31,9 +31,7 @@ export const driveV2FileLikeList = {
     path: z.object({
       file_token: z
         .string()
-        .describe(
-          'The document token specified to query the like list. [Click to learn how to get document token]',
-        ),
+        .describe('The document token specified to query the like list. [Click to learn how to get document token]'),
     }),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
@@ -45,7 +43,7 @@ export const driveV2PermissionPublicGet = {
   path: '/open-apis/drive/v2/permissions/:token/public',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Docs-Permission-Setting v2-GetPermissionPublic-This interface is used to obtain permission settings for cloud documents according to filetoken',
+    '[Feishu/Lark]-Docs-Permission-Setting-GetPermissionPublic-This interface is used to obtain permission settings for cloud documents according to filetoken',
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
@@ -72,61 +70,63 @@ export const driveV2PermissionPublicPatch = {
   path: '/open-apis/drive/v2/permissions/:token/public',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Docs-Permission-Setting v2-UpdatePermissionPublic-This API is used to update the common settings of a document based on a filetoken',
+    '[Feishu/Lark]-Docs-Permission-Setting-UpdatePermissionPublic-This API is used to update the common settings of a document based on a filetoken',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      external_access_entity: z
-        .enum(['open', 'closed', 'allow_share_partner_tenant'])
-        .describe(
-          "Allow content to be shared outside the organization Options:open(open),closed(close),allow_share_partner_tenant(AllowSharePartnerTenant Allow sharing with affiliated organizations(This value can only be set if the tenant's background setting allows only associated organizations to share))",
-        )
-        .optional(),
-      security_entity: z
-        .enum(['anyone_can_view', 'anyone_can_edit', 'only_full_access'])
-        .describe(
-          'Who can create copies, print, download Options:anyone_can_view(AnyoneCanView Users with viewing permissions),anyone_can_edit(AnyoneCanEdit Users with editable permissions),only_full_access(OnlyFullAccess Users with manageable permissions (including me))',
-        )
-        .optional(),
-      comment_entity: z
-        .enum(['anyone_can_view', 'anyone_can_edit'])
-        .describe(
-          'Who can comment Options:anyone_can_view(AnyoneCanView Users with viewing permissions),anyone_can_edit(AnyoneCanEdit Users with editable permissions)',
-        )
-        .optional(),
-      share_entity: z
-        .enum(['anyone', 'same_tenant'])
-        .describe(
-          'Who can add and manage collaborators - organizational dimension Options:anyone(All users who can read or edit this document),same_tenant(SameTenant All users in your organization who can read or edit this document)',
-        )
-        .optional(),
-      manage_collaborator_entity: z
-        .enum(['collaborator_can_view', 'collaborator_can_edit', 'collaborator_full_access'])
-        .describe(
-          'Who can add and manage collaborators - collaborator dimension Options:collaborator_can_view(CollaboratorCanView Collaborators with viewing permissions),collaborator_can_edit(CollaboratorCanEdit Collaborators with editable permissions),collaborator_full_access(CollaboratorFullAccess Collaborators with manageable permissions (including me))',
-        )
-        .optional(),
-      link_share_entity: z
-        .enum([
-          'tenant_readable',
-          'tenant_editable',
-          'partner_tenant_readable',
-          'partner_tenant_editable',
-          'anyone_readable',
-          'anyone_editable',
-          'closed',
-        ])
-        .describe(
-          'Link sharing settings Options:tenant_readable(TenantReadable People in the organization who get the link can read it),tenant_editable(TenantEditable People in the organization who get the link can edit),partner_tenant_readable(PartnerTenantReadable People from affiliated organizations can read(This value can only be set if the tenant\'s background setting allows only associated organizations to share)),partner_tenant_editable(PartnerTenantEditable People from affiliated organizations can edit(This value can only be set if the tenant\'s background setting allows only associated organizations to share)),anyone_readable(AnyoneReadable Anyone with a link on the Internet can read it (only external_access_entity = "open")),anyone_editable(AnyoneEditable Editable by anyone with a link on the internet (only external_access_entity = "open")),closed(Close link share)',
-        )
-        .optional(),
-      copy_entity: z
-        .enum(['anyone_can_view', 'anyone_can_edit', 'only_full_access'])
-        .describe(
-          'Who can copy the content Options:anyone_can_view(AnyoneCanView Users with viewing permissions),anyone_can_edit(AnyoneCanEdit Users with editable permissions),only_full_access(OnlyFullAccess Collaborators with manageable permissions (including me))',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        external_access_entity: z
+          .enum(['open', 'closed', 'allow_share_partner_tenant'])
+          .describe(
+            "Allow content to be shared outside the organization Options:open(open),closed(close),allow_share_partner_tenant(AllowSharePartnerTenant Allow sharing with affiliated organizations(This value can only be set if the tenant's background setting allows only associated organizations to share))",
+          )
+          .optional(),
+        security_entity: z
+          .enum(['anyone_can_view', 'anyone_can_edit', 'only_full_access'])
+          .describe(
+            'Who can create copies, print, download Options:anyone_can_view(AnyoneCanView Users with viewing permissions),anyone_can_edit(AnyoneCanEdit Users with editable permissions),only_full_access(OnlyFullAccess Users with manageable permissions (including me))',
+          )
+          .optional(),
+        comment_entity: z
+          .enum(['anyone_can_view', 'anyone_can_edit'])
+          .describe(
+            'Who can comment Options:anyone_can_view(AnyoneCanView Users with viewing permissions),anyone_can_edit(AnyoneCanEdit Users with editable permissions)',
+          )
+          .optional(),
+        share_entity: z
+          .enum(['anyone', 'same_tenant'])
+          .describe(
+            'Who can add and manage collaborators - organizational dimension Options:anyone(All users who can read or edit this document),same_tenant(SameTenant All users in your organization who can read or edit this document)',
+          )
+          .optional(),
+        manage_collaborator_entity: z
+          .enum(['collaborator_can_view', 'collaborator_can_edit', 'collaborator_full_access'])
+          .describe(
+            'Who can add and manage collaborators - collaborator dimension Options:collaborator_can_view(CollaboratorCanView Collaborators with viewing permissions),collaborator_can_edit(CollaboratorCanEdit Collaborators with editable permissions),collaborator_full_access(CollaboratorFullAccess Collaborators with manageable permissions (including me))',
+          )
+          .optional(),
+        link_share_entity: z
+          .enum([
+            'tenant_readable',
+            'tenant_editable',
+            'partner_tenant_readable',
+            'partner_tenant_editable',
+            'anyone_readable',
+            'anyone_editable',
+            'closed',
+          ])
+          .describe(
+            'Link sharing settings Options:tenant_readable(TenantReadable People in the organization who get the link can read it),tenant_editable(TenantEditable People in the organization who get the link can edit),partner_tenant_readable(PartnerTenantReadable People from affiliated organizations can read(This value can only be set if the tenant\'s background setting allows only associated organizations to share)),partner_tenant_editable(PartnerTenantEditable People from affiliated organizations can edit(This value can only be set if the tenant\'s background setting allows only associated organizations to share)),anyone_readable(AnyoneReadable Anyone with a link on the Internet can read it (only external_access_entity = "open")),anyone_editable(AnyoneEditable Editable by anyone with a link on the internet (only external_access_entity = "open")),closed(Close link share)',
+          )
+          .optional(),
+        copy_entity: z
+          .enum(['anyone_can_view', 'anyone_can_edit', 'only_full_access'])
+          .describe(
+            'Who can copy the content Options:anyone_can_view(AnyoneCanView Users with viewing permissions),anyone_can_edit(AnyoneCanEdit Users with editable permissions),only_full_access(OnlyFullAccess Collaborators with manageable permissions (including me))',
+          )
+          .optional(),
+      })
+      .optional(),
     params: z.object({
       type: z
         .enum(['doc', 'sheet', 'file', 'wiki', 'bitable', 'docx', 'mindnote', 'minutes', 'slides'])

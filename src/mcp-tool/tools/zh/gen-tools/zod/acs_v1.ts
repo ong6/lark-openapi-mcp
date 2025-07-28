@@ -122,10 +122,12 @@ export const acsV1RuleExternalCreate = {
         })
         .describe('权限组信息'),
     }),
-    params: z.object({
-      rule_id: z.string().describe('权限组id-为空创建,不为空则更新').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        rule_id: z.string().describe('权限组id-为空创建,不为空则更新').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -167,10 +169,12 @@ export const acsV1RuleExternalGet = {
   description: '[Feishu/Lark]-智能门禁-权限组-获取权限组信息-获取权限组信息',
   accessTokens: ['user'],
   schema: {
-    params: z.object({
-      device_id: z.string().describe('设备id').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        device_id: z.string().describe('设备id').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -183,7 +187,9 @@ export const acsV1UserGet = {
   description: '[Feishu/Lark]-智能门禁-用户管理-获取单个用户信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ user_id: z.string().describe('用户 ID') }),
   },
 };
@@ -196,16 +202,18 @@ export const acsV1UserList = {
   description: '[Feishu/Lark]-智能门禁-用户管理-获取用户列表',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const acsV1UserPatch = {
@@ -217,13 +225,17 @@ export const acsV1UserPatch = {
   description: '[Feishu/Lark]-智能门禁-用户管理-修改用户部分信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      feature: z
-        .object({ card: z.number().describe('卡号').optional() })
-        .describe('用户特征')
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('用户ID类型').optional() }),
+    data: z
+      .object({
+        feature: z
+          .object({ card: z.number().describe('卡号').optional() })
+          .describe('用户特征')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['user_id', 'union_id', 'open_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ user_id: z.string().describe('用户 ID') }),
   },
 };
@@ -249,7 +261,9 @@ export const acsV1VisitorCreate = {
         })
         .describe('访客信息'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -262,7 +276,9 @@ export const acsV1VisitorDelete = {
   description: '[Feishu/Lark]-智能门禁-访客-删除访客-删除访客',
   accessTokens: ['user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ visitor_id: z.string().describe('访客id') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },

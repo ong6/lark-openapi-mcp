@@ -114,11 +114,7 @@ export const corehrV1AssignedUserSearch = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      role_id: z
-        .string()
-        .describe(
-          '角色 ID，仅支持组织类角色， 角色 ID 可通过[批量获取角色列表]接口获取',
-        ),
+      role_id: z.string().describe('角色 ID，仅支持组织类角色， 角色 ID 可通过[批量获取角色列表]接口获取'),
       management_scope_list: z
         .array(
           z.object({
@@ -144,9 +140,11 @@ export const corehrV1AssignedUserSearch = {
         .optional(),
       page_size: z.string().describe('分页大小，最大100'),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1AuthorizationAddRoleAssign = {
@@ -221,30 +219,32 @@ export const corehrV1AuthorizationQuery = {
     '[Feishu/Lark]-飞书人事（企业版）-权限-批量查询用户授权-批量查询[飞书人事管理后台] -「设置」-「权限设置」中的用户授权信息。授权列表信息中包括员工ID、被授权的角色等信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      employment_id_list: z
-        .array(z.string())
-        .describe(
-          '员工ID列表，最大100个（不传则默认查询全部员工）。ID类型与user_id_type的取值意义一致。默认为飞书人事中的 ==employment_id==。 > 如果你需要不同类型的ID进行转换，可以使用 [ID转换服务] 换取 ==employment_id==',
-        )
-        .optional(),
-      role_id_list: z
-        .array(z.string())
-        .describe(
-          '角色 ID 列表，最大 100 个。当传该参数时，会根据rold_id过滤，只返回包含该角色的授权信息。>你可以使用 [批量获取角色列表] 获取，或者在角色详情中获取（URL 末的数字）',
-        )
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      page_size: z.string().describe('每页获取记录数量，最大20(不传该参数，默认为20)').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
-      updated_at_gte: z.string().describe('授权时间大于').optional(),
-      updated_at_lte: z.string().describe('授权时间小于').optional(),
-    }),
+    params: z
+      .object({
+        employment_id_list: z
+          .array(z.string())
+          .describe(
+            '员工ID列表，最大100个（不传则默认查询全部员工）。ID类型与user_id_type的取值意义一致。默认为飞书人事中的 ==employment_id==。 > 如果你需要不同类型的ID进行转换，可以使用 [ID转换服务] 换取 ==employment_id==',
+          )
+          .optional(),
+        role_id_list: z
+          .array(z.string())
+          .describe(
+            '角色 ID 列表，最大 100 个。当传该参数时，会根据rold_id过滤，只返回包含该角色的授权信息。>你可以使用 [批量获取角色列表] 获取，或者在角色详情中获取（URL 末的数字）',
+          )
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        page_size: z.string().describe('每页获取记录数量，最大20(不传该参数，默认为20)').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
+        updated_at_gte: z.string().describe('授权时间大于').optional(),
+        updated_at_lte: z.string().describe('授权时间小于').optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1AuthorizationRemoveRoleAssign = {
@@ -364,14 +364,10 @@ export const corehrV1CommonDataMetaDataAddEnumOption = {
     data: z.object({
       object_api_name: z
         .string()
-        .describe(
-          '所属对象 API name，可通过[获取飞书人事对象列表]接口中返回的 `object_api_name` 字段获取',
-        ),
+        .describe('所属对象 API name，可通过[获取飞书人事对象列表]接口中返回的 `object_api_name` 字段获取'),
       enum_field_api_name: z
         .string()
-        .describe(
-          '枚举字段 API name，可通过[获取自定义字段列表]接口中返回的 `custom_api_name` 字段获取',
-        ),
+        .describe('枚举字段 API name，可通过[获取自定义字段列表]接口中返回的 `custom_api_name` 字段获取'),
       enum_field_options: z
         .array(
           z.object({
@@ -387,14 +383,16 @@ export const corehrV1CommonDataMetaDataAddEnumOption = {
         )
         .describe('新增枚举选项列表'),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe(
-          '用户若希望避免重试导致多次重复请求，可填写随机字符串，系统根据 client_token 是否一致来判断是否为同一请求',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe(
+            '用户若希望避免重试导致多次重复请求，可填写随机字符串，系统根据 client_token 是否一致来判断是否为同一请求',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1CommonDataMetaDataEditEnumOption = {
@@ -410,14 +408,10 @@ export const corehrV1CommonDataMetaDataEditEnumOption = {
     data: z.object({
       object_api_name: z
         .string()
-        .describe(
-          '所属对象 API name，可通过[获取飞书人事对象列表]接口中返回的 `object_api_name` 字段获取',
-        ),
+        .describe('所属对象 API name，可通过[获取飞书人事对象列表]接口中返回的 `object_api_name` 字段获取'),
       enum_field_api_name: z
         .string()
-        .describe(
-          '枚举字段 API name，可通过[获取自定义字段列表]接口中返回的 `custom_api_name` 字段获取',
-        ),
+        .describe('枚举字段 API name，可通过[获取自定义字段列表]接口中返回的 `custom_api_name` 字段获取'),
       enum_field_option: z
         .object({
           option_api_name: z.string().describe('枚举值选项 API Name，即选项的唯一标识'),
@@ -428,14 +422,16 @@ export const corehrV1CommonDataMetaDataEditEnumOption = {
         })
         .describe('枚举选项'),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe(
-          '用户若希望避免重试导致多次重复请求，可填写随机字符串，系统根据 client_token 是否一致来判断是否为同一请求',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe(
+            '用户若希望避免重试导致多次重复请求，可填写随机字符串，系统根据 client_token 是否一致来判断是否为同一请求',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1CompanyCreate = {
@@ -453,9 +449,7 @@ export const corehrV1CompanyCreate = {
         .object({
           parent_id: z
             .string()
-            .describe(
-              '上级公司ID，在创建场景下， 该字段必填，枚举值及详细信息可通过[【批量查询公司】]接口查询获得',
-            )
+            .describe('上级公司ID，在创建场景下， 该字段必填，枚举值及详细信息可通过[【批量查询公司】]接口查询获得')
             .optional(),
           name: z
             .array(
@@ -504,15 +498,11 @@ export const corehrV1CompanyCreate = {
         .describe('公司基本信息，该结构维护了公司的名称、编码、启用状态、上级公司等基础信息'),
       type: z
         .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '公司性质，通过[获取字段详情]查询获取。请求参数：object_api_name=company；custom_api_name=type',
-        )
+        .describe('公司性质，通过[获取字段详情]查询获取。请求参数：object_api_name=company；custom_api_name=type')
         .optional(),
       industry_list: z
         .array(z.object({ enum_name: z.string().describe('枚举值') }))
-        .describe(
-          '所在行业，通过[获取字段详情]查询获取。请求参数：object_api_name=company；custom_api_name=industry',
-        )
+        .describe('所在行业，通过[获取字段详情]查询获取。请求参数：object_api_name=company；custom_api_name=industry')
         .optional(),
       legal_representative: z
         .array(
@@ -568,17 +558,10 @@ export const corehrV1CompanyCreate = {
             )
             .describe('货币名称')
             .optional(),
-          numeric_code: z
-            .number()
-            .describe(
-              '对应币种的指代代码，通过[查询货币信息v2]查询获取',
-            )
-            .optional(),
+          numeric_code: z.number().describe('对应币种的指代代码，通过[查询货币信息v2]查询获取').optional(),
           currency_alpha_3_code: z
             .string()
-            .describe(
-              '法定货币对应代码，如CNY、USD等，通过[查询货币信息v2]查询获取',
-            )
+            .describe('法定货币对应代码，如CNY、USD等，通过[查询货币信息v2]查询获取')
             .optional(),
         })
         .describe('默认币种')
@@ -612,24 +595,9 @@ export const corehrV1CompanyCreate = {
             .describe(
               '国家 / 地区id。各国家/地区填写字段可参考[地址填写规则]查询。国家/地区id可通过[查询国家/地区信息]查询获取',
             ),
-          region_id: z
-            .string()
-            .describe(
-              '主要行政区id。可通过[查询省份/主要行政区信息]查询获取',
-            )
-            .optional(),
-          city_id: z
-            .string()
-            .describe(
-              '城市id，可通过[查询城市信息]查询获取',
-            )
-            .optional(),
-          distinct_id: z
-            .string()
-            .describe(
-              '区/县id，可通过[查询区/县信息]查询获取',
-            )
-            .optional(),
+          region_id: z.string().describe('主要行政区id。可通过[查询省份/主要行政区信息]查询获取').optional(),
+          city_id: z.string().describe('城市id，可通过[查询城市信息]查询获取').optional(),
+          distinct_id: z.string().describe('区/县id，可通过[查询区/县信息]查询获取').optional(),
           address_line1: z.string().describe('地址行 1').optional(),
           address_line2: z.string().describe('地址行 2').optional(),
           address_line3: z.string().describe('地址行 3').optional(),
@@ -661,24 +629,9 @@ export const corehrV1CompanyCreate = {
             .describe(
               '国家 / 地区id。各国家/地区填写字段可参考[地址填写规则]查询。国家/地区id可通过[查询国家/地区信息]查询获取',
             ),
-          region_id: z
-            .string()
-            .describe(
-              '主要行政区id。可通过[查询省份/主要行政区信息]查询获取',
-            )
-            .optional(),
-          city_id: z
-            .string()
-            .describe(
-              '城市id，可通过[查询城市信息]查询获取',
-            )
-            .optional(),
-          distinct_id: z
-            .string()
-            .describe(
-              '区/县id，可通过[查询区/县信息]查询获取',
-            )
-            .optional(),
+          region_id: z.string().describe('主要行政区id。可通过[查询省份/主要行政区信息]查询获取').optional(),
+          city_id: z.string().describe('城市id，可通过[查询城市信息]查询获取').optional(),
+          distinct_id: z.string().describe('区/县id，可通过[查询区/县信息]查询获取').optional(),
           address_line1: z.string().describe('地址行 1').optional(),
           address_line2: z.string().describe('地址行 2').optional(),
           address_line3: z.string().describe('地址行 3').optional(),
@@ -704,14 +657,16 @@ export const corehrV1CompanyCreate = {
         )
         .optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe(
-          '操作的唯一标识，用于幂等的进行更新操作，根据client_token是否一致来判断是否为同一请求。此值为空表示将发起一次新的请求，此值非空表示幂等的进行更新操作',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe(
+            '操作的唯一标识，用于幂等的进行更新操作，根据client_token是否一致来判断是否为同一请求。此值为空表示将发起一次新的请求，此值非空表示幂等的进行更新操作',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1CompanyDelete = {
@@ -726,9 +681,7 @@ export const corehrV1CompanyDelete = {
     path: z.object({
       company_id: z
         .string()
-        .describe(
-          '需要删除的公司ID。ID获取方式：- 调用[【创建公司】][【批量查询公司】]等接口可以返回部门ID',
-        ),
+        .describe('需要删除的公司ID。ID获取方式：- 调用[【创建公司】][【批量查询公司】]等接口可以返回部门ID'),
     }),
   },
 };
@@ -744,9 +697,7 @@ export const corehrV1CompanyGet = {
     path: z.object({
       company_id: z
         .string()
-        .describe(
-          '需要查询的公司ID。ID获取方式：- 调用[【创建公司】][【批量查询公司】]等接口可以返回部门ID',
-        ),
+        .describe('需要查询的公司ID。ID获取方式：- 调用[【创建公司】][【批量查询公司】]等接口可以返回部门ID'),
     }),
   },
 };
@@ -780,230 +731,194 @@ export const corehrV1CompanyPatch = {
     '[Feishu/Lark]-飞书人事（企业版）-组织管理-公司-更新公司-更新公司信息，包括基本信息、注册地址、办公地址等',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      hiberarchy_common: z
-        .object({
-          parent_id: z.string().describe('上级组织').optional(),
-          name: z
-            .array(
-              z.object({
-                lang: z.string().describe('语言，支持中文和英文。中文用zh-CN；英文用en-US'),
-                value: z.string().describe('内容，支持中文和英文'),
-              }),
-            )
-            .describe('公司名称- 名称不能包含「/」「；」「;」字符。- 公司中英文名称会有全局唯一校验')
-            .optional(),
-          active: z.boolean().describe('是否启用该公司').optional(),
-          effective_time: z
-            .string()
-            .describe(
-              '版本生效日期- 填写格式：YYYY-MM-DD 00:00:00（系统会自动将时分秒改为00:00:00）- 系统默认为填写日期当天的 00:00:00 生效 - 该接口只支持到最小单位为日- 日期范围要求:1900-01-01 00:00:00～9999-12-31 23:59:59',
-            ),
-          code: z.string().describe('公司编码 (不能与其他记录的编码重复)，如果不传值则不更新').optional(),
-          description: z
-            .array(
-              z.object({
-                lang: z.string().describe('语言，支持中文和英文。中文用zh-CN；英文用en-US'),
-                value: z.string().describe('内容，支持中文和英文'),
-              }),
-            )
-            .describe('描述')
-            .optional(),
-        })
-        .describe('组织实体公共字段，包括名称、描述、上级、启停用状态、生效日期、编码等基础信息')
-        .optional(),
-      type: z
-        .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '公司性质，通过[获取字段详情]查询获取。请求参数：object_api_name=company；custom_api_name=type',
-        )
-        .optional(),
-      industry_list: z
-        .array(z.object({ enum_name: z.string().describe('枚举值') }))
-        .describe(
-          '所在行业，通过[获取字段详情]查询获取。请求参数：object_api_name=company；custom_api_name=industry',
-        )
-        .optional(),
-      legal_representative: z
-        .array(
-          z.object({
-            lang: z.string().describe('语言，支持中文和英文。中文用zh-CN；英文用en-US'),
-            value: z.string().describe('内容，支持中文和英文'),
-          }),
-        )
-        .describe(
-          '法定代表人。仅注册地址中的 国家 / 地区 为中国大陆时，法人字段填入才有效。若注册地址中的 国家 / 地区 不为中国大陆时，则填入法人字段无效',
-        )
-        .optional(),
-      post_code: z.string().describe('邮编').optional(),
-      tax_payer_id: z.string().describe('纳税人识别号').optional(),
-      confidential: z.boolean().describe('是否保密，该功能暂不支持，可以忽略').optional(),
-      sub_type_list: z
-        .array(z.object({ enum_name: z.string().describe('枚举值') }))
-        .describe(
-          '公司主体类型，通过[获取字段详情]查询获取。请求参数：object_api_name=company；custom_api_name=subtype',
-        )
-        .optional(),
-      branch_company: z.boolean().describe('是否为分公司').optional(),
-      primary_manager: z
-        .array(
-          z.object({
-            lang: z.string().describe('语言，支持中文和英文。中文用zh-CN；英文用en-US'),
-            value: z.string().describe('内容，支持中文和英文'),
-          }),
-        )
-        .describe('主要负责人')
-        .optional(),
-      currency: z
-        .object({
-          currency_name: z
-            .array(
-              z.object({
-                lang: z.string().describe('语言，支持中文和英文。中文用zh-CN；英文用en-US'),
-                value: z.string().describe('内容，支持中文和英文'),
-              }),
-            )
-            .describe('货币名称')
-            .optional(),
-          numeric_code: z
-            .number()
-            .describe(
-              '对应币种的指代代码，通过系统内部查找，通过[查询货币信息v2]查询获取',
-            )
-            .optional(),
-          currency_alpha_3_code: z
-            .string()
-            .describe(
-              '法定货币对应代码，如CNY 、USD等.通过[查询货币信息v2]查询获取',
-            )
-            .optional(),
-        })
-        .describe('默认币种')
-        .optional(),
-      phone: z
-        .object({
-          area_code: z
-            .object({ enum_name: z.string().describe('区号对应名称') })
-            .describe(
-              '区号对应的数字，可通过[获取字段详情]查询获取。请求参数：object_api_name=phone；custom_api_name=international_area_code',
-            ),
-          phone_number: z.string().describe('号码'),
-        })
-        .describe('电话')
-        .optional(),
-      fax: z
-        .object({
-          area_code: z
-            .object({ enum_name: z.string().describe('区号对应的名称') })
-            .describe(
-              '区号对应的数字，可通过[获取字段详情]查询获取。请求参数：object_api_name=phone；custom_api_name=international_area_code',
-            ),
-          phone_number: z.string().describe('号码'),
-        })
-        .describe('传真')
-        .optional(),
-      registered_office_address_info: z
-        .object({
-          country_region_id: z
-            .string()
-            .describe(
-              '国家 / 地区 ID。各国家/地区填写字段可参考[地址填写规则]查询。可通过[查询国家/地区信息]查询获取',
-            ),
-          region_id: z
-            .string()
-            .describe(
-              '主要行政区ID.可通过[查询省份/主要行政区信息]查询获取',
-            )
-            .optional(),
-          city_id: z
-            .string()
-            .describe(
-              '城市ID.可通过[查询城市信息]查询获取',
-            )
-            .optional(),
-          distinct_id: z
-            .string()
-            .describe(
-              '区/县ID.可通过[查询区/县信息]查询获取',
-            )
-            .optional(),
-          address_line1: z.string().describe('地址行 1').optional(),
-          address_line2: z.string().describe('地址行 2').optional(),
-          address_line3: z.string().describe('地址行 3').optional(),
-          address_line4: z.string().describe('地址行 4').optional(),
-          address_line5: z.string().describe('地址行 5').optional(),
-          address_line6: z.string().describe('地址行 6').optional(),
-          address_line7: z.string().describe('地址行 7').optional(),
-          address_line8: z.string().describe('地址行 8').optional(),
-          address_line9: z.string().describe('地址行 9').optional(),
-          local_address_line1: z.string().describe('地址行 1（非拉丁语系的本地文字）').optional(),
-          local_address_line2: z.string().describe('地址行 2（非拉丁语系的本地文字）').optional(),
-          local_address_line3: z.string().describe('地址行 3（非拉丁语系的本地文字）').optional(),
-          local_address_line4: z.string().describe('地址行 4（非拉丁语系的本地文字）').optional(),
-          local_address_line5: z.string().describe('地址行 5（非拉丁语系的本地文字）').optional(),
-          local_address_line6: z.string().describe('地址行 6（非拉丁语系的本地文字）').optional(),
-          local_address_line7: z.string().describe('地址行 7（非拉丁语系的本地文字）').optional(),
-          local_address_line8: z.string().describe('地址行 8（非拉丁语系的本地文字）').optional(),
-          local_address_line9: z.string().describe('地址行 9（非拉丁语系的本地文字）').optional(),
-          postal_code: z.string().describe('邮政编码').optional(),
-        })
-        .describe('注册地址详细信息。公共字段，若请求对象为公司，则该字段必填')
-        .optional(),
-      office_address_info: z
-        .object({
-          country_region_id: z
-            .string()
-            .describe(
-              '国家 / 地区 ID。各国家/地区填写字段可参考[地址填写规则]查询.可通过[查询国家/地区信息]查询获取',
-            ),
-          region_id: z
-            .string()
-            .describe(
-              '主要行政区ID.可通过[查询省份/主要行政区信息]查询获取',
-            )
-            .optional(),
-          city_id: z
-            .string()
-            .describe(
-              '城市ID.可通过[查询城市信息]查询获取',
-            )
-            .optional(),
-          distinct_id: z
-            .string()
-            .describe(
-              '区/县ID.可通过[查询区/县信息]查询获取',
-            )
-            .optional(),
-          address_line1: z.string().describe('地址行 1').optional(),
-          address_line2: z.string().describe('地址行 2').optional(),
-          address_line3: z.string().describe('地址行 3').optional(),
-          address_line4: z.string().describe('地址行 4').optional(),
-          address_line5: z.string().describe('地址行 5').optional(),
-          address_line6: z.string().describe('地址行 6').optional(),
-          address_line7: z.string().describe('地址行 7').optional(),
-          address_line8: z.string().describe('地址行 8').optional(),
-          address_line9: z.string().describe('地址行 9').optional(),
-          local_address_line1: z.string().describe('地址行 1（非拉丁语系的本地文字）').optional(),
-          local_address_line2: z.string().describe('地址行 2（非拉丁语系的本地文字）').optional(),
-          local_address_line3: z.string().describe('地址行 3（非拉丁语系的本地文字）').optional(),
-          local_address_line4: z.string().describe('地址行 4（非拉丁语系的本地文字）').optional(),
-          local_address_line5: z.string().describe('地址行 5（非拉丁语系的本地文字）').optional(),
-          local_address_line6: z.string().describe('地址行 6（非拉丁语系的本地文字）').optional(),
-          local_address_line7: z.string().describe('地址行 7（非拉丁语系的本地文字）').optional(),
-          local_address_line8: z.string().describe('地址行 8（非拉丁语系的本地文字）').optional(),
-          local_address_line9: z.string().describe('地址行 9（非拉丁语系的本地文字）').optional(),
-          postal_code: z.string().describe('邮政编码').optional(),
-        })
-        .describe('办公地址详细信息。公共字段，若请求对象为公司，则该字段必填')
-        .optional(),
-    }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+    data: z
+      .object({
+        hiberarchy_common: z
+          .object({
+            parent_id: z.string().describe('上级组织').optional(),
+            name: z
+              .array(
+                z.object({
+                  lang: z.string().describe('语言，支持中文和英文。中文用zh-CN；英文用en-US'),
+                  value: z.string().describe('内容，支持中文和英文'),
+                }),
+              )
+              .describe('公司名称- 名称不能包含「/」「；」「」字符。- 公司中英文名称会有全局唯一校验')
+              .optional(),
+            active: z.boolean().describe('是否启用该公司').optional(),
+            effective_time: z
+              .string()
+              .describe(
+                '版本生效日期- 填写格式：YYYY-MM-DD 00:00:00（系统会自动将时分秒改为00:00:00）- 系统默认为填写日期当天的 00:00:00 生效 - 该接口只支持到最小单位为日- 日期范围要求:1900-01-01 00:00:00～9999-12-31 23:59:59',
+              ),
+            code: z.string().describe('公司编码 (不能与其他记录的编码重复)，如果不传值则不更新').optional(),
+            description: z
+              .array(
+                z.object({
+                  lang: z.string().describe('语言，支持中文和英文。中文用zh-CN；英文用en-US'),
+                  value: z.string().describe('内容，支持中文和英文'),
+                }),
+              )
+              .describe('描述')
+              .optional(),
+          })
+          .describe('组织实体公共字段，包括名称、描述、上级、启停用状态、生效日期、编码等基础信息')
+          .optional(),
+        type: z
+          .object({ enum_name: z.string().describe('枚举值') })
+          .describe('公司性质，通过[获取字段详情]查询获取。请求参数：object_api_name=company；custom_api_name=type')
+          .optional(),
+        industry_list: z
+          .array(z.object({ enum_name: z.string().describe('枚举值') }))
+          .describe('所在行业，通过[获取字段详情]查询获取。请求参数：object_api_name=company；custom_api_name=industry')
+          .optional(),
+        legal_representative: z
+          .array(
+            z.object({
+              lang: z.string().describe('语言，支持中文和英文。中文用zh-CN；英文用en-US'),
+              value: z.string().describe('内容，支持中文和英文'),
+            }),
+          )
+          .describe(
+            '法定代表人。仅注册地址中的 国家 / 地区 为中国大陆时，法人字段填入才有效。若注册地址中的 国家 / 地区 不为中国大陆时，则填入法人字段无效',
+          )
+          .optional(),
+        post_code: z.string().describe('邮编').optional(),
+        tax_payer_id: z.string().describe('纳税人识别号').optional(),
+        confidential: z.boolean().describe('是否保密，该功能暂不支持，可以忽略').optional(),
+        sub_type_list: z
+          .array(z.object({ enum_name: z.string().describe('枚举值') }))
+          .describe(
+            '公司主体类型，通过[获取字段详情]查询获取。请求参数：object_api_name=company；custom_api_name=subtype',
+          )
+          .optional(),
+        branch_company: z.boolean().describe('是否为分公司').optional(),
+        primary_manager: z
+          .array(
+            z.object({
+              lang: z.string().describe('语言，支持中文和英文。中文用zh-CN；英文用en-US'),
+              value: z.string().describe('内容，支持中文和英文'),
+            }),
+          )
+          .describe('主要负责人')
+          .optional(),
+        currency: z
+          .object({
+            currency_name: z
+              .array(
+                z.object({
+                  lang: z.string().describe('语言，支持中文和英文。中文用zh-CN；英文用en-US'),
+                  value: z.string().describe('内容，支持中文和英文'),
+                }),
+              )
+              .describe('货币名称')
+              .optional(),
+            numeric_code: z
+              .number()
+              .describe('对应币种的指代代码，通过系统内部查找，通过[查询货币信息v2]查询获取')
+              .optional(),
+            currency_alpha_3_code: z
+              .string()
+              .describe('法定货币对应代码，如CNY 、USD等.通过[查询货币信息v2]查询获取')
+              .optional(),
+          })
+          .describe('默认币种')
+          .optional(),
+        phone: z
+          .object({
+            area_code: z
+              .object({ enum_name: z.string().describe('区号对应名称') })
+              .describe(
+                '区号对应的数字，可通过[获取字段详情]查询获取。请求参数：object_api_name=phone；custom_api_name=international_area_code',
+              ),
+            phone_number: z.string().describe('号码'),
+          })
+          .describe('电话')
+          .optional(),
+        fax: z
+          .object({
+            area_code: z
+              .object({ enum_name: z.string().describe('区号对应的名称') })
+              .describe(
+                '区号对应的数字，可通过[获取字段详情]查询获取。请求参数：object_api_name=phone；custom_api_name=international_area_code',
+              ),
+            phone_number: z.string().describe('号码'),
+          })
+          .describe('传真')
+          .optional(),
+        registered_office_address_info: z
+          .object({
+            country_region_id: z
+              .string()
+              .describe(
+                '国家 / 地区 ID。各国家/地区填写字段可参考[地址填写规则]查询。可通过[查询国家/地区信息]查询获取',
+              ),
+            region_id: z.string().describe('主要行政区ID.可通过[查询省份/主要行政区信息]查询获取').optional(),
+            city_id: z.string().describe('城市ID.可通过[查询城市信息]查询获取').optional(),
+            distinct_id: z.string().describe('区/县ID.可通过[查询区/县信息]查询获取').optional(),
+            address_line1: z.string().describe('地址行 1').optional(),
+            address_line2: z.string().describe('地址行 2').optional(),
+            address_line3: z.string().describe('地址行 3').optional(),
+            address_line4: z.string().describe('地址行 4').optional(),
+            address_line5: z.string().describe('地址行 5').optional(),
+            address_line6: z.string().describe('地址行 6').optional(),
+            address_line7: z.string().describe('地址行 7').optional(),
+            address_line8: z.string().describe('地址行 8').optional(),
+            address_line9: z.string().describe('地址行 9').optional(),
+            local_address_line1: z.string().describe('地址行 1（非拉丁语系的本地文字）').optional(),
+            local_address_line2: z.string().describe('地址行 2（非拉丁语系的本地文字）').optional(),
+            local_address_line3: z.string().describe('地址行 3（非拉丁语系的本地文字）').optional(),
+            local_address_line4: z.string().describe('地址行 4（非拉丁语系的本地文字）').optional(),
+            local_address_line5: z.string().describe('地址行 5（非拉丁语系的本地文字）').optional(),
+            local_address_line6: z.string().describe('地址行 6（非拉丁语系的本地文字）').optional(),
+            local_address_line7: z.string().describe('地址行 7（非拉丁语系的本地文字）').optional(),
+            local_address_line8: z.string().describe('地址行 8（非拉丁语系的本地文字）').optional(),
+            local_address_line9: z.string().describe('地址行 9（非拉丁语系的本地文字）').optional(),
+            postal_code: z.string().describe('邮政编码').optional(),
+          })
+          .describe('注册地址详细信息。公共字段，若请求对象为公司，则该字段必填')
+          .optional(),
+        office_address_info: z
+          .object({
+            country_region_id: z
+              .string()
+              .describe(
+                '国家 / 地区 ID。各国家/地区填写字段可参考[地址填写规则]查询.可通过[查询国家/地区信息]查询获取',
+              ),
+            region_id: z.string().describe('主要行政区ID.可通过[查询省份/主要行政区信息]查询获取').optional(),
+            city_id: z.string().describe('城市ID.可通过[查询城市信息]查询获取').optional(),
+            distinct_id: z.string().describe('区/县ID.可通过[查询区/县信息]查询获取').optional(),
+            address_line1: z.string().describe('地址行 1').optional(),
+            address_line2: z.string().describe('地址行 2').optional(),
+            address_line3: z.string().describe('地址行 3').optional(),
+            address_line4: z.string().describe('地址行 4').optional(),
+            address_line5: z.string().describe('地址行 5').optional(),
+            address_line6: z.string().describe('地址行 6').optional(),
+            address_line7: z.string().describe('地址行 7').optional(),
+            address_line8: z.string().describe('地址行 8').optional(),
+            address_line9: z.string().describe('地址行 9').optional(),
+            local_address_line1: z.string().describe('地址行 1（非拉丁语系的本地文字）').optional(),
+            local_address_line2: z.string().describe('地址行 2（非拉丁语系的本地文字）').optional(),
+            local_address_line3: z.string().describe('地址行 3（非拉丁语系的本地文字）').optional(),
+            local_address_line4: z.string().describe('地址行 4（非拉丁语系的本地文字）').optional(),
+            local_address_line5: z.string().describe('地址行 5（非拉丁语系的本地文字）').optional(),
+            local_address_line6: z.string().describe('地址行 6（非拉丁语系的本地文字）').optional(),
+            local_address_line7: z.string().describe('地址行 7（非拉丁语系的本地文字）').optional(),
+            local_address_line8: z.string().describe('地址行 8（非拉丁语系的本地文字）').optional(),
+            local_address_line9: z.string().describe('地址行 9（非拉丁语系的本地文字）').optional(),
+            postal_code: z.string().describe('邮政编码').optional(),
+          })
+          .describe('办公地址详细信息。公共字段，若请求对象为公司，则该字段必填')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
     path: z.object({
       company_id: z
         .string()
-        .describe(
-          '需要更新的公司 ID。ID获取方式：- 调用[【创建公司】][【批量查询公司】]等接口可以返回部门ID',
-        ),
+        .describe('需要更新的公司 ID。ID获取方式：- 调用[【创建公司】][【批量查询公司】]等接口可以返回部门ID'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1026,12 +941,7 @@ export const corehrV1CompensationStandardMatch = {
           '此次调用中使用的部门 ID 类型，传入部门ID时传入 Options:open_department_id(【飞书】用来在具体某个应用中标识一个部门，同一个department_id 在不同应用中的 open_department_id 相同。),department_id(【飞书】用来标识租户内一个唯一的部门。),people_corehr_department_id(【飞书人事】用来标识「飞书人事」中的部门。)',
         )
         .optional(),
-      employment_id: z
-        .string()
-        .describe(
-          '雇员ID，可通过接口[【批量查询员工信息】]获取',
-        )
-        .optional(),
+      employment_id: z.string().describe('雇员ID，可通过接口[【批量查询员工信息】]获取').optional(),
       reference_object_api: z
         .enum(['cpst_item', 'cpst_indicator'])
         .describe('薪资标准的关联对象，项目或者指标 Options:cpst_item(薪资项目),cpst_indicator(薪资统计指标)')
@@ -1041,62 +951,19 @@ export const corehrV1CompensationStandardMatch = {
         .describe(
           '薪资标准表关联对象ID，即薪资项目/统计指标ID，可通过接口[【批量查询薪资项】]、[【批量查询薪资统计指标】]获取',
         ),
-      department_id: z
-        .string()
-        .describe(
-          '部门ID，可通过接口[【批量查询部门】]获取',
-        )
-        .optional(),
-      work_location_id: z
-        .string()
-        .describe(
-          '工作地点ID，可通过接口[【批量查询地点】]获取',
-        )
-        .optional(),
-      company_id: z
-        .string()
-        .describe(
-          '公司ID，可通过接口[【批量查询公司】]获取',
-        )
-        .optional(),
-      job_family_id: z
-        .string()
-        .describe(
-          '职务序列ID，可通过接口[【批量查询职务序列】]获取',
-        )
-        .optional(),
-      job_id: z
-        .string()
-        .describe('职务ID，可通过接口[【批量查询职务】]')
-        .optional(),
-      job_level_id: z
-        .string()
-        .describe(
-          '职级ID，可通过接口[【批量查询职务级别】]获取',
-        )
-        .optional(),
-      employee_type_id: z
-        .string()
-        .describe(
-          '人员类型ID，可通过接口[【批量查询人员类型】]获取',
-        )
-        .optional(),
+      department_id: z.string().describe('部门ID，可通过接口[【批量查询部门】]获取').optional(),
+      work_location_id: z.string().describe('工作地点ID，可通过接口[【批量查询地点】]获取').optional(),
+      company_id: z.string().describe('公司ID，可通过接口[【批量查询公司】]获取').optional(),
+      job_family_id: z.string().describe('职务序列ID，可通过接口[【批量查询职务序列】]获取').optional(),
+      job_id: z.string().describe('职务ID，可通过接口[【批量查询职务】]').optional(),
+      job_level_id: z.string().describe('职级ID，可通过接口[【批量查询职务级别】]获取').optional(),
+      employee_type_id: z.string().describe('人员类型ID，可通过接口[【批量查询人员类型】]获取').optional(),
       recruitment_type: z
         .enum(['experienced_professionals', 'recent_graduates', 'routine_intern'])
         .describe('招聘类型 Options:experienced_professionals(社招),recent_graduates(校招),routine_intern(日常实习)')
         .optional(),
-      cpst_change_reason_id: z
-        .string()
-        .describe(
-          '定调薪原因ID，可通过接口[【批量查询定调薪原因】]获取',
-        )
-        .optional(),
-      cpst_plan_id: z
-        .string()
-        .describe(
-          '薪资方案ID，可通过接口[【批量查询薪资方案】]获取',
-        )
-        .optional(),
+      cpst_change_reason_id: z.string().describe('定调薪原因ID，可通过接口[【批量查询定调薪原因】]获取').optional(),
+      cpst_plan_id: z.string().describe('薪资方案ID，可通过接口[【批量查询薪资方案】]获取').optional(),
       cpst_salary_level_id: z.string().describe('薪级薪等ID').optional(),
       effective_time: z.string().describe('生效时间（毫秒级时间戳）').optional(),
     }),
@@ -1115,11 +982,7 @@ export const corehrV1ContractCreate = {
     data: z.object({
       effective_time: z.string().describe('合同开始日期，格式："YYYY-MM-DD HH-mm-ss"'),
       expiration_time: z.string().describe('实际结束日期,格式："YYYY-MM-DD HH-mm-ss"').optional(),
-      employment_id: z
-        .string()
-        .describe(
-          '雇佣 ID，详细信息可通过[【搜索员工信息】]接口查询获得',
-        ),
+      employment_id: z.string().describe('雇佣 ID，详细信息可通过[【搜索员工信息】]接口查询获得'),
       contract_type: z
         .object({ enum_name: z.string().describe('枚举值') })
         .describe(
@@ -1127,15 +990,8 @@ export const corehrV1ContractCreate = {
         ),
       first_party_company_id: z
         .string()
-        .describe(
-          '合同签约公司, 引用的公司ID，详细信息可通过[【查询单个公司】]接口查询获得',
-        ),
-      person_id: z
-        .string()
-        .describe(
-          '合同签约人ID，详细信息可通过[【查询单个个人信息】]接口查询获得',
-        )
-        .optional(),
+        .describe('合同签约公司, 引用的公司ID，详细信息可通过[【查询单个公司】]接口查询获得'),
+      person_id: z.string().describe('合同签约人ID，详细信息可通过[【查询单个个人信息】]接口查询获得').optional(),
       custom_fields: z
         .array(
           z.object({
@@ -1151,22 +1007,20 @@ export const corehrV1ContractCreate = {
         .optional(),
       duration_type: z
         .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '期限类型，枚举值可通过文档[【飞书人事枚举常量】]合同期限类型（duration_type）枚举定义部分获得',
-        )
+        .describe('期限类型，枚举值可通过文档[【飞书人事枚举常量】]合同期限类型（duration_type）枚举定义部分获得')
         .optional(),
       contract_end_date: z.string().describe('合同结束日期，格式："YYYY-MM-DD"').optional(),
       contract_number: z.string().describe('合同编号').optional(),
       signing_type: z
         .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '签订类型，枚举值可通过文档[【飞书人事枚举常量】]签订类型（signing_type）枚举定义部分获得',
-        )
+        .describe('签订类型，枚举值可通过文档[【飞书人事枚举常量】]签订类型（signing_type）枚举定义部分获得')
         .optional(),
     }),
-    params: z.object({
-      client_token: z.string().describe('自定义值，根据client_token是否一致来判断是否为同一请求').optional(),
-    }),
+    params: z
+      .object({
+        client_token: z.string().describe('自定义值，根据client_token是否一致来判断是否为同一请求').optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1ContractDelete = {
@@ -1178,13 +1032,7 @@ export const corehrV1ContractDelete = {
   description: '[Feishu/Lark]-飞书人事（企业版）-合同-删除合同-通过本接口可以删除合同数据，删除后即无法查询到',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      contract_id: z
-        .string()
-        .describe(
-          '需要删除的合同 ID，该ID可以通过[【批量查询合同】]接口获取',
-        ),
-    }),
+    path: z.object({ contract_id: z.string().describe('需要删除的合同 ID，该ID可以通过[【批量查询合同】]接口获取') }),
   },
 };
 export const corehrV1ContractGet = {
@@ -1197,13 +1045,7 @@ export const corehrV1ContractGet = {
     '[Feishu/Lark]-飞书人事（企业版）-合同-查询单个合同-该接口用于根据合同 ID 查询单个合同详细信息，包括合同开始日期、结束日期、公司主体等信息',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      contract_id: z
-        .string()
-        .describe(
-          '合同ID，该ID可以通过[【批量查询合同】]接口获取',
-        ),
-    }),
+    path: z.object({ contract_id: z.string().describe('合同ID，该ID可以通过[【批量查询合同】]接口获取') }),
   },
 };
 export const corehrV1ContractList = {
@@ -1237,61 +1079,51 @@ export const corehrV1ContractPatch = {
     '[Feishu/Lark]-飞书人事（企业版）-合同-更新合同-通过该接口可以更新员工合同相关信息，没有修改的参数会保留原值',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      effective_time: z.string().describe('合同开始日期').optional(),
-      expiration_time: z.string().describe('合同实际结束日期，合同实际结束日期小于等于合同结束日期').optional(),
-      employment_id: z.string().describe('该接口不能传递该参数，否则会更新失败').optional(),
-      contract_type: z
-        .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '合同类型，枚举值可通过文档[【飞书人事枚举常量】]合同类型（contract_type）枚举定义部分获得',
-        )
-        .optional(),
-      first_party_company_id: z
-        .string()
-        .describe(
-          '甲方, 引用Company的ID，详细信息可通过[【查询单个公司】]接口查询获得',
-        )
-        .optional(),
-      person_id: z.string().describe('该接口不能传递该参数，否则会更新失败').optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('字段名'),
-            value: z
-              .string()
-              .describe(
-                '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe('自定义字段，预留，暂时不支持')
-        .optional(),
-      duration_type: z
-        .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '期限类型，枚举值可通过文档[【飞书人事枚举常量】]合同期限类型（duration_type）枚举定义部分获得',
-        )
-        .optional(),
-      contract_end_date: z.string().describe('合同预计的结束日期').optional(),
-      contract_number: z.string().describe('合同编号').optional(),
-      signing_type: z
-        .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '签订类型，枚举值可通过文档[【飞书人事枚举常量】]签订类型（signing_type）枚举定义部分获得',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      client_token: z.string().describe('自定义值，根据client_token是否一致来判断是否为同一请求').optional(),
-    }),
-    path: z.object({
-      contract_id: z
-        .string()
-        .describe(
-          '合同ID，该ID可以通过[【批量查询合同】]接口获取',
-        ),
-    }),
+    data: z
+      .object({
+        effective_time: z.string().describe('合同开始日期').optional(),
+        expiration_time: z.string().describe('合同实际结束日期，合同实际结束日期小于等于合同结束日期').optional(),
+        employment_id: z.string().describe('该接口不能传递该参数，否则会更新失败').optional(),
+        contract_type: z
+          .object({ enum_name: z.string().describe('枚举值') })
+          .describe('合同类型，枚举值可通过文档[【飞书人事枚举常量】]合同类型（contract_type）枚举定义部分获得')
+          .optional(),
+        first_party_company_id: z
+          .string()
+          .describe('甲方, 引用Company的ID，详细信息可通过[【查询单个公司】]接口查询获得')
+          .optional(),
+        person_id: z.string().describe('该接口不能传递该参数，否则会更新失败').optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('字段名'),
+              value: z
+                .string()
+                .describe(
+                  '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('自定义字段，预留，暂时不支持')
+          .optional(),
+        duration_type: z
+          .object({ enum_name: z.string().describe('枚举值') })
+          .describe('期限类型，枚举值可通过文档[【飞书人事枚举常量】]合同期限类型（duration_type）枚举定义部分获得')
+          .optional(),
+        contract_end_date: z.string().describe('合同预计的结束日期').optional(),
+        contract_number: z.string().describe('合同编号').optional(),
+        signing_type: z
+          .object({ enum_name: z.string().describe('枚举值') })
+          .describe('签订类型，枚举值可通过文档[【飞书人事枚举常量】]签订类型（signing_type）枚举定义部分获得')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        client_token: z.string().describe('自定义值，根据client_token是否一致来判断是否为同一请求').optional(),
+      })
+      .optional(),
+    path: z.object({ contract_id: z.string().describe('合同ID，该ID可以通过[【批量查询合同】]接口获取') }),
   },
 };
 export const corehrV1CountryRegionGet = {
@@ -1300,7 +1132,8 @@ export const corehrV1CountryRegionGet = {
   sdkName: 'corehr.v1.countryRegion.get',
   path: '/open-apis/corehr/v1/country_regions/:country_region_id',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-飞书人事-基础数据-地理库信息-查询单条国家/地区信息-查询单条国家/地区信息',
+  description:
+    '[Feishu/Lark]-历史版本（不推荐）-飞书人事-基础数据-地理库信息-查询单条国家/地区信息-查询单条国家/地区信息',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({ country_region_id: z.string().describe('国家/地区 ID') }),
@@ -1312,7 +1145,8 @@ export const corehrV1CountryRegionList = {
   sdkName: 'corehr.v1.countryRegion.list',
   path: '/open-apis/corehr/v1/country_regions',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-飞书人事-基础数据-地理库信息-批量查询国家/地区信息-批量查询国家/地区信息',
+  description:
+    '[Feishu/Lark]-历史版本（不推荐）-飞书人事-基础数据-地理库信息-批量查询国家/地区信息-批量查询国家/地区信息',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -1332,7 +1166,7 @@ export const corehrV1CurrencyGet = {
   sdkName: 'corehr.v1.currency.get',
   path: '/open-apis/corehr/v1/currencies/:currency_id',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-飞书人事-基础数据-货币信息-查询单个货币信息-查询单个货币信息',
+  description: '[Feishu/Lark]-历史版本（不推荐）-飞书人事-基础数据-货币信息-查询单个货币信息-查询单个货币信息',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({ currency_id: z.string().describe('货币 ID') }),
@@ -1344,7 +1178,7 @@ export const corehrV1CurrencyList = {
   sdkName: 'corehr.v1.currency.list',
   path: '/open-apis/corehr/v1/currencies',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-飞书人事-基础数据-货币信息-批量查询货币信息-批量查询货币信息',
+  description: '[Feishu/Lark]-历史版本（不推荐）-飞书人事-基础数据-货币信息-批量查询货币信息-批量查询货币信息',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -1371,14 +1205,10 @@ export const corehrV1CustomFieldGetByParam = {
     params: z.object({
       object_api_name: z
         .string()
-        .describe(
-          '所属对象 API name，可从[获取飞书人事对象列表]接口列举所有对象及其 API name',
-        ),
+        .describe('所属对象 API name，可从[获取飞书人事对象列表]接口列举所有对象及其 API name'),
       custom_api_name: z
         .string()
-        .describe(
-          '字段 API name，可通过[获取自定义字段列表]接口中返回的 `custom_api_name` 字段获取',
-        ),
+        .describe('字段 API name，可通过[获取自定义字段列表]接口中返回的 `custom_api_name` 字段获取'),
     }),
   },
 };
@@ -1435,24 +1265,18 @@ export const corehrV1DepartmentCreate = {
     data: z.object({
       sub_type: z
         .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '部门类型，通过[请求接口]查询获取。请求参数：object_api_name=department；custom_api_name=subtype',
-        )
+        .describe('部门类型，通过[请求接口]查询获取。请求参数：object_api_name=department；custom_api_name=subtype')
         .optional(),
       manager: z
         .string()
-        .describe(
-          '部门负责人- 详细信息可通过[【搜索员工信息】] 或 [【批量查询员工】] 接口获取',
-        )
+        .describe('部门负责人- 详细信息可通过[【搜索员工信息】] 或 [【批量查询员工】] 接口获取')
         .optional(),
       is_confidential: z.boolean().describe('是否保密（该功能暂不支持，可忽略）').optional(),
       hiberarchy_common: z
         .object({
           parent_id: z
             .string()
-            .describe(
-              '上级组织 ID，该字段为通用字段，若为部门维度则为必填。详细信息可通过[【查询单个部门】]接口获得',
-            )
+            .describe('上级组织 ID，该字段为通用字段，若为部门维度则为必填。详细信息可通过[【查询单个部门】]接口获得')
             .optional(),
           name: z
             .array(
@@ -1490,38 +1314,29 @@ export const corehrV1DepartmentCreate = {
             field_name: z.string().describe('自定义字段 API Name，即自定义字段的唯一标识'),
             value: z
               .string()
-              .describe(
-                '字段值，为 JSON 转义后的字符串。**注意：具体传值方式参见**[获取自定义字段的元数据]',
-              ),
+              .describe('字段值，为 JSON 转义后的字符串。**注意：具体传值方式参见**[获取自定义字段的元数据]'),
           }),
         )
-        .describe(
-          '自定义字段类型，详细见[获取自定义字段列表]',
-        )
+        .describe('自定义字段类型，详细见[获取自定义字段列表]')
         .optional(),
-      cost_center_id: z
-        .string()
-        .describe(
-          '成本中心id详细信息可通过[【搜索成本中心信息】]接口查询获得',
-        )
-        .optional(),
+      cost_center_id: z.string().describe('成本中心id详细信息可通过[【搜索成本中心信息】]接口查询获得').optional(),
       staffing_model: z
         .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '岗职管理模式- 详细枚举类型请查看[枚举场景]中关于staffing_model定义',
-        )
+        .describe('岗职管理模式- 详细枚举类型请查看[枚举场景]中关于staffing_model定义')
         .optional(),
     }),
-    params: z.object({
-      client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          '此次调用中使用的部门 ID 类型 Options:open_department_id(【飞书】用来在具体某个应用中标识一个部门，同一个department_id 在不同应用中的 open_department_id 相同。),department_id(【飞书】用来标识租户内一个唯一的部门。),people_corehr_department_id(【飞书人事】用来标识「飞书人事」中的部门。)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            '此次调用中使用的部门 ID 类型 Options:open_department_id(【飞书】用来在具体某个应用中标识一个部门，同一个department_id 在不同应用中的 open_department_id 相同。),department_id(【飞书】用来标识租户内一个唯一的部门。),people_corehr_department_id(【飞书人事】用来标识「飞书人事」中的部门。)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1DepartmentDelete = {
@@ -1533,13 +1348,7 @@ export const corehrV1DepartmentDelete = {
   description: '[Feishu/Lark]-历史版本（不推荐）-飞书人事-组织管理-删除部门-可以通过该接口通过部门ID删除一个部门记录',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      department_id: z
-        .string()
-        .describe(
-          '需要删除的部门 ID，可通过[【搜索部门信息】]接口查询获得',
-        ),
-    }),
+    path: z.object({ department_id: z.string().describe('需要删除的部门 ID，可通过[【搜索部门信息】]接口查询获得') }),
   },
 };
 export const corehrV1DepartmentGet = {
@@ -1552,15 +1361,17 @@ export const corehrV1DepartmentGet = {
     '[Feishu/Lark]-历史版本（不推荐）-飞书人事-组织管理-查询单个部门-该接口支持通过部门id批量查询当天的部门详情信息，包括部门包含的名称、描述、启用状态等',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          '此次调用中使用的部门 ID 类型 Options:open_department_id(以 open_department_id 来标识部门),department_id(以 department_id 来标识部门),people_corehr_department_id(以 people_corehr_department_id 来标识部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            '此次调用中使用的部门 ID 类型 Options:open_department_id(以 open_department_id 来标识部门),department_id(以 department_id 来标识部门),people_corehr_department_id(以 people_corehr_department_id 来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       department_id: z
         .string()
@@ -1613,16 +1424,9 @@ export const corehrV1DepartmentPatch = {
       id: z.string().describe('部门 ID').optional(),
       sub_type: z
         .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '部门子类型，枚举值可通过文档[【飞书人事枚举常量】]部门子类型（department_sub_type）枚举定义部分获得',
-        )
+        .describe('部门子类型，枚举值可通过文档[【飞书人事枚举常量】]部门子类型（department_sub_type）枚举定义部分获得')
         .optional(),
-      manager: z
-        .string()
-        .describe(
-          '部门负责人 ID，枚举值及详细信息可通过[【批量查询员工信息】]查询获得',
-        )
-        .optional(),
+      manager: z.string().describe('部门负责人 ID，枚举值及详细信息可通过[【批量查询员工信息】]查询获得').optional(),
       is_confidential: z.boolean().describe('是否保密').optional(),
       hiberarchy_common: z
         .object({
@@ -1662,33 +1466,29 @@ export const corehrV1DepartmentPatch = {
               ),
           }),
         )
-        .describe(
-          '自定义字段，枚举值可通过[获取自定义字段列表]获取',
-        )
+        .describe('自定义字段，枚举值可通过[获取自定义字段列表]获取')
         .optional(),
       cost_center_id: z
         .string()
-        .describe(
-          '成本中心 ID，可以通过[搜索成本中心信息]接口获取对应的成本中心信息',
-        )
+        .describe('成本中心 ID，可以通过[搜索成本中心信息]接口获取对应的成本中心信息')
         .optional(),
       staffing_model: z
         .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '岗职管理模式- 详细枚举类型请查看[枚举场景]中关于staffing_model定义',
-        )
+        .describe('岗职管理模式- 详细枚举类型请查看[枚举场景]中关于staffing_model定义')
         .optional(),
     }),
-    params: z.object({
-      client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          '此次调用中使用的部门 ID 类型 Options:open_department_id(以 open_department_id 来标识部门),department_id(以 department_id 来标识部门),people_corehr_department_id(以 people_corehr_department_id 来标识部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            '此次调用中使用的部门 ID 类型 Options:open_department_id(以 open_department_id 来标识部门),department_id(以 department_id 来标识部门),people_corehr_department_id(以 people_corehr_department_id 来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ department_id: z.string().describe('需要更新的部门ID，同部门实体在CoreHR内部的唯一键') }),
   },
 };
@@ -1719,12 +1519,12 @@ export const corehrV1EmployeeTypeCreate = {
               ),
           }),
         )
-        .describe(
-          '自定义字段- 具体支持的对象请参考[自定义字段说明]',
-        )
+        .describe('自定义字段- 具体支持的对象请参考[自定义字段说明]')
         .optional(),
     }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
   },
 };
 export const corehrV1EmployeeTypeDelete = {
@@ -1737,13 +1537,7 @@ export const corehrV1EmployeeTypeDelete = {
     '[Feishu/Lark]-飞书人事（企业版）-基础数据-人员类型-删除人员类型-删除人员类型。删除之后查询接口不能获取到已删除的数据',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      employee_type_id: z
-        .string()
-        .describe(
-          '需要删除的人员类型ID- 可通过[批量查询人员类型]获取',
-        ),
-    }),
+    path: z.object({ employee_type_id: z.string().describe('需要删除的人员类型ID- 可通过[批量查询人员类型]获取') }),
   },
 };
 export const corehrV1EmployeeTypeGet = {
@@ -1755,13 +1549,7 @@ export const corehrV1EmployeeTypeGet = {
   description: '[Feishu/Lark]-飞书人事（企业版）-基础数据-人员类型-查询单个人员类型-根据 ID 查询单个人员类型',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      employee_type_id: z
-        .string()
-        .describe(
-          '雇员类型ID- 可通过[批量查询人员类型]获取',
-        ),
-    }),
+    path: z.object({ employee_type_id: z.string().describe('雇员类型ID- 可通过[批量查询人员类型]获取') }),
   },
 };
 export const corehrV1EmployeeTypeList = {
@@ -1793,38 +1581,36 @@ export const corehrV1EmployeeTypePatch = {
   description: '[Feishu/Lark]-飞书人事（企业版）-基础数据-人员类型-更新人员类型-更新人员类型',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      name: z
-        .array(z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }))
-        .describe('名称')
-        .optional(),
-      default_employee_type: z.boolean().describe('是否为默认人员类型，每个租户只能定义一个默认人员类型').optional(),
-      active: z.boolean().describe('启用').optional(),
-      code: z.string().describe('编码').optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('字段名'),
-            value: z
-              .string()
-              .describe(
-                '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe(
-          '自定义字段- 具体支持的对象请参考[自定义字段说明]',
-        )
-        .optional(),
-    }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
-    path: z.object({
-      employee_type_id: z
-        .string()
-        .describe(
-          '雇员类型 ID- 可通过[批量查询人员类型]获取',
-        ),
-    }),
+    data: z
+      .object({
+        name: z
+          .array(
+            z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }),
+          )
+          .describe('名称')
+          .optional(),
+        default_employee_type: z.boolean().describe('是否为默认人员类型，每个租户只能定义一个默认人员类型').optional(),
+        active: z.boolean().describe('启用').optional(),
+        code: z.string().describe('编码').optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('字段名'),
+              value: z
+                .string()
+                .describe(
+                  '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('自定义字段- 具体支持的对象请参考[自定义字段说明]')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
+    path: z.object({ employee_type_id: z.string().describe('雇员类型 ID- 可通过[批量查询人员类型]获取') }),
   },
 };
 export const corehrV1EmploymentCreate = {
@@ -1854,9 +1640,7 @@ export const corehrV1EmploymentCreate = {
         ),
       person_id: z
         .string()
-        .describe(
-          '个人信息ID，由[【创建个人信息】]时生成- 当 rehire 值为 yes 时，该个人信息的【姓名信息】必须有值',
-        ),
+        .describe('个人信息ID，由[【创建个人信息】]时生成- 当 rehire 值为 yes 时，该个人信息的【姓名信息】必须有值'),
       primary_employment: z.boolean().describe('是否是主雇佣信息'),
       employment_status: z
         .object({ enum_name: z.string().describe('枚举值') })
@@ -1874,9 +1658,7 @@ export const corehrV1EmploymentCreate = {
               ),
           }),
         )
-        .describe(
-          '自定义字段- 请参考[【自定义字段说明】]',
-        )
+        .describe('自定义字段- 请参考[【自定义字段说明】]')
         .optional(),
       work_email_list: z
         .array(
@@ -1901,9 +1683,7 @@ export const corehrV1EmploymentCreate = {
                     ),
                 }),
               )
-              .describe(
-                '自定义字段- 请参考[【自定义字段说明】]',
-              )
+              .describe('自定义字段- 请参考[【自定义字段说明】]')
               .optional(),
           }),
         )
@@ -1919,9 +1699,7 @@ export const corehrV1EmploymentCreate = {
         .optional(),
       ats_application_id: z
         .string()
-        .describe(
-          '招聘投递 ID ，详细信息可以通过[【获取投递信息】]接口查询获得',
-        )
+        .describe('招聘投递 ID ，详细信息可以通过[【获取投递信息】]接口查询获得')
         .optional(),
       rehire: z
         .object({ enum_name: z.string().describe('枚举值') })
@@ -1931,12 +1709,12 @@ export const corehrV1EmploymentCreate = {
         .optional(),
       rehire_employment_id: z
         .string()
-        .describe(
-          '历史雇佣信息 ID，可通过[【批量查询员工信息】]获得；类型不跟随 user_id_type',
-        )
+        .describe('历史雇佣信息 ID，可通过[【批量查询员工信息】]获得；类型不跟随 user_id_type')
         .optional(),
     }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
   },
 };
 export const corehrV1EmploymentDelete = {
@@ -1948,9 +1726,11 @@ export const corehrV1EmploymentDelete = {
   description: '[Feishu/Lark]-飞书人事（企业版）-员工信息-雇佣信息-删除雇佣信息-删除人员的雇佣信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     path: z.object({ employment_id: z.string().describe('需要删除的雇佣信息对应的ID') }),
   },
 };
@@ -1964,96 +1744,91 @@ export const corehrV1EmploymentPatch = {
     '[Feishu/Lark]-飞书人事（企业版）-员工信息-雇佣信息-更新雇佣信息-更新人事工作信息下的字段，如：工号、工作邮箱、雇佣类型、自定义字段等',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      seniority_date: z.string().describe('资历起算日期').optional(),
-      employee_number: z
-        .string()
-        .describe(
-          '员工编号（工号）- 开启自动编码时不可以主动更新- 未开启自动编码，可主动更新： - 由数字或字母组成，请勿使用特殊字符 - 请保证唯一',
-        )
-        .optional(),
-      employment_type: z
-        .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '雇佣类型- 可通过[【获取字段详情】]接口查询，查询参数如下： - object_api_name：employment - custom_api_name：employment_type',
-        )
-        .optional(),
-      person_id: z
-        .string()
-        .describe('个人信息 ID，由[【创建个人信息】]时生成')
-        .optional(),
-      primary_employment: z.boolean().describe('是否是主雇佣信息').optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('字段名'),
-            value: z
-              .string()
-              .describe(
-                '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe(
-          '自定义字段- 请参考[【自定义字段说明】]',
-        )
-        .optional(),
-      work_email_list: z
-        .array(
-          z.object({
-            email: z.string().describe('邮箱号'),
-            is_primary: z.boolean().describe('是否为主要邮箱').optional(),
-            is_public: z.boolean().describe('是否为公开邮箱').optional(),
-            email_usage: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '邮箱用途- 可通过[【获取字段详情】]接口查询，查询参数如下： - object_api_name: email - custom_api_name: email_usage- 请勿填写 home 枚举',
-              )
-              .optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('字段名'),
-                  value: z
-                    .string()
-                    .describe(
-                      '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe(
-                '自定义字段- 当前为预留字段，返回值为空。具体支持的对象请参考[【自定义字段说明】]',
-              )
-              .optional(),
-          }),
-        )
-        .describe(
-          '工作邮箱列表- 只有满足下面所有条件时，才在工作信息页面可见： - is_primary = "true" - is_public = "true" - email_usage = "work"',
-        )
-        .optional(),
-      reason_for_offboarding: z
-        .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '离职原因- 可通过[【获取字段详情】]接口查询，查询参数如下： - object_api_name：employment - custom_api_name：reason_for_offboarding',
-        )
-        .optional(),
-      ats_application_id: z
-        .string()
-        .describe(
-          '招聘投递 ID ，详细信息可以通过[【获取投递信息】]接口查询获得',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          '此次调用中使用的部门 ID 类型 Options:open_department_id(以 open_department_id 来标识部门),department_id(以 department_id 来标识部门),people_corehr_department_id(以 people_corehr_department_id 来标识部门)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        seniority_date: z.string().describe('资历起算日期').optional(),
+        employee_number: z
+          .string()
+          .describe(
+            '员工编号（工号）- 开启自动编码时不可以主动更新- 未开启自动编码，可主动更新： - 由数字或字母组成，请勿使用特殊字符 - 请保证唯一',
+          )
+          .optional(),
+        employment_type: z
+          .object({ enum_name: z.string().describe('枚举值') })
+          .describe(
+            '雇佣类型- 可通过[【获取字段详情】]接口查询，查询参数如下： - object_api_name：employment - custom_api_name：employment_type',
+          )
+          .optional(),
+        person_id: z.string().describe('个人信息 ID，由[【创建个人信息】]时生成').optional(),
+        primary_employment: z.boolean().describe('是否是主雇佣信息').optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('字段名'),
+              value: z
+                .string()
+                .describe(
+                  '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('自定义字段- 请参考[【自定义字段说明】]')
+          .optional(),
+        work_email_list: z
+          .array(
+            z.object({
+              email: z.string().describe('邮箱号'),
+              is_primary: z.boolean().describe('是否为主要邮箱').optional(),
+              is_public: z.boolean().describe('是否为公开邮箱').optional(),
+              email_usage: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe(
+                  '邮箱用途- 可通过[【获取字段详情】]接口查询，查询参数如下： - object_api_name: email - custom_api_name: email_usage- 请勿填写 home 枚举',
+                )
+                .optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('字段名'),
+                    value: z
+                      .string()
+                      .describe(
+                        '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('自定义字段- 当前为预留字段，返回值为空。具体支持的对象请参考[【自定义字段说明】]')
+                .optional(),
+            }),
+          )
+          .describe(
+            '工作邮箱列表- 只有满足下面所有条件时，才在工作信息页面可见： - is_primary = "true" - is_public = "true" - email_usage = "work"',
+          )
+          .optional(),
+        reason_for_offboarding: z
+          .object({ enum_name: z.string().describe('枚举值') })
+          .describe(
+            '离职原因- 可通过[【获取字段详情】]接口查询，查询参数如下： - object_api_name：employment - custom_api_name：reason_for_offboarding',
+          )
+          .optional(),
+        ats_application_id: z
+          .string()
+          .describe('招聘投递 ID ，详细信息可以通过[【获取投递信息】]接口查询获得')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            '此次调用中使用的部门 ID 类型 Options:open_department_id(以 open_department_id 来标识部门),department_id(以 department_id 来标识部门),people_corehr_department_id(以 people_corehr_department_id 来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ employment_id: z.string().describe('雇佣 ID- 类型应与 user_id_type 一致') }),
   },
 };
@@ -2081,9 +1856,7 @@ export const corehrV1JobChangeCreate = {
         ),
       flow_id: z
         .string()
-        .describe(
-          '关联流程唯一标识符，可通过接口[获取异动类型列表]获取注意：当异动方式为2时，该字段为必填',
-        )
+        .describe('关联流程唯一标识符，可通过接口[获取异动类型列表]获取注意：当异动方式为2时，该字段为必填')
         .optional(),
       effective_date: z.string().describe('生效日期，格式："YYYY-MM-DD"'),
       transfer_info: z
@@ -2092,176 +1865,55 @@ export const corehrV1JobChangeCreate = {
           offer_info: z.string().describe('offer信息注：本字段仅会存储到数据库，前端表单不支持直接显示').optional(),
           target_dotted_manager_clean: z.boolean().describe('是否撤销虚线上级').optional(),
           probation_exist: z.boolean().describe('是否有试用期').optional(),
-          original_department: z
-            .string()
-            .describe(
-              '原部门ID，可通过[【批量查询部门】]接口获取',
-            )
-            .optional(),
-          target_department: z
-            .string()
-            .describe(
-              '新部门ID，可通过[【批量查询部门】]接口获取',
-            )
-            .optional(),
-          original_work_location: z
-            .string()
-            .describe(
-              '原工作地点，可通过[【批量查询地点】]接口获取',
-            )
-            .optional(),
-          target_work_location: z
-            .string()
-            .describe(
-              '新工作地点，可通过[【批量查询地点】]接口获取',
-            )
-            .optional(),
-          original_direct_manager: z
-            .string()
-            .describe(
-              '原直属上级，可通过[【搜索员工信息】]接口获取',
-            )
-            .optional(),
-          target_direct_manager: z
-            .string()
-            .describe(
-              '新直属上级，可通过[【搜索员工信息】]接口获取',
-            )
-            .optional(),
-          original_dotted_manager: z
-            .string()
-            .describe(
-              '原虚线上级，可通过[【搜索员工信息】]接口获取',
-            )
-            .optional(),
-          target_dotted_manager: z
-            .string()
-            .describe(
-              '新虚线上级，可通过[【搜索员工信息】]接口获取',
-            )
-            .optional(),
-          original_job: z
-            .string()
-            .describe('原职务，可通过[【批量查询职务】]接口获取')
-            .optional(),
-          target_job: z
-            .string()
-            .describe('新职务，可通过[【批量查询职务】]接口获取')
-            .optional(),
-          original_job_family: z
-            .string()
-            .describe(
-              '原序列ID，可通过[【批量查询序列】]接口获取',
-            )
-            .optional(),
-          target_job_family: z
-            .string()
-            .describe(
-              '新序列ID，可通过[【批量查询序列】]接口获取',
-            )
-            .optional(),
-          original_job_level: z
-            .string()
-            .describe(
-              '原职级ID，可通过[【批量查询职级】]接口获取',
-            )
-            .optional(),
-          target_job_level: z
-            .string()
-            .describe(
-              '新职级ID，可通过[【批量查询职级】]接口获取',
-            )
-            .optional(),
-          original_workforce_type: z
-            .string()
-            .describe(
-              '原人员类型，可通过[【批量查询人员类型】]接口获取',
-            )
-            .optional(),
-          target_workforce_type: z
-            .string()
-            .describe(
-              '新人员类型，可通过[【批量查询人员类型】]接口获取',
-            )
-            .optional(),
+          original_department: z.string().describe('原部门ID，可通过[【批量查询部门】]接口获取').optional(),
+          target_department: z.string().describe('新部门ID，可通过[【批量查询部门】]接口获取').optional(),
+          original_work_location: z.string().describe('原工作地点，可通过[【批量查询地点】]接口获取').optional(),
+          target_work_location: z.string().describe('新工作地点，可通过[【批量查询地点】]接口获取').optional(),
+          original_direct_manager: z.string().describe('原直属上级，可通过[【搜索员工信息】]接口获取').optional(),
+          target_direct_manager: z.string().describe('新直属上级，可通过[【搜索员工信息】]接口获取').optional(),
+          original_dotted_manager: z.string().describe('原虚线上级，可通过[【搜索员工信息】]接口获取').optional(),
+          target_dotted_manager: z.string().describe('新虚线上级，可通过[【搜索员工信息】]接口获取').optional(),
+          original_job: z.string().describe('原职务，可通过[【批量查询职务】]接口获取').optional(),
+          target_job: z.string().describe('新职务，可通过[【批量查询职务】]接口获取').optional(),
+          original_job_family: z.string().describe('原序列ID，可通过[【批量查询序列】]接口获取').optional(),
+          target_job_family: z.string().describe('新序列ID，可通过[【批量查询序列】]接口获取').optional(),
+          original_job_level: z.string().describe('原职级ID，可通过[【批量查询职级】]接口获取').optional(),
+          target_job_level: z.string().describe('新职级ID，可通过[【批量查询职级】]接口获取').optional(),
+          original_workforce_type: z.string().describe('原人员类型，可通过[【批量查询人员类型】]接口获取').optional(),
+          target_workforce_type: z.string().describe('新人员类型，可通过[【批量查询人员类型】]接口获取').optional(),
           original_employee_subtype: z.string().describe('原人员子类型').optional(),
           target_employee_subtype: z.string().describe('新人员子类型').optional(),
-          original_company: z
-            .string()
-            .describe(
-              '原公司，详细信息可通过[【批量查询公司】]接口查询获得',
-            )
-            .optional(),
-          target_company: z
-            .string()
-            .describe(
-              '新公司，详细信息可通过[【批量查询公司】]接口查询获得',
-            )
-            .optional(),
+          original_company: z.string().describe('原公司，详细信息可通过[【批量查询公司】]接口查询获得').optional(),
+          target_company: z.string().describe('新公司，详细信息可通过[【批量查询公司】]接口查询获得').optional(),
           original_contract_number: z
             .string()
-            .describe(
-              '原合同编号，可通过[【批量查询合同】]接口获取详细信息',
-            )
+            .describe('原合同编号，可通过[【批量查询合同】]接口获取详细信息')
             .optional(),
           target_contract_number: z
             .string()
-            .describe(
-              '新合同编号，可通过[【批量查询合同】]接口获取详细信息',
-            )
+            .describe('新合同编号，可通过[【批量查询合同】]接口获取详细信息')
             .optional(),
           original_contract_type: z
             .string()
-            .describe(
-              '原合同类型，可通过[【批量查询合同】]接口获取详细信息',
-            )
+            .describe('原合同类型，可通过[【批量查询合同】]接口获取详细信息')
             .optional(),
-          target_contract_type: z
-            .string()
-            .describe(
-              '新合同类型，可通过[【批量查询合同】]接口获取详细信息',
-            )
-            .optional(),
+          target_contract_type: z.string().describe('新合同类型，可通过[【批量查询合同】]接口获取详细信息').optional(),
           original_duration_type: z
             .string()
-            .describe(
-              '原期限类型，可通过[【批量查询合同】]接口获取详细信息',
-            )
+            .describe('原期限类型，可通过[【批量查询合同】]接口获取详细信息')
             .optional(),
-          target_duration_type: z
-            .string()
-            .describe(
-              '新期限类型，可通过[【批量查询合同】]接口获取详细信息',
-            )
-            .optional(),
-          original_signing_type: z
-            .string()
-            .describe(
-              '原签订类型，可通过[【批量查询合同】]接口获取详细信息',
-            )
-            .optional(),
-          target_signing_type: z
-            .string()
-            .describe(
-              '新签订类型，可通过[【批量查询合同】]接口获取详细信息',
-            )
-            .optional(),
+          target_duration_type: z.string().describe('新期限类型，可通过[【批量查询合同】]接口获取详细信息').optional(),
+          original_signing_type: z.string().describe('原签订类型，可通过[【批量查询合同】]接口获取详细信息').optional(),
+          target_signing_type: z.string().describe('新签订类型，可通过[【批量查询合同】]接口获取详细信息').optional(),
           original_contract_start_date: z.string().describe('原合同开始日期，格式："YYYY-MM-DD"').optional(),
           target_contract_start_date: z.string().describe('新合同开始日期，格式："YYYY-MM-DD"').optional(),
           original_contract_end_date: z.string().describe('原合同结束日期，格式："YYYY-MM-DD"').optional(),
           target_contract_end_date: z.string().describe('新合同结束日期，格式："YYYY-MM-DD"').optional(),
           original_working_hours_type: z
             .string()
-            .describe(
-              '原工时制度，可通过[【批量查询工时制度】]接口获取',
-            )
+            .describe('原工时制度，可通过[【批量查询工时制度】]接口获取')
             .optional(),
-          target_working_hours_type: z
-            .string()
-            .describe(
-              '新工时制度，可通过[【批量查询工时制度】]接口获取',
-            )
-            .optional(),
+          target_working_hours_type: z.string().describe('新工时制度，可通过[【批量查询工时制度】]接口获取').optional(),
           original_working_calendar: z
             .string()
             .describe('原工作日历，请开通休假服务后联系管理员获取工作日历数据')
@@ -2281,9 +1933,7 @@ export const corehrV1JobChangeCreate = {
               z.object({
                 cost_center_id: z
                   .string()
-                  .describe(
-                    '支持的成本中心id，详细信息可通过[【搜索成本中心信息】]接口查询获得',
-                  )
+                  .describe('支持的成本中心id，详细信息可通过[【搜索成本中心信息】]接口查询获得')
                   .optional(),
                 rate: z.number().describe('分摊比例').optional(),
               }),
@@ -2295,9 +1945,7 @@ export const corehrV1JobChangeCreate = {
               z.object({
                 cost_center_id: z
                   .string()
-                  .describe(
-                    '支持的成本中心id，详细信息可通过[【搜索成本中心信息】]接口查询获得',
-                  )
+                  .describe('支持的成本中心id，详细信息可通过[【搜索成本中心信息】]接口查询获得')
                   .optional(),
                 rate: z.number().describe('分摊比例').optional(),
               }),
@@ -2308,20 +1956,13 @@ export const corehrV1JobChangeCreate = {
             .object({
               regular_employee_start_date: z.string().describe('转正式员工日期，格式："YYYY-MM-DD"').optional(),
               seniority_date: z.string().describe('司龄起算日期，格式："YYYY-MM-DD"').optional(),
-              employee_number: z
-                .string()
-                .describe(
-                  '员工编号，可通过[【搜索员工信息】]接口获取',
-                )
-                .optional(),
+              employee_number: z.string().describe('员工编号，可通过[【搜索员工信息】]接口获取').optional(),
               custom_fields: z
                 .array(
                   z.object({
                     custom_api_name: z
                       .string()
-                      .describe(
-                        '自定义字段 apiname，即自定义字段的唯一标识。可以通过[获取自定义字段列表]获取',
-                      ),
+                      .describe('自定义字段 apiname，即自定义字段的唯一标识。可以通过[获取自定义字段列表]获取'),
                     value: z
                       .string()
                       .describe(
@@ -2338,20 +1979,13 @@ export const corehrV1JobChangeCreate = {
             .object({
               regular_employee_start_date: z.string().describe('转正式员工日期，格式："YYYY-MM-DD"').optional(),
               seniority_date: z.string().describe('司龄起算日期，格式："YYYY-MM-DD"').optional(),
-              employee_number: z
-                .string()
-                .describe(
-                  '员工编号，可通过[【搜索员工信息】]接口获取',
-                )
-                .optional(),
+              employee_number: z.string().describe('员工编号，可通过[【搜索员工信息】]接口获取').optional(),
               custom_fields: z
                 .array(
                   z.object({
                     custom_api_name: z
                       .string()
-                      .describe(
-                        '自定义字段 apiname，即自定义字段的唯一标识。可以通过[获取自定义字段列表]获取',
-                      ),
+                      .describe('自定义字段 apiname，即自定义字段的唯一标识。可以通过[获取自定义字段列表]获取'),
                     value: z
                       .string()
                       .describe(
@@ -2364,56 +1998,39 @@ export const corehrV1JobChangeCreate = {
             })
             .describe('新工作信息')
             .optional(),
-          original_job_grade: z
-            .string()
-            .describe(
-              '原职等，可通过[【查询职等】]接口获取',
-            )
-            .optional(),
-          target_job_grade: z
-            .string()
-            .describe(
-              '新职等，可通过[【查询职等】]接口获取',
-            )
-            .optional(),
+          original_job_grade: z.string().describe('原职等，可通过[【查询职等】]接口获取').optional(),
+          target_job_grade: z.string().describe('新职等，可通过[【查询职等】]接口获取').optional(),
           original_compensation_type: z.string().describe('原薪资类型').optional(),
           target_compensation_type: z.string().describe('新薪资类型').optional(),
           original_service_company: z
             .string()
-            .describe(
-              '原任职公司，详细信息可通过[【批量查询公司】]接口查询获得',
-            )
+            .describe('原任职公司，详细信息可通过[【批量查询公司】]接口查询获得')
             .optional(),
           target_service_company: z
             .string()
-            .describe(
-              '新任职公司，详细信息可通过[【批量查询公司】]接口查询获得',
-            )
+            .describe('新任职公司，详细信息可通过[【批量查询公司】]接口查询获得')
             .optional(),
           original_position: z.string().describe('原岗位').optional(),
           target_position: z.string().describe('新岗位').optional(),
         })
         .describe('异动详细信息，以下参数如不传，无默认值，代表对应数据无异动'),
       transfer_key: z.string().describe('发起异动幂等标志，发起失败可以重新用此标志继续请求').optional(),
-      initiator_id: z
-        .string()
-        .describe(
-          '异动发起人 ID，可通过[【搜索员工信息】]接口获取',
-        )
-        .optional(),
+      initiator_id: z.string().describe('异动发起人 ID，可通过[【搜索员工信息】]接口获取').optional(),
     }),
-    params: z.object({
-      user_id_type: z
-        .enum(['open_id', 'union_id', 'user_id', 'people_admin_id', 'people_corehr_id'])
-        .describe('用户ID类型')
-        .optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          '此次调用中使用的部门 ID 类型 Options:open_department_id(以 open_department_id 来标识部门),department_id(以 department_id 来标识部门),people_corehr_department_id(以 people_corehr_department_id 来标识部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'people_admin_id', 'people_corehr_id'])
+          .describe('用户ID类型')
+          .optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            '此次调用中使用的部门 ID 类型 Options:open_department_id(以 open_department_id 来标识部门),department_id(以 department_id 来标识部门),people_corehr_department_id(以 people_corehr_department_id 来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1JobDataCreate = {
@@ -2427,61 +2044,32 @@ export const corehrV1JobDataCreate = {
   accessTokens: ['tenant'],
   schema: {
     data: z.object({
-      job_level_id: z
-        .string()
-        .describe(
-          '职务级别 ID，枚举值及详细信息可通过[【批量查询职级】]接口查询获得',
-        )
-        .optional(),
-      job_grade_id: z
-        .string()
-        .describe(
-          '职等 ID，枚举值及详细信息可通过[【查询职等】]接口查询获得',
-        )
-        .optional(),
-      employee_type_id: z
-        .string()
-        .describe(
-          '人员类型 ID，枚举值及详细信息可通过[【批量查询人员类型】]接口查询获得',
-        ),
+      job_level_id: z.string().describe('职务级别 ID，枚举值及详细信息可通过[【批量查询职级】]接口查询获得').optional(),
+      job_grade_id: z.string().describe('职等 ID，枚举值及详细信息可通过[【查询职等】]接口查询获得').optional(),
+      employee_type_id: z.string().describe('人员类型 ID，枚举值及详细信息可通过[【批量查询人员类型】]接口查询获得'),
       working_hours_type_id: z
         .string()
-        .describe(
-          '工时制度 ID，枚举值及详细信息可通过[【批量查询工时制度】]接口查询获得',
-        )
+        .describe('工时制度 ID，枚举值及详细信息可通过[【批量查询工时制度】]接口查询获得')
         .optional(),
       work_location_id: z
         .string()
-        .describe(
-          '工作地点 ID，枚举值及详细信息可通过[【批量查询地点】]接口查询获得',
-        )
+        .describe('工作地点 ID，枚举值及详细信息可通过[【批量查询地点】]接口查询获得')
         .optional(),
       department_id: z
         .string()
-        .describe(
-          '部门 ID，枚举值及详细信息可通过[【批量查询部门】]接口查询获得与 department_id_type 类型一致',
-        ),
-      job_id: z
-        .string()
-        .describe(
-          '职务 ID，枚举值及详细信息可通过[【批量查询职务】]接口查询获得',
-        )
-        .optional(),
+        .describe('部门 ID，枚举值及详细信息可通过[【批量查询部门】]接口查询获得与 department_id_type 类型一致'),
+      job_id: z.string().describe('职务 ID，枚举值及详细信息可通过[【批量查询职务】]接口查询获得').optional(),
       probation_start_date: z.string().describe('试用期开始日期').optional(),
       probation_end_date: z.string().describe('试用期结束日期（实际结束日期）').optional(),
       primary_job_data: z.boolean().describe('是否为主任职- 该字段已废弃，默认为 true，不可更改'),
       employment_id: z
         .string()
-        .describe(
-          '雇佣 ID，详细信息可以通过[【搜索员工信息】]接口查询获得与 user_id_type 类型一致',
-        ),
+        .describe('雇佣 ID，详细信息可以通过[【搜索员工信息】]接口查询获得与 user_id_type 类型一致'),
       effective_time: z.string().describe('生效时间'),
       expiration_time: z.string().describe('失效时间').optional(),
       job_family_id: z
         .string()
-        .describe(
-          '职务序列 ID，枚举值及详细信息可通过[【批量查询序列】]接口查询获得',
-        )
+        .describe('职务序列 ID，枚举值及详细信息可通过[【批量查询序列】]接口查询获得')
         .optional(),
       assignment_start_reason: z
         .object({ enum_name: z.string().describe('枚举值') })
@@ -2491,30 +2079,22 @@ export const corehrV1JobDataCreate = {
       probation_expected_end_date: z.string().describe('预计试用期结束日期').optional(),
       direct_manager_id: z
         .string()
-        .describe(
-          '直属上级的任职记录 ID，详细信息可通过[【批量查询员工任职信息】]接口查询获得',
-        )
+        .describe('直属上级的任职记录 ID，详细信息可通过[【批量查询员工任职信息】]接口查询获得')
         .optional(),
       dotted_line_manager_id_list: z
         .array(z.string())
-        .describe(
-          '虚线上级的任职记录 ID，详细信息可通过[【批量查询员工任职信息】]接口查询获得',
-        )
+        .describe('虚线上级的任职记录 ID，详细信息可通过[【批量查询员工任职信息】]接口查询获得')
         .optional(),
       second_direct_manager_id: z
         .string()
-        .describe(
-          '第二直属上级的任职记录 ID，详细信息可通过[【批量查询员工任职信息】]接口查询获得',
-        )
+        .describe('第二直属上级的任职记录 ID，详细信息可通过[【批量查询员工任职信息】]接口查询获得')
         .optional(),
       cost_center_rate: z
         .array(
           z.object({
             cost_center_id: z
               .string()
-              .describe(
-                '支持的成本中心 ID，详细信息可通过[【搜索成本中心信息】]接口查询获得',
-              )
+              .describe('支持的成本中心 ID，详细信息可通过[【搜索成本中心信息】]接口查询获得')
               .optional(),
             rate: z.number().describe('分摊比例').optional(),
           }),
@@ -2533,30 +2113,27 @@ export const corehrV1JobDataCreate = {
           '薪资类型，枚举值 api_name 可通过[【获取字段详情】]接口查询，查询参数如下：- object_api_name = "job_data"- custom_api_name = "compensation_type"',
         )
         .optional(),
-      service_company: z
-        .string()
-        .describe(
-          '任职公司 ID，详细信息可通过[【批量查询公司】]接口查询获得',
-        )
-        .optional(),
+      service_company: z.string().describe('任职公司 ID，详细信息可通过[【批量查询公司】]接口查询获得').optional(),
       position_id: z.string().describe('岗位 ID，枚举值及详细信息可通过【查询单个岗位】接口查询获得').optional(),
       pathway_id: z.string().describe('通道 ID').optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe(
-          '操作的唯一标识，用于幂等的进行更新操作，格式为标准的 UUIDV4。此值为空表示将发起一次新的请求，此值非空表示幂等的进行更新操作',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          '此次调用中使用的部门 ID 类型 Options:open_department_id(【飞书】用来在具体某个应用中标识一个部门，同一个 department_id 在不同应用中的 open_department_id 相同。),department_id(【飞书】用来标识租户内一个唯一的部门。),people_corehr_department_id(【飞书人事】用来标识「飞书人事」中的部门。)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe(
+            '操作的唯一标识，用于幂等的进行更新操作，格式为标准的 UUIDV4。此值为空表示将发起一次新的请求，此值非空表示幂等的进行更新操作',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            '此次调用中使用的部门 ID 类型 Options:open_department_id(【飞书】用来在具体某个应用中标识一个部门，同一个 department_id 在不同应用中的 open_department_id 相同。),department_id(【飞书】用来标识租户内一个唯一的部门。),people_corehr_department_id(【飞书人事】用来标识「飞书人事」中的部门。)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1JobDataDelete = {
@@ -2568,21 +2145,17 @@ export const corehrV1JobDataDelete = {
   description: '[Feishu/Lark]-飞书人事（企业版）-员工信息-任职信息-删除任职信息-删除人员的任职信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      version_id: z
-        .string()
-        .describe(
-          '需要删除的任职记录版本 ID- 通过[【批量查询员工任职】]可以获得- 不支持第一条版本：任职原因为 onboarding、add_additional_job 的任职（兼职）记录',
-        )
-        .optional(),
-    }),
-    path: z.object({
-      job_data_id: z
-        .string()
-        .describe(
-          '需要删除的任职信息 ID- 通过[【批量查询员工任职】]可以获得',
-        ),
-    }),
+    params: z
+      .object({
+        version_id: z
+          .string()
+          .describe(
+            '需要删除的任职记录版本 ID- 通过[【批量查询员工任职】]可以获得- 不支持第一条版本：任职原因为 onboarding、add_additional_job 的任职（兼职）记录',
+          )
+          .optional(),
+      })
+      .optional(),
+    path: z.object({ job_data_id: z.string().describe('需要删除的任职信息 ID- 通过[【批量查询员工任职】]可以获得') }),
   },
 };
 export const corehrV1JobDataGet = {
@@ -2595,21 +2168,19 @@ export const corehrV1JobDataGet = {
     '[Feishu/Lark]-飞书人事（企业版）-员工信息-任职信息-查询单个任职信息-根据 ID 查询当前生效的主任职记录。所有主任职记录中只有一条记录版本当前生效',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          '此次调用中使用的部门 ID 类型 Options:open_department_id(以 open_department_id 来标识部门),department_id(以 department_id 来标识部门),people_corehr_department_id(以 people_corehr_department_id 来标识部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            '此次调用中使用的部门 ID 类型 Options:open_department_id(以 open_department_id 来标识部门),department_id(以 department_id 来标识部门),people_corehr_department_id(以 people_corehr_department_id 来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
-      job_data_id: z
-        .string()
-        .describe(
-          '任职信息 ID，可通过[【创建任职信息】]、[【批量查询员工任职信息】]等接口获取',
-        ),
+      job_data_id: z.string().describe('任职信息 ID，可通过[【创建任职信息】]、[【批量查询员工任职信息】]等接口获取'),
     }),
   },
 };
@@ -2632,9 +2203,7 @@ export const corehrV1JobDataList = {
       page_size: z.string().describe('分页大小'),
       employment_id: z
         .string()
-        .describe(
-          '雇佣 ID，可通过[【搜索员工信息】]获取- 应与 user_id_type 类型一致',
-        )
+        .describe('雇佣 ID，可通过[【搜索员工信息】]获取- 应与 user_id_type 类型一致')
         .optional(),
       job_data_id_list: z.array(z.string()).describe('任职信息 ID 列表- 默认查询全部任职信息').optional(),
       department_id: z.string().describe('部门 ID- 应与 department_id_type 类型一致- 默认为空').optional(),
@@ -2665,152 +2234,123 @@ export const corehrV1JobDataPatch = {
     '[Feishu/Lark]-飞书人事（企业版）-员工信息-任职信息-更新任职信息-默认为新增一条任职记录，包括职务、职级、序列、部门等信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      version_id: z
-        .string()
-        .describe(
-          '任职记录版本 ID- ID 不为空时，将更新指定版本的任职记录内容- ID 为空时，将新增一个版本功能灰度中，若需要更新指定版本请联系[技术支持]',
-        )
-        .optional(),
-      job_level_id: z
-        .string()
-        .describe(
-          '职务级别 ID，枚举值及详细信息可通过[【批量查询职级】]接口查询获得',
-        )
-        .optional(),
-      job_grade_id: z
-        .string()
-        .describe(
-          '职等 ID，枚举值及详细信息可通过[【查询职等】]接口查询获得',
-        )
-        .optional(),
-      employee_type_id: z
-        .string()
-        .describe(
-          '人员类型 ID，枚举值及详细信息可通过[【批量查询人员类型】]接口查询获得',
-        )
-        .optional(),
-      working_hours_type_id: z
-        .string()
-        .describe(
-          '工时制度 ID，枚举值及详细信息可通过[【批量查询工时制度】]接口查询获得',
-        )
-        .optional(),
-      work_location_id: z
-        .string()
-        .describe(
-          '工作地点 ID，枚举值及详细信息可通过[【批量查询地点】]接口查询获得',
-        )
-        .optional(),
-      department_id: z
-        .string()
-        .describe(
-          '部门 ID，枚举值及详细信息可通过[【批量查询部门】]接口查询获得- 与 department_id_type 类型一致',
-        )
-        .optional(),
-      job_id: z
-        .string()
-        .describe(
-          '职务 ID，枚举值及详细信息可通过[【批量查询职务】]接口查询获得',
-        )
-        .optional(),
-      probation_start_date: z.string().describe('试用期开始日期- strict_verify 为 true 时不支持该字段').optional(),
-      probation_end_date: z
-        .string()
-        .describe('试用期结束日期（实际结束日期）- strict_verify 为 true 时不支持该字段')
-        .optional(),
-      primary_job_data: z.boolean().describe('是否为主任职- 该字段已废弃，默认为 true，不可更改').optional(),
-      effective_time: z.string().describe('生效时间- 不可为空字符，不传时默认值为当天').optional(),
-      expiration_time: z.string().describe('失效时间- strict_verify 为 true 时不支持该字段').optional(),
-      job_family_id: z
-        .string()
-        .describe(
-          '职务序列 ID，枚举值及详细信息可通过[【批量查询序列】]接口查询获得',
-        )
-        .optional(),
-      assignment_start_reason: z
-        .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '业务类型（原：任职原因）- 枚举值[【获取字段详情】] - object_api_name: job_data - custom_api_name: assignment_start_reason- 请注意，该枚举不允许填写为「onboarding、offboarding」，当上一个任职版本的值为「onboarding」时，该字段必填',
-        )
-        .optional(),
-      probation_expected_end_date: z
-        .string()
-        .describe('预计试用期结束日期- strict_verify 为 true 时不支持该字段')
-        .optional(),
-      direct_manager_id: z
-        .string()
-        .describe(
-          '直属上级的任职记录 ID，详细信息可通过[【批量查询员工任职信息】]接口查询获得',
-        )
-        .optional(),
-      dotted_line_manager_id_list: z
-        .array(z.string())
-        .describe(
-          '虚线上级的任职记录 ID，详细信息可通过[【批量查询员工任职信息】]接口查询获得',
-        )
-        .optional(),
-      second_direct_manager_id: z
-        .string()
-        .describe(
-          '第二直属上级的任职记录 ID，详细信息可通过[【批量查询员工任职信息】]接口查询获得- strict_verify 为 true 时不支持该字段',
-        )
-        .optional(),
-      cost_center_rate: z
-        .array(
-          z.object({
-            cost_center_id: z
-              .string()
-              .describe(
-                '支持的成本中心 ID，详细信息可通过[【搜索成本中心信息】]接口查询获得',
-              )
-              .optional(),
-            rate: z.number().describe('分摊比例').optional(),
-          }),
-        )
-        .describe('成本中心分摊信息- 当 version_id 有值时，不支持该字段')
-        .optional(),
-      work_shift: z
-        .object({ enum_name: z.string().describe('枚举值。需自定义') })
-        .describe(
-          '排班类型，枚举值 api_name 可通过[【获取字段详情】]接口查询，查询参数如下：- object_api_name = "job_data"- custom_api_name = "work_shift"',
-        )
-        .optional(),
-      compensation_type: z
-        .object({ enum_name: z.string().describe('枚举值。需自定义') })
-        .describe(
-          '薪资类型，枚举值 api_name 可通过[【获取字段详情】]接口查询，查询参数如下：- object_api_name = "job_data"- custom_api_name = "compensation_type"',
-        )
-        .optional(),
-      service_company: z
-        .string()
-        .describe(
-          '任职公司 ID，详细信息可通过[【批量查询公司】]接口查询获得',
-        )
-        .optional(),
-      pathway_id: z.string().describe('通道 ID').optional(),
-    }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe(
-          '操作的唯一标识，用于幂等的进行更新操作，格式为标准的 UUIDV4。此值为空表示将发起一次新的请求，此值非空表示幂等的进行更新操作',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          '此次调用中使用的部门 ID 类型 Options:open_department_id(【飞书】用来在具体某个应用中标识一个部门，同一个 department_id 在不同应用中的 open_department_id 相同。),department_id(【飞书】用来标识租户内一个唯一的部门。),people_corehr_department_id(【飞书人事】用来标识「飞书人事」中的部门。)',
-        )
-        .optional(),
-      strict_verify: z
-        .string()
-        .describe(
-          '是否强校验。值为 true 时，会对入参进行业务校验，并产生异动记录、发送异动事件。- 默认值：true - 仅在新增任职版本时生效，即当 version_id 有值时该字段不生效- 使用此功能时，试用期相关字段不支持- 当响应返回的任职数据无变化时，请检查人事系统-异动管理',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        version_id: z
+          .string()
+          .describe(
+            '任职记录版本 ID- ID 不为空时，将更新指定版本的任职记录内容- ID 为空时，将新增一个版本功能灰度中，若需要更新指定版本请联系[技术支持]',
+          )
+          .optional(),
+        job_level_id: z
+          .string()
+          .describe('职务级别 ID，枚举值及详细信息可通过[【批量查询职级】]接口查询获得')
+          .optional(),
+        job_grade_id: z.string().describe('职等 ID，枚举值及详细信息可通过[【查询职等】]接口查询获得').optional(),
+        employee_type_id: z
+          .string()
+          .describe('人员类型 ID，枚举值及详细信息可通过[【批量查询人员类型】]接口查询获得')
+          .optional(),
+        working_hours_type_id: z
+          .string()
+          .describe('工时制度 ID，枚举值及详细信息可通过[【批量查询工时制度】]接口查询获得')
+          .optional(),
+        work_location_id: z
+          .string()
+          .describe('工作地点 ID，枚举值及详细信息可通过[【批量查询地点】]接口查询获得')
+          .optional(),
+        department_id: z
+          .string()
+          .describe('部门 ID，枚举值及详细信息可通过[【批量查询部门】]接口查询获得- 与 department_id_type 类型一致')
+          .optional(),
+        job_id: z.string().describe('职务 ID，枚举值及详细信息可通过[【批量查询职务】]接口查询获得').optional(),
+        probation_start_date: z.string().describe('试用期开始日期- strict_verify 为 true 时不支持该字段').optional(),
+        probation_end_date: z
+          .string()
+          .describe('试用期结束日期（实际结束日期）- strict_verify 为 true 时不支持该字段')
+          .optional(),
+        primary_job_data: z.boolean().describe('是否为主任职- 该字段已废弃，默认为 true，不可更改').optional(),
+        effective_time: z.string().describe('生效时间- 不可为空字符，不传时默认值为当天').optional(),
+        expiration_time: z.string().describe('失效时间- strict_verify 为 true 时不支持该字段').optional(),
+        job_family_id: z
+          .string()
+          .describe('职务序列 ID，枚举值及详细信息可通过[【批量查询序列】]接口查询获得')
+          .optional(),
+        assignment_start_reason: z
+          .object({ enum_name: z.string().describe('枚举值') })
+          .describe(
+            '业务类型（原：任职原因）- 枚举值[【获取字段详情】] - object_api_name: job_data - custom_api_name: assignment_start_reason- 请注意，该枚举不允许填写为「onboarding、offboarding」，当上一个任职版本的值为「onboarding」时，该字段必填',
+          )
+          .optional(),
+        probation_expected_end_date: z
+          .string()
+          .describe('预计试用期结束日期- strict_verify 为 true 时不支持该字段')
+          .optional(),
+        direct_manager_id: z
+          .string()
+          .describe('直属上级的任职记录 ID，详细信息可通过[【批量查询员工任职信息】]接口查询获得')
+          .optional(),
+        dotted_line_manager_id_list: z
+          .array(z.string())
+          .describe('虚线上级的任职记录 ID，详细信息可通过[【批量查询员工任职信息】]接口查询获得')
+          .optional(),
+        second_direct_manager_id: z
+          .string()
+          .describe(
+            '第二直属上级的任职记录 ID，详细信息可通过[【批量查询员工任职信息】]接口查询获得- strict_verify 为 true 时不支持该字段',
+          )
+          .optional(),
+        cost_center_rate: z
+          .array(
+            z.object({
+              cost_center_id: z
+                .string()
+                .describe('支持的成本中心 ID，详细信息可通过[【搜索成本中心信息】]接口查询获得')
+                .optional(),
+              rate: z.number().describe('分摊比例').optional(),
+            }),
+          )
+          .describe('成本中心分摊信息- 当 version_id 有值时，不支持该字段')
+          .optional(),
+        work_shift: z
+          .object({ enum_name: z.string().describe('枚举值。需自定义') })
+          .describe(
+            '排班类型，枚举值 api_name 可通过[【获取字段详情】]接口查询，查询参数如下：- object_api_name = "job_data"- custom_api_name = "work_shift"',
+          )
+          .optional(),
+        compensation_type: z
+          .object({ enum_name: z.string().describe('枚举值。需自定义') })
+          .describe(
+            '薪资类型，枚举值 api_name 可通过[【获取字段详情】]接口查询，查询参数如下：- object_api_name = "job_data"- custom_api_name = "compensation_type"',
+          )
+          .optional(),
+        service_company: z.string().describe('任职公司 ID，详细信息可通过[【批量查询公司】]接口查询获得').optional(),
+        pathway_id: z.string().describe('通道 ID').optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe(
+            '操作的唯一标识，用于幂等的进行更新操作，格式为标准的 UUIDV4。此值为空表示将发起一次新的请求，此值非空表示幂等的进行更新操作',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            '此次调用中使用的部门 ID 类型 Options:open_department_id(【飞书】用来在具体某个应用中标识一个部门，同一个 department_id 在不同应用中的 open_department_id 相同。),department_id(【飞书】用来标识租户内一个唯一的部门。),people_corehr_department_id(【飞书人事】用来标识「飞书人事」中的部门。)',
+          )
+          .optional(),
+        strict_verify: z
+          .string()
+          .describe(
+            '是否强校验。值为 true 时，会对入参进行业务校验，并产生异动记录、发送异动事件。- 默认值：true - 仅在新增任职版本时生效，即当 version_id 有值时该字段不生效- 使用此功能时，试用期相关字段不支持- 当响应返回的任职数据无变化时，请检查人事系统-异动管理',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({ job_data_id: z.string().describe('任职信息ID') }),
   },
 };
@@ -2839,16 +2379,9 @@ export const corehrV1JobFamilyCreate = {
       selectable: z.boolean().describe('是否可被使用，true为可被使用，false为不可被使用').optional(),
       parent_id: z
         .string()
-        .describe(
-          '上级序列 ID。ID获取方式：- 调用[【新建序列】][【查询租户的序列信息】]等接口可以返回序列ID',
-        )
+        .describe('上级序列 ID。ID获取方式：- 调用[【新建序列】][【查询租户的序列信息】]等接口可以返回序列ID')
         .optional(),
-      pathway_ids: z
-        .array(z.string())
-        .describe(
-          '通道ID，详情可以参考[【获取通道信息】]',
-        )
-        .optional(),
+      pathway_ids: z.array(z.string()).describe('通道ID，详情可以参考[【获取通道信息】]').optional(),
       effective_time: z
         .string()
         .describe(
@@ -2875,7 +2408,9 @@ export const corehrV1JobFamilyCreate = {
         .describe('自定义字段（该字段暂时不支持）')
         .optional(),
     }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
   },
 };
 export const corehrV1JobFamilyDelete = {
@@ -2890,9 +2425,7 @@ export const corehrV1JobFamilyDelete = {
     path: z.object({
       job_family_id: z
         .string()
-        .describe(
-          '需要删除的序列 ID。ID获取方式：- 调用[【新建序列】][【查询租户的序列信息】]等接口可以返回序列ID',
-        ),
+        .describe('需要删除的序列 ID。ID获取方式：- 调用[【新建序列】][【查询租户的序列信息】]等接口可以返回序列ID'),
     }),
   },
 };
@@ -2908,9 +2441,7 @@ export const corehrV1JobFamilyGet = {
     path: z.object({
       job_family_id: z
         .string()
-        .describe(
-          '序列ID。ID获取方式：- 调用[【新建序列】][【查询租户的序列信息】]等接口可以返回序列ID',
-        ),
+        .describe('序列ID。ID获取方式：- 调用[【新建序列】][【查询租户的序列信息】]等接口可以返回序列ID'),
     }),
   },
 };
@@ -2945,67 +2476,67 @@ export const corehrV1JobFamilyPatch = {
     '[Feishu/Lark]-飞书人事（企业版）-岗职务管理-序列-更新序列-可以通过序列ID更新单个序列详情信息，例如序列名称、上级序列ID等',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      name: z
-        .array(
-          z.object({
-            lang: z.string().describe('语言信息，中文用zh-CN，英文用en-US'),
-            value: z.string().describe('序列名称- 名称不能包含「/」「；」「;」字符。- 序列中英文名称会有全局唯一校验'),
-          }),
-        )
-        .describe('序列名称')
-        .optional(),
-      active: z.boolean().describe('是否启用').optional(),
-      selectable: z.boolean().describe('是否可被使用，true为可被使用，false为不可被使用').optional(),
-      parent_id: z
-        .string()
-        .describe(
-          '上级序列ID。ID获取方式：- 调用[【新建序列】][【查询租户的序列信息】]等接口可以返回序列ID',
-        )
-        .optional(),
-      pathway_ids: z
-        .array(z.string())
-        .describe('通道ID，详情可以参考[获取通道信息]')
-        .optional(),
-      effective_time: z
-        .string()
-        .describe(
-          '版本生效日期- 填写格式：YYYY-MM-DD 00:00:00（系统会自动将时分秒改为00:00:00）- 系统默认为填写日期当天的 00:00:00 生效 - 该接口只支持到最小单位为日- 日期范围要求:1900-01-01 00:00:00～9999-12-31 23:59:59- 详情可以参考[时间轴介绍]',
-        )
-        .optional(),
-      code: z
-        .string()
-        .describe(
-          '序列编码 (不能与其他记录的编码重复)- 开启自动编码时，如果不传值会自动生成编码，否则以传入值为准- 未开启自动编码时，不传值不会自动生成编码',
-        )
-        .optional(),
-      description: z
-        .array(
-          z.object({ lang: z.string().describe('语言，中文用zh-CN，英文用en-US'), value: z.string().describe('内容') }),
-        )
-        .describe('描述')
-        .optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('自定义字段 API Name，即自定义字段的唯一标识'),
-            value: z
-              .string()
-              .describe(
-                '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe('自定义字段（该字段暂时不支持）')
-        .optional(),
-    }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+    data: z
+      .object({
+        name: z
+          .array(
+            z.object({
+              lang: z.string().describe('语言信息，中文用zh-CN，英文用en-US'),
+              value: z.string().describe('序列名称- 名称不能包含「/」「；」「」字符。- 序列中英文名称会有全局唯一校验'),
+            }),
+          )
+          .describe('序列名称')
+          .optional(),
+        active: z.boolean().describe('是否启用').optional(),
+        selectable: z.boolean().describe('是否可被使用，true为可被使用，false为不可被使用').optional(),
+        parent_id: z
+          .string()
+          .describe('上级序列ID。ID获取方式：- 调用[【新建序列】][【查询租户的序列信息】]等接口可以返回序列ID')
+          .optional(),
+        pathway_ids: z.array(z.string()).describe('通道ID，详情可以参考[获取通道信息]').optional(),
+        effective_time: z
+          .string()
+          .describe(
+            '版本生效日期- 填写格式：YYYY-MM-DD 00:00:00（系统会自动将时分秒改为00:00:00）- 系统默认为填写日期当天的 00:00:00 生效 - 该接口只支持到最小单位为日- 日期范围要求:1900-01-01 00:00:00～9999-12-31 23:59:59- 详情可以参考[时间轴介绍]',
+          )
+          .optional(),
+        code: z
+          .string()
+          .describe(
+            '序列编码 (不能与其他记录的编码重复)- 开启自动编码时，如果不传值会自动生成编码，否则以传入值为准- 未开启自动编码时，不传值不会自动生成编码',
+          )
+          .optional(),
+        description: z
+          .array(
+            z.object({
+              lang: z.string().describe('语言，中文用zh-CN，英文用en-US'),
+              value: z.string().describe('内容'),
+            }),
+          )
+          .describe('描述')
+          .optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('自定义字段 API Name，即自定义字段的唯一标识'),
+              value: z
+                .string()
+                .describe(
+                  '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('自定义字段（该字段暂时不支持）')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
     path: z.object({
       job_family_id: z
         .string()
-        .describe(
-          '序列ID。ID获取方式：- 调用[【新建序列】][【查询租户的序列信息】]等接口可以返回序列ID',
-        ),
+        .describe('序列ID。ID获取方式：- 调用[【新建序列】][【查询租户的序列信息】]等接口可以返回序列ID'),
     }),
   },
 };
@@ -3051,22 +2582,17 @@ export const corehrV1JobLevelCreate = {
             field_name: z.string().describe('字段名'),
             value: z
               .string()
-              .describe(
-                '字段值，为 JSON 转义后的字符串。**注意：具体传值方式参见**[获取自定义字段的元数据]',
-              ),
+              .describe('字段值，为 JSON 转义后的字符串。**注意：具体传值方式参见**[获取自定义字段的元数据]'),
           }),
         )
         .describe('自定义字段（目前职级暂不支持该功能）')
         .optional(),
       job_grade: z.array(z.string()).describe('职等 ID 列表').optional(),
-      pathway_ids: z
-        .array(z.string())
-        .describe(
-          '通道ID，详情可以参考[【获取通道信息】]',
-        )
-        .optional(),
+      pathway_ids: z.array(z.string()).describe('通道ID，详情可以参考[【获取通道信息】]').optional(),
     }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
   },
 };
 export const corehrV1JobLevelDelete = {
@@ -3082,9 +2608,7 @@ export const corehrV1JobLevelDelete = {
     path: z.object({
       job_level_id: z
         .string()
-        .describe(
-          '需要删除的职级 ID。ID获取方式：- 调用[【新建职级】][【查询租户的职级信息】]等接口可以返回职级ID',
-        ),
+        .describe('需要删除的职级 ID。ID获取方式：- 调用[【新建职级】][【查询租户的职级信息】]等接口可以返回职级ID'),
     }),
   },
 };
@@ -3101,9 +2625,7 @@ export const corehrV1JobLevelGet = {
     path: z.object({
       job_level_id: z
         .string()
-        .describe(
-          '职级ID。ID获取方式：- 调用[【新建职级】][【查询租户的职级信息】]等接口可以返回职级ID',
-        ),
+        .describe('职级ID。ID获取方式：- 调用[【新建职级】][【查询租户的职级信息】]等接口可以返回职级ID'),
     }),
   },
 };
@@ -3138,57 +2660,52 @@ export const corehrV1JobLevelPatch = {
     '[Feishu/Lark]-飞书人事（企业版）-岗职务管理-职级-更新单个职级-该接口可以通过职级ID更新单个职级信息，包括职级数值、名称等信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      level_order: z
-        .number()
-        .describe('职级数值，该字段主要用来在职级大小排序，职级的数值越大，代表职级越高- 如果不填该字段则不更新')
-        .optional(),
-      code: z
-        .string()
-        .describe('职级编码。非必填字段，如果非空值会校验全局唯一性，如果传空值则不参与全局校验')
-        .optional(),
-      name: z
-        .array(
-          z.object({
-            lang: z.string().describe('名称信息的语言，中文用zh-CN，英文用en-US'),
-            value: z.string().describe('名称信息的内容'),
-          }),
-        )
-        .describe('职级名称')
-        .optional(),
-      description: z
-        .array(z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }))
-        .describe('描述')
-        .optional(),
-      active: z.boolean().describe('是否启用').optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('字段名'),
-            value: z
-              .string()
-              .describe(
-                '字段值，是json转义后的字符串，具体传值方式参见[获取自定义字段的元数据]',
-              ),
-          }),
-        )
-        .describe('自定义字段（该字段暂时不支持）')
-        .optional(),
-      job_grade: z.array(z.string()).describe('职等 ID 列表').optional(),
-      pathway_ids: z
-        .array(z.string())
-        .describe(
-          '通道ID，详情可以参考[【获取通道信息】]',
-        )
-        .optional(),
-    }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+    data: z
+      .object({
+        level_order: z
+          .number()
+          .describe('职级数值，该字段主要用来在职级大小排序，职级的数值越大，代表职级越高- 如果不填该字段则不更新')
+          .optional(),
+        code: z
+          .string()
+          .describe('职级编码。非必填字段，如果非空值会校验全局唯一性，如果传空值则不参与全局校验')
+          .optional(),
+        name: z
+          .array(
+            z.object({
+              lang: z.string().describe('名称信息的语言，中文用zh-CN，英文用en-US'),
+              value: z.string().describe('名称信息的内容'),
+            }),
+          )
+          .describe('职级名称')
+          .optional(),
+        description: z
+          .array(
+            z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }),
+          )
+          .describe('描述')
+          .optional(),
+        active: z.boolean().describe('是否启用').optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('字段名'),
+              value: z.string().describe('字段值，是json转义后的字符串，具体传值方式参见[获取自定义字段的元数据]'),
+            }),
+          )
+          .describe('自定义字段（该字段暂时不支持）')
+          .optional(),
+        job_grade: z.array(z.string()).describe('职等 ID 列表').optional(),
+        pathway_ids: z.array(z.string()).describe('通道ID，详情可以参考[【获取通道信息】]').optional(),
+      })
+      .optional(),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
     path: z.object({
       job_level_id: z
         .string()
-        .describe(
-          '职级ID。ID获取方式：- 调用[【新建职级】][【查询租户的职级信息】]等接口可以返回职级ID',
-        ),
+        .describe('职级ID。ID获取方式：- 调用[【新建职级】][【查询租户的职级信息】]等接口可以返回职级ID'),
     }),
   },
 };
@@ -3226,23 +2743,11 @@ export const corehrV1JobCreate = {
         .describe('职务头衔')
         .optional(),
       pathway_id: z.string().describe('通道ID').optional(),
-      job_family_id_list: z
-        .array(z.string())
-        .describe(
-          '职务序列 ID 列表- 可通过[批量查询序列]获取详情',
-        )
-        .optional(),
-      job_level_id_list: z
-        .array(z.string())
-        .describe(
-          '职务级别 ID 列表- 可通过[批量查询职级]获取详情',
-        )
-        .optional(),
+      job_family_id_list: z.array(z.string()).describe('职务序列 ID 列表- 可通过[批量查询序列]获取详情').optional(),
+      job_level_id_list: z.array(z.string()).describe('职务级别 ID 列表- 可通过[批量查询职级]获取详情').optional(),
       working_hours_type_id: z
         .string()
-        .describe(
-          '工时制度 ID，枚举值及详细信息可通过[【批量查询工时制度】]接口查询获得',
-        )
+        .describe('工时制度 ID，枚举值及详细信息可通过[【批量查询工时制度】]接口查询获得')
         .optional(),
       effective_time: z
         .string()
@@ -3260,12 +2765,12 @@ export const corehrV1JobCreate = {
               ),
           }),
         )
-        .describe(
-          '自定义字段，格式参考：[【自定义字段说明】]岗位、职务、自定义组织模块',
-        )
+        .describe('自定义字段，格式参考：[【自定义字段说明】]岗位、职务、自定义组织模块')
         .optional(),
     }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
   },
 };
 export const corehrV1JobDelete = {
@@ -3330,83 +2835,74 @@ export const corehrV1JobPatch = {
   description: '[Feishu/Lark]-飞书人事（企业版）-岗职务管理-职务-更新职务-你可以通过该接口更新一个职务信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      code: z.string().describe('职务编码 (不能与其他记录的编码重复)，当开启自动编码时，该字段会失效').optional(),
-      name: z
-        .array(
-          z.object({
-            lang: z.string().describe('语言信息，中文用zh-CN，英文用en-US'),
-            value: z.string().describe('名称信息的内容'),
-          }),
-        )
-        .describe('职务名称- 名称不能包含「/」「；」「;」字符- xx中英文名称会有全局唯一校验（已停用职务也会校验）')
-        .optional(),
-      description: z
-        .array(
-          z.object({
-            lang: z.string().describe('语言信息，中文用zh-CN，英文用en-US'),
-            value: z.string().describe('名称信息的内容'),
-          }),
-        )
-        .describe('描述')
-        .optional(),
-      active: z.boolean().describe('是否启用，true为停用，fasle为启用').optional(),
-      job_title: z
-        .array(
-          z.object({
-            lang: z.string().describe('语言信息，中文用zh-CN，英文用en-US'),
-            value: z.string().describe('名称信息的内容'),
-          }),
-        )
-        .describe('职务头衔')
-        .optional(),
-      pathway_id: z
-        .string()
-        .describe(
-          '通道ID，详情可以参考[【获取通道信息】]',
-        )
-        .optional(),
-      job_family_id_list: z
-        .array(z.string())
-        .describe(
-          '职务序列 ID 列表。ID获取方式：- 调用[【新建序列】][【查询租户的序列信息】]等接口可以返回序列ID',
-        )
-        .optional(),
-      job_level_id_list: z
-        .array(z.string())
-        .describe(
-          '职务级别 ID 列表。ID获取方式：- 调用[【新建职级】][【查询租户的职级信息】]等接口可以返回职级ID',
-        )
-        .optional(),
-      working_hours_type_id: z
-        .string()
-        .describe(
-          '工时制度 ID，枚举值及详细信息可通过[【批量查询工时制度】]接口查询获得',
-        )
-        .optional(),
-      effective_time: z
-        .string()
-        .describe(
-          '版本生效日期- 填写格式：YYYY-MM-DD 00:00:00（系统会自动将时分秒改为00:00:00）- 系统默认为填写日期当天的 00:00:00 生效 - 该接口只支持到最小单位为日- 日期范围要求:1900-01-01 00:00:00～9999-12-31 23:59:59',
-        )
-        .optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('字段名'),
-            value: z
-              .string()
-              .describe(
-                '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe(
-          '自定义字段，格式参考：[【自定义字段说明】]岗位、职务、自定义组织模块',
-        )
-        .optional(),
-    }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+    data: z
+      .object({
+        code: z.string().describe('职务编码 (不能与其他记录的编码重复)，当开启自动编码时，该字段会失效').optional(),
+        name: z
+          .array(
+            z.object({
+              lang: z.string().describe('语言信息，中文用zh-CN，英文用en-US'),
+              value: z.string().describe('名称信息的内容'),
+            }),
+          )
+          .describe('职务名称- 名称不能包含「/」「；」「」字符- xx中英文名称会有全局唯一校验（已停用职务也会校验）')
+          .optional(),
+        description: z
+          .array(
+            z.object({
+              lang: z.string().describe('语言信息，中文用zh-CN，英文用en-US'),
+              value: z.string().describe('名称信息的内容'),
+            }),
+          )
+          .describe('描述')
+          .optional(),
+        active: z.boolean().describe('是否启用，true为停用，fasle为启用').optional(),
+        job_title: z
+          .array(
+            z.object({
+              lang: z.string().describe('语言信息，中文用zh-CN，英文用en-US'),
+              value: z.string().describe('名称信息的内容'),
+            }),
+          )
+          .describe('职务头衔')
+          .optional(),
+        pathway_id: z.string().describe('通道ID，详情可以参考[【获取通道信息】]').optional(),
+        job_family_id_list: z
+          .array(z.string())
+          .describe('职务序列 ID 列表。ID获取方式：- 调用[【新建序列】][【查询租户的序列信息】]等接口可以返回序列ID')
+          .optional(),
+        job_level_id_list: z
+          .array(z.string())
+          .describe('职务级别 ID 列表。ID获取方式：- 调用[【新建职级】][【查询租户的职级信息】]等接口可以返回职级ID')
+          .optional(),
+        working_hours_type_id: z
+          .string()
+          .describe('工时制度 ID，枚举值及详细信息可通过[【批量查询工时制度】]接口查询获得')
+          .optional(),
+        effective_time: z
+          .string()
+          .describe(
+            '版本生效日期- 填写格式：YYYY-MM-DD 00:00:00（系统会自动将时分秒改为00:00:00）- 系统默认为填写日期当天的 00:00:00 生效 - 该接口只支持到最小单位为日- 日期范围要求:1900-01-01 00:00:00～9999-12-31 23:59:59',
+          )
+          .optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('字段名'),
+              value: z
+                .string()
+                .describe(
+                  '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('自定义字段，格式参考：[【自定义字段说明】]岗位、职务、自定义组织模块')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
     path: z.object({
       job_id: z
         .string()
@@ -3448,9 +2944,11 @@ export const corehrV1LeaveGrantingRecordCreate = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1LeaveGrantingRecordDelete = {
@@ -3464,11 +2962,7 @@ export const corehrV1LeaveGrantingRecordDelete = {
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
-      leave_granting_record_id: z
-        .string()
-        .describe(
-          '假期发放记录 ID，从[创建假期发放记录]中可以获得',
-        ),
+      leave_granting_record_id: z.string().describe('假期发放记录 ID，从[创建假期发放记录]中可以获得'),
     }),
   },
 };
@@ -3482,50 +2976,29 @@ export const corehrV1LeaveCalendarByScope = {
     '[Feishu/Lark]-飞书人事（企业版）-休假-根据适用条件获取工作日历 ID-根据日历的适用范围，获取工作日历 ID。适用范围包含工作地点，工时制度等',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      wk_department_id: z
-        .string()
-        .describe(
-          '用户所属部门的ID列表。可以通过[批量查询任职信息]获取所属部门的 ID',
-        )
-        .optional(),
-      wk_country_region_id: z
-        .string()
-        .describe(
-          '国家/地区 ID。可以通过[批量查询任职信息] 获取所属国家/地区 ID',
-        )
-        .optional(),
-      wk_employee_type_id: z
-        .string()
-        .describe(
-          '人员类型ID。可以通过[批量查询任职信息] 获取所属人员类型ID',
-        )
-        .optional(),
-      wk_work_location_id: z
-        .string()
-        .describe(
-          '工作地点ID。可以通过[批量查询任职信息] 获取工作地点ID',
-        )
-        .optional(),
-      wk_working_hours_type_id: z
-        .string()
-        .describe(
-          '工时制度ID。可以通过[批量查询任职信息] 获取工时制度ID',
-        )
-        .optional(),
-      wk_job_family_id: z
-        .string()
-        .describe(
-          '职务序列ID。可以通过[批量查询任职信息] 获取职务序列ID',
-        )
-        .optional(),
-      wk_company_id: z
-        .string()
-        .describe(
-          '公司 ID。可以通过[批量查询任职信息]获取公司 ID',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        wk_department_id: z
+          .string()
+          .describe('用户所属部门的ID列表。可以通过[批量查询任职信息]获取所属部门的 ID')
+          .optional(),
+        wk_country_region_id: z
+          .string()
+          .describe('国家/地区 ID。可以通过[批量查询任职信息] 获取所属国家/地区 ID')
+          .optional(),
+        wk_employee_type_id: z
+          .string()
+          .describe('人员类型ID。可以通过[批量查询任职信息] 获取所属人员类型ID')
+          .optional(),
+        wk_work_location_id: z.string().describe('工作地点ID。可以通过[批量查询任职信息] 获取工作地点ID').optional(),
+        wk_working_hours_type_id: z
+          .string()
+          .describe('工时制度ID。可以通过[批量查询任职信息] 获取工时制度ID')
+          .optional(),
+        wk_job_family_id: z.string().describe('职务序列ID。可以通过[批量查询任职信息] 获取职务序列ID').optional(),
+        wk_company_id: z.string().describe('公司 ID。可以通过[批量查询任职信息]获取公司 ID').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -3729,11 +3202,7 @@ export const corehrV1LeaveWorkCalendarDate = {
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
-      wk_calendar_ids: z
-        .array(z.string())
-        .describe(
-          '工作日历ID列表，最多100；可以通过[获取工作日历] 获取工作日历ID',
-        ),
+      wk_calendar_ids: z.array(z.string()).describe('工作日历ID列表，最多100；可以通过[获取工作日历] 获取工作日历ID'),
       dates: z
         .array(z.string())
         .describe(
@@ -3773,9 +3242,7 @@ export const corehrV1LocationCreate = {
         .object({
           parent_id: z
             .string()
-            .describe(
-              '上级地点ID。ID获取方式：- 调用[【创建地点】][【批量分页查询地点】]等接口可以返回地点ID',
-            )
+            .describe('上级地点ID。ID获取方式：- 调用[【创建地点】][【批量分页查询地点】]等接口可以返回地点ID')
             .optional(),
           name: z
             .array(
@@ -3813,136 +3280,54 @@ export const corehrV1LocationCreate = {
       address: z
         .array(
           z.object({
-            country_region_id: z
-              .string()
-              .describe(
-                '国家 / 地区 ID可通过[【查询国家/地区信息】]接口获取',
-              ),
-            region_id: z
-              .string()
-              .describe(
-                '主要行政区 ID可通过[【查询省份/行政区信息】]接口获取',
-              )
-              .optional(),
-            city_id: z
-              .string()
-              .describe(
-                '城市ID。ID获取调用[【查询城市信息】]等接口可以返回城市ID',
-              )
-              .optional(),
-            distinct_id: z
-              .string()
-              .describe(
-                '区县ID。ID获取调用[【查询区县信息】]等接口可以返回区县ID',
-              )
-              .optional(),
-            address_line1: z
-              .string()
-              .describe(
-                '地址行 1- 填写规则可见[【地址填写指南】]',
-              )
-              .optional(),
-            address_line2: z
-              .string()
-              .describe(
-                '地址行 2- 填写规则可见[【地址填写指南】]',
-              )
-              .optional(),
-            address_line3: z
-              .string()
-              .describe(
-                '地址行 3- 填写规则可见[【地址填写指南】]',
-              )
-              .optional(),
-            address_line4: z
-              .string()
-              .describe(
-                '地址行 4- 填写规则可见[【地址填写指南】]',
-              )
-              .optional(),
-            address_line5: z
-              .string()
-              .describe(
-                '地址行 5- 填写规则可见[【地址填写指南】]',
-              )
-              .optional(),
-            address_line6: z
-              .string()
-              .describe(
-                '地址行 6- 填写规则可见[【地址填写指南】]',
-              )
-              .optional(),
-            address_line7: z
-              .string()
-              .describe(
-                '地址行 7- 填写规则可见[【地址填写指南】]',
-              )
-              .optional(),
-            address_line8: z
-              .string()
-              .describe(
-                '地址行 8- 填写规则可见[【地址填写指南】]',
-              )
-              .optional(),
-            address_line9: z
-              .string()
-              .describe(
-                '地址行 9- 填写规则可见[【地址填写指南】]',
-              )
-              .optional(),
+            country_region_id: z.string().describe('国家 / 地区 ID可通过[【查询国家/地区信息】]接口获取'),
+            region_id: z.string().describe('主要行政区 ID可通过[【查询省份/行政区信息】]接口获取').optional(),
+            city_id: z.string().describe('城市ID。ID获取调用[【查询城市信息】]等接口可以返回城市ID').optional(),
+            distinct_id: z.string().describe('区县ID。ID获取调用[【查询区县信息】]等接口可以返回区县ID').optional(),
+            address_line1: z.string().describe('地址行 1- 填写规则可见[【地址填写指南】]').optional(),
+            address_line2: z.string().describe('地址行 2- 填写规则可见[【地址填写指南】]').optional(),
+            address_line3: z.string().describe('地址行 3- 填写规则可见[【地址填写指南】]').optional(),
+            address_line4: z.string().describe('地址行 4- 填写规则可见[【地址填写指南】]').optional(),
+            address_line5: z.string().describe('地址行 5- 填写规则可见[【地址填写指南】]').optional(),
+            address_line6: z.string().describe('地址行 6- 填写规则可见[【地址填写指南】]').optional(),
+            address_line7: z.string().describe('地址行 7- 填写规则可见[【地址填写指南】]').optional(),
+            address_line8: z.string().describe('地址行 8- 填写规则可见[【地址填写指南】]').optional(),
+            address_line9: z.string().describe('地址行 9- 填写规则可见[【地址填写指南】]').optional(),
             local_address_line1: z
               .string()
-              .describe(
-                '地址行 1（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]',
-              )
+              .describe('地址行 1（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]')
               .optional(),
             local_address_line2: z
               .string()
-              .describe(
-                '地址行 2（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]',
-              )
+              .describe('地址行 2（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]')
               .optional(),
             local_address_line3: z
               .string()
-              .describe(
-                '地址行 3（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]',
-              )
+              .describe('地址行 3（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]')
               .optional(),
             local_address_line4: z
               .string()
-              .describe(
-                '地址行 4（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]',
-              )
+              .describe('地址行 4（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]')
               .optional(),
             local_address_line5: z
               .string()
-              .describe(
-                '地址行 5（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]',
-              )
+              .describe('地址行 5（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]')
               .optional(),
             local_address_line6: z
               .string()
-              .describe(
-                '地址行 6（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]',
-              )
+              .describe('地址行 6（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]')
               .optional(),
             local_address_line7: z
               .string()
-              .describe(
-                '地址行 7（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]',
-              )
+              .describe('地址行 7（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]')
               .optional(),
             local_address_line8: z
               .string()
-              .describe(
-                '地址行 8（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]',
-              )
+              .describe('地址行 8（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]')
               .optional(),
             local_address_line9: z
               .string()
-              .describe(
-                '地址行 9（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]',
-              )
+              .describe('地址行 9（非拉丁语系的本地文字）- 填写规则可见[【地址填写指南】]')
               .optional(),
             postal_code: z.string().describe('邮政编码').optional(),
             address_type_list: z
@@ -3959,9 +3344,7 @@ export const corehrV1LocationCreate = {
         .optional(),
       working_hours_type_id: z
         .string()
-        .describe(
-          '工时制度 ID，枚举值及详细信息可通过[【批量查询工时制度】]接口查询获得',
-        )
+        .describe('工时制度 ID，枚举值及详细信息可通过[【批量查询工时制度】]接口查询获得')
         .optional(),
       effective_time: z
         .string()
@@ -3977,14 +3360,16 @@ export const corehrV1LocationCreate = {
       time_zone_id: z.string().describe('时区').optional(),
       display_language_id: z.string().describe('默认显示语言').optional(),
     }),
-    params: z.object({
-      client_token: z
-        .string()
-        .describe(
-          '操作的唯一标识，用于幂等的进行更新操作，格式为标准的 UUIDV4。此值为空表示将发起一次新的请求，此值非空表示幂等的进行更新操作',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        client_token: z
+          .string()
+          .describe(
+            '操作的唯一标识，用于幂等的进行更新操作，格式为标准的 UUIDV4。此值为空表示将发起一次新的请求，此值非空表示幂等的进行更新操作',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1LocationDelete = {
@@ -3999,9 +3384,7 @@ export const corehrV1LocationDelete = {
     path: z.object({
       location_id: z
         .string()
-        .describe(
-          '需要删除的地点 ID。ID获取方式：- 调用[【创建地点】][【批量分页查询地点】]等接口可以返回地点ID',
-        ),
+        .describe('需要删除的地点 ID。ID获取方式：- 调用[【创建地点】][【批量分页查询地点】]等接口可以返回地点ID'),
     }),
   },
 };
@@ -4081,7 +3464,9 @@ export const corehrV1NationalIdTypeCreate = {
         .describe('自定义字段（暂不支持）')
         .optional(),
     }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
   },
 };
 export const corehrV1NationalIdTypeDelete = {
@@ -4142,38 +3527,46 @@ export const corehrV1NationalIdTypePatch = {
   description: '[Feishu/Lark]-飞书人事（企业版）-基础数据-国家证件类型-更新国家证件类型-更新国家证件类型',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      country_region_id: z.string().describe('国家 / 地区').optional(),
-      name: z
-        .array(z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }))
-        .describe('名称')
-        .optional(),
-      active: z.boolean().describe('是否启用').optional(),
-      validation_rule: z.string().describe('校验规则（正则表达式），若不设置校验，可以传入".*"').optional(),
-      validation_rule_description: z
-        .array(z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }))
-        .describe('校验规则描述')
-        .optional(),
-      code: z.string().describe('编码').optional(),
-      identification_type: z
-        .object({ enum_name: z.string().describe('枚举值') })
-        .describe('证件类型')
-        .optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('字段名'),
-            value: z
-              .string()
-              .describe(
-                '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe('自定义字段（暂不支持）')
-        .optional(),
-    }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+    data: z
+      .object({
+        country_region_id: z.string().describe('国家 / 地区').optional(),
+        name: z
+          .array(
+            z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }),
+          )
+          .describe('名称')
+          .optional(),
+        active: z.boolean().describe('是否启用').optional(),
+        validation_rule: z.string().describe('校验规则（正则表达式），若不设置校验，可以传入".*"').optional(),
+        validation_rule_description: z
+          .array(
+            z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }),
+          )
+          .describe('校验规则描述')
+          .optional(),
+        code: z.string().describe('编码').optional(),
+        identification_type: z
+          .object({ enum_name: z.string().describe('枚举值') })
+          .describe('证件类型')
+          .optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('字段名'),
+              value: z
+                .string()
+                .describe(
+                  '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('自定义字段（暂不支持）')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
     path: z.object({ national_id_type_id: z.string().describe('证件类型ID') }),
   },
 };
@@ -4187,16 +3580,18 @@ export const corehrV1OffboardingQuery = {
     '[Feishu/Lark]-飞书人事（企业版）-离职-查询员工离职原因列表-该接口用于查询[离职配置]> 离职原因的选项信息，包括离职原因选项的唯一标识、名称和启用状态等信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      active: z
-        .boolean()
-        .describe('离职原因状态，为空时默认搜索所有状态的离职原因。可选项有:-true: 启用-false: 停用')
-        .optional(),
-      offboarding_reason_unique_identifier: z
-        .array(z.string())
-        .describe('离职原因唯一标识列表，用于过滤离职原因，为空时默认搜索所有离职原因，最多支持20个')
-        .optional(),
-    }),
+    data: z
+      .object({
+        active: z
+          .boolean()
+          .describe('离职原因状态，为空时默认搜索所有状态的离职原因。可选项有:-true: 启用-false: 停用')
+          .optional(),
+        offboarding_reason_unique_identifier: z
+          .array(z.string())
+          .describe('离职原因唯一标识列表，用于过滤离职原因，为空时默认搜索所有离职原因，最多支持20个')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1OffboardingSearch = {
@@ -4209,82 +3604,84 @@ export const corehrV1OffboardingSearch = {
     '[Feishu/Lark]-飞书人事（企业版）-离职-搜索离职信息-该接口支持根据员工ID、离职审批发起时间和离职日期等字段搜索离职信息，可获取包括离职日期、离职原因、离职状态和流程审批状态等信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      employment_ids: z
-        .array(z.string())
-        .describe(
-          '雇佣 ID 列表，ID类型与查询参数 user_id_type取值一致：- 当user_id_type取值为open_id时，ID获取方式参考[如何获取自己的Open ID]。- 当user_id_type取值为user_id时，ID获取方式参考[如何获取自己的 User ID]。- 当user_id_type取值为union_id时，ID获取方式参考[如何获取自己的 Union ID]。- 当user_id_type取值为people_corehr_id时，先参考[如何获取自己的 User ID]获取User ID。然后通过[ID 转换]获取雇佣ID',
-        )
-        .optional(),
-      apply_initiating_time_start: z
-        .string()
-        .describe(
-          '离职审批发起时间（搜索的起始范围），请按照秒级时间戳格式传入。该字段非必填，需要与离职审批发起时间（搜索的结束范围）一同使用',
-        )
-        .optional(),
-      apply_initiating_time_end: z
-        .string()
-        .describe(
-          '离职审批发起时间（搜索的结束范围），请按照秒级时间戳格式传入。该字段非必填，需要与离职审批发起时间（搜索的起始范围）一同使用',
-        )
-        .optional(),
-      apply_finished_time_start: z
-        .string()
-        .describe(
-          '离职审批结束时间（搜索的起始范围），请按照秒级时间戳格式传入。该字段非必填，需要与离职审批结束时间（搜索的结束范围）一同使用',
-        )
-        .optional(),
-      apply_finished_time_end: z
-        .string()
-        .describe(
-          '离职审批结束时间 （搜索的结束范围），请按照秒级时间戳格式传入。该字段非必填，需要与离职审批结束时间（搜索的起始范围）一同使用',
-        )
-        .optional(),
-      expected_offboarding_date_start: z
-        .string()
-        .describe(
-          '期望离职日期（搜索的起始范围），请按日期格式传入。该字段非必填，需要与期望离职日期（搜索的结束范围）一同使用',
-        )
-        .optional(),
-      expected_offboarding_date_end: z
-        .string()
-        .describe(
-          '期望离职日期（搜索的结束范围），请按日期格式传入。该字段非必填，需要与期望离职日期（搜索的起始范围）一同使用',
-        )
-        .optional(),
-      offboarding_date_start: z
-        .string()
-        .describe(
-          '离职日期（搜索的起始范围），请按日期格式传入。该字段非必填，需要与离职日期（搜索的结束范围）一同使用',
-        )
-        .optional(),
-      offboarding_date_end: z
-        .string()
-        .describe('离职日期（搜索的结束范围），该字段非必填，需要与离职日期（搜索的起始范围）一同使用')
-        .optional(),
-      statuses: z
-        .array(
-          z
-            .enum(['Approving', 'Approved', 'Offboarded', 'Rejected', 'Withdrawn', 'NoNeedApproval'])
-            .describe(
-              'Options:Approving(审批中),Approved(审批通过),Offboarded(已离职),Rejected(已拒绝),Withdrawn(已撤销),NoNeedApproval(无需审批)',
-            ),
-        )
-        .describe('离职状态，多个状态之间为「或」的关系。为空时默认搜索所有状态的离职信息')
-        .optional(),
-      reasons: z
-        .array(z.string())
-        .describe(
-          '离职原因列表 , 可以通过[【查询员工离职原因列表】]接口获取 ，查询时不返回下级原因相关的离职信息。为空时默认搜索所有离职数据。<b>字段权限要求：</b><md-perm name="corehr:employment.offboarding_reason.search:read" desc="按照离职原因搜索" support_app_types="custom,isv" tags="">按照离职原因搜索</md-perm>corehr:employment.offboarding_reason.search:read，确认已开通该权限',
-        )
-        .optional(),
-      employee_reasons: z
-        .array(z.string())
-        .describe(
-          '离职原因（员工）列表 , 可以通过[【查询员工离职原因列表】]接口获取，查询时不返回下级原因相关的离职信息。为空时默认搜索所有离职数据。<b>字段权限要求：</b><md-perm name="corehr:employment.offboarding_reason.search:read" desc="按照离职原因搜索" support_app_types="custom,isv" tags="">按照离职原因搜索</md-perm>',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        employment_ids: z
+          .array(z.string())
+          .describe(
+            '雇佣 ID 列表，ID类型与查询参数 user_id_type取值一致：- 当user_id_type取值为open_id时，ID获取方式参考[如何获取自己的Open ID]。- 当user_id_type取值为user_id时，ID获取方式参考[如何获取自己的 User ID]。- 当user_id_type取值为union_id时，ID获取方式参考[如何获取自己的 Union ID]。- 当user_id_type取值为people_corehr_id时，先参考[如何获取自己的 User ID]获取User ID。然后通过[ID 转换]获取雇佣ID',
+          )
+          .optional(),
+        apply_initiating_time_start: z
+          .string()
+          .describe(
+            '离职审批发起时间（搜索的起始范围），请按照秒级时间戳格式传入。该字段非必填，需要与离职审批发起时间（搜索的结束范围）一同使用',
+          )
+          .optional(),
+        apply_initiating_time_end: z
+          .string()
+          .describe(
+            '离职审批发起时间（搜索的结束范围），请按照秒级时间戳格式传入。该字段非必填，需要与离职审批发起时间（搜索的起始范围）一同使用',
+          )
+          .optional(),
+        apply_finished_time_start: z
+          .string()
+          .describe(
+            '离职审批结束时间（搜索的起始范围），请按照秒级时间戳格式传入。该字段非必填，需要与离职审批结束时间（搜索的结束范围）一同使用',
+          )
+          .optional(),
+        apply_finished_time_end: z
+          .string()
+          .describe(
+            '离职审批结束时间 （搜索的结束范围），请按照秒级时间戳格式传入。该字段非必填，需要与离职审批结束时间（搜索的起始范围）一同使用',
+          )
+          .optional(),
+        expected_offboarding_date_start: z
+          .string()
+          .describe(
+            '期望离职日期（搜索的起始范围），请按日期格式传入。该字段非必填，需要与期望离职日期（搜索的结束范围）一同使用',
+          )
+          .optional(),
+        expected_offboarding_date_end: z
+          .string()
+          .describe(
+            '期望离职日期（搜索的结束范围），请按日期格式传入。该字段非必填，需要与期望离职日期（搜索的起始范围）一同使用',
+          )
+          .optional(),
+        offboarding_date_start: z
+          .string()
+          .describe(
+            '离职日期（搜索的起始范围），请按日期格式传入。该字段非必填，需要与离职日期（搜索的结束范围）一同使用',
+          )
+          .optional(),
+        offboarding_date_end: z
+          .string()
+          .describe('离职日期（搜索的结束范围），该字段非必填，需要与离职日期（搜索的起始范围）一同使用')
+          .optional(),
+        statuses: z
+          .array(
+            z
+              .enum(['Approving', 'Approved', 'Offboarded', 'Rejected', 'Withdrawn', 'NoNeedApproval'])
+              .describe(
+                'Options:Approving(审批中),Approved(审批通过),Offboarded(已离职),Rejected(已拒绝),Withdrawn(已撤销),NoNeedApproval(无需审批)',
+              ),
+          )
+          .describe('离职状态，多个状态之间为「或」的关系。为空时默认搜索所有状态的离职信息')
+          .optional(),
+        reasons: z
+          .array(z.string())
+          .describe(
+            '离职原因列表 , 可以通过[【查询员工离职原因列表】]接口获取 ，查询时不返回下级原因相关的离职信息。为空时默认搜索所有离职数据。<b>字段权限要求：</b><md-perm name="corehr:employment.offboarding_reason.search:read" desc="按照离职原因搜索" support_app_types="custom,isv" tags="">按照离职原因搜索</md-perm>corehr:employment.offboarding_reason.search:read，确认已开通该权限',
+          )
+          .optional(),
+        employee_reasons: z
+          .array(z.string())
+          .describe(
+            '离职原因（员工）列表 , 可以通过[【查询员工离职原因列表】]接口获取，查询时不返回下级原因相关的离职信息。为空时默认搜索所有离职数据。<b>字段权限要求：</b><md-perm name="corehr:employment.offboarding_reason.search:read" desc="按照离职原因搜索" support_app_types="custom,isv" tags="">按照离职原因搜索</md-perm>',
+          )
+          .optional(),
+      })
+      .optional(),
     params: z.object({
       page_size: z.number().describe('分页大小，最大 100'),
       page_token: z
@@ -4317,11 +3714,7 @@ export const corehrV1OffboardingSubmit = {
           '离职员工 ID。ID类型与查询参数 user_id_type取值一致：1、当user_id_type取值为open_id时，ID获取方式参考[如何获取自己的Open ID]。2、当user_id_type取值为user_id时，ID获取方式参考[如何获取自己的 User ID]。3、当user_id_type取值为union_id时，ID获取方式参考[如何获取自己的 Union ID]。4、当user_id_type取值为people_corehr_id时，先参考[如何获取自己的 User ID]获取User ID。然后通过[ID 转换]获取雇佣ID。v1/common_data-id/convert)获取',
         ),
       offboarding_date: z.string().describe('离职日期，入参格式应为YYYY-MM-DD'),
-      offboarding_reason_unique_identifier: z
-        .string()
-        .describe(
-          '离职原因，可通过接口[【查询员工离职原因列表】]获取',
-        ),
+      offboarding_reason_unique_identifier: z.string().describe('离职原因，可通过接口[【查询员工离职原因列表】]获取'),
       offboarding_reason_explanation: z
         .string()
         .describe('离职原因说明，长度限制6000个字符，该字段允许为空')
@@ -4360,14 +3753,14 @@ export const corehrV1OffboardingSubmit = {
               ),
           }),
         )
-        .describe(
-          '离职自定义字段。注意：可填写的字段范围参考[人员档案配置] > 信息配置 > 离职信息 中的自定义字段',
-        )
+        .describe('离职自定义字段。注意：可填写的字段范围参考[人员档案配置] > 信息配置 > 离职信息 中的自定义字段')
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_corehr_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1PersonCreate = {
@@ -4388,9 +3781,7 @@ export const corehrV1PersonCreate = {
             country_region_id: z.string().describe('国家 / 地区'),
             name_type: z
               .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '姓名类型，枚举值可通过文档[【飞书人事枚举常量】]姓名类型（name_type）枚举定义部分获得',
-              ),
+              .describe('姓名类型，枚举值可通过文档[【飞书人事枚举常量】]姓名类型（name_type）枚举定义部分获得'),
             local_first_name_2: z.string().describe('名 - 第二本地文字').optional(),
             local_primary_2: z.string().describe('姓 - 第二本地文字').optional(),
             additional_name_type: z
@@ -4434,23 +3825,17 @@ export const corehrV1PersonCreate = {
         .describe('姓名'),
       gender: z
         .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '性别，枚举值可通过文档[【飞书人事枚举常量】]性别（gender）枚举定义部分获得',
-        )
+        .describe('性别，枚举值可通过文档[【飞书人事枚举常量】]性别（gender）枚举定义部分获得')
         .optional(),
       date_of_birth: z.string().describe('出生日期').optional(),
       nationality_id: z.string().describe('国籍id').optional(),
       race: z
         .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '民族 / 种族，枚举值可通过文档[【飞书人事枚举常量】]民族（race）枚举定义部分获得',
-        )
+        .describe('民族 / 种族，枚举值可通过文档[【飞书人事枚举常量】]民族（race）枚举定义部分获得')
         .optional(),
       marital_status: z
         .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '婚姻状况，枚举值可通过文档[【飞书人事枚举常量】]婚姻状况（marital_status）枚举定义部分获得',
-        )
+        .describe('婚姻状况，枚举值可通过文档[【飞书人事枚举常量】]婚姻状况（marital_status）枚举定义部分获得')
         .optional(),
       phone_list: z
         .array(
@@ -4464,15 +3849,11 @@ export const corehrV1PersonCreate = {
             phone_number: z.string().describe('电话号码'),
             device_type: z
               .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '设备类型，枚举值可通过文档[【飞书人事枚举常量】]设备类型（device_type）枚举定义部分获得',
-              )
+              .describe('设备类型，枚举值可通过文档[【飞书人事枚举常量】]设备类型（device_type）枚举定义部分获得')
               .optional(),
             phone_usage: z
               .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '电话用途，枚举值可通过文档[【飞书人事枚举常量】]电话用途（phone_usage）枚举定义部分获得',
-              )
+              .describe('电话用途，枚举值可通过文档[【飞书人事枚举常量】]电话用途（phone_usage）枚举定义部分获得')
               .optional(),
             is_primary: z.boolean().describe('是否为主要电话').optional(),
             is_public: z.boolean().describe('是否为公开电话').optional(),
@@ -4606,9 +3987,7 @@ export const corehrV1PersonCreate = {
               .describe('学校'),
             level_of_education: z
               .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '学历，枚举值可通过文档[【飞书人事枚举常量】]学历（level_of_education）枚举定义获得',
-              )
+              .describe('学历，枚举值可通过文档[【飞书人事枚举常量】]学历（level_of_education）枚举定义获得')
               .optional(),
             start_date: z.string().describe('开始日期').optional(),
             end_date: z.string().describe('结束日期').optional(),
@@ -4620,9 +3999,7 @@ export const corehrV1PersonCreate = {
               .optional(),
             degree: z
               .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '学位，枚举值可通过文档[【飞书人事枚举常量】]学位（degree）枚举定义获得',
-              )
+              .describe('学位，枚举值可通过文档[【飞书人事枚举常量】]学位（degree）枚举定义获得')
               .optional(),
             school_name: z
               .object({ enum_name: z.string().describe('枚举值') })
@@ -4739,9 +4116,7 @@ export const corehrV1PersonCreate = {
                 country_region_id: z.string().describe('国家 / 地区'),
                 name_type: z
                   .object({ enum_name: z.string().describe('枚举值') })
-                  .describe(
-                    '姓名类型，枚举值可通过文档[【飞书人事枚举常量】]姓名类型（name_type）枚举定义部分获得',
-                  ),
+                  .describe('姓名类型，枚举值可通过文档[【飞书人事枚举常量】]姓名类型（name_type）枚举定义部分获得'),
                 local_first_name_2: z.string().describe('名 - 第二本地文字').optional(),
                 local_primary_2: z.string().describe('姓 - 第二本地文字').optional(),
                 additional_name_type: z
@@ -4785,14 +4160,10 @@ export const corehrV1PersonCreate = {
               .optional(),
             relationship: z
               .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '亲属关系，枚举值可通过文档[【飞书人事枚举常量】]亲属关系（relationship）枚举定义获得',
-              ),
+              .describe('亲属关系，枚举值可通过文档[【飞书人事枚举常量】]亲属关系（relationship）枚举定义获得'),
             gender: z
               .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '亲属性别，枚举值可通过文档[【飞书人事枚举常量】]性别（gender）枚举定义部分获得',
-              )
+              .describe('亲属性别，枚举值可通过文档[【飞书人事枚举常量】]性别（gender）枚举定义部分获得')
               .optional(),
             date_of_birth: z.string().describe('生日').optional(),
             nationality_id: z.string().describe('国籍').optional(),
@@ -4922,9 +4293,7 @@ export const corehrV1PersonCreate = {
                 country_region_id: z.string().describe('国家 / 地区'),
                 name_type: z
                   .object({ enum_name: z.string().describe('枚举值') })
-                  .describe(
-                    '姓名类型，枚举值可通过文档[【飞书人事枚举常量】]姓名类型（name_type）枚举定义部分获得',
-                  ),
+                  .describe('姓名类型，枚举值可通过文档[【飞书人事枚举常量】]姓名类型（name_type）枚举定义部分获得'),
                 local_first_name_2: z.string().describe('名 - 第二本地文字').optional(),
                 local_primary_2: z.string().describe('姓 - 第二本地文字').optional(),
                 additional_name_type: z
@@ -5050,7 +4419,9 @@ export const corehrV1PersonCreate = {
         .describe('个人资料')
         .optional(),
     }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
   },
 };
 export const corehrV1PersonDelete = {
@@ -5074,7 +4445,7 @@ export const corehrV1PersonGet = {
   description: '[Feishu/Lark]-历史版本（不推荐）-飞书人事-个人信息-查询单个个人信息-根据 ID 查询单个人员的个人信息',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ user_id_type: z.literal('people_employee_id').describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.literal('people_employee_id').describe('用户ID类型').optional() }).optional(),
     path: z.object({ person_id: z.string().describe('Person ID') }),
   },
 };
@@ -5087,435 +4458,396 @@ export const corehrV1PersonPatch = {
   description: '[Feishu/Lark]-历史版本（不推荐）-飞书人事-个人信息-更新个人信息-更新个人信息',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      name_list: z
-        .array(
-          z.object({
-            local_primary: z.string().describe('姓 - 本地文字').optional(),
-            local_first_name: z.string().describe('名 - 本地文字').optional(),
-            country_region_id: z.string().describe('国家 / 地区'),
-            name_type: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '姓名类型，枚举值可通过文档[【飞书人事枚举常量】]姓名类型（name_type）枚举定义部分获得',
-              ),
-            local_first_name_2: z.string().describe('名 - 第二本地文字').optional(),
-            local_primary_2: z.string().describe('姓 - 第二本地文字').optional(),
-            additional_name_type: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe('补充姓名类型，比如emergency_contact_name（紧急联系人姓名）')
-              .optional(),
-            first_name: z.string().describe('名').optional(),
-            full_name: z.string().describe('全名').optional(),
-            hereditary: z.string().describe('姓氏称谓').optional(),
-            custom_name: z.string().describe('自定义姓名').optional(),
-            custom_local_name: z.string().describe('本地文字的自定义姓名').optional(),
-            middle_name: z.string().describe('中间名').optional(),
-            name_primary: z.string().describe('姓').optional(),
-            secondary: z.string().describe('第二姓氏').optional(),
-            social: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe('尊称')
-              .optional(),
-            tertiary: z.string().describe('婚后姓氏').optional(),
-            title: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe('头衔，比如Mr.Miss.Mrs.Prof.Dr')
-              .optional(),
-            local_middle_name: z.string().describe('本地中间名').optional(),
-            local_secondary: z.string().describe('第二姓氏 - 本地文字').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('字段名'),
-                  value: z
-                    .string()
-                    .describe(
-                      '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('自定义字段')
-              .optional(),
-          }),
-        )
-        .describe('姓名')
-        .optional(),
-      gender: z
-        .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '性别，枚举值可通过文档[【飞书人事枚举常量】]性别（gender）枚举定义部分获得',
-        )
-        .optional(),
-      date_of_birth: z.string().describe('出生日期').optional(),
-      nationality_id: z.string().describe('国籍id').optional(),
-      race: z
-        .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '民族 / 种族，枚举值可通过文档[【飞书人事枚举常量】]民族（race）枚举定义部分获得',
-        )
-        .optional(),
-      marital_status: z
-        .object({ enum_name: z.string().describe('枚举值') })
-        .describe(
-          '婚姻状况，枚举值可通过文档[【飞书人事枚举常量】]婚姻状况（marital_status）枚举定义部分获得',
-        )
-        .optional(),
-      phone_list: z
-        .array(
-          z.object({
-            international_area_code: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '国家区号常见如：86_china（中国）、852_hong_kong（中国香港）、886_taiwan（中国台湾）、853_macao（中国澳门）、1_united_states_of_america（美利坚合众国）、7_russian_federation（俄罗斯联邦）、44_united_kingdom（英国）、81_japan（日本）、82_korea_republic_of（大韩民国）、91_india（印度）',
-              )
-              .optional(),
-            phone_number: z.string().describe('电话号码'),
-            device_type: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '设备类型，枚举值可通过文档[【飞书人事枚举常量】]设备类型（device_type）枚举定义部分获得',
-              )
-              .optional(),
-            phone_usage: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '电话用途，枚举值可通过文档[【飞书人事枚举常量】]电话用途（phone_usage）枚举定义部分获得',
-              )
-              .optional(),
-            is_primary: z.boolean().describe('是否为主要电话').optional(),
-            is_public: z.boolean().describe('是否为公开电话').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('字段名'),
-                  value: z
-                    .string()
-                    .describe(
-                      '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('自定义字段')
-              .optional(),
-          }),
-        )
-        .describe(
-          '电话列表，只有当满足下面所有条件时，电话在个人信息页才可见:- 电话号码不为空- is_primary = "true" - phone_usage = "home"',
-        )
-        .optional(),
-      address_list: z
-        .array(
-          z.object({
-            country_region_id: z.string().describe('国家 / 地区'),
-            region_id: z.string().describe('主要行政区').optional(),
-            city_id: z.string().describe('城市').optional(),
-            distinct_id: z.string().describe('区/县').optional(),
-            local_address_line1: z.string().describe('地址行 1（非拉丁语系的本地文字）').optional(),
-            local_address_line2: z.string().describe('地址行 2（非拉丁语系的本地文字）').optional(),
-            local_address_line3: z.string().describe('地址行 3（非拉丁语系的本地文字）').optional(),
-            local_address_line4: z.string().describe('地址行 4（非拉丁语系的本地文字）').optional(),
-            local_address_line5: z.string().describe('地址行 5（非拉丁语系的本地文字）').optional(),
-            local_address_line6: z.string().describe('地址行 6（非拉丁语系的本地文字）').optional(),
-            local_address_line7: z.string().describe('地址行 7（非拉丁语系的本地文字）').optional(),
-            local_address_line8: z.string().describe('地址行 8（非拉丁语系的本地文字）').optional(),
-            local_address_line9: z.string().describe('地址行 9（非拉丁语系的本地文字）').optional(),
-            postal_code: z.string().describe('邮政编码').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('字段名'),
-                  value: z
-                    .string()
-                    .describe(
-                      '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('自定义字段')
-              .optional(),
-          }),
-        )
-        .describe('地址列表')
-        .optional(),
-      email_list: z
-        .array(
-          z.object({
-            email: z.string().describe('邮箱号'),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('字段名'),
-                  value: z
-                    .string()
-                    .describe(
-                      '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('自定义字段')
-              .optional(),
-          }),
-        )
-        .describe('邮箱列表')
-        .optional(),
-      work_experience_list: z
-        .array(
-          z.object({
-            company_organization: z
-              .array(
-                z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }),
-              )
-              .describe('公司 / 组织')
-              .optional(),
-            department: z
-              .array(
-                z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }),
-              )
-              .describe('部门')
-              .optional(),
-            job: z
-              .array(
-                z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }),
-              )
-              .describe('岗位')
-              .optional(),
-            description: z
-              .array(
-                z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }),
-              )
-              .describe('工作描述')
-              .optional(),
-            start_date: z.string().describe('开始日期').optional(),
-            end_date: z.string().describe('结束日期').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('字段名'),
-                  value: z
-                    .string()
-                    .describe(
-                      '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('自定义字段')
-              .optional(),
-          }),
-        )
-        .describe('工作履历列表')
-        .optional(),
-      education_list: z
-        .array(
-          z.object({
-            school: z
-              .array(
-                z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }),
-              )
-              .describe('学校'),
-            level_of_education: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '学历，枚举值可通过文档[【飞书人事枚举常量】]学历（level_of_education）枚举定义获得',
-              )
-              .optional(),
-            start_date: z.string().describe('开始日期').optional(),
-            end_date: z.string().describe('结束日期').optional(),
-            field_of_study: z
-              .array(
-                z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }),
-              )
-              .describe('专业')
-              .optional(),
-            degree: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '学位，枚举值可通过文档[【飞书人事枚举常量】]学位（degree）枚举定义获得',
-              )
-              .optional(),
-            school_name: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe('学校名称')
-              .optional(),
-            field_of_study_name: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe('专业名称')
-              .optional(),
-            country_region_id: z.string().describe('国家地区ID').optional(),
-            expected_end_date: z.string().describe('预期结束日期').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('字段名'),
-                  value: z
-                    .string()
-                    .describe(
-                      '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('自定义字段')
-              .optional(),
-          }),
-        )
-        .describe('教育经历列表')
-        .optional(),
-      bank_account_list: z
-        .array(
-          z.object({
-            bank_name: z
-              .string()
-              .describe(
-                '银行名称，如果已经填入银行枚举，该字段可为空。如果要填写数据不在系统提供的枚举范围内，该字段存储自定义银行名称',
-              )
-              .optional(),
-            bank_account_number: z.string().describe('银行账号'),
-            account_holder: z.string().describe('开户人姓名'),
-            bank: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '银行枚举，常见的银行枚举如：bank-5（交通银行）、bank-6（中国银行）、bank-7（中国建设银行）、bank-8（中国农业银行）、bank-9（中国工商银行）、bank-10（中国邮政储蓄银行）、bank-11（中国光大银行）、bank-12（中国民生银行）、bank-13（招商银行）、bank-14（中信银行）、bank-15（华夏银行）',
-              )
-              .optional(),
-            branch_name: z.string().describe('支行名称').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('字段名'),
-                  value: z
-                    .string()
-                    .describe(
-                      '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('自定义字段')
-              .optional(),
-            country_region_id: z
-              .string()
-              .describe('国家/地区id，详细信息可通过【查询国家/地区信息】接口查询获得')
-              .optional(),
-            bank_account_usage: z
-              .array(z.object({ enum_name: z.string().describe('枚举值') }))
-              .describe(
-                '银行卡用途，枚举值可通过文档[【飞书人事枚举常量】]银行卡用途（bank_account_usage）枚举定义部分获得',
-              )
-              .optional(),
-            bank_account_type: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '银行卡类型，枚举值可通过文档[【飞书人事枚举常量】]银行卡类型（bank_account_type）枚举定义部分获得',
-              )
-              .optional(),
-            currency_id: z.string().describe('货币id').optional(),
-          }),
-        )
-        .describe('银行账号')
-        .optional(),
-      national_id_list: z
-        .array(
-          z.object({
-            national_id_type_id: z.string().describe('国家证件类型，枚举值可通过【批量查询国家证件类型】接口获取'),
-            national_id_number: z.string().describe('证件号码'),
-            issue_date: z.string().describe('证件签发日期').optional(),
-            expiration_date: z.string().describe('证件到期日期').optional(),
-            country_region_id: z.string().describe('国家 / 地区'),
-            issued_by: z.string().describe('证件签发机构').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('字段名'),
-                  value: z
-                    .string()
-                    .describe(
-                      '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('自定义字段')
-              .optional(),
-          }),
-        )
-        .describe('证件号码')
-        .optional(),
-      dependent_list: z
-        .array(
-          z.object({
-            name: z
-              .object({
-                local_primary: z.string().describe('姓 - 本地文字').optional(),
-                local_first_name: z.string().describe('名 - 本地文字').optional(),
-                country_region_id: z.string().describe('国家 / 地区'),
-                name_type: z
-                  .object({ enum_name: z.string().describe('枚举值') })
-                  .describe(
-                    '姓名类型，枚举值可通过文档[【飞书人事枚举常量】]姓名类型（name_type）枚举定义部分获得',
-                  ),
-                local_first_name_2: z.string().describe('名 - 第二本地文字').optional(),
-                local_primary_2: z.string().describe('姓 - 第二本地文字').optional(),
-                additional_name_type: z
-                  .object({ enum_name: z.string().describe('枚举值') })
-                  .describe('补充姓名类型，比如emergency_contact_name（紧急联系人姓名）')
-                  .optional(),
-                first_name: z.string().describe('名').optional(),
-                full_name: z.string().describe('全名').optional(),
-                hereditary: z.string().describe('姓氏称谓').optional(),
-                custom_name: z.string().describe('自定义姓名').optional(),
-                custom_local_name: z.string().describe('本地文字的自定义姓名').optional(),
-                middle_name: z.string().describe('中间名').optional(),
-                name_primary: z.string().describe('姓').optional(),
-                secondary: z.string().describe('第二姓氏').optional(),
-                social: z
-                  .object({ enum_name: z.string().describe('枚举值') })
-                  .describe('尊称')
-                  .optional(),
-                tertiary: z.string().describe('婚后姓氏').optional(),
-                title: z
-                  .object({ enum_name: z.string().describe('枚举值') })
-                  .describe('头衔，比如Mr.Miss.Mrs.Prof.Dr')
-                  .optional(),
-                local_middle_name: z.string().describe('本地中间名').optional(),
-                local_secondary: z.string().describe('第二姓氏 - 本地文字').optional(),
-                custom_fields: z
-                  .array(
-                    z.object({
-                      field_name: z.string().describe('字段名'),
-                      value: z
-                        .string()
-                        .describe(
-                          '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-                        ),
-                    }),
-                  )
-                  .describe('自定义字段')
-                  .optional(),
-              })
-              .describe('亲属姓名')
-              .optional(),
-            relationship: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '亲属关系，枚举值可通过文档[【飞书人事枚举常量】]亲属关系（relationship）枚举定义获得',
-              ),
-            gender: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '亲属性别，枚举值可通过文档[【飞书人事枚举常量】]性别（gender）枚举定义部分获得',
-              )
-              .optional(),
-            date_of_birth: z.string().describe('生日').optional(),
-            nationality_id: z.string().describe('国籍').optional(),
-            national_id_list: z
-              .array(
-                z.object({
-                  national_id_type_id: z
-                    .string()
-                    .describe('国家证件类型，枚举值可通过【批量查询国家证件类型】接口获取'),
-                  national_id_number: z.string().describe('证件号码'),
-                  issue_date: z.string().describe('证件签发日期').optional(),
-                  expiration_date: z.string().describe('证件到期日期').optional(),
+    data: z
+      .object({
+        name_list: z
+          .array(
+            z.object({
+              local_primary: z.string().describe('姓 - 本地文字').optional(),
+              local_first_name: z.string().describe('名 - 本地文字').optional(),
+              country_region_id: z.string().describe('国家 / 地区'),
+              name_type: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe('姓名类型，枚举值可通过文档[【飞书人事枚举常量】]姓名类型（name_type）枚举定义部分获得'),
+              local_first_name_2: z.string().describe('名 - 第二本地文字').optional(),
+              local_primary_2: z.string().describe('姓 - 第二本地文字').optional(),
+              additional_name_type: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe('补充姓名类型，比如emergency_contact_name（紧急联系人姓名）')
+                .optional(),
+              first_name: z.string().describe('名').optional(),
+              full_name: z.string().describe('全名').optional(),
+              hereditary: z.string().describe('姓氏称谓').optional(),
+              custom_name: z.string().describe('自定义姓名').optional(),
+              custom_local_name: z.string().describe('本地文字的自定义姓名').optional(),
+              middle_name: z.string().describe('中间名').optional(),
+              name_primary: z.string().describe('姓').optional(),
+              secondary: z.string().describe('第二姓氏').optional(),
+              social: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe('尊称')
+                .optional(),
+              tertiary: z.string().describe('婚后姓氏').optional(),
+              title: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe('头衔，比如Mr.Miss.Mrs.Prof.Dr')
+                .optional(),
+              local_middle_name: z.string().describe('本地中间名').optional(),
+              local_secondary: z.string().describe('第二姓氏 - 本地文字').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('字段名'),
+                    value: z
+                      .string()
+                      .describe(
+                        '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('自定义字段')
+                .optional(),
+            }),
+          )
+          .describe('姓名')
+          .optional(),
+        gender: z
+          .object({ enum_name: z.string().describe('枚举值') })
+          .describe('性别，枚举值可通过文档[【飞书人事枚举常量】]性别（gender）枚举定义部分获得')
+          .optional(),
+        date_of_birth: z.string().describe('出生日期').optional(),
+        nationality_id: z.string().describe('国籍id').optional(),
+        race: z
+          .object({ enum_name: z.string().describe('枚举值') })
+          .describe('民族 / 种族，枚举值可通过文档[【飞书人事枚举常量】]民族（race）枚举定义部分获得')
+          .optional(),
+        marital_status: z
+          .object({ enum_name: z.string().describe('枚举值') })
+          .describe('婚姻状况，枚举值可通过文档[【飞书人事枚举常量】]婚姻状况（marital_status）枚举定义部分获得')
+          .optional(),
+        phone_list: z
+          .array(
+            z.object({
+              international_area_code: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe(
+                  '国家区号常见如：86_china（中国）、852_hong_kong（中国香港）、886_taiwan（中国台湾）、853_macao（中国澳门）、1_united_states_of_america（美利坚合众国）、7_russian_federation（俄罗斯联邦）、44_united_kingdom（英国）、81_japan（日本）、82_korea_republic_of（大韩民国）、91_india（印度）',
+                )
+                .optional(),
+              phone_number: z.string().describe('电话号码'),
+              device_type: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe('设备类型，枚举值可通过文档[【飞书人事枚举常量】]设备类型（device_type）枚举定义部分获得')
+                .optional(),
+              phone_usage: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe('电话用途，枚举值可通过文档[【飞书人事枚举常量】]电话用途（phone_usage）枚举定义部分获得')
+                .optional(),
+              is_primary: z.boolean().describe('是否为主要电话').optional(),
+              is_public: z.boolean().describe('是否为公开电话').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('字段名'),
+                    value: z
+                      .string()
+                      .describe(
+                        '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('自定义字段')
+                .optional(),
+            }),
+          )
+          .describe(
+            '电话列表，只有当满足下面所有条件时，电话在个人信息页才可见:- 电话号码不为空- is_primary = "true" - phone_usage = "home"',
+          )
+          .optional(),
+        address_list: z
+          .array(
+            z.object({
+              country_region_id: z.string().describe('国家 / 地区'),
+              region_id: z.string().describe('主要行政区').optional(),
+              city_id: z.string().describe('城市').optional(),
+              distinct_id: z.string().describe('区/县').optional(),
+              local_address_line1: z.string().describe('地址行 1（非拉丁语系的本地文字）').optional(),
+              local_address_line2: z.string().describe('地址行 2（非拉丁语系的本地文字）').optional(),
+              local_address_line3: z.string().describe('地址行 3（非拉丁语系的本地文字）').optional(),
+              local_address_line4: z.string().describe('地址行 4（非拉丁语系的本地文字）').optional(),
+              local_address_line5: z.string().describe('地址行 5（非拉丁语系的本地文字）').optional(),
+              local_address_line6: z.string().describe('地址行 6（非拉丁语系的本地文字）').optional(),
+              local_address_line7: z.string().describe('地址行 7（非拉丁语系的本地文字）').optional(),
+              local_address_line8: z.string().describe('地址行 8（非拉丁语系的本地文字）').optional(),
+              local_address_line9: z.string().describe('地址行 9（非拉丁语系的本地文字）').optional(),
+              postal_code: z.string().describe('邮政编码').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('字段名'),
+                    value: z
+                      .string()
+                      .describe(
+                        '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('自定义字段')
+                .optional(),
+            }),
+          )
+          .describe('地址列表')
+          .optional(),
+        email_list: z
+          .array(
+            z.object({
+              email: z.string().describe('邮箱号'),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('字段名'),
+                    value: z
+                      .string()
+                      .describe(
+                        '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('自定义字段')
+                .optional(),
+            }),
+          )
+          .describe('邮箱列表')
+          .optional(),
+        work_experience_list: z
+          .array(
+            z.object({
+              company_organization: z
+                .array(
+                  z.object({
+                    lang: z.string().describe('名称信息的语言'),
+                    value: z.string().describe('名称信息的内容'),
+                  }),
+                )
+                .describe('公司 / 组织')
+                .optional(),
+              department: z
+                .array(
+                  z.object({
+                    lang: z.string().describe('名称信息的语言'),
+                    value: z.string().describe('名称信息的内容'),
+                  }),
+                )
+                .describe('部门')
+                .optional(),
+              job: z
+                .array(
+                  z.object({
+                    lang: z.string().describe('名称信息的语言'),
+                    value: z.string().describe('名称信息的内容'),
+                  }),
+                )
+                .describe('岗位')
+                .optional(),
+              description: z
+                .array(
+                  z.object({
+                    lang: z.string().describe('名称信息的语言'),
+                    value: z.string().describe('名称信息的内容'),
+                  }),
+                )
+                .describe('工作描述')
+                .optional(),
+              start_date: z.string().describe('开始日期').optional(),
+              end_date: z.string().describe('结束日期').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('字段名'),
+                    value: z
+                      .string()
+                      .describe(
+                        '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('自定义字段')
+                .optional(),
+            }),
+          )
+          .describe('工作履历列表')
+          .optional(),
+        education_list: z
+          .array(
+            z.object({
+              school: z
+                .array(
+                  z.object({
+                    lang: z.string().describe('名称信息的语言'),
+                    value: z.string().describe('名称信息的内容'),
+                  }),
+                )
+                .describe('学校'),
+              level_of_education: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe('学历，枚举值可通过文档[【飞书人事枚举常量】]学历（level_of_education）枚举定义获得')
+                .optional(),
+              start_date: z.string().describe('开始日期').optional(),
+              end_date: z.string().describe('结束日期').optional(),
+              field_of_study: z
+                .array(
+                  z.object({
+                    lang: z.string().describe('名称信息的语言'),
+                    value: z.string().describe('名称信息的内容'),
+                  }),
+                )
+                .describe('专业')
+                .optional(),
+              degree: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe('学位，枚举值可通过文档[【飞书人事枚举常量】]学位（degree）枚举定义获得')
+                .optional(),
+              school_name: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe('学校名称')
+                .optional(),
+              field_of_study_name: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe('专业名称')
+                .optional(),
+              country_region_id: z.string().describe('国家地区ID').optional(),
+              expected_end_date: z.string().describe('预期结束日期').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('字段名'),
+                    value: z
+                      .string()
+                      .describe(
+                        '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('自定义字段')
+                .optional(),
+            }),
+          )
+          .describe('教育经历列表')
+          .optional(),
+        bank_account_list: z
+          .array(
+            z.object({
+              bank_name: z
+                .string()
+                .describe(
+                  '银行名称，如果已经填入银行枚举，该字段可为空。如果要填写数据不在系统提供的枚举范围内，该字段存储自定义银行名称',
+                )
+                .optional(),
+              bank_account_number: z.string().describe('银行账号'),
+              account_holder: z.string().describe('开户人姓名'),
+              bank: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe(
+                  '银行枚举，常见的银行枚举如：bank-5（交通银行）、bank-6（中国银行）、bank-7（中国建设银行）、bank-8（中国农业银行）、bank-9（中国工商银行）、bank-10（中国邮政储蓄银行）、bank-11（中国光大银行）、bank-12（中国民生银行）、bank-13（招商银行）、bank-14（中信银行）、bank-15（华夏银行）',
+                )
+                .optional(),
+              branch_name: z.string().describe('支行名称').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('字段名'),
+                    value: z
+                      .string()
+                      .describe(
+                        '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('自定义字段')
+                .optional(),
+              country_region_id: z
+                .string()
+                .describe('国家/地区id，详细信息可通过【查询国家/地区信息】接口查询获得')
+                .optional(),
+              bank_account_usage: z
+                .array(z.object({ enum_name: z.string().describe('枚举值') }))
+                .describe(
+                  '银行卡用途，枚举值可通过文档[【飞书人事枚举常量】]银行卡用途（bank_account_usage）枚举定义部分获得',
+                )
+                .optional(),
+              bank_account_type: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe(
+                  '银行卡类型，枚举值可通过文档[【飞书人事枚举常量】]银行卡类型（bank_account_type）枚举定义部分获得',
+                )
+                .optional(),
+              currency_id: z.string().describe('货币id').optional(),
+            }),
+          )
+          .describe('银行账号')
+          .optional(),
+        national_id_list: z
+          .array(
+            z.object({
+              national_id_type_id: z.string().describe('国家证件类型，枚举值可通过【批量查询国家证件类型】接口获取'),
+              national_id_number: z.string().describe('证件号码'),
+              issue_date: z.string().describe('证件签发日期').optional(),
+              expiration_date: z.string().describe('证件到期日期').optional(),
+              country_region_id: z.string().describe('国家 / 地区'),
+              issued_by: z.string().describe('证件签发机构').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('字段名'),
+                    value: z
+                      .string()
+                      .describe(
+                        '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('自定义字段')
+                .optional(),
+            }),
+          )
+          .describe('证件号码')
+          .optional(),
+        dependent_list: z
+          .array(
+            z.object({
+              name: z
+                .object({
+                  local_primary: z.string().describe('姓 - 本地文字').optional(),
+                  local_first_name: z.string().describe('名 - 本地文字').optional(),
                   country_region_id: z.string().describe('国家 / 地区'),
-                  issued_by: z.string().describe('证件签发机构').optional(),
+                  name_type: z
+                    .object({ enum_name: z.string().describe('枚举值') })
+                    .describe('姓名类型，枚举值可通过文档[【飞书人事枚举常量】]姓名类型（name_type）枚举定义部分获得'),
+                  local_first_name_2: z.string().describe('名 - 第二本地文字').optional(),
+                  local_primary_2: z.string().describe('姓 - 第二本地文字').optional(),
+                  additional_name_type: z
+                    .object({ enum_name: z.string().describe('枚举值') })
+                    .describe('补充姓名类型，比如emergency_contact_name（紧急联系人姓名）')
+                    .optional(),
+                  first_name: z.string().describe('名').optional(),
+                  full_name: z.string().describe('全名').optional(),
+                  hereditary: z.string().describe('姓氏称谓').optional(),
+                  custom_name: z.string().describe('自定义姓名').optional(),
+                  custom_local_name: z.string().describe('本地文字的自定义姓名').optional(),
+                  middle_name: z.string().describe('中间名').optional(),
+                  name_primary: z.string().describe('姓').optional(),
+                  secondary: z.string().describe('第二姓氏').optional(),
+                  social: z
+                    .object({ enum_name: z.string().describe('枚举值') })
+                    .describe('尊称')
+                    .optional(),
+                  tertiary: z.string().describe('婚后姓氏').optional(),
+                  title: z
+                    .object({ enum_name: z.string().describe('枚举值') })
+                    .describe('头衔，比如Mr.Miss.Mrs.Prof.Dr')
+                    .optional(),
+                  local_middle_name: z.string().describe('本地中间名').optional(),
+                  local_secondary: z.string().describe('第二姓氏 - 本地文字').optional(),
                   custom_fields: z
                     .array(
                       z.object({
@@ -5529,161 +4861,70 @@ export const corehrV1PersonPatch = {
                     )
                     .describe('自定义字段')
                     .optional(),
-                }),
-              )
-              .describe('证件号码')
-              .optional(),
-            spouses_working_status: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe('配偶工作状态，比如working（在岗）、not_working（不在岗）')
-              .optional(),
-            is_this_person_covered_by_health_insurance: z.boolean().describe('包含家属医疗保险').optional(),
-            is_this_person_allowed_for_tax_deduction: z.boolean().describe('允许家属抵扣税款').optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('字段名'),
-                  value: z
-                    .string()
-                    .describe(
-                      '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('自定义字段')
-              .optional(),
-            dependent_name: z.string().describe('家庭成员姓名').optional(),
-            employer: z.string().describe('工作单位').optional(),
-            job: z.string().describe('岗位').optional(),
-            phone: z
-              .object({
-                international_area_code: z
-                  .object({ enum_name: z.string().describe('枚举值') })
-                  .describe(
-                    '国家区号常见如：86_china（中国）、852_hong_kong（中国香港）、886_taiwan（中国台湾）、853_macao（中国澳门）、1_united_states_of_america（美利坚合众国）、7_russian_federation（俄罗斯联邦）、44_united_kingdom（英国）、81_japan（日本）、82_korea_republic_of（大韩民国）、91_india（印度）',
-                  )
-                  .optional(),
-                phone_number: z.string().describe('电话号码'),
-                custom_fields: z
-                  .array(
-                    z.object({
-                      field_name: z.string().describe('字段名'),
-                      value: z
-                        .string()
-                        .describe(
-                          '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-                        ),
-                    }),
-                  )
-                  .describe('自定义字段')
-                  .optional(),
-              })
-              .describe('电话')
-              .optional(),
-            address: z
-              .object({
-                id: z.string().describe('地址ID').optional(),
-                country_region_id: z.string().describe('国家 / 地区'),
-                region_id: z.string().describe('主要行政区').optional(),
-                city_id: z.string().describe('城市').optional(),
-                distinct_id: z.string().describe('区/县').optional(),
-                local_address_line1: z.string().describe('地址行 1（非拉丁语系的本地文字）').optional(),
-                local_address_line2: z.string().describe('地址行 2（非拉丁语系的本地文字）').optional(),
-                local_address_line3: z.string().describe('地址行 1（非拉丁语系的本地文字）').optional(),
-                local_address_line4: z.string().describe('地址行 2（非拉丁语系的本地文字）').optional(),
-                local_address_line5: z.string().describe('地址行 3（非拉丁语系的本地文字）').optional(),
-                local_address_line6: z.string().describe('地址行 4（非拉丁语系的本地文字）').optional(),
-                local_address_line7: z.string().describe('地址行 5（非拉丁语系的本地文字）').optional(),
-                local_address_line8: z.string().describe('地址行 6（非拉丁语系的本地文字）').optional(),
-                local_address_line9: z.string().describe('地址行 7（非拉丁语系的本地文字）').optional(),
-                postal_code: z.string().describe('地址行 8（非拉丁语系的本地文字）').optional(),
-                custom_fields: z
-                  .array(
-                    z.object({
-                      field_name: z.string().describe('字段名'),
-                      value: z
-                        .string()
-                        .describe(
-                          '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(123, 123.23, true, [\\"id1\\",\\"id2\\], 2006-01-02 15:04:05])',
-                        ),
-                    }),
-                  )
-                  .describe('地址行 9（非拉丁语系的本地文字）')
-                  .optional(),
-              })
-              .describe('联系地址')
-              .optional(),
-            birth_certificate_of_child: z
-              .array(z.object({ id: z.string().describe('上传文件ID').optional() }))
-              .describe('出生证明')
-              .optional(),
-          }),
-        )
-        .describe('亲属列表')
-        .optional(),
-      emergency_contact_list: z
-        .array(
-          z.object({
-            name: z
-              .object({
-                local_primary: z.string().describe('姓 - 本地文字').optional(),
-                local_first_name: z.string().describe('名 - 本地文字').optional(),
-                country_region_id: z.string().describe('国家 / 地区'),
-                name_type: z
-                  .object({ enum_name: z.string().describe('枚举值') })
-                  .describe(
-                    '姓名类型，枚举值可通过文档[【飞书人事枚举常量】]姓名类型（name_type）枚举定义部分获得',
-                  ),
-                local_first_name_2: z.string().describe('名 - 第二本地文字').optional(),
-                local_primary_2: z.string().describe('姓 - 第二本地文字').optional(),
-                additional_name_type: z
-                  .object({ enum_name: z.string().describe('枚举值') })
-                  .describe('补充姓名类型，比如emergency_contact_name（紧急联系人姓名）')
-                  .optional(),
-                first_name: z.string().describe('名').optional(),
-                full_name: z.string().describe('全名').optional(),
-                hereditary: z.string().describe('姓氏称谓').optional(),
-                custom_name: z.string().describe('自定义姓名').optional(),
-                custom_local_name: z.string().describe('本地文字的自定义姓名').optional(),
-                middle_name: z.string().describe('中间名').optional(),
-                name_primary: z.string().describe('姓').optional(),
-                secondary: z.string().describe('第二姓氏').optional(),
-                social: z
-                  .object({ enum_name: z.string().describe('枚举值') })
-                  .describe('尊称')
-                  .optional(),
-                tertiary: z.string().describe('婚后姓氏').optional(),
-                title: z
-                  .object({ enum_name: z.string().describe('枚举值') })
-                  .describe('头衔，比如Mr.Miss.Mrs.Prof.Dr')
-                  .optional(),
-                local_middle_name: z.string().describe('本地中间名').optional(),
-                local_secondary: z.string().describe('第二姓氏 - 本地文字').optional(),
-                custom_fields: z
-                  .array(
-                    z.object({
-                      field_name: z.string().describe('字段名'),
-                      value: z
-                        .string()
-                        .describe(
-                          '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-                        ),
-                    }),
-                  )
-                  .describe('自定义字段')
-                  .optional(),
-              })
-              .describe('紧急联系人姓名')
-              .optional(),
-            relationship: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe(
-                '紧急联系人与本人亲属关系，枚举值可通过文档[【飞书人事枚举常量】]亲属关系（relationship）枚举定义获得',
-              )
-              .optional(),
-            phone_ist: z
-              .array(
-                z.object({
+                })
+                .describe('亲属姓名')
+                .optional(),
+              relationship: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe('亲属关系，枚举值可通过文档[【飞书人事枚举常量】]亲属关系（relationship）枚举定义获得'),
+              gender: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe('亲属性别，枚举值可通过文档[【飞书人事枚举常量】]性别（gender）枚举定义部分获得')
+                .optional(),
+              date_of_birth: z.string().describe('生日').optional(),
+              nationality_id: z.string().describe('国籍').optional(),
+              national_id_list: z
+                .array(
+                  z.object({
+                    national_id_type_id: z
+                      .string()
+                      .describe('国家证件类型，枚举值可通过【批量查询国家证件类型】接口获取'),
+                    national_id_number: z.string().describe('证件号码'),
+                    issue_date: z.string().describe('证件签发日期').optional(),
+                    expiration_date: z.string().describe('证件到期日期').optional(),
+                    country_region_id: z.string().describe('国家 / 地区'),
+                    issued_by: z.string().describe('证件签发机构').optional(),
+                    custom_fields: z
+                      .array(
+                        z.object({
+                          field_name: z.string().describe('字段名'),
+                          value: z
+                            .string()
+                            .describe(
+                              '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                            ),
+                        }),
+                      )
+                      .describe('自定义字段')
+                      .optional(),
+                  }),
+                )
+                .describe('证件号码')
+                .optional(),
+              spouses_working_status: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe('配偶工作状态，比如working（在岗）、not_working（不在岗）')
+                .optional(),
+              is_this_person_covered_by_health_insurance: z.boolean().describe('包含家属医疗保险').optional(),
+              is_this_person_allowed_for_tax_deduction: z.boolean().describe('允许家属抵扣税款').optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('字段名'),
+                    value: z
+                      .string()
+                      .describe(
+                        '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('自定义字段')
+                .optional(),
+              dependent_name: z.string().describe('家庭成员姓名').optional(),
+              employer: z.string().describe('工作单位').optional(),
+              job: z.string().describe('岗位').optional(),
+              phone: z
+                .object({
                   international_area_code: z
                     .object({ enum_name: z.string().describe('枚举值') })
                     .describe(
@@ -5704,62 +4945,190 @@ export const corehrV1PersonPatch = {
                     )
                     .describe('自定义字段')
                     .optional(),
-                }),
-              )
-              .describe('紧急联系人电话')
-              .optional(),
-            custom_fields: z
-              .array(
-                z.object({
-                  field_name: z.string().describe('字段名'),
-                  value: z
-                    .string()
-                    .describe(
-                      '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-                    ),
-                }),
-              )
-              .describe('自定义字段')
-              .optional(),
-            legal_name: z.string().describe('法定姓名').optional(),
-          }),
-        )
-        .describe('紧急联系人列表')
-        .optional(),
-      date_entered_workforce: z.string().describe('参加工作日期').optional(),
-      profile_image_id: z.string().describe('头像资源的 ID').optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('字段名'),
-            value: z
-              .string()
-              .describe(
-                '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe('自定义字段')
-        .optional(),
-      resident_tax_id_list: z.array(z.string()).describe('纳税身份信息').optional(),
-      age: z.number().describe('年龄').optional(),
-      personal_profile: z
-        .array(
-          z.object({
-            personal_profile_type: z
-              .object({ enum_name: z.string().describe('枚举值') })
-              .describe('个人资料类型，比如银行储蓄卡复印件、证件照、个人信息采集表、生活照')
-              .optional(),
-            files: z
-              .array(z.object({ id: z.string().describe('上传文件ID').optional() }))
-              .describe('上传文件列表')
-              .optional(),
-          }),
-        )
-        .describe('个人资料')
-        .optional(),
-    }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+                })
+                .describe('电话')
+                .optional(),
+              address: z
+                .object({
+                  id: z.string().describe('地址ID').optional(),
+                  country_region_id: z.string().describe('国家 / 地区'),
+                  region_id: z.string().describe('主要行政区').optional(),
+                  city_id: z.string().describe('城市').optional(),
+                  distinct_id: z.string().describe('区/县').optional(),
+                  local_address_line1: z.string().describe('地址行 1（非拉丁语系的本地文字）').optional(),
+                  local_address_line2: z.string().describe('地址行 2（非拉丁语系的本地文字）').optional(),
+                  local_address_line3: z.string().describe('地址行 1（非拉丁语系的本地文字）').optional(),
+                  local_address_line4: z.string().describe('地址行 2（非拉丁语系的本地文字）').optional(),
+                  local_address_line5: z.string().describe('地址行 3（非拉丁语系的本地文字）').optional(),
+                  local_address_line6: z.string().describe('地址行 4（非拉丁语系的本地文字）').optional(),
+                  local_address_line7: z.string().describe('地址行 5（非拉丁语系的本地文字）').optional(),
+                  local_address_line8: z.string().describe('地址行 6（非拉丁语系的本地文字）').optional(),
+                  local_address_line9: z.string().describe('地址行 7（非拉丁语系的本地文字）').optional(),
+                  postal_code: z.string().describe('地址行 8（非拉丁语系的本地文字）').optional(),
+                  custom_fields: z
+                    .array(
+                      z.object({
+                        field_name: z.string().describe('字段名'),
+                        value: z
+                          .string()
+                          .describe(
+                            '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(123, 123.23, true, [\\"id1\\",\\"id2\\], 2006-01-02 15:04:05])',
+                          ),
+                      }),
+                    )
+                    .describe('地址行 9（非拉丁语系的本地文字）')
+                    .optional(),
+                })
+                .describe('联系地址')
+                .optional(),
+              birth_certificate_of_child: z
+                .array(z.object({ id: z.string().describe('上传文件ID').optional() }))
+                .describe('出生证明')
+                .optional(),
+            }),
+          )
+          .describe('亲属列表')
+          .optional(),
+        emergency_contact_list: z
+          .array(
+            z.object({
+              name: z
+                .object({
+                  local_primary: z.string().describe('姓 - 本地文字').optional(),
+                  local_first_name: z.string().describe('名 - 本地文字').optional(),
+                  country_region_id: z.string().describe('国家 / 地区'),
+                  name_type: z
+                    .object({ enum_name: z.string().describe('枚举值') })
+                    .describe('姓名类型，枚举值可通过文档[【飞书人事枚举常量】]姓名类型（name_type）枚举定义部分获得'),
+                  local_first_name_2: z.string().describe('名 - 第二本地文字').optional(),
+                  local_primary_2: z.string().describe('姓 - 第二本地文字').optional(),
+                  additional_name_type: z
+                    .object({ enum_name: z.string().describe('枚举值') })
+                    .describe('补充姓名类型，比如emergency_contact_name（紧急联系人姓名）')
+                    .optional(),
+                  first_name: z.string().describe('名').optional(),
+                  full_name: z.string().describe('全名').optional(),
+                  hereditary: z.string().describe('姓氏称谓').optional(),
+                  custom_name: z.string().describe('自定义姓名').optional(),
+                  custom_local_name: z.string().describe('本地文字的自定义姓名').optional(),
+                  middle_name: z.string().describe('中间名').optional(),
+                  name_primary: z.string().describe('姓').optional(),
+                  secondary: z.string().describe('第二姓氏').optional(),
+                  social: z
+                    .object({ enum_name: z.string().describe('枚举值') })
+                    .describe('尊称')
+                    .optional(),
+                  tertiary: z.string().describe('婚后姓氏').optional(),
+                  title: z
+                    .object({ enum_name: z.string().describe('枚举值') })
+                    .describe('头衔，比如Mr.Miss.Mrs.Prof.Dr')
+                    .optional(),
+                  local_middle_name: z.string().describe('本地中间名').optional(),
+                  local_secondary: z.string().describe('第二姓氏 - 本地文字').optional(),
+                  custom_fields: z
+                    .array(
+                      z.object({
+                        field_name: z.string().describe('字段名'),
+                        value: z
+                          .string()
+                          .describe(
+                            '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                          ),
+                      }),
+                    )
+                    .describe('自定义字段')
+                    .optional(),
+                })
+                .describe('紧急联系人姓名')
+                .optional(),
+              relationship: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe(
+                  '紧急联系人与本人亲属关系，枚举值可通过文档[【飞书人事枚举常量】]亲属关系（relationship）枚举定义获得',
+                )
+                .optional(),
+              phone_ist: z
+                .array(
+                  z.object({
+                    international_area_code: z
+                      .object({ enum_name: z.string().describe('枚举值') })
+                      .describe(
+                        '国家区号常见如：86_china（中国）、852_hong_kong（中国香港）、886_taiwan（中国台湾）、853_macao（中国澳门）、1_united_states_of_america（美利坚合众国）、7_russian_federation（俄罗斯联邦）、44_united_kingdom（英国）、81_japan（日本）、82_korea_republic_of（大韩民国）、91_india（印度）',
+                      )
+                      .optional(),
+                    phone_number: z.string().describe('电话号码'),
+                    custom_fields: z
+                      .array(
+                        z.object({
+                          field_name: z.string().describe('字段名'),
+                          value: z
+                            .string()
+                            .describe(
+                              '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                            ),
+                        }),
+                      )
+                      .describe('自定义字段')
+                      .optional(),
+                  }),
+                )
+                .describe('紧急联系人电话')
+                .optional(),
+              custom_fields: z
+                .array(
+                  z.object({
+                    field_name: z.string().describe('字段名'),
+                    value: z
+                      .string()
+                      .describe(
+                        '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                      ),
+                  }),
+                )
+                .describe('自定义字段')
+                .optional(),
+              legal_name: z.string().describe('法定姓名').optional(),
+            }),
+          )
+          .describe('紧急联系人列表')
+          .optional(),
+        date_entered_workforce: z.string().describe('参加工作日期').optional(),
+        profile_image_id: z.string().describe('头像资源的 ID').optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('字段名'),
+              value: z
+                .string()
+                .describe(
+                  '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('自定义字段')
+          .optional(),
+        resident_tax_id_list: z.array(z.string()).describe('纳税身份信息').optional(),
+        age: z.number().describe('年龄').optional(),
+        personal_profile: z
+          .array(
+            z.object({
+              personal_profile_type: z
+                .object({ enum_name: z.string().describe('枚举值') })
+                .describe('个人资料类型，比如银行储蓄卡复印件、证件照、个人信息采集表、生活照')
+                .optional(),
+              files: z
+                .array(z.object({ id: z.string().describe('上传文件ID').optional() }))
+                .describe('上传文件列表')
+                .optional(),
+            }),
+          )
+          .describe('个人资料')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
     path: z.object({ person_id: z.string().describe('person的ID') }),
   },
 };
@@ -5786,13 +5155,7 @@ export const corehrV1PreHireGet = {
     '[Feishu/Lark]-历史版本（不推荐）-飞书人事-入职-查询单个待入职信息-根据 ID 查询单个待入职人员，本接口不再推荐使用（个人信息相关数据不完整），请使用[查询待入职]接口获取更完整信息',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      pre_hire_id: z
-        .string()
-        .describe(
-          '待入职ID，可从[搜索待入职人员信息]接口获取',
-        ),
-    }),
+    path: z.object({ pre_hire_id: z.string().describe('待入职ID，可从[搜索待入职人员信息]接口获取') }),
   },
 };
 export const corehrV1PreHireList = {
@@ -5813,12 +5176,7 @@ export const corehrV1PreHireList = {
         )
         .optional(),
       page_size: z.string().describe('分页大小，最大值100，最小值 1'),
-      pre_hire_ids: z
-        .array(z.string())
-        .describe(
-          '待入职ID列表，可通过[搜索待入职]接口获取',
-        )
-        .optional(),
+      pre_hire_ids: z.array(z.string()).describe('待入职ID列表，可通过[搜索待入职]接口获取').optional(),
     }),
   },
 };
@@ -5873,7 +5231,9 @@ export const corehrV1PreHirePatch = {
           '入职状态- 待入职(preboarding)- 已删除(deleted)- 准备就绪(day_one)- 已撤销(withdrawn)- 已完成(completed)',
         ),
     }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
     path: z.object({ pre_hire_id: z.string().describe('待入职ID') }),
   },
 };
@@ -5947,14 +5307,16 @@ export const corehrV1SecurityGroupQuery = {
       updated_at_gte: z.string().describe('授权时间大于').optional(),
       updated_at_lte: z.string().describe('授权时间小于').optional(),
     }),
-    params: z.object({
-      department_id_type: z
-        .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
-        .describe(
-          '此次调用中使用的部门 ID 类型 Options:open_department_id(以 open_department_id 来标识部门),department_id(以 department_id 来标识部门),people_corehr_department_id(以 people_corehr_department_id 来标识部门)',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        department_id_type: z
+          .enum(['open_department_id', 'department_id', 'people_corehr_department_id'])
+          .describe(
+            '此次调用中使用的部门 ID 类型 Options:open_department_id(以 open_department_id 来标识部门),department_id(以 department_id 来标识部门),people_corehr_department_id(以 people_corehr_department_id 来标识部门)',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1SubdivisionGet = {
@@ -5963,7 +5325,8 @@ export const corehrV1SubdivisionGet = {
   sdkName: 'corehr.v1.subdivision.get',
   path: '/open-apis/corehr/v1/subdivisions/:subdivision_id',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-飞书人事-基础数据-地理库信息-查询单条省份/行政区信息-查询单条省份/行政区信息',
+  description:
+    '[Feishu/Lark]-历史版本（不推荐）-飞书人事-基础数据-地理库信息-查询单条省份/行政区信息-查询单条省份/行政区信息',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({ subdivision_id: z.string().describe('省份/行政区 ID') }),
@@ -5975,7 +5338,8 @@ export const corehrV1SubdivisionList = {
   sdkName: 'corehr.v1.subdivision.list',
   path: '/open-apis/corehr/v1/subdivisions',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-飞书人事-基础数据-地理库信息-批量查询省份/行政区信息-批量查询省份/行政区信息',
+  description:
+    '[Feishu/Lark]-历史版本（不推荐）-飞书人事-基础数据-地理库信息-批量查询省份/行政区信息-批量查询省份/行政区信息',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -5996,7 +5360,8 @@ export const corehrV1SubregionGet = {
   sdkName: 'corehr.v1.subregion.get',
   path: '/open-apis/corehr/v1/subregions/:subregion_id',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-飞书人事-基础数据-地理库信息-查询单条城市/区域信息-查询单条城市/区域信息',
+  description:
+    '[Feishu/Lark]-历史版本（不推荐）-飞书人事-基础数据-地理库信息-查询单条城市/区域信息-查询单条城市/区域信息',
   accessTokens: ['tenant'],
   schema: {
     path: z.object({ subregion_id: z.string().describe('城市/区域 ID') }),
@@ -6008,7 +5373,8 @@ export const corehrV1SubregionList = {
   sdkName: 'corehr.v1.subregion.list',
   path: '/open-apis/corehr/v1/subregions',
   httpMethod: 'GET',
-  description: '[Feishu/Lark]-飞书人事-基础数据-地理库信息-批量查询城市/区域信息-批量查询城市/区域信息',
+  description:
+    '[Feishu/Lark]-历史版本（不推荐）-飞书人事-基础数据-地理库信息-批量查询城市/区域信息-批量查询城市/区域信息',
   accessTokens: ['tenant'],
   schema: {
     params: z.object({
@@ -6032,13 +5398,15 @@ export const corehrV1TransferReasonQuery = {
   description: '[Feishu/Lark]-飞书人事（企业版）-异动-获取异动原因列表-获取异动原因列表',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      active: z.boolean().describe('异动原因状态').optional(),
-      transfer_reason_unique_identifier: z
-        .array(z.string())
-        .describe('异动原因唯一标识，多条时最多数量为10')
-        .optional(),
-    }),
+    params: z
+      .object({
+        active: z.boolean().describe('异动原因状态').optional(),
+        transfer_reason_unique_identifier: z
+          .array(z.string())
+          .describe('异动原因唯一标识，多条时最多数量为10')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1TransferTypeQuery = {
@@ -6050,10 +5418,15 @@ export const corehrV1TransferTypeQuery = {
   description: '[Feishu/Lark]-飞书人事（企业版）-异动-获取异动类型列表-获取异动类型列表',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      active: z.boolean().describe('异动类型状态').optional(),
-      transfer_type_unique_identifier: z.array(z.string()).describe('异动类型唯一标识，多条时最多数量为10').optional(),
-    }),
+    params: z
+      .object({
+        active: z.boolean().describe('异动类型状态').optional(),
+        transfer_type_unique_identifier: z
+          .array(z.string())
+          .describe('异动类型唯一标识，多条时最多数量为10')
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const corehrV1WorkingHoursTypeCreate = {
@@ -6072,9 +5445,7 @@ export const corehrV1WorkingHoursTypeCreate = {
         .describe('名称'),
       country_region_id_list: z
         .array(z.string())
-        .describe(
-          '国家/地区 ID 列表- 可通过[查询国家/地区信息]获取',
-        )
+        .describe('国家/地区 ID 列表- 可通过[查询国家/地区信息]获取')
         .optional(),
       default_for_job: z.boolean().describe('职务默认值'),
       active: z.boolean().describe('是否启用'),
@@ -6089,12 +5460,12 @@ export const corehrV1WorkingHoursTypeCreate = {
               ),
           }),
         )
-        .describe(
-          '自定义字段- 具体支持的对象请参考[自定义字段说明]',
-        )
+        .describe('自定义字段- 具体支持的对象请参考[自定义字段说明]')
         .optional(),
     }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
   },
 };
 export const corehrV1WorkingHoursTypeDelete = {
@@ -6107,11 +5478,7 @@ export const corehrV1WorkingHoursTypeDelete = {
   accessTokens: ['tenant'],
   schema: {
     path: z.object({
-      working_hours_type_id: z
-        .string()
-        .describe(
-          '需要删除的工时制度 ID- 可通过[批量查询工时制度]获取',
-        ),
+      working_hours_type_id: z.string().describe('需要删除的工时制度 ID- 可通过[批量查询工时制度]获取'),
     }),
   },
 };
@@ -6124,13 +5491,7 @@ export const corehrV1WorkingHoursTypeGet = {
   description: '[Feishu/Lark]-飞书人事（企业版）-基础数据-工时制度-查询单个工时制度-根据 ID 查询单个工时制度',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      working_hours_type_id: z
-        .string()
-        .describe(
-          '工时制度 ID- 可通过[批量查询工时制度]获取',
-        ),
-    }),
+    path: z.object({ working_hours_type_id: z.string().describe('工时制度 ID- 可通过[批量查询工时制度]获取') }),
   },
 };
 export const corehrV1WorkingHoursTypeList = {
@@ -6162,44 +5523,40 @@ export const corehrV1WorkingHoursTypePatch = {
   description: '[Feishu/Lark]-飞书人事（企业版）-基础数据-工时制度-更新工时制度-更新工时制度',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      code: z.string().describe('编码').optional(),
-      name: z
-        .array(z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }))
-        .describe('名称')
-        .optional(),
-      country_region_id_list: z
-        .array(z.string())
-        .describe(
-          '国家/地区 ID 列表- 可通过[查询国家/地区信息]获取',
-        )
-        .optional(),
-      default_for_job: z.boolean().describe('职务默认值').optional(),
-      active: z.boolean().describe('是否启用').optional(),
-      custom_fields: z
-        .array(
-          z.object({
-            field_name: z.string().describe('字段名'),
-            value: z
-              .string()
-              .describe(
-                '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
-              ),
-          }),
-        )
-        .describe(
-          '自定义字段- 具体支持的对象请参考[自定义字段说明]',
-        )
-        .optional(),
-    }),
-    params: z.object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() }),
-    path: z.object({
-      working_hours_type_id: z
-        .string()
-        .describe(
-          '工时制度ID- 可通过[批量查询工时制度]获取',
-        ),
-    }),
+    data: z
+      .object({
+        code: z.string().describe('编码').optional(),
+        name: z
+          .array(
+            z.object({ lang: z.string().describe('名称信息的语言'), value: z.string().describe('名称信息的内容') }),
+          )
+          .describe('名称')
+          .optional(),
+        country_region_id_list: z
+          .array(z.string())
+          .describe('国家/地区 ID 列表- 可通过[查询国家/地区信息]获取')
+          .optional(),
+        default_for_job: z.boolean().describe('职务默认值').optional(),
+        active: z.boolean().describe('是否启用').optional(),
+        custom_fields: z
+          .array(
+            z.object({
+              field_name: z.string().describe('字段名'),
+              value: z
+                .string()
+                .describe(
+                  '字段值，是json转义后的字符串，根据元数据定义不同，字段格式不同(如123, 123.23, "true", [\\"id1\\",\\"id2\\"], "2006-01-02 15:04:05")',
+                ),
+            }),
+          )
+          .describe('自定义字段- 具体支持的对象请参考[自定义字段说明]')
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ client_token: z.string().describe('根据client_token是否一致来判断是否为同一请求').optional() })
+      .optional(),
+    path: z.object({ working_hours_type_id: z.string().describe('工时制度ID- 可通过[批量查询工时制度]获取') }),
   },
 };
 export const corehrV1Tools = [

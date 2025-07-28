@@ -121,7 +121,9 @@ export const imV1ChatAnnouncementGet = {
     '[Feishu/Lark]-Group Chat-Group announcement-Obtain group announcement information-Obtains the group announcement in a chat, with the same format as [Docs]',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       chat_id: z
         .string()
@@ -175,149 +177,153 @@ export const imV1ChatCreate = {
     '[Feishu/Lark]-Group Chat-Group management-Create a group-Create a group chat. When creating a group chat, you can set the group avatar, group name, group owner, group type and other configurations. You can also invite group members and group bots to join the group',
   accessTokens: ['tenant'],
   schema: {
-    data: z.object({
-      avatar: z
-        .string()
-        .describe(
-          'Image Key of group avatar- Can be obtained by [upload image] (Note: ==image_type== of uploaded image needs to be specified as ==avatar==)- If no value is passed, the system default avatar will be used',
-        )
-        .optional(),
-      name: z
-        .string()
-        .describe(
-          'Group name**Notes**:- It is recommended that the group name does not exceed 60 characters.- The length of the public group name must be at least 2 characters.- If the private group does not fill in the group name, the group name defaults to "`(no titile)`"',
-        )
-        .optional(),
-      description: z
-        .string()
-        .describe('Group description. Recommended not to exceed 100 characters.**Default value**: empty')
-        .optional(),
-      i18n_names: z
-        .object({
-          zh_cn: z.string().describe('Chinese name').optional(),
-          en_us: z.string().describe('English name').optional(),
-          ja_jp: z.string().describe('Japanese name').optional(),
-        })
-        .describe(
-          'Internationalized group name**Notice**:- It is recommended not to exceed 60 characters- If you do not set an internationalized name, the name corresponding to the `name` parameter will be displayed by default',
-        )
-        .optional(),
-      owner_id: z
-        .string()
-        .describe(
-          'The group owner specified when a group was created. If the field is left empty, the bot that created the group will be specified as the owner. The group owner ID value corresponds to ==user_id_type== in the query parameter. Open ID is recommended here. For details, refer to [How to get Open ID?]**Note**: When a robot with external sharing capability is enabled, it cannot be the group owner when creating an external group. A user must be designated as the group owner. In addition, when adding external users to a group, the external users must be friends with the group owner on Feishu',
-        )
-        .optional(),
-      user_id_list: z
-        .array(z.string())
-        .describe(
-          "Group members invited when creating the group. The ID type is specified in the query parameter ==user_id_type==. Open ID is recommended here. For details, refer to [How to get Open ID?]**Note**: - Up to 50 users can be invited at the same time.- To facilitate viewing the effect on the client, it is recommended to add the developer's own ID when debugging the API.- If you need to invite external users to create an external group, the external users must be friends with the group owner on Feishu.- To obtain the open_id of an external user, refer to [Obtaining the open_id of an external user]",
-        )
-        .optional(),
-      bot_id_list: z
-        .array(z.string())
-        .describe(
-          'Group robots invited when creating a group. For more information, please refer to [How to Obtain App ID ?] to get the App ID of the application.**Notes**:- The Bot operating this API will automatically join the group, no need to fill in again.- Please use `app_id` to invite the bot into the group.- At most 5 bots can be invited at the same time, and the number of bots in the group after invitation cannot exceed 15',
-        )
-        .optional(),
-      group_message_type: z
-        .enum(['chat', 'thread'])
-        .describe('group message type Options:chat(chat),thread(thread)')
-        .optional(),
-      chat_mode: z.string().describe('Group mode**Optional values are**:- `group`: A group').optional(),
-      chat_type: z
-        .string()
-        .describe('Group type**Optional values are**:- `private`: A private group- `public`: A public group')
-        .optional(),
-      join_message_visibility: z
-        .string()
-        .describe(
-          'Visibility of the messages on joining a group**Optional values are**:- `only_owner`: Visible to only the group owner and administrators- `all_members`: Visible to all members- `not_anyone`: Invisible to anyone',
-        )
-        .optional(),
-      leave_message_visibility: z
-        .string()
-        .describe(
-          'Visibility of the messages on leaving a group**Optional values are**:- `only_owner`: Visible to only the group owner and administrators- `all_members`: Visible to all members- `not_anyone`: Invisible to anyone',
-        )
-        .optional(),
-      membership_approval: z
-        .string()
-        .describe(
-          'Group joining approval**Optional values are**:- `no_approval_required`: Approval is not required.- `approval_required`: Approval is required',
-        )
-        .optional(),
-      restricted_mode_setting: z
-        .object({
-          status: z
-            .boolean()
-            .describe(
-              'Whether the restricted mode is enabled**Optional values**:- true: Enabled. When set to true, `screenshot_has_permission_setting`, `download_has_permission_setting`, `message_has_permission_setting` cannot all be `all_members`.- false: Disabled. When set to false, `screenshot_has_permission_setting`, `download_has_permission_setting`, `message_has_permission_setting` cannot have `not_anyone`.**Default value**: false',
-            )
-            .optional(),
-          screenshot_has_permission_setting: z
-            .enum(['all_members', 'not_anyone'])
-            .describe(
-              'Whether to allow screenshots**Default value**: all_members Options:all_members(AllMembers All members allow screenshots),not_anyone(NotAnyone Not anyone allow screenshots)',
-            )
-            .optional(),
-          download_has_permission_setting: z
-            .enum(['all_members', 'not_anyone'])
-            .describe(
-              'Whether to allow downloading pictures, videos and files in messages**Default value**: all_members Options:all_members(AllMembers All members allow downloading pictures, videos and files in messages),not_anyone(NotAnyone Not anyone allow downloading pictures, videos and files in messages)',
-            )
-            .optional(),
-          message_has_permission_setting: z
-            .enum(['all_members', 'not_anyone'])
-            .describe(
-              'Whether to allow copying and forwarding of messages**Default value**: all_members Options:all_members(AllMembers All members allow copying and forwarding of messages),not_anyone(NotAnyone Not anyone allow copying and forwarding of messages)',
-            )
-            .optional(),
-        })
-        .describe(
-          'Restricted mode setting**Notice**: Confidentiality mode is applicable to Enterprise Ultimate Edition. For applicable versions and function introduction, please refer to [Session Confidentiality Mode]',
-        )
-        .optional(),
-      urgent_setting: z
-        .enum(['only_owner', 'all_members'])
-        .describe(
-          'Who can buzz others**Default value**: all_members Options:only_owner(Only group owner and admin),all_members(Everyone in this group)',
-        )
-        .optional(),
-      video_conference_setting: z
-        .enum(['only_owner', 'all_members'])
-        .describe(
-          'Who can start video calls**Default value**: all_members Options:only_owner(Only group owner and admin),all_members(Everyone in this group)',
-        )
-        .optional(),
-      edit_permission: z
-        .enum(['only_owner', 'all_members'])
-        .describe(
-          'Who can edit group info**Default value**: all_members Options:only_owner(Only group owner and admin),all_members(Everyone in this group)',
-        )
-        .optional(),
-      hide_member_count_setting: z
-        .enum(['all_members', 'only_owner'])
-        .describe(
-          'Hide member count setting**Default value**: all_members Options:all_members(visible to all group members),only_owner(visible only to group owners and group administrators)',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      set_bot_manager: z
-        .boolean()
-        .describe(
-          'If a user is specified as the group owner in the ==owner_id== field of the request body, you can choose whether to set the bot that created the group as the administrator at the same time. This flag is used to mark whether to set the bot that created the group as the administrator',
-        )
-        .optional(),
-      uuid: z
-        .string()
-        .describe(
-          'A unique string sequence generated by the developer, used to request deduplication; requests with the same uuid + owner_id can only successfully create 1 group within 10 hours. If no value is passed, no deduplication of requests will be performed, and a group chat will be created for each successful request',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        avatar: z
+          .string()
+          .describe(
+            'Image Key of group avatar- Can be obtained by [upload image] (Note: ==image_type== of uploaded image needs to be specified as ==avatar==)- If no value is passed, the system default avatar will be used',
+          )
+          .optional(),
+        name: z
+          .string()
+          .describe(
+            'Group name**Notes**:- It is recommended that the group name does not exceed 60 characters.- The length of the public group name must be at least 2 characters.- If the private group does not fill in the group name, the group name defaults to "`(no titile)`"',
+          )
+          .optional(),
+        description: z
+          .string()
+          .describe('Group description. Recommended not to exceed 100 characters.**Default value**: empty')
+          .optional(),
+        i18n_names: z
+          .object({
+            zh_cn: z.string().describe('Chinese name').optional(),
+            en_us: z.string().describe('English name').optional(),
+            ja_jp: z.string().describe('Japanese name').optional(),
+          })
+          .describe(
+            'Internationalized group name**Notice**:- It is recommended not to exceed 60 characters- If you do not set an internationalized name, the name corresponding to the `name` parameter will be displayed by default',
+          )
+          .optional(),
+        owner_id: z
+          .string()
+          .describe(
+            'The group owner specified when a group was created. If the field is left empty, the bot that created the group will be specified as the owner. The group owner ID value corresponds to ==user_id_type== in the query parameter. Open ID is recommended here. For details, refer to [How to get Open ID?]**Note**: When a robot with external sharing capability is enabled, it cannot be the group owner when creating an external group. A user must be designated as the group owner. In addition, when adding external users to a group, the external users must be friends with the group owner on Feishu',
+          )
+          .optional(),
+        user_id_list: z
+          .array(z.string())
+          .describe(
+            "Group members invited when creating the group. The ID type is specified in the query parameter ==user_id_type==. Open ID is recommended here. For details, refer to [How to get Open ID?]**Note**: - Up to 50 users can be invited at the same time.- To facilitate viewing the effect on the client, it is recommended to add the developer's own ID when debugging the API.- If you need to invite external users to create an external group, the external users must be friends with the group owner on Feishu.- To obtain the open_id of an external user, refer to [Obtaining the open_id of an external user]",
+          )
+          .optional(),
+        bot_id_list: z
+          .array(z.string())
+          .describe(
+            'Group robots invited when creating a group. For more information, please refer to [How to Obtain App ID ?] to get the App ID of the application.**Notes**:- The Bot operating this API will automatically join the group, no need to fill in again.- Please use `app_id` to invite the bot into the group.- At most 5 bots can be invited at the same time, and the number of bots in the group after invitation cannot exceed 15',
+          )
+          .optional(),
+        group_message_type: z
+          .enum(['chat', 'thread'])
+          .describe('group message type Options:chat(chat),thread(thread)')
+          .optional(),
+        chat_mode: z.string().describe('Group mode**Optional values are**:- `group`: A group').optional(),
+        chat_type: z
+          .string()
+          .describe('Group type**Optional values are**:- `private`: A private group- `public`: A public group')
+          .optional(),
+        join_message_visibility: z
+          .string()
+          .describe(
+            'Visibility of the messages on joining a group**Optional values are**:- `only_owner`: Visible to only the group owner and administrators- `all_members`: Visible to all members- `not_anyone`: Invisible to anyone',
+          )
+          .optional(),
+        leave_message_visibility: z
+          .string()
+          .describe(
+            'Visibility of the messages on leaving a group**Optional values are**:- `only_owner`: Visible to only the group owner and administrators- `all_members`: Visible to all members- `not_anyone`: Invisible to anyone',
+          )
+          .optional(),
+        membership_approval: z
+          .string()
+          .describe(
+            'Group joining approval**Optional values are**:- `no_approval_required`: Approval is not required.- `approval_required`: Approval is required',
+          )
+          .optional(),
+        restricted_mode_setting: z
+          .object({
+            status: z
+              .boolean()
+              .describe(
+                'Whether the restricted mode is enabled**Optional values**:- true: Enabled. When set to true, `screenshot_has_permission_setting`, `download_has_permission_setting`, `message_has_permission_setting` cannot all be `all_members`.- false: Disabled. When set to false, `screenshot_has_permission_setting`, `download_has_permission_setting`, `message_has_permission_setting` cannot have `not_anyone`.**Default value**: false',
+              )
+              .optional(),
+            screenshot_has_permission_setting: z
+              .enum(['all_members', 'not_anyone'])
+              .describe(
+                'Whether to allow screenshots**Default value**: all_members Options:all_members(AllMembers All members allow screenshots),not_anyone(NotAnyone Not anyone allow screenshots)',
+              )
+              .optional(),
+            download_has_permission_setting: z
+              .enum(['all_members', 'not_anyone'])
+              .describe(
+                'Whether to allow downloading pictures, videos and files in messages**Default value**: all_members Options:all_members(AllMembers All members allow downloading pictures, videos and files in messages),not_anyone(NotAnyone Not anyone allow downloading pictures, videos and files in messages)',
+              )
+              .optional(),
+            message_has_permission_setting: z
+              .enum(['all_members', 'not_anyone'])
+              .describe(
+                'Whether to allow copying and forwarding of messages**Default value**: all_members Options:all_members(AllMembers All members allow copying and forwarding of messages),not_anyone(NotAnyone Not anyone allow copying and forwarding of messages)',
+              )
+              .optional(),
+          })
+          .describe(
+            'Restricted mode setting**Notice**: Confidentiality mode is applicable to Enterprise Ultimate Edition. For applicable versions and function introduction, please refer to [Session Confidentiality Mode]',
+          )
+          .optional(),
+        urgent_setting: z
+          .enum(['only_owner', 'all_members'])
+          .describe(
+            'Who can buzz others**Default value**: all_members Options:only_owner(Only group owner and admin),all_members(Everyone in this group)',
+          )
+          .optional(),
+        video_conference_setting: z
+          .enum(['only_owner', 'all_members'])
+          .describe(
+            'Who can start video calls**Default value**: all_members Options:only_owner(Only group owner and admin),all_members(Everyone in this group)',
+          )
+          .optional(),
+        edit_permission: z
+          .enum(['only_owner', 'all_members'])
+          .describe(
+            'Who can edit group info**Default value**: all_members Options:only_owner(Only group owner and admin),all_members(Everyone in this group)',
+          )
+          .optional(),
+        hide_member_count_setting: z
+          .enum(['all_members', 'only_owner'])
+          .describe(
+            'Hide member count setting**Default value**: all_members Options:all_members(visible to all group members),only_owner(visible only to group owners and group administrators)',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        set_bot_manager: z
+          .boolean()
+          .describe(
+            'If a user is specified as the group owner in the ==owner_id== field of the request body, you can choose whether to set the bot that created the group as the administrator at the same time. This flag is used to mark whether to set the bot that created the group as the administrator',
+          )
+          .optional(),
+        uuid: z
+          .string()
+          .describe(
+            'A unique string sequence generated by the developer, used to request deduplication requests with the same uuid + owner_id can only successfully create 1 group within 10 hours. If no value is passed, no deduplication of requests will be performed, and a group chat will be created for each successful request',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const imV1ChatDelete = {
@@ -350,7 +356,9 @@ export const imV1ChatGet = {
     '[Feishu/Lark]-Group Chat-Group management-Obtain group information-Obtains basic information such as group name, description, profile photo, and owner ID',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       chat_id: z
         .string()
@@ -371,14 +379,16 @@ export const imV1ChatLink = {
     '[Feishu/Lark]-Group Chat-Group management-Get group share link-Get the sharing link of the specified group. Others can join the group after clicking the sharing link',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      validity_period: z
-        .enum(['week', 'year', 'permanently'])
-        .describe(
-          'The validity period of the group share link. Options:week(one_week Validity: 7 days),year(one_year Validity: 1 year),permanently(Permanently valid)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        validity_period: z
+          .enum(['week', 'year', 'permanently'])
+          .describe(
+            'The validity period of the group share link. Options:week(one_week Validity: 7 days),year(one_year Validity: 1 year),permanently(Permanently valid)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       chat_id: z
         .string()
@@ -399,25 +409,27 @@ export const imV1ChatList = {
     '[Feishu/Lark]-Group Chat-Group management-Obtain groups where the user or bot is a member-Get the list of groups where the user or bot represented by [access_token] is a member',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      sort_type: z
-        .enum(['ByCreateTimeAsc', 'ByActiveTimeDesc'])
-        .describe(
-          'Sort type of chat list Options:ByCreateTimeAsc(Sort by group creation time in ascending order),ByActiveTimeDesc(Sort by group active time in descending order. Because group active time changes frequently, using the `ByActiveTimeDesc` sorting method may cause groups to be missed. For example, if the paging size is set to 10, after the first request is made to obtain the first page of data, a group member in the group originally ranked 11th sends a message, then the group will be ranked 1st. At this time, when a request is made to obtain the second page of data, the group will not be obtained and needs to be obtained from the first page again.)',
-        )
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z
-        .number()
-        .describe('The paging size is used to limit the number of data items returned in one request')
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        sort_type: z
+          .enum(['ByCreateTimeAsc', 'ByActiveTimeDesc'])
+          .describe(
+            'Sort type of chat list Options:ByCreateTimeAsc(Sort by group creation time in ascending order),ByActiveTimeDesc(Sort by group active time in descending order. Because group active time changes frequently, using the `ByActiveTimeDesc` sorting method may cause groups to be missed. For example, if the paging size is set to 10, after the first request is made to obtain the first page of data, a group member in the group originally ranked 11th sends a message, then the group will be ranked 1st. At this time, when a request is made to obtain the second page of data, the group will not be obtained and needs to be obtained from the first page again.)',
+          )
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z
+          .number()
+          .describe('The paging size is used to limit the number of data items returned in one request')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -431,22 +443,26 @@ export const imV1ChatManagersAddManagers = {
     '[Feishu/Lark]-Group Chat-Group member-Specify group administrators-Specify a group and set the specified user or bot in the group as the group administrator',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      manager_ids: z
-        .array(z.string())
-        .describe(
-          "To set the administrator's ID, the ID type is consistent with the query parameter member_id_type value.- If it is a user (member_id_type value is user_id/open_id/union_id), it is recommended to use the user's open_id. For how to obtain it, please refer to the document [How to obtain Open ID].- If it is a bot (member_id_type value is app_id), please refer to [How to obtain the App ID of the application]**Note**:- For ordinary groups, up to 10 administrators can be specified.- For super large groups, up to 20 administrators can be specified.- When making a single request to specify robots, up to 5 bots can be specified.For the difference between super large groups and ordinary groups, see [What is the difference between super large groups and ordinary groups]",
-        )
-        .optional(),
-    }),
-    params: z.object({
-      member_id_type: z
-        .enum(['open_id', 'union_id', 'user_id', 'app_id'])
-        .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID]),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. [How to get App ID])",
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        manager_ids: z
+          .array(z.string())
+          .describe(
+            "To set the administrator's ID, the ID type is consistent with the query parameter member_id_type value.- If it is a user (member_id_type value is user_id/open_id/union_id), it is recommended to use the user's open_id. For how to obtain it, please refer to the document [How to obtain Open ID].- If it is a bot (member_id_type value is app_id), please refer to [How to obtain the App ID of the application]**Note**:- For ordinary groups, up to 10 administrators can be specified.- For super large groups, up to 20 administrators can be specified.- When making a single request to specify robots, up to 5 bots can be specified.For the difference between super large groups and ordinary groups, see [What is the difference between super large groups and ordinary groups]",
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        member_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'app_id'])
+          .describe(
+            "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID]),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. [How to get App ID])",
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       chat_id: z
         .string()
@@ -467,22 +483,26 @@ export const imV1ChatManagersDeleteManagers = {
     '[Feishu/Lark]-Group Chat-Group member-Delete group administrators-Specify a group and delete the specified administrator in the group, including user-type administrators and robot-type administrators',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      manager_ids: z
-        .array(z.string())
-        .describe(
-          "The administrator ID to be deleted. The ID type is consistent with the value of the query parameter member_id_type.- If it is a user (member_id_type is user_id/open_id/union_id), it is recommended to use the user's open_id. For how to obtain it, please refer to the document [How to obtain Open ID].- If it is a robot (member_id_type is app_id), please refer to [How to obtain the App ID of the application]**Note**: Each request can specify up to 50 users or 5 robots",
-        )
-        .optional(),
-    }),
-    params: z.object({
-      member_id_type: z
-        .enum(['open_id', 'union_id', 'user_id', 'app_id'])
-        .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID]),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. [How to get App ID])",
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        manager_ids: z
+          .array(z.string())
+          .describe(
+            "The administrator ID to be deleted. The ID type is consistent with the value of the query parameter member_id_type.- If it is a user (member_id_type is user_id/open_id/union_id), it is recommended to use the user's open_id. For how to obtain it, please refer to the document [How to obtain Open ID].- If it is a robot (member_id_type is app_id), please refer to [How to obtain the App ID of the application]**Note**: Each request can specify up to 50 users or 5 robots",
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        member_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'app_id'])
+          .describe(
+            "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID]),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. [How to get App ID])",
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       chat_id: z
         .string()
@@ -503,28 +523,32 @@ export const imV1ChatMembersCreate = {
     '[Feishu/Lark]-Group Chat-Group member-Add users or bots to a group-Adds users or bots into a group chat',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      id_list: z
-        .array(z.string())
-        .describe(
-          'Member ID list. - It is recommended to use OpenID when inviting users to join the group. For how to obtain it, please refer to [How to get Open ID? ].- When inviting bots into the group, you need to fill in the App ID of the application. Please refer to [How to get the App ID of the application?]**Note**: - The list cannot be empty.- The member ID type filled in the list should correspond to the type selected in the ==member_id_type== parameter.- Each request can pull up to 50 users and does not exceed the upper limit of the group size. The default maximum number of Feishu groups for certified companies is: 5,000 members in general groups, 3,000 members in conference groups, and 5,000 members in topic groups. If the tenant administrator configures the upper limit of the number of groups, the upper limit shall prevail.- At most 5 bots can be invited at the same time, and the number of bots in the group after invitation cannot exceed 15',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      member_id_type: z
-        .enum(['open_id', 'union_id', 'user_id', 'app_id'])
-        .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID]),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. [How to get App ID])",
-        )
-        .optional(),
-      succeed_type: z
-        .number()
-        .describe(
-          'How to deal with unavailable ID 0/1/2**Default value**: `0` Options:0(Compatible with previous policies, non-existent/invisible IDs will fail to pull the group and return an error response. When there is a separated ID, other available IDs will be pulled into the group chat, and a successful response will be returned.),1(Pull all the available IDs in the parameters into the group chat, return the successful response of pulling the group, and show the remaining unavailable IDs and reasons.),2(As long as there is any unavailable ID in the parameter, the group will fail, an error response will be returned, and the unavailable ID will be displayed.)',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        id_list: z
+          .array(z.string())
+          .describe(
+            'Member ID list. - It is recommended to use OpenID when inviting users to join the group. For how to obtain it, please refer to [How to get Open ID? ].- When inviting bots into the group, you need to fill in the App ID of the application. Please refer to [How to get the App ID of the application?]**Note**: - The list cannot be empty.- The member ID type filled in the list should correspond to the type selected in the ==member_id_type== parameter.- Each request can pull up to 50 users and does not exceed the upper limit of the group size. The default maximum number of Feishu groups for certified companies is: 5,000 members in general groups, 3,000 members in conference groups, and 5,000 members in topic groups. If the tenant administrator configures the upper limit of the number of groups, the upper limit shall prevail.- At most 5 bots can be invited at the same time, and the number of bots in the group after invitation cannot exceed 15',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        member_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'app_id'])
+          .describe(
+            "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID]),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. [How to get App ID])",
+          )
+          .optional(),
+        succeed_type: z
+          .number()
+          .describe(
+            'How to deal with unavailable ID 0/1/2**Default value**: `0` Options:0(Compatible with previous policies, non-existent/invisible IDs will fail to pull the group and return an error response. When there is a separated ID, other available IDs will be pulled into the group chat, and a successful response will be returned.),1(Pull all the available IDs in the parameters into the group chat, return the successful response of pulling the group, and show the remaining unavailable IDs and reasons.),2(As long as there is any unavailable ID in the parameter, the group will fail, an error response will be returned, and the unavailable ID will be displayed.)',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       chat_id: z
         .string()
@@ -545,22 +569,26 @@ export const imV1ChatMembersDelete = {
     '[Feishu/Lark]-Group Chat-Group member-Remove users or bots from a group-Removes users or bots from a group chat',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      id_list: z
-        .array(z.string())
-        .describe(
-          'Member ID list. The ID type is consistent with the value of the query parameter member_id_type.- It is recommended to use OpenID when removing users from the group. For how to obtain it, please refer to [How to get Open ID? ].- When removing bots from the group, you need to fill in the App ID of the application. Please refer to [How to get the App ID of the application?].**Note**: - ==id_list== cannot be empty.- For each request, a maximum of 50 users or 5 bots can be removed',
-        )
-        .optional(),
-    }),
-    params: z.object({
-      member_id_type: z
-        .enum(['open_id', 'union_id', 'user_id', 'app_id'])
-        .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID]),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. [How to get App ID])",
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        id_list: z
+          .array(z.string())
+          .describe(
+            'Member ID list. The ID type is consistent with the value of the query parameter member_id_type.- It is recommended to use OpenID when removing users from the group. For how to obtain it, please refer to [How to get Open ID? ].- When removing bots from the group, you need to fill in the App ID of the application. Please refer to [How to get the App ID of the application?].**Note**: - ==id_list== cannot be empty.- For each request, a maximum of 50 users or 5 bots can be removed',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({
+        member_id_type: z
+          .enum(['open_id', 'union_id', 'user_id', 'app_id'])
+          .describe(
+            "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID]),app_id(The unique identifier of the Feishu open platform application. When an application is created, it is automatically generated by the system and cannot be modified by the user. [How to get App ID])",
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       chat_id: z
         .string()
@@ -581,26 +609,28 @@ export const imV1ChatMembersGet = {
     '[Feishu/Lark]-Group Chat-Group member-Obtain group member list-Get the list of members of the group the user/bot is in',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      member_id_type: z
-        .enum(['open_id', 'union_id', 'user_id'])
-        .describe(
-          "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID])",
-        )
-        .optional(),
-      page_size: z
-        .number()
-        .describe(
-          'The paging size is used to limit the number of data entries returned in one request.- Since the returned group member list will filter out robot members, the number of group members returned may be less than the specified page_size.- If there are group members who join the group at the same time, they will be returned at once, which may cause the number of group members returned to be greater than the specified page_size',
-        )
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        member_id_type: z
+          .enum(['open_id', 'union_id', 'user_id'])
+          .describe(
+            "User ID categories Options:open_id(Identifies a user to an app. The same user has different Open IDs in different apps. [How to get Open ID]),union_id(Identifies a user to a tenant that acts as a developer. A user has the same Union ID in apps developed by the same developer, and has different Union IDs in apps developed by different developers. A developer can use Union ID to link the same user's identities in multiple apps. [How to get Union ID]),user_id(Identifies a user to a tenant. The same user has different User IDs in different tenants. In one single tenant, a user has the same User ID in all apps （including store apps）. User ID is usually used to communicate user data between different apps. [How to get User ID])",
+          )
+          .optional(),
+        page_size: z
+          .number()
+          .describe(
+            'The paging size is used to limit the number of data entries returned in one request.- Since the returned group member list will filter out robot members, the number of group members returned may be less than the specified page_size.- If there are group members who join the group at the same time, they will be returned at once, which may cause the number of group members returned to be greater than the specified page_size',
+          )
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       chat_id: z
         .string()
@@ -730,20 +760,22 @@ export const imV1ChatMenuItemPatch = {
         })
         .describe('Item info'),
     }),
-    path: z.object({
-      chat_id: z
-        .string()
-        .describe(
-          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
-        )
-        .optional(),
-      menu_item_id: z
-        .string()
-        .describe(
-          'The ID of the top level menu or second level menu. The ID can be obtained through the [get group menu] interface',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        chat_id: z
+          .string()
+          .describe(
+            'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
+          )
+          .optional(),
+        menu_item_id: z
+          .string()
+          .describe(
+            'The ID of the top level menu or second level menu. The ID can be obtained through the [get group menu] interface',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const imV1ChatMenuTreeCreate = {
@@ -901,14 +933,16 @@ export const imV1ChatMenuTreeCreate = {
         })
         .describe('The menu to add to the chat'),
     }),
-    path: z.object({
-      chat_id: z
-        .string()
-        .describe(
-          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        chat_id: z
+          .string()
+          .describe(
+            'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const imV1ChatMenuTreeDelete = {
@@ -924,18 +958,18 @@ export const imV1ChatMenuTreeDelete = {
     data: z.object({
       chat_menu_top_level_ids: z
         .array(z.string())
-        .describe(
-          'The top level menu ID. The ID can be obtained through the [get group menu] interface',
-        ),
+        .describe('The top level menu ID. The ID can be obtained through the [get group menu] interface'),
     }),
-    path: z.object({
-      chat_id: z
-        .string()
-        .describe(
-          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        chat_id: z
+          .string()
+          .describe(
+            'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const imV1ChatMenuTreeGet = {
@@ -948,14 +982,16 @@ export const imV1ChatMenuTreeGet = {
     '[Feishu/Lark]-Group Chat-Chat menu-Get chat menus-Get the chat menu information in the specified group, including the names, jump links, icons and other information of all top level or second level menus',
   accessTokens: ['tenant'],
   schema: {
-    path: z.object({
-      chat_id: z
-        .string()
-        .describe(
-          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        chat_id: z
+          .string()
+          .describe(
+            'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const imV1ChatMenuTreeSort = {
@@ -975,14 +1011,16 @@ export const imV1ChatMenuTreeSort = {
           'Sort by the ID of the top level menu. The order of the elements in the array corresponds to the order of the top level menu in the group from left to right. The ID can be obtained through the [Get Group Menu] interface.**Note**: The ID list to be sorted needs to be aligned with the ID list of the top level menu in the group',
         ),
     }),
-    path: z.object({
-      chat_id: z
-        .string()
-        .describe(
-          'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        chat_id: z
+          .string()
+          .describe(
+            'Group ID. How to get it:- [Create a group], get the chat_id of the group from the returned result.- Call the [Get the list of groups that the user or robot is in] interface to query the chat_id of the group that the user or robot is in.- Call the [Search the list of groups visible to the user or robot] to search for the chat_id of the group that the user or robot is in and the group that is open to the user or robot.**Note**: Only group IDs with group mode **Group** are supported. You can call the [get group information] interface and check whether the value of the `chat_mode` parameter is `group` in the returned result',
+          )
+          .optional(),
+      })
+      .optional(),
   },
 };
 export const imV1ChatModerationGet = {
@@ -995,19 +1033,21 @@ export const imV1ChatModerationGet = {
     '[Feishu/Lark]-Group Chat-Group management-Obtains the group member speech scopes-Obtains the group speech mode, the list of users who can speak, and more',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      page_size: z
-        .number()
-        .describe('The paging size is used to limit the number of data items returned in one request')
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        page_size: z
+          .number()
+          .describe('The paging size is used to limit the number of data items returned in one request')
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       chat_id: z
         .string()
@@ -1028,27 +1068,31 @@ export const imV1ChatModerationUpdate = {
     '[Feishu/Lark]-Group Chat-Group management-Updates group speech scopes-Update the speaking permissions of a specified group. You can set it to allow all group members to speak, only the group owner or administrator to speak, or specified group members to speak',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      moderation_setting: z
-        .string()
-        .describe(
-          'Group speech mode**Optional values**:- all_members: All group members can speak- only_owner: Only group owners or administrators can speak- moderator_list: Specify group members who can speak. When using this value, you need to select `moderator_added_list` and `moderator_removed_list`',
-        )
-        .optional(),
-      moderator_added_list: z
-        .array(z.string())
-        .describe(
-          'When `moderation_setting` is set to `moderator_list`, users who can speak are added as an ID list.**Notice**:- The ID type is consistent with the query parameter user_id_type. It is recommended to use OpenID. For how to obtain it, please refer to the document [How to obtain Open ID].- If the user in the list is not in the group, it will be automatically filtered out.- When requesting, please ensure that the IDs in the two parameters `moderator_added_list` and `moderator_removed_list` are not repeated',
-        )
-        .optional(),
-      moderator_removed_list: z
-        .array(z.string())
-        .describe(
-          'When `moderation_setting` is set to `moderator_list`, users who can speak are removed in the form of an ID list.**Notice**:- The ID type is consistent with the query parameter user_id_type. It is recommended to use OpenID. For how to obtain it, please refer to the document [How to obtain Open ID].- If the user in the list is not in the group, it will be automatically filtered out.- When requesting, please ensure that the IDs in the two parameters `moderator_added_list` and `moderator_removed_list` are not repeated',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        moderation_setting: z
+          .string()
+          .describe(
+            'Group speech mode**Optional values**:- all_members: All group members can speak- only_owner: Only group owners or administrators can speak- moderator_list: Specify group members who can speak. When using this value, you need to select `moderator_added_list` and `moderator_removed_list`',
+          )
+          .optional(),
+        moderator_added_list: z
+          .array(z.string())
+          .describe(
+            'When `moderation_setting` is set to `moderator_list`, users who can speak are added as an ID list.**Notice**:- The ID type is consistent with the query parameter user_id_type. It is recommended to use OpenID. For how to obtain it, please refer to the document [How to obtain Open ID].- If the user in the list is not in the group, it will be automatically filtered out.- When requesting, please ensure that the IDs in the two parameters `moderator_added_list` and `moderator_removed_list` are not repeated',
+          )
+          .optional(),
+        moderator_removed_list: z
+          .array(z.string())
+          .describe(
+            'When `moderation_setting` is set to `moderator_list`, users who can speak are removed in the form of an ID list.**Notice**:- The ID type is consistent with the query parameter user_id_type. It is recommended to use OpenID. For how to obtain it, please refer to the document [How to obtain Open ID].- If the user in the list is not in the group, it will be automatically filtered out.- When requesting, please ensure that the IDs in the two parameters `moderator_added_list` and `moderator_removed_list` are not repeated',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       chat_id: z
         .string()
@@ -1069,25 +1113,27 @@ export const imV1ChatSearch = {
     '[Feishu/Lark]-Group Chat-Group management-Search for groups visible to a user or bot-Get the list of groups visible to the current identity (user or bot), including the groups the current identity belongs to and the groups that are open to the current identity. Supports keyword search and paged search',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-      query: z
-        .string()
-        .describe(
-          'Keyword. **Notes**:- The keyword supports matching the internationalized name of the group and the name of the group member.- Supports searching in multiple languages (Multiple languages ​​supported in Feishu client).- Support fuzzy search such as pinyin, prefix, etc.- An empty result will be returned if the keyword is empty or longer than `64` characters.- Try to avoid including the `-` symbol in keywords. If it is necessary to include this symbol, please add double quotation marks when passing the value, such as `"Example-0"`',
-        )
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z
-        .number()
-        .describe('The paging size is used to limit the number of data items returned in one request')
-        .optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+        query: z
+          .string()
+          .describe(
+            'Keyword. **Notes**:- The keyword supports matching the internationalized name of the group and the name of the group member.- Supports searching in multiple languages (Multiple languages ​​supported in Feishu client).- Support fuzzy search such as pinyin, prefix, etc.- An empty result will be returned if the keyword is empty or longer than `64` characters.- Try to avoid including the `-` symbol in keywords. If it is necessary to include this symbol, please add double quotation marks when passing the value, such as `"Example-0"`',
+          )
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z
+          .number()
+          .describe('The paging size is used to limit the number of data items returned in one request')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -1194,9 +1240,7 @@ export const imV1ChatTabDeleteTabs = {
     data: z.object({
       tab_ids: z
         .array(z.string())
-        .describe(
-          'Chat tag ID list. Tab ID can be found in [Add Chat Tab] and [Pull Chat Tab] return value',
-        ),
+        .describe('Chat tag ID list. Tab ID can be found in [Add Chat Tab] and [Pull Chat Tab] return value'),
     }),
     path: z.object({
       chat_id: z
@@ -1238,14 +1282,16 @@ export const imV1ChatTabSortTabs = {
     '[Feishu/Lark]-Group Chat-Chat tab-Sort chat tab-Adjust the order of multiple chat tabs within a specified chat',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      tab_ids: z
-        .array(z.string())
-        .describe(
-          'List of chat tag IDs. Tab ID can be found in [Add Chat Tab] and [Pull Chat Tab] return value.**Note**:- Must include the IDs of all tabs in the chat.- The sorting of the current parameters corresponds to the sorting from left to right in the chat.- The message type tab in the chat is fixed in the first order',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        tab_ids: z
+          .array(z.string())
+          .describe(
+            'List of chat tag IDs. Tab ID can be found in [Add Chat Tab] and [Pull Chat Tab] return value.**Note**:- Must include the IDs of all tabs in the chat.- The sorting of the current parameters corresponds to the sorting from left to right in the chat.- The message type tab in the chat is fixed in the first order',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       chat_id: z
         .string()
@@ -1266,81 +1312,83 @@ export const imV1ChatTabUpdateTabs = {
     '[Feishu/Lark]-Group Chat-Chat tab-Update chat tab-Updates the specified chat tab information, including name, type, and content. Only supports updating document type (doc) or URL type (url) tabs',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      chat_tabs: z
-        .array(
-          z.object({
-            tab_id: z
-              .string()
-              .describe(
-                'Chat tag ID. Tab ID can be found in [Add Chat Tab] and [Pull Chat Tab] return value',
-              )
-              .optional(),
-            tab_name: z
-              .string()
-              .describe('Tab name**Note**: The group tab name does not exceed 30 characters')
-              .optional(),
-            tab_type: z
-              .enum([
-                'message',
-                'doc_list',
-                'doc',
-                'pin',
-                'meeting_minute',
-                'chat_announcement',
-                'url',
-                'file',
-                'files_resources',
-                'images_videos',
-                'task',
-              ])
-              .describe(
-                'Tab type**Note**: Only doc and url type tabs can be updated. Other fields are read-only fields. Options:message(Message type),doc_list(DocList List of Cloud Documents),doc(Document),pin(Pin),meeting_minute(MeetingMinute Meeting notes),chat_announcement(ChatAnnouncement Group announcement),url(URL),file(File),files_resources(files_resources: Combination type, Find all shared docs, links, and files in one place.),images_videos(images_videos: Combination type, Find all shared image and video in one place.),task(Task)',
-              ),
-            tab_content: z
-              .object({
-                url: z
-                  .string()
-                  .describe('URL address, effective when tab_type is set to url**Note**: must start with http or https')
-                  .optional(),
-                doc: z
-                  .string()
-                  .describe(
-                    'Cloud document link, effective when tab_type is set to doc**Note**:- Must start with http or https- The current operator must have the collaborator privilege for the cloud document',
-                  )
-                  .optional(),
-                meeting_minute: z
-                  .string()
-                  .describe(
-                    'Meeting minutes. Because the chat tab page of the meeting_minute type is not supported for updating, this field is read-only and does not require a value to be passed',
-                  )
-                  .optional(),
-                task: z
-                  .string()
-                  .describe(
-                    'Task. Because the chat tab page of the task type is not supported for updating, this field is read-only and does not require a value to be passed',
-                  )
-                  .optional(),
-              })
-              .describe('Tab content')
-              .optional(),
-            tab_config: z
-              .object({
-                icon_key: z
-                  .string()
-                  .describe(
-                    'Chat tab icon key. You need to call the [upload image] interface first, set the image type to message to upload the image, and then get the `image_key` and pass in the current parameters',
-                  )
-                  .optional(),
-                is_built_in: z.boolean().describe('Whether the chat tab is opened inline in the app').optional(),
-              })
-              .describe('Chat tab configuration**Note**: This parameter is only valid when tab_type is set to url')
-              .optional(),
-          }),
-        )
-        .describe('Chat tags')
-        .optional(),
-    }),
+    data: z
+      .object({
+        chat_tabs: z
+          .array(
+            z.object({
+              tab_id: z
+                .string()
+                .describe('Chat tag ID. Tab ID can be found in [Add Chat Tab] and [Pull Chat Tab] return value')
+                .optional(),
+              tab_name: z
+                .string()
+                .describe('Tab name**Note**: The group tab name does not exceed 30 characters')
+                .optional(),
+              tab_type: z
+                .enum([
+                  'message',
+                  'doc_list',
+                  'doc',
+                  'pin',
+                  'meeting_minute',
+                  'chat_announcement',
+                  'url',
+                  'file',
+                  'files_resources',
+                  'images_videos',
+                  'task',
+                ])
+                .describe(
+                  'Tab type**Note**: Only doc and url type tabs can be updated. Other fields are read-only fields. Options:message(Message type),doc_list(DocList List of Cloud Documents),doc(Document),pin(Pin),meeting_minute(MeetingMinute Meeting notes),chat_announcement(ChatAnnouncement Group announcement),url(URL),file(File),files_resources(files_resources: Combination type, Find all shared docs, links, and files in one place.),images_videos(images_videos: Combination type, Find all shared image and video in one place.),task(Task)',
+                ),
+              tab_content: z
+                .object({
+                  url: z
+                    .string()
+                    .describe(
+                      'URL address, effective when tab_type is set to url**Note**: must start with http or https',
+                    )
+                    .optional(),
+                  doc: z
+                    .string()
+                    .describe(
+                      'Cloud document link, effective when tab_type is set to doc**Note**:- Must start with http or https- The current operator must have the collaborator privilege for the cloud document',
+                    )
+                    .optional(),
+                  meeting_minute: z
+                    .string()
+                    .describe(
+                      'Meeting minutes. Because the chat tab page of the meeting_minute type is not supported for updating, this field is read-only and does not require a value to be passed',
+                    )
+                    .optional(),
+                  task: z
+                    .string()
+                    .describe(
+                      'Task. Because the chat tab page of the task type is not supported for updating, this field is read-only and does not require a value to be passed',
+                    )
+                    .optional(),
+                })
+                .describe('Tab content')
+                .optional(),
+              tab_config: z
+                .object({
+                  icon_key: z
+                    .string()
+                    .describe(
+                      'Chat tab icon key. You need to call the [upload image] interface first, set the image type to message to upload the image, and then get the `image_key` and pass in the current parameters',
+                    )
+                    .optional(),
+                  is_built_in: z.boolean().describe('Whether the chat tab is opened inline in the app').optional(),
+                })
+                .describe('Chat tab configuration**Note**: This parameter is only valid when tab_type is set to url')
+                .optional(),
+            }),
+          )
+          .describe('Chat tags')
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       chat_id: z
         .string()
@@ -1421,135 +1469,139 @@ export const imV1ChatUpdate = {
     '[Feishu/Lark]-Group Chat-Group management-Update group information-Update the information of the specified group, including group avatar, group name, group description, group configuration, and group owner, etc',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      avatar: z
-        .string()
-        .describe(
-          'The image key that corresponds to the group profile photo. It can be obtained using the [Upload image] API. (Note: The ==image_type== of the uploaded image needs to be specified as ==avatar==)',
-        )
-        .optional(),
-      name: z
-        .string()
-        .describe(
-          'Group name**Notice**:- It is recommended that the group name should not exceed 60 characters- The length of the public group name should not be less than 2 characters',
-        )
-        .optional(),
-      description: z.string().describe('Group description, No more than 100 characters are recommended').optional(),
-      i18n_names: z
-        .object({
-          zh_cn: z.string().describe('Chinese name').optional(),
-          en_us: z.string().describe('English name').optional(),
-          ja_jp: z.string().describe('Japanese name').optional(),
-        })
-        .describe('Internationalized group name, No more than 60 characters are recommended')
-        .optional(),
-      add_member_permission: z
-        .string()
-        .describe(
-          'Who can add group members, including users or bots**Optional values**:- `only_owner`: only group owners and administrators- `all_members`: all members**Notice**: `add_member_permission` and `share_card_permission` must be configured synchronously.- If the `add_member_permission` value is `only_owner`, `share_card_permission` can only be set to `not_allowed`.- If the `add_member_permission` value is `all_members`, `share_card_permission` can only be set to `allowed`',
-        )
-        .optional(),
-      share_card_permission: z
-        .string()
-        .describe(
-          'Group sharing permission **Optional values are**:- `allowed`: Allowed- `not_allowed`: Not allowed**Notice**: `add_member_permission` and `share_card_permission` must be configured synchronously.- If the `add_member_permission` value is `only_owner`, `share_card_permission` can only be set to `not_allowed`.- If the `add_member_permission` value is `all_members`, `share_card_permission` can only be set to `allowed`',
-        )
-        .optional(),
-      at_all_permission: z
-        .string()
-        .describe(
-          '@mention all permission **Optional values are**:- `only_owner`: Only the group owner and admins- `all_members`: All members',
-        )
-        .optional(),
-      edit_permission: z
-        .string()
-        .describe(
-          'Group edit permission **Optional values are**:- `only_owner`: Only the group owner and admins- `all_members`: All members',
-        )
-        .optional(),
-      owner_id: z
-        .string()
-        .describe(
-          'New group owner ID, no need to fill in if the group owner is not transferred. Open ID is recommended here. For details, refer to [How to get Open ID?]',
-        )
-        .optional(),
-      join_message_visibility: z
-        .string()
-        .describe(
-          'Visibility of the messages on joining a group **Optional values are**:- `only_owner`: Visible to only the group owner and administrators- `all_members`: Visible to all members- `not_anyone`: Invisible to anyone',
-        )
-        .optional(),
-      leave_message_visibility: z
-        .string()
-        .describe(
-          'Visibility of the messages on leaving a group **Optional values are**:- `only_owner`: Visible to only the group owner and administrators- `all_members`: Visible to all members- `not_anyone`: Invisible to anyone',
-        )
-        .optional(),
-      membership_approval: z
-        .string()
-        .describe(
-          'Group joining approval **Optional values are**:- `no_approval_required`: Approval is not required.- `approval_required`: Approval is required',
-        )
-        .optional(),
-      restricted_mode_setting: z
-        .object({
-          status: z
-            .boolean()
-            .describe(
-              'Whether the confidentiality mode is enabled**Optional values**:- true: Enabled. When set to true, `screenshot_has_permission_setting`, `download_has_permission_setting`, `message_has_permission_setting` cannot all be `all_members`.- false: Disabled. When set to false, `screenshot_has_permission_setting`, `download_has_permission_setting`, `message_has_permission_setting` cannot have `not_anyone`',
-            )
-            .optional(),
-          screenshot_has_permission_setting: z
-            .enum(['all_members', 'not_anyone'])
-            .describe(
-              'Whether to allow screenshots Options:all_members(AllMembers All members allow screenshots),not_anyone(NotAnyone Not anyone allow screenshots)',
-            )
-            .optional(),
-          download_has_permission_setting: z
-            .enum(['all_members', 'not_anyone'])
-            .describe(
-              'Whether to allow downloading pictures, videos and files in messages Options:all_members(AllMembers All members allow downloading pictures, videos and files in messages),not_anyone(NotAnyone Not anyone allow downloading pictures, videos and files in messages)',
-            )
-            .optional(),
-          message_has_permission_setting: z
-            .enum(['all_members', 'not_anyone'])
-            .describe(
-              'Whether to allow copying and forwarding of messages Options:all_members(AllMembers All members allow copying and forwarding of messages),not_anyone(NotAnyone Not anyone allow copying and forwarding of messages)',
-            )
-            .optional(),
-        })
-        .describe(
-          'Restricted mode setting **Notice**: Confidentiality mode is applicable to Enterprise Ultimate Edition. For applicable versions and function introduction, please refer to [Session Confidentiality Mode]',
-        )
-        .optional(),
-      chat_type: z
-        .string()
-        .describe('Group type**Optional values are**:- `private`: A private group- `public`: A public group')
-        .optional(),
-      group_message_type: z
-        .enum(['chat', 'thread'])
-        .describe('Group message type Options:chat(chat),thread(thread)')
-        .optional(),
-      urgent_setting: z
-        .enum(['only_owner', 'all_members'])
-        .describe(
-          'Who can buzz others Options:only_owner(Only group owner and admin),all_members(Everyone in this group)',
-        )
-        .optional(),
-      video_conference_setting: z
-        .enum(['only_owner', 'all_members'])
-        .describe(
-          'Who can start video calls Options:only_owner(Only group owner and admin),all_members(Everyone in this group)',
-        )
-        .optional(),
-      hide_member_count_setting: z
-        .enum(['all_members', 'only_owner'])
-        .describe(
-          'Hide member count setting Options:all_members(visible to all group members),only_owner(visible only to the group owner and group administrators)',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    data: z
+      .object({
+        avatar: z
+          .string()
+          .describe(
+            'The image key that corresponds to the group profile photo. It can be obtained using the [Upload image] API. (Note: The ==image_type== of the uploaded image needs to be specified as ==avatar==)',
+          )
+          .optional(),
+        name: z
+          .string()
+          .describe(
+            'Group name**Notice**:- It is recommended that the group name should not exceed 60 characters- The length of the public group name should not be less than 2 characters',
+          )
+          .optional(),
+        description: z.string().describe('Group description, No more than 100 characters are recommended').optional(),
+        i18n_names: z
+          .object({
+            zh_cn: z.string().describe('Chinese name').optional(),
+            en_us: z.string().describe('English name').optional(),
+            ja_jp: z.string().describe('Japanese name').optional(),
+          })
+          .describe('Internationalized group name, No more than 60 characters are recommended')
+          .optional(),
+        add_member_permission: z
+          .string()
+          .describe(
+            'Who can add group members, including users or bots**Optional values**:- `only_owner`: only group owners and administrators- `all_members`: all members**Notice**: `add_member_permission` and `share_card_permission` must be configured synchronously.- If the `add_member_permission` value is `only_owner`, `share_card_permission` can only be set to `not_allowed`.- If the `add_member_permission` value is `all_members`, `share_card_permission` can only be set to `allowed`',
+          )
+          .optional(),
+        share_card_permission: z
+          .string()
+          .describe(
+            'Group sharing permission **Optional values are**:- `allowed`: Allowed- `not_allowed`: Not allowed**Notice**: `add_member_permission` and `share_card_permission` must be configured synchronously.- If the `add_member_permission` value is `only_owner`, `share_card_permission` can only be set to `not_allowed`.- If the `add_member_permission` value is `all_members`, `share_card_permission` can only be set to `allowed`',
+          )
+          .optional(),
+        at_all_permission: z
+          .string()
+          .describe(
+            '@mention all permission **Optional values are**:- `only_owner`: Only the group owner and admins- `all_members`: All members',
+          )
+          .optional(),
+        edit_permission: z
+          .string()
+          .describe(
+            'Group edit permission **Optional values are**:- `only_owner`: Only the group owner and admins- `all_members`: All members',
+          )
+          .optional(),
+        owner_id: z
+          .string()
+          .describe(
+            'New group owner ID, no need to fill in if the group owner is not transferred. Open ID is recommended here. For details, refer to [How to get Open ID?]',
+          )
+          .optional(),
+        join_message_visibility: z
+          .string()
+          .describe(
+            'Visibility of the messages on joining a group **Optional values are**:- `only_owner`: Visible to only the group owner and administrators- `all_members`: Visible to all members- `not_anyone`: Invisible to anyone',
+          )
+          .optional(),
+        leave_message_visibility: z
+          .string()
+          .describe(
+            'Visibility of the messages on leaving a group **Optional values are**:- `only_owner`: Visible to only the group owner and administrators- `all_members`: Visible to all members- `not_anyone`: Invisible to anyone',
+          )
+          .optional(),
+        membership_approval: z
+          .string()
+          .describe(
+            'Group joining approval **Optional values are**:- `no_approval_required`: Approval is not required.- `approval_required`: Approval is required',
+          )
+          .optional(),
+        restricted_mode_setting: z
+          .object({
+            status: z
+              .boolean()
+              .describe(
+                'Whether the confidentiality mode is enabled**Optional values**:- true: Enabled. When set to true, `screenshot_has_permission_setting`, `download_has_permission_setting`, `message_has_permission_setting` cannot all be `all_members`.- false: Disabled. When set to false, `screenshot_has_permission_setting`, `download_has_permission_setting`, `message_has_permission_setting` cannot have `not_anyone`',
+              )
+              .optional(),
+            screenshot_has_permission_setting: z
+              .enum(['all_members', 'not_anyone'])
+              .describe(
+                'Whether to allow screenshots Options:all_members(AllMembers All members allow screenshots),not_anyone(NotAnyone Not anyone allow screenshots)',
+              )
+              .optional(),
+            download_has_permission_setting: z
+              .enum(['all_members', 'not_anyone'])
+              .describe(
+                'Whether to allow downloading pictures, videos and files in messages Options:all_members(AllMembers All members allow downloading pictures, videos and files in messages),not_anyone(NotAnyone Not anyone allow downloading pictures, videos and files in messages)',
+              )
+              .optional(),
+            message_has_permission_setting: z
+              .enum(['all_members', 'not_anyone'])
+              .describe(
+                'Whether to allow copying and forwarding of messages Options:all_members(AllMembers All members allow copying and forwarding of messages),not_anyone(NotAnyone Not anyone allow copying and forwarding of messages)',
+              )
+              .optional(),
+          })
+          .describe(
+            'Restricted mode setting **Notice**: Confidentiality mode is applicable to Enterprise Ultimate Edition. For applicable versions and function introduction, please refer to [Session Confidentiality Mode]',
+          )
+          .optional(),
+        chat_type: z
+          .string()
+          .describe('Group type**Optional values are**:- `private`: A private group- `public`: A public group')
+          .optional(),
+        group_message_type: z
+          .enum(['chat', 'thread'])
+          .describe('Group message type Options:chat(chat),thread(thread)')
+          .optional(),
+        urgent_setting: z
+          .enum(['only_owner', 'all_members'])
+          .describe(
+            'Who can buzz others Options:only_owner(Only group owner and admin),all_members(Everyone in this group)',
+          )
+          .optional(),
+        video_conference_setting: z
+          .enum(['only_owner', 'all_members'])
+          .describe(
+            'Who can start video calls Options:only_owner(Only group owner and admin),all_members(Everyone in this group)',
+          )
+          .optional(),
+        hide_member_count_setting: z
+          .enum(['all_members', 'only_owner'])
+          .describe(
+            'Hide member count setting Options:all_members(visible to all group members),only_owner(visible only to the group owner and group administrators)',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       chat_id: z
         .string()
@@ -1669,7 +1721,9 @@ export const imV1MessageGet = {
     '[Feishu/Lark]-Messaging-Message management-Obtain the content of the specified message-Query message content with message_id',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional() })
+      .optional(),
     path: z.object({
       message_id: z
         .string()
@@ -1773,7 +1827,7 @@ export const imV1MessagePatch = {
   path: '/open-apis/im/v1/messages/:message_id',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-Messaging-Message card-Update the message card sent by the app-Call this interface to update the content of the specified message card by the message ID (message_id)',
+    '[Feishu/Lark]-Messaging-Message card-Update sent message card-Call this interface to update the content of the specified message card by the message ID (message_id)',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1917,25 +1971,29 @@ export const imV1MessageReactionList = {
     '[Feishu/Lark]-Messaging-Message reaction-List message reactions-Get the list of reactions in the specified message, and support getting only reactions of a specific type',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      reaction_type: z
-        .string()
-        .describe(
-          'The type of emoji to be queried. For supported enumeration values, refer to the emoji_type value in [Emoji Text Description].**Notice**: This parameter is optional. If it is not passed, all reactions in the message will be queried',
-        )
-        .optional(),
-      page_token: z
-        .string()
-        .describe(
-          'Page identifier. It is not filled in the first request, indicating traversal from the beginning; when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
-        )
-        .optional(),
-      page_size: z
-        .number()
-        .describe('Paging size, used to limit the number of data entries returned in one request.**Default value**: 20')
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        reaction_type: z
+          .string()
+          .describe(
+            'The type of emoji to be queried. For supported enumeration values, refer to the emoji_type value in [Emoji Text Description].**Notice**: This parameter is optional. If it is not passed, all reactions in the message will be queried',
+          )
+          .optional(),
+        page_token: z
+          .string()
+          .describe(
+            'Page identifier. It is not filled in the first request, indicating traversal from the beginning when there will be more groups, the new page_token will be returned at the same time, and the next traversal can use the page_token to get more groups',
+          )
+          .optional(),
+        page_size: z
+          .number()
+          .describe(
+            'Paging size, used to limit the number of data entries returned in one request.**Default value**: 20',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     path: z.object({
       message_id: z
         .string()
@@ -2179,11 +2237,7 @@ export const imV1PinList = {
   accessTokens: ['tenant', 'user'],
   schema: {
     params: z.object({
-      chat_id: z
-        .string()
-        .describe(
-          'Group ID. For details, refer to [Group ID description]',
-        ),
+      chat_id: z.string().describe('Group ID. For details, refer to [Group ID description]'),
       start_time: z
         .string()
         .describe(

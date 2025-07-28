@@ -61,9 +61,11 @@ export const performanceV1ReviewDataQuery = {
         )
         .optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };
@@ -74,60 +76,62 @@ export const performanceV1SemesterList = {
   path: '/open-apis/performance/v1/semesters',
   httpMethod: 'GET',
   description:
-    '[Feishu/Lark]-Admin configuration-Cycles and projects-Cycles-Obtain cycle-Obtain basic information about the cycle',
+    '[Feishu/Lark]-Performance-Admin configuration-Cycles and projects-Cycles-Obtain cycle-Obtain basic information about the cycle',
   accessTokens: ['tenant'],
   schema: {
-    params: z.object({
-      start_time: z
-        .string()
-        .describe("Start time of the query range in milliseconds. The start time can't be later than the end time")
-        .optional(),
-      end_time: z
-        .string()
-        .describe("End time of the query range in milliseconds. The end time can't be earlier than the start time")
-        .optional(),
-      year: z.number().describe('Year').optional(),
-      type_group: z
-        .enum(['Annual', 'Semi-annual', 'Quarter', 'Bimonth', 'Month', 'Non-standard'])
-        .describe(
-          'Cycle type group Options:Annual(Annual),Semi-annual(SemiAnnual Semi-annual),Quarter(Quarter),Bimonth(Bimonth),Month(Month),Non-standard(NonStandard Non-standard cycle)',
-        )
-        .optional(),
-      type: z
-        .enum([
-          'Annual',
-          'H1',
-          'H2',
-          'Q1',
-          'Q2',
-          'Q3',
-          'Q4',
-          'January-February',
-          'March-April',
-          'May-June',
-          'July-August',
-          'September-October',
-          'November-December',
-          'January',
-          'February',
-          'March',
-          'April',
-          'May',
-          'June',
-          'July',
-          'August',
-          'September',
-          'October',
-          'November',
-          'December',
-          'Custom',
-        ])
-        .describe(
-          'Cycle type Options:Annual(Annual),H1(H1),H2(H2),Q1(Q1),Q2(Q2),Q3(Q3),Q4(Q4),January-February(January2February January-February),March-April(March2April March-April),May-June(May2June May-June),July-August(July2August July-August),September-October(September2October September-October),November-December(November2December November-December),January(January),February(February),March(March),April(April),May(May),June(June),July(July),August(August),September(September),October(October),November(November),December(December),Custom(Custom)',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        start_time: z
+          .string()
+          .describe("Start time of the query range in milliseconds. The start time can't be later than the end time")
+          .optional(),
+        end_time: z
+          .string()
+          .describe("End time of the query range in milliseconds. The end time can't be earlier than the start time")
+          .optional(),
+        year: z.number().describe('Year').optional(),
+        type_group: z
+          .enum(['Annual', 'Semi-annual', 'Quarter', 'Bimonth', 'Month', 'Non-standard'])
+          .describe(
+            'Cycle type group Options:Annual(Annual),Semi-annual(SemiAnnual Semi-annual),Quarter(Quarter),Bimonth(Bimonth),Month(Month),Non-standard(NonStandard Non-standard cycle)',
+          )
+          .optional(),
+        type: z
+          .enum([
+            'Annual',
+            'H1',
+            'H2',
+            'Q1',
+            'Q2',
+            'Q3',
+            'Q4',
+            'January-February',
+            'March-April',
+            'May-June',
+            'July-August',
+            'September-October',
+            'November-December',
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+            'Custom',
+          ])
+          .describe(
+            'Cycle type Options:Annual(Annual),H1(H1),H2(H2),Q1(Q1),Q2(Q2),Q3(Q3),Q4(Q4),January-February(January2February January-February),March-April(March2April March-April),May-June(May2June May-June),July-August(July2August July-August),September-October(September2October September-October),November-December(November2December November-December),January(January),February(February),March(March),April(April),May(May),June(June),July(July),August(August),September(September),October(October),November(November),December(December),Custom(Custom)',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV1StageTaskFindByPage = {
@@ -162,9 +166,11 @@ export const performanceV1StageTaskFindByPage = {
         .optional(),
       page_size: z.number().describe('Page size').optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
   },
 };
 export const performanceV1StageTaskFindByUserList = {
@@ -195,9 +201,11 @@ export const performanceV1StageTaskFindByUserList = {
       after_time: z.string().describe('Search for steps that end after this time').optional(),
       before_time: z.string().describe('Search for steps that have ended before this time').optional(),
     }),
-    params: z.object({
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
-    }),
+    params: z
+      .object({
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id', 'people_admin_id']).describe('User ID type').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('Use user access token, otherwise use tenant access token').optional(),
   },
 };

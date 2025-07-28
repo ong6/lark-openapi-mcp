@@ -60,14 +60,14 @@ export const taskV2AttachmentDelete = {
   description: '[Feishu/Lark]-任务-附件-删除附件-提供一个附件GUID，删除该附件。删除后该附件不可再恢复',
   accessTokens: ['tenant', 'user'],
   schema: {
-    path: z.object({
-      attachment_guid: z
-        .string()
-        .describe(
-          '要删除附件的GUID。可以通过创建[上传附件]接口创建, 或者通过[列取附件]接口查询得到',
-        )
-        .optional(),
-    }),
+    path: z
+      .object({
+        attachment_guid: z
+          .string()
+          .describe('要删除附件的GUID。可以通过创建[上传附件]接口创建, 或者通过[列取附件]接口查询得到')
+          .optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -81,13 +81,11 @@ export const taskV2AttachmentGet = {
     '[Feishu/Lark]-任务-附件-获取附件-提供一个附件GUID，返回附件的详细信息，包括GUID，名称，大小，上传时间，临时可下载链接等',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({
       attachment_guid: z
         .string()
-        .describe(
-          '获取详情的附件GUID。可以通过创建[上传附件]接口创建, 或者通过[列取附件]接口查询得到',
-        ),
+        .describe('获取详情的附件GUID。可以通过创建[上传附件]接口创建, 或者通过[列取附件]接口查询得到'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -137,7 +135,7 @@ export const taskV2CommentCreate = {
       resource_type: z.string().describe('评论归属的资源类型，目前只支持任务“task”，默认为"task"').optional(),
       resource_id: z.string().describe('评论归属的资源ID。当归属资源类型为"task"时，这里应填写任务的GUID').optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -164,7 +162,7 @@ export const taskV2CommentGet = {
     '[Feishu/Lark]-任务-评论-获取评论详情-给定一个评论的ID，返回评论的详情，包括内容，创建人，创建时间和更新时间等信息',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({ comment_id: z.string().describe('要获取评论详情的评论ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -223,7 +221,7 @@ export const taskV2CommentPatch = {
         .array(z.string())
         .describe('要更新的字段，支持<md-enum><md-enum-item key="content" >评论内容</md-enum-item></md-enum>'),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({ comment_id: z.string().describe('要更新的评论ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -235,7 +233,7 @@ export const taskV2CustomFieldAdd = {
   path: '/open-apis/task/v2/custom_fields/:custom_field_guid/add',
   httpMethod: 'POST',
   description:
-    '[Feishu/Lark]-任务-自定义字段-将自定义字段加入资源-将自定义字段加入一个资源。目前资源类型支持清单tasklist。一个自定义字段可以加入多个清单中。加入后，该清单可以展示任务的该字段的值，同时基于该字段实现筛选，分组等功能。如果自定义字段的设置被更新，字段加入的所有字段都能收到这个更新，并进行相应的展示',
+    '[Feishu/Lark]-任务-自定义字段-将自定义字段加入资源-将自定义字段加入一个资源。目前资源类型支持清单tasklist。一个自定义字段可以加入多个清单中。加入后，该清单可以展示任务的该字段的值，同时基于该字段实现筛选，分组等功能。如果自定义字段的设置被更新，字段加入的所有资源都能收到这个更新，并进行相应的展示',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -363,7 +361,9 @@ export const taskV2CustomFieldCreate = {
         .optional(),
       text_setting: z.object({}).describe('文本类型设置（目前文本类型没有可设置项）').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -376,13 +376,13 @@ export const taskV2CustomFieldGet = {
   description: '[Feishu/Lark]-任务-自定义字段-获取自定义字段-根据一个自定义字段的GUID，获取其详细的设置信息',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({
       custom_field_guid: z
         .string()
-        .describe(
-          '自定义字段GUID。可以通过[创建自定义字段]接口创建, 或者通过[列取自定义字段]接口查询得到',
-        ),
+        .describe('自定义字段GUID。可以通过[创建自定义字段]接口创建, 或者通过[列取自定义字段]接口查询得到'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -397,21 +397,23 @@ export const taskV2CustomFieldList = {
     '[Feishu/Lark]-任务-自定义字段-列取自定义字段-列取用户可访问的自定义字段列表。如果不提供`resource_type`和`resource_id`参数，则返回用户可访问的所有自定义字段。如果提供`resource_type`和`resource_id`，则返回该资源下的自定义字段。目前`resource_type`仅支持"tasklist"，此时`resource_id`应为一个清单的tasklist_guid。该接口支持分页',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-      resource_type: z
-        .string()
-        .describe('资源类型，如提供表示仅查询特定资源下的自定义字段。目前只支持tasklist')
-        .optional(),
-      resource_id: z.string().describe('要查询自定义字段的归属resource_id').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+        resource_type: z
+          .string()
+          .describe('资源类型，如提供表示仅查询特定资源下的自定义字段。目前只支持tasklist')
+          .optional(),
+        resource_id: z.string().describe('要查询自定义字段的归属resource_id').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -425,13 +427,15 @@ export const taskV2CustomFieldOptionCreate = {
     '[Feishu/Lark]-任务-自定义字段选项-创建自定义任务选项-为单选或多选字段添加一个自定义选项。一个单选/多选字段最大支持100个选项。新添加的选项如果不隐藏，其名字不能和已存在的不隐藏选项的名字重复',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      name: z.string().describe('选项名称，最大50个字符').optional(),
-      color_index: z.number().describe('颜色索引值，支持0～54中的一个数字。如果不填写，则会随机选一个').optional(),
-      insert_before: z.string().describe('要放到某个option之前的option_guid').optional(),
-      insert_after: z.string().describe('要放到某个option之后的option_guid').optional(),
-      is_hidden: z.boolean().describe('是否隐藏').optional(),
-    }),
+    data: z
+      .object({
+        name: z.string().describe('选项名称，最大50个字符').optional(),
+        color_index: z.number().describe('颜色索引值，支持0～54中的一个数字。如果不填写，则会随机选一个').optional(),
+        insert_before: z.string().describe('要放到某个option之前的option_guid').optional(),
+        insert_after: z.string().describe('要放到某个option之后的option_guid').optional(),
+        is_hidden: z.boolean().describe('是否隐藏').optional(),
+      })
+      .optional(),
     path: z.object({ custom_field_guid: z.string().describe('要添加选项的自定义字段GUID，该字段必须是') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -446,24 +450,26 @@ export const taskV2CustomFieldOptionPatch = {
     '[Feishu/Lark]-任务-自定义字段选项-更新自定义字段选项-根据一个自定义字段的GUID和其选项的GUID，更新该选项的数据。要更新的字段必须是单选或者多选类型，且要更新的字段必须归属于该字段。更新时，将`update_fields`字段中填写所有要修改的任务字段名，同时在`option`字段中填写要修改的字段的新值即可。`update_fields`支持的字段包括：* `name`: 选项名称* `color_index`: 选项的颜色索引值* `is_hidden`: 是否从界面上隐藏* `insert_before`: 将当前option放到同字段某个option之前的那个option_guid。* `insert_after`: 将当前option放到同字段某个option之后的那个option_guid',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      option: z
-        .object({
-          name: z.string().describe('选项名称，最大50个字符').optional(),
-          color_index: z.number().describe('颜色索引值，支持0～54中的一个数字').optional(),
-          insert_before: z.string().describe('要放到某个option之前的option_guid').optional(),
-          insert_after: z.string().describe('要放到某个option之后的option_guid').optional(),
-          is_hidden: z.boolean().describe('是否隐藏').optional(),
-        })
-        .describe('要更新的option数据')
-        .optional(),
-      update_fields: z
-        .array(z.string())
-        .describe(
-          '要更新的字段名，支持* `name`: 选项名称* `color_index`: 选项的颜色索引值* `is_hidden`: 是否从界面上隐藏* `insert_before`: 将当前option放到同字段某个option之前。* `insert_after`: 将当前option放到同字段某个option之后',
-        )
-        .optional(),
-    }),
+    data: z
+      .object({
+        option: z
+          .object({
+            name: z.string().describe('选项名称，最大50个字符').optional(),
+            color_index: z.number().describe('颜色索引值，支持0～54中的一个数字').optional(),
+            insert_before: z.string().describe('要放到某个option之前的option_guid').optional(),
+            insert_after: z.string().describe('要放到某个option之后的option_guid').optional(),
+            is_hidden: z.boolean().describe('是否隐藏').optional(),
+          })
+          .describe('要更新的option数据')
+          .optional(),
+        update_fields: z
+          .array(z.string())
+          .describe(
+            '要更新的字段名，支持* `name`: 选项名称* `color_index`: 选项的颜色索引值* `is_hidden`: 是否从界面上隐藏* `insert_before`: 将当前option放到同字段某个option之前。* `insert_after`: 将当前option放到同字段某个option之后',
+          )
+          .optional(),
+      })
+      .optional(),
     path: z.object({
       custom_field_guid: z.string().describe('要更新的选项的自定义字段GUID'),
       option_guid: z.string().describe('要更新的选项的GUID'),
@@ -481,98 +487,102 @@ export const taskV2CustomFieldPatch = {
     '[Feishu/Lark]-任务-自定义字段-更新自定义字段-更新一个自定义字段的名称和设定。更新时，将`update_fields`字段中填写所有要修改的任务字段名，同时在`custom_field`字段中填写要修改的字段的新值即可。自定义字段不允许修改类型，只能根据类型修改其设置。`update_fields`支持更新的字段包括：* `name`：自定义字段名称* `number_setting` ：数字类型设置（当且仅当要更新的自定义字段类型是数字时)* `member_setting` ：人员类型设置（当且仅当要更新的自定义字段类型是人员时)* `datetime_setting` ：日期类型设置 (当且仅当要更新的自定义字段类型是日期时)* `single_select_setting`：单选类型设置 (当且仅当要更新的自定义字段类型是单选时)* `multi_select_setting`：多选类型设置 (当且仅当要更新的自定义字段类型是多选时)* `text_setting`: 文本类型设置（目前文本类型没有可设置项）当更改某个设置时，如果不填写一个字段，表示不覆盖原有的设定。比如，对于一个数字，原有的setting是:```json"number_setting": { "format": "normal", "decimal_count": 2, "separator": "none", "custom_symbol": "L", "custom_symbol_position": "right"}```使用如下参数调用接口：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "number_setting": { "decimal_count": 4 } }, "update_fields": ["number_setting"]}```表示仅仅将小数位数从2改为4，其余的设置`format`, `separator`, `custom_field`等都不变。对于单选/多选类型的自定义字段，其设定是一个选项列表。更新时，使用方式接近使用App的界面。使用者不必传入字段的所有选项，而是只需要提供最终希望界面可见（is_hidden=false) 的选项。原有字段中的选项如果没有出现在输入中，则被置为`is_hidden=true`并放到所有可见选项之后。对于某一个更新的选项，如果提供了option_guid，将视作更新该选项（此时option_guid必须存在于当前字段，否则会返回错误）；如果不提供，将视作新建一个选项（新的选项的option_guid会在reponse中被返回)。例如，一个单选字段原来有3个选项A，B，C，D。其中C是隐藏的。用户可以这样更新选项：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "optoins": [ { "name": "E", "color_index": 25 }, { "guid": "<option_guid of A>" "name": "A2" }, { "guid": "<option_guid of C>", }, ] } }, "update_fields": ["single_select_setting"]}```调用后最终得到了新的选项列表E, A, C, B, D。其中：* 选项E被新建出来，其`color_index`被设为了25。* 选项A被更新，其名称被改为了"A2"。但其color_index因为没有设置而保持不变；* 选项整体顺序遵循用户的输入顺序，即E，A，C。同时E，A，C作为直接的输入，其is_hidden均被设为了false，其中，C原本是is_hidden=true，也会被设置为is_hidden=false。* 选项B和D因为用户没有输入，其`is_hidden`被置为了true，并且被放到了所有用户输入的选项之后。如果只是单纯的希望修改用户可见的选项的顺序，比如从原本的选项A,B,C修改为C,B,A，可以这样调用接口：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "optoins": [ { "guid": "<option_guid_of_C>" }, { "guid": "<option_guid of B>" }, { "guid": "<option_guid of A>", }, ] } }, "update_fields": ["single_select_setting"]}```如果希望直接将字段里的所有选项都标记为不可见，可以这样调用接口：```PATCH /task/v2/custom_fields/:custom_field_guid{ "custom_field": { "single_select_setting": { "optoins": [] } }, "update_fields": ["single_select_setting"]}```更新单选/多选字段的选项必须满足“可见选项名字不能重复”的约束。否则会返回错误。开发者需要自行保证输入的选项名不可以重复。如希望只更新单个选项，或者希望单独设置某个选项的is_hidden，本接口无法支持，但可以使用[更新自定义字段选项]接口实现',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      custom_field: z
-        .object({
-          name: z.string().describe('字段名称，支持最大50个字符').optional(),
-          number_setting: z
-            .object({
-              format: z
-                .enum(['normal', 'percentage', 'cny', 'usd', 'custom'])
-                .describe(
-                  '数字展示的格式 Options:normal(常规数字),percentage(百分比格式),cny(人民币格式),usd(美元格式),custom(自定义符号)',
-                )
-                .optional(),
-              custom_symbol: z
-                .string()
-                .describe('自定义符号，支持最大4个字符。只有`format`设为"custom"时才会生效')
-                .optional(),
-              custom_symbol_position: z
-                .enum(['left', 'right'])
-                .describe(
-                  '自定义符号显示的位置。 Options:left(letf 自定义符号放在数字左边),right(自定义符号放在数字右边)',
-                )
-                .optional(),
-              separator: z
-                .enum(['none', 'thousand'])
-                .describe('分隔符样式 Options:none(无分隔符),thousand(千分位分隔符)')
-                .optional(),
-              decimal_count: z
-                .number()
-                .describe(
-                  '保留小数位数。输入的数字值的小数位数如果比该设置多，多余的位数将被四舍五入后舍弃。如果`format`为"percentage"，表示变为百分数之后的小数位数',
-                )
-                .optional(),
-            })
-            .describe('数字类型的字段设置')
-            .optional(),
-          member_setting: z
-            .object({ multi: z.boolean().describe('是否支持多选').optional() })
-            .describe('人员类型的字段设置')
-            .optional(),
-          datetime_setting: z
-            .object({
-              format: z
-                .string()
-                .describe(
-                  '日期显示格式。支持<md-enum><md-enum-item key="yyyy-mm-dd">以短横分隔的年月日，例如2023-08-24</md-enum-item><md-enum-item key="yyyy/mm/dd">以斜杠分隔的年月日，例如2023/08/04</md-enum-item><md-enum-item key="mm/dd/yyyy">以斜杠分隔的月日年，例如08/24/2023</md-enum-item><md-enum-item key="dd/mm/yyyy">以斜杠分隔的日月年，例如24/08/2023</md-enum-item></md-enum>',
-                )
-                .optional(),
-            })
-            .describe('时间日期类型的字段设置')
-            .optional(),
-          single_select_setting: z
-            .object({
-              options: z
-                .array(
-                  z.object({
-                    guid: z.string().describe('选项的GUID。如果填写表示更新；不填写表示新建').optional(),
-                    name: z.string().describe('选项名称，最大50个字符').optional(),
-                    color_index: z.number().describe('选项的颜色索引值，可以是0～54中的一个数字').optional(),
-                  }),
-                )
-                .describe('单选选项')
-                .optional(),
-            })
-            .describe('单选设置')
-            .optional(),
-          multi_select_setting: z
-            .object({
-              options: z
-                .array(
-                  z.object({
-                    guid: z.string().describe('选项的GUID。如果填写表示更新；不填写表示新建').optional(),
-                    name: z.string().describe('选项名称，最大50个字符').optional(),
-                    color_index: z.number().describe('选项的颜色索引值，可以是0～54中的一个数字').optional(),
-                  }),
-                )
-                .describe('多选选项')
-                .optional(),
-            })
-            .describe('多选设置')
-            .optional(),
-          text_setting: z.object({}).describe('文本类型设置').optional(),
-        })
-        .describe('要修改的自定义字段数据')
-        .optional(),
-      update_fields: z
-        .array(z.string())
-        .describe(
-          '要修改的自定义字段类型，支持：* `name`：自定义字段名称。* `number_setting` ：数字类型设置（当且仅当要更新的自定义字段类型是数字时)* `member_setting` ：人员类型设置（当且仅当要更新的自定义字段类型是人员时)* `datetime_setting` ：日期类型设置 (当且仅当要更新的自定义字段类型是日期时)* `single_select_setting`：单选类型设置 (当且仅当要更新的自定义字段类型是单选时)* `multi_select_setting`：多选类型设置 (当且仅当要更新的自定义字段类型是多选时)* `text_setting`: 文本类型设置（当前无可设置项）',
-        )
-        .optional(),
-    }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    data: z
+      .object({
+        custom_field: z
+          .object({
+            name: z.string().describe('字段名称，支持最大50个字符').optional(),
+            number_setting: z
+              .object({
+                format: z
+                  .enum(['normal', 'percentage', 'cny', 'usd', 'custom'])
+                  .describe(
+                    '数字展示的格式 Options:normal(常规数字),percentage(百分比格式),cny(人民币格式),usd(美元格式),custom(自定义符号)',
+                  )
+                  .optional(),
+                custom_symbol: z
+                  .string()
+                  .describe('自定义符号，支持最大4个字符。只有`format`设为"custom"时才会生效')
+                  .optional(),
+                custom_symbol_position: z
+                  .enum(['left', 'right'])
+                  .describe(
+                    '自定义符号显示的位置。 Options:left(letf 自定义符号放在数字左边),right(自定义符号放在数字右边)',
+                  )
+                  .optional(),
+                separator: z
+                  .enum(['none', 'thousand'])
+                  .describe('分隔符样式 Options:none(无分隔符),thousand(千分位分隔符)')
+                  .optional(),
+                decimal_count: z
+                  .number()
+                  .describe(
+                    '保留小数位数。输入的数字值的小数位数如果比该设置多，多余的位数将被四舍五入后舍弃。如果`format`为"percentage"，表示变为百分数之后的小数位数',
+                  )
+                  .optional(),
+              })
+              .describe('数字类型的字段设置')
+              .optional(),
+            member_setting: z
+              .object({ multi: z.boolean().describe('是否支持多选').optional() })
+              .describe('人员类型的字段设置')
+              .optional(),
+            datetime_setting: z
+              .object({
+                format: z
+                  .string()
+                  .describe(
+                    '日期显示格式。支持<md-enum><md-enum-item key="yyyy-mm-dd">以短横分隔的年月日，例如2023-08-24</md-enum-item><md-enum-item key="yyyy/mm/dd">以斜杠分隔的年月日，例如2023/08/04</md-enum-item><md-enum-item key="mm/dd/yyyy">以斜杠分隔的月日年，例如08/24/2023</md-enum-item><md-enum-item key="dd/mm/yyyy">以斜杠分隔的日月年，例如24/08/2023</md-enum-item></md-enum>',
+                  )
+                  .optional(),
+              })
+              .describe('时间日期类型的字段设置')
+              .optional(),
+            single_select_setting: z
+              .object({
+                options: z
+                  .array(
+                    z.object({
+                      guid: z.string().describe('选项的GUID。如果填写表示更新；不填写表示新建').optional(),
+                      name: z.string().describe('选项名称，最大50个字符').optional(),
+                      color_index: z.number().describe('选项的颜色索引值，可以是0～54中的一个数字').optional(),
+                    }),
+                  )
+                  .describe('单选选项')
+                  .optional(),
+              })
+              .describe('单选设置')
+              .optional(),
+            multi_select_setting: z
+              .object({
+                options: z
+                  .array(
+                    z.object({
+                      guid: z.string().describe('选项的GUID。如果填写表示更新；不填写表示新建').optional(),
+                      name: z.string().describe('选项名称，最大50个字符').optional(),
+                      color_index: z.number().describe('选项的颜色索引值，可以是0～54中的一个数字').optional(),
+                    }),
+                  )
+                  .describe('多选选项')
+                  .optional(),
+              })
+              .describe('多选设置')
+              .optional(),
+            text_setting: z.object({}).describe('文本类型设置').optional(),
+          })
+          .describe('要修改的自定义字段数据')
+          .optional(),
+        update_fields: z
+          .array(z.string())
+          .describe(
+            '要修改的自定义字段类型，支持：* `name`：自定义字段名称。* `number_setting` ：数字类型设置（当且仅当要更新的自定义字段类型是数字时)* `member_setting` ：人员类型设置（当且仅当要更新的自定义字段类型是人员时)* `datetime_setting` ：日期类型设置 (当且仅当要更新的自定义字段类型是日期时)* `single_select_setting`：单选类型设置 (当且仅当要更新的自定义字段类型是单选时)* `multi_select_setting`：多选类型设置 (当且仅当要更新的自定义字段类型是多选时)* `text_setting`: 文本类型设置（当前无可设置项）',
+          )
+          .optional(),
+      })
+      .optional(),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({
       custom_field_guid: z
         .string()
@@ -641,7 +651,7 @@ export const taskV2SectionCreate = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -669,7 +679,7 @@ export const taskV2SectionGet = {
     '[Feishu/Lark]-任务-自定义分组-获取自定义分组详情-获取一个自定义分组详情，包括名称，创建人等信息。如果该自定义分组归属于一个清单，还会返回清单的摘要信息',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({ section_guid: z.string().describe('要获取的自定义分组GUID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -730,7 +740,7 @@ export const taskV2SectionPatch = {
           '要更新的字段名，支持：* `name` - 自定义字段名字* `insert_before` - 要让当前自定义分组放到某个自定义分组前面的secion_guid，用于改变当前自定义分组的位置。* `insert_after` - 要让当前自定义分组放到某个自定义分组后面的secion_guid，用于改变当前自定义分组的位置',
         ),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({ section_guid: z.string().describe('要更新的自定义分组GUID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -745,18 +755,23 @@ export const taskV2SectionTasks = {
     '[Feishu/Lark]-任务-自定义分组-获取自定义分组任务列表-列取一个自定义分组里的所有任务。支持分页。任务按照自定义排序的顺序返回。本接口支持简单的过滤',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      completed: z.boolean().describe('按照任务状态过滤，如果不填写则表示不按完成状态过滤').optional(),
-      created_from: z.string().describe('按照创建时间筛选的起始时间戳（ms)，如不填写则为首个任务的创建时刻').optional(),
-      created_to: z.string().describe('按照创建时间筛选的起始时间戳（ms)，如不填写则为最后任务的创建时刻').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        completed: z.boolean().describe('按照任务状态过滤，如果不填写则表示不按完成状态过滤').optional(),
+        created_from: z
+          .string()
+          .describe('按照创建时间筛选的起始时间戳（ms)，如不填写则为首个任务的创建时刻')
+          .optional(),
+        created_to: z.string().describe('按照创建时间筛选的起始时间戳（ms)，如不填写则为最后任务的创建时刻').optional(),
+      })
+      .optional(),
     path: z.object({ section_guid: z.string().describe('要获取任务的自定义分组全局唯一ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -771,17 +786,19 @@ export const taskV2TaskAddDependencies = {
     '[Feishu/Lark]-任务-任务-添加依赖-为一个任务添加一个或多个依赖。可以添加任务的前置依赖和后置依赖。存在依赖关系的任务如果在同一个清单，可以通过清单的甘特图来展示其依赖关系。本接口也可以用于修改一个现有依赖的类型（前置改为后置或者后置改为前置）。注意：添加的依赖的`task_guid`不能重复，也不能添加当前任务为自己的依赖。尝试添加一个已经存在的依赖会被自动忽略',
   accessTokens: ['tenant', 'user'],
   schema: {
-    data: z.object({
-      dependencies: z
-        .array(
-          z.object({
-            type: z.enum(['prev', 'next']).describe('依赖类型 Options:prev(前置依赖),next(后置依赖)'),
-            task_guid: z.string().describe('依赖任务的GUID'),
-          }),
-        )
-        .describe('要添加的依赖')
-        .optional(),
-    }),
+    data: z
+      .object({
+        dependencies: z
+          .array(
+            z.object({
+              type: z.enum(['prev', 'next']).describe('依赖类型 Options:prev(前置依赖),next(后置依赖)'),
+              task_guid: z.string().describe('依赖任务的GUID'),
+            }),
+          )
+          .describe('要添加的依赖')
+          .optional(),
+      })
+      .optional(),
     path: z.object({ task_guid: z.string().describe('任务GUID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -801,8 +818,9 @@ export const taskV2TaskAddMembers = {
         .array(
           z.object({
             id: z.string().describe('表示member的id'),
-            type: z.string().describe('成员类型').optional(),
-            role: z.string().describe('成员的角色，支持"assignee"或"follower"'),
+            type: z.string().describe('成员类型, 可选值* user* app').optional(),
+            role: z.string().describe('成员的角色，可选值* assignee* follower'),
+            name: z.string().describe('成员名称').optional(),
           }),
         )
         .describe(
@@ -810,12 +828,10 @@ export const taskV2TaskAddMembers = {
         ),
       client_token: z
         .string()
-        .describe(
-          '幂等token，如果提供则实现幂等行为。详见[功能概述]中的“ 幂等调用 ”章节',
-        )
+        .describe('幂等token，如果提供则实现幂等行为。详见[功能概述]中的“ 幂等调用 ”章节')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('要添加负责人的任务全局唯一ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -841,7 +857,7 @@ export const taskV2TaskAddReminders = {
         )
         .describe('要添加的reminder的列表，目前1个任务只支持一个提醒'),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('要添加负责人的任务全局唯一ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -860,7 +876,7 @@ export const taskV2TaskAddTasklist = {
       tasklist_guid: z.string().describe('要添加到的清单的全局唯一ID'),
       section_guid: z.string().describe('要添加到清单的自定义分组全局唯一ID，如不填写表示添加到默认分组').optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('要添加到清单的任务的全局唯一ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -891,9 +907,7 @@ export const taskV2TaskCreate = {
             .describe('是否截止到一个日期。如果设为true，timestamp中只有日期的部分会被解析和存储')
             .optional(),
         })
-        .describe(
-          '任务截止时间。详见[功能概述]中的“ 如何使用开始时间和截止时间？”章节',
-        )
+        .describe('任务截止时间。详见[功能概述]中的“ 如何使用开始时间和截止时间？”章节')
         .optional(),
       origin: z
         .object({
@@ -958,9 +972,7 @@ export const taskV2TaskCreate = {
         .optional(),
       repeat_rule: z
         .string()
-        .describe(
-          '重复任务规则。如果设置，则该任务为“重复任务”。详见[任务功能概述]中的“如何使用重复任务？”章节',
-        )
+        .describe('重复任务规则。如果设置，则该任务为“重复任务”。详见[任务功能概述]中的“如何使用重复任务？”章节')
         .optional(),
       custom_complete: z
         .object({
@@ -1034,9 +1046,7 @@ export const taskV2TaskCreate = {
             .describe('android端的自定义完成配置')
             .optional(),
         })
-        .describe(
-          '任务自定义完成配置。详见[任务功能概述]中的“ 如何使用任务自定义完成？”章节',
-        )
+        .describe('任务自定义完成配置。详见[任务功能概述]中的“ 如何使用任务自定义完成？”章节')
         .optional(),
       tasklists: z
         .array(
@@ -1057,9 +1067,7 @@ export const taskV2TaskCreate = {
         .optional(),
       client_token: z
         .string()
-        .describe(
-          '幂等token。如果提供则触发后端实现幂等行为。详见[功能概述]中的“ 幂等调用 ”章节',
-        )
+        .describe('幂等token。如果提供则触发后端实现幂等行为。详见[功能概述]中的“ 幂等调用 ”章节')
         .optional(),
       start: z
         .object({
@@ -1074,9 +1082,7 @@ export const taskV2TaskCreate = {
             .describe('是否开始于一个日期。如果设为true，timestamp中只有日期的部分会被解析和存储')
             .optional(),
         })
-        .describe(
-          '任务的开始时间(ms), 详见[功能概述]中的“ 如何使用开始时间和截止时间？”章节',
-        )
+        .describe('任务的开始时间(ms), 详见[功能概述]中的“ 如何使用开始时间和截止时间？”章节')
         .optional(),
       reminders: z
         .array(
@@ -1159,7 +1165,7 @@ export const taskV2TaskCreate = {
         .describe('正数协议每日提醒')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1185,7 +1191,7 @@ export const taskV2TaskGet = {
   description: '[Feishu/Lark]-任务-任务-获取任务详情-该接口用于获取任务详情，包括任务标题、描述、时间、成员等信息',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('要获取的任务guid') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1200,23 +1206,25 @@ export const taskV2TaskList = {
     '[Feishu/Lark]-任务-任务-列取任务列表-基于调用身份，列出特定类型的所有任务。支持分页。目前只支持列取任务界面上“我负责的”任务。返回的任务数据按照任务在”我负责的“界面中”自定义拖拽“的顺序排序',
   accessTokens: ['user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('每页的任务数量').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      completed: z
-        .boolean()
-        .describe(
-          '是否按任务完成进行过滤。填写true表示只列出已完成任务；填写false表示只列出未完成任务。不填写表示不过滤',
-        )
-        .optional(),
-      type: z.string().describe('列取任务的类型，目前只支持"my_tasks"，即“我负责的”').optional(),
-      user_id_type: z.string().describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('每页的任务数量').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        completed: z
+          .boolean()
+          .describe(
+            '是否按任务完成进行过滤。填写true表示只列出已完成任务；填写false表示只列出未完成任务。不填写表示不过滤',
+          )
+          .optional(),
+        type: z.string().describe('列取任务的类型，目前只支持"my_tasks"，即“我负责的”').optional(),
+        user_id_type: z.string().describe('用户ID类型').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1227,7 +1235,7 @@ export const taskV2TaskPatch = {
   path: '/open-apis/task/v2/tasks/:task_guid',
   httpMethod: 'PATCH',
   description:
-    '[Feishu/Lark]-任务-任务-更新任务-该接口用于修改任务的标题、描述、截止时间等信息。更新时，将`update_fields`字段中填写所有要修改的任务字段名，同时在`task`字段中填写要修改的字段的新值即可。如果`update_fields`中设置了要变更一个字段的名字，但是task里没设置新的值，则表示将该字段清空。调用约定详情见[功能概述]中的“ 关于资源的更新”章节。目前支持更新的字段包括：* `summary` - 任务标题* `description` - 任务描述* `start` - 任务开始时间* `due` - 任务截止时间* `completed_at` - 用于标记任务完成/未完成* `extra` - 任务附带自定义数据* `custom_complete` - 任务自定义完成配置。* `repeat_rule` - 重复任务规则。* `mode` - 任务完成模式。* `is_milestone` - 是否是里程碑任务。* `custom_fields` - 自定义字段值。该接口可以用于完成任务和将任务恢复至未完成，只需要修改`completed_at`字段即可。但留意，目前不管任务本身是会签任务还是或签任务，oapi对任务进行完成只能实现“整体完成”，不支持个人单独完成。此外，不能对已经完成的任务再次完成，但可以将其恢复到未完成的状态(设置`completed_at`为"0")。如更新自定义字段的值，需要调用身份同时拥有任务的编辑权限和自定义字段的编辑权限。详情见[自定义字段功能概览]。更新时，只有填写在`task.custom_fields`的自定义字段值会被更新，不填写的不会被改变。任务成员/提醒/清单数据不能使用本接口进行更新。* 如要修改任务成员，需要使用[添加任务成员]和[移除任务成员]接口。* 如要修改任务提醒，需要使用[添加任务提醒]和[移除任务提醒]接口。* 如要变更任务所在的清单，需要使用[任务加入清单]和[任务移出清单]接口',
+    '[Feishu/Lark]-任务-任务-更新任务-该接口用于修改任务的标题、描述、截止时间等信息。更新时，将`update_fields`字段中填写所有要修改的任务字段名，同时在`task`字段中填写要修改的字段的新值即可。如果`update_fields`中设置了要变更一个字段的名字，但是task里没设置新的值，则表示将该字段清空。调用约定详情见[功能概述]中的“ 关于资源的更新”章节。该接口可以用于完成任务和将任务恢复至未完成，只需要修改`completed_at`字段即可。但留意，目前不管任务本身是会签任务还是或签任务，oapi对任务进行完成只能实现“整体完成”，不支持个人单独完成。此外，不能对已经完成的任务再次完成，但可以将其恢复到未完成的状态(设置`completed_at`为"0")。如更新自定义字段的值，需要调用身份同时拥有任务的编辑权限和自定义字段的编辑权限。详情见[自定义字段功能概览]。更新时，只有填写在`task.custom_fields`的自定义字段值会被更新，不填写的不会被改变。任务成员/提醒/清单数据不能使用本接口进行更新。* 如要修改任务成员，需要使用[添加任务成员]和[移除任务成员]接口。* 如要修改任务提醒，需要使用[添加任务提醒]和[移除任务提醒]接口。* 如要变更任务所在的清单，需要使用[任务加入清单]和[任务移出清单]接口',
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({
@@ -1251,17 +1259,13 @@ export const taskV2TaskPatch = {
                 .describe('是否截止到一个日期。如果设为true，timestamp中只有日期的部分会被解析和存储')
                 .optional(),
             })
-            .describe(
-              '任务截止时间。详见[功能概述]中的“ 如何使用开始时间和截止时间？”章节',
-            )
+            .describe('任务截止时间。详见[功能概述]中的“ 如何使用开始时间和截止时间？”章节')
             .optional(),
           extra: z.string().describe('调用者可以传入的任意附带到任务上的数据。在获取任务详情时会原样返回').optional(),
           completed_at: z.string().describe('任务的完成时刻时间戳(ms)').optional(),
           repeat_rule: z
             .string()
-            .describe(
-              '如果设置，则该任务为“重复任务”。详见[任务功能概述]中的“如何使用重复任务？”章节',
-            )
+            .describe('如果设置，则该任务为“重复任务”。详见[任务功能概述]中的“如何使用重复任务？”章节')
             .optional(),
           custom_complete: z
             .object({
@@ -1335,9 +1339,7 @@ export const taskV2TaskPatch = {
                 .describe('android端的自定义完成配置')
                 .optional(),
             })
-            .describe(
-              '任务自定义完成配置。详见[任务功能概述]中的“ 如何使用任务自定义完成？”章节',
-            )
+            .describe('任务自定义完成配置。详见[任务功能概述]中的“ 如何使用任务自定义完成？”章节')
             .optional(),
           start: z
             .object({
@@ -1352,9 +1354,7 @@ export const taskV2TaskPatch = {
                 .describe('是否开始于一个日期。如果设为true，timestamp中只有日期的部分会被解析和存储')
                 .optional(),
             })
-            .describe(
-              '任务的开始时间(ms)。详见[功能概述]中的“ 如何使用开始时间和截止时间？”章节',
-            )
+            .describe('任务的开始时间(ms)。详见[功能概述]中的“ 如何使用开始时间和截止时间？”章节')
             .optional(),
           mode: z.number().describe('任务的完成模式。1 - 会签任务；2 - 或签任务').optional(),
           is_milestone: z.boolean().describe('是否是里程碑任务').optional(),
@@ -1371,6 +1371,7 @@ export const taskV2TaskPatch = {
                     z.object({
                       id: z.string().describe('表示member的id').optional(),
                       type: z.string().describe('成员的类型').optional(),
+                      name: z.string().describe('成员名称').optional(),
                     }),
                   )
                   .describe(
@@ -1407,10 +1408,10 @@ export const taskV2TaskPatch = {
       update_fields: z
         .array(z.string())
         .describe(
-          '设置需要修改的字段<md-enum><md-enum-item key="summary" >任务标题</md-enum-item><md-enum-item key="description" >任务描</md-enum-item><md-enum-item key="start" >任务开始时间</md-enum-item><md-enum-item key="due" >任务截止时间</md-enum-item><md-enum-item key="completed_at" >任务完成时间</md-enum-item><md-enum-item key="extra" >任务附属自定义数据</md-enum-item><md-enum-item key="custom_complete" >任务自定义完成规则</md-enum-item><md-enum-item key="repeat_rule" >任务重复规则</md-enum-item><md-enum-item key="mode" >任务完成模式</md-enum-item><md-enum-item key="is_milestone" >是否是里程碑任务</md-enum-item><md-enum-item key=custom_fields" >自定义字段值</md-enum-item></md-enum>',
+          '设置需要修改的字段<md-enum><md-enum-item key="summary" >任务标题</md-enum-item><md-enum-item key="description" >任务描述</md-enum-item><md-enum-item key="start" >任务开始时间</md-enum-item><md-enum-item key="due" >任务截止时间</md-enum-item><md-enum-item key="completed_at" >任务完成时间</md-enum-item><md-enum-item key="extra" >任务附属自定义数据</md-enum-item><md-enum-item key="custom_complete" >任务自定义完成规则</md-enum-item><md-enum-item key="repeat_rule" >任务重复规则</md-enum-item><md-enum-item key="mode" >任务完成模式</md-enum-item><md-enum-item key="is_milestone" >是否是里程碑任务</md-enum-item><md-enum-item key=custom_fields" >自定义字段值</md-enum-item></md-enum>',
         ),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('要更新的任务全局唯一ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1453,7 +1454,7 @@ export const taskV2TaskRemoveMembers = {
         )
         .describe('要移除的member列表'),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('要移除成员的任务全局唯一ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1469,7 +1470,7 @@ export const taskV2TaskRemoveReminders = {
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({ reminder_ids: z.array(z.string()).describe('要移除的reminder的id列表') }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('要移除提醒的任务全局唯一ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1485,7 +1486,7 @@ export const taskV2TaskRemoveTasklist = {
   accessTokens: ['tenant', 'user'],
   schema: {
     data: z.object({ tasklist_guid: z.string().describe('要移除的清单的全局唯一ID') }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('要从清单移除的任务的全局唯一ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1545,9 +1546,7 @@ export const taskV2TaskSubtaskCreate = {
             .describe('任务关联的来源平台详情页链接')
             .optional(),
         })
-        .describe(
-          '任务关联的第三方平台来源信息。详见[如何使用Origin?]',
-        )
+        .describe('任务关联的第三方平台来源信息。详见[如何使用Origin?]')
         .optional(),
       extra: z.string().describe('调用者可以传入的任意附带到任务上的数据。在获取任务详情时会原样返回').optional(),
       completed_at: z.string().describe('任务的完成时刻时间戳(ms)').optional(),
@@ -1639,9 +1638,7 @@ export const taskV2TaskSubtaskCreate = {
             .describe('飞书android端的自定义完成配置')
             .optional(),
         })
-        .describe(
-          '任务自定义完成规则。详见[功能概述]中的“如何使用自定义完成？”章节',
-        )
+        .describe('任务自定义完成规则。详见[功能概述]中的“如何使用自定义完成？”章节')
         .optional(),
       tasklists: z
         .array(
@@ -1659,9 +1656,7 @@ export const taskV2TaskSubtaskCreate = {
         .optional(),
       client_token: z
         .string()
-        .describe(
-          '幂等token。如果提供则触发后端实现幂等行为。详见[功能概述]中的“ 幂等调用 ”章节',
-        )
+        .describe('幂等token。如果提供则触发后端实现幂等行为。详见[功能概述]中的“ 幂等调用 ”章节')
         .optional(),
       start: z
         .object({
@@ -1689,7 +1684,7 @@ export const taskV2TaskSubtaskCreate = {
         .describe('任务提醒')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({ task_guid: z.string().describe('父任务GUID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1704,17 +1699,19 @@ export const taskV2TaskSubtaskList = {
     '[Feishu/Lark]-任务-子任务-获取任务的子任务列表-获取一个任务的子任务列表。支持分页，数据按照子任务在界面上的顺序返回',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('分页大小').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      user_id_type: z.string().describe('用户ID类型').optional(),
-    }),
-    path: z.object({ task_guid: z.string().describe('父任务的全局唯一ID').optional() }),
+    params: z
+      .object({
+        page_size: z.number().describe('分页大小').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        user_id_type: z.string().describe('用户ID类型').optional(),
+      })
+      .optional(),
+    path: z.object({ task_guid: z.string().describe('父任务的全局唯一ID').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1759,7 +1756,9 @@ export const taskV2TasklistActivitySubscriptionCreate = {
         ),
       disabled: z.boolean().describe('该订阅是否为停用').optional(),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({ tasklist_guid: z.string().describe('清单GUID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1775,16 +1774,10 @@ export const taskV2TasklistActivitySubscriptionDelete = {
   accessTokens: ['tenant', 'user'],
   schema: {
     path: z.object({
-      tasklist_guid: z
-        .string()
-        .describe(
-          '清单GUID。可以通过[创建清单]，或者通过[获取清单列表]接口查询得到',
-        ),
+      tasklist_guid: z.string().describe('清单GUID。可以通过[创建清单]，或者通过[获取清单列表]接口查询得到'),
       activity_subscription_guid: z
         .string()
-        .describe(
-          '要删除的订阅GUID。可以通过[创建动态订阅]接口创建，或者通过[列取动态订阅]查询得到',
-        ),
+        .describe('要删除的订阅GUID。可以通过[创建动态订阅]接口创建，或者通过[列取动态订阅]查询得到'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1799,18 +1792,14 @@ export const taskV2TasklistActivitySubscriptionGet = {
     '[Feishu/Lark]-任务-清单动态订阅-获取动态订阅-提供一个清单的GUID和一个订阅的GUID，获取该订阅的详细信息，包括名称，订阅者，可通知的event key列表等',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({
-      tasklist_guid: z
-        .string()
-        .describe(
-          '清单GUID。可以通过[创建清单]，或者通过[获取清单列表]接口查询得到',
-        ),
+      tasklist_guid: z.string().describe('清单GUID。可以通过[创建清单]，或者通过[获取清单列表]接口查询得到'),
       activity_subscription_guid: z
         .string()
-        .describe(
-          '订阅GUID。可以通过[创建动态订阅]接口创建，或者通过[列取动态订阅]查询得到',
-        ),
+        .describe('订阅GUID。可以通过[创建动态订阅]接口创建，或者通过[列取动态订阅]查询得到'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1825,16 +1814,14 @@ export const taskV2TasklistActivitySubscriptionList = {
     '[Feishu/Lark]-任务-清单动态订阅-列取动态订阅-给定一个清单的GUID，获取其所有的订阅信息。结果按照订阅的创建时间排序',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      limit: z.number().describe('返回结果的最大数量').optional(),
-      user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        limit: z.number().describe('返回结果的最大数量').optional(),
+        user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional(),
+      })
+      .optional(),
     path: z.object({
-      tasklist_guid: z
-        .string()
-        .describe(
-          '清单GUID。可以通过[创建清单]，或者通过[获取清单列表]接口查询得到',
-        ),
+      tasklist_guid: z.string().describe('清单GUID。可以通过[创建清单]，或者通过[获取清单列表]接口查询得到'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1881,18 +1868,14 @@ export const taskV2TasklistActivitySubscriptionPatch = {
         )
         .describe('要更新的字段列表'),
     }),
-    params: z.object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() }),
+    params: z
+      .object({ user_id_type: z.enum(['open_id', 'union_id', 'user_id']).describe('用户ID类型').optional() })
+      .optional(),
     path: z.object({
-      tasklist_guid: z
-        .string()
-        .describe(
-          '清单GUID。可以通过[创建清单]，或者通过[获取清单列表]接口查询得到',
-        ),
+      tasklist_guid: z.string().describe('清单GUID。可以通过[创建清单]，或者通过[获取清单列表]接口查询得到'),
       activity_subscription_guid: z
         .string()
-        .describe(
-          '要更新的动态订阅GUID。可以通过[创建动态订阅]接口创建，或者通过[列取动态订阅]查询得到',
-        ),
+        .describe('要更新的动态订阅GUID。可以通过[创建动态订阅]接口创建，或者通过[列取动态订阅]查询得到'),
     }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -1926,12 +1909,10 @@ export const taskV2TasklistAddMembers = {
               .optional(),
           }),
         )
-        .describe(
-          '要添加的成员列表。关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节',
-        ),
+        .describe('要添加的成员列表。关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节'),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
-    path: z.object({ tasklist_guid: z.string().describe('要添加成员的清单的全局唯一ID').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
+    path: z.object({ tasklist_guid: z.string().describe('要添加成员的清单的全局唯一ID').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1963,12 +1944,10 @@ export const taskV2TasklistCreate = {
               .optional(),
           }),
         )
-        .describe(
-          '清单的成员列表。关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节',
-        )
+        .describe('清单的成员列表。关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节')
         .optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1982,7 +1961,7 @@ export const taskV2TasklistDelete = {
     '[Feishu/Lark]-任务-清单-删除清单-删除一个清单。删除清单后，不可对该清单做任何操作，也无法再访问到清单。清单被删除后不可恢复',
   accessTokens: ['tenant', 'user'],
   schema: {
-    path: z.object({ tasklist_guid: z.string().describe('要删除的清单GUID').optional() }),
+    path: z.object({ tasklist_guid: z.string().describe('要删除的清单GUID').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -1995,8 +1974,8 @@ export const taskV2TasklistGet = {
   description: '[Feishu/Lark]-任务-清单-获取清单详情-获取一个清单的详细信息，包括清单名，所有者，清单成员等',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
-    path: z.object({ tasklist_guid: z.string().describe('清单全局唯一GUID').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
+    path: z.object({ tasklist_guid: z.string().describe('清单全局唯一GUID').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -2009,16 +1988,18 @@ export const taskV2TasklistList = {
   description: '[Feishu/Lark]-任务-清单-获取清单列表-获取调用身份所有可读取的清单列表',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('每页返回的清单数量').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      user_id_type: z.string().describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('每页返回的清单数量').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        user_id_type: z.string().describe('用户ID类型').optional(),
+      })
+      .optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -2058,7 +2039,7 @@ export const taskV2TasklistPatch = {
         )
         .optional(),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
     path: z.object({ tasklist_guid: z.string().describe('要更新的清单的全局唯一GUID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
@@ -2087,12 +2068,10 @@ export const taskV2TasklistRemoveMembers = {
             role: z.string().describe('清单角色。移除清单成员时该字段不需要填写').optional(),
           }),
         )
-        .describe(
-          '要移除的member列表。关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节',
-        ),
+        .describe('要移除的member列表。关于member的格式，详见[功能概述]中的“ 如何表示任务和清单的成员？”章节'),
     }),
-    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }),
-    path: z.object({ tasklist_guid: z.string().describe('要移除协作人的清单全局唯一ID').optional() }),
+    params: z.object({ user_id_type: z.string().describe('用户ID类型').optional() }).optional(),
+    path: z.object({ tasklist_guid: z.string().describe('要移除协作人的清单全局唯一ID').optional() }).optional(),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
 };
@@ -2106,30 +2085,32 @@ export const taskV2TasklistTasks = {
     '[Feishu/Lark]-任务-清单-获取清单任务列表-获取一个清单的任务列表，返回任务的摘要信息。本接口支持分页。清单中的任务以“自定义拖拽”的顺序返回。本接口支持简单的按照任务的完成状态或者任务的创建时间范围过滤',
   accessTokens: ['tenant', 'user'],
   schema: {
-    params: z.object({
-      page_size: z.number().describe('每页返回的任务数量').optional(),
-      page_token: z
-        .string()
-        .describe(
-          '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
-        )
-        .optional(),
-      completed: z
-        .boolean()
-        .describe(
-          '只查看特定完成状态的任务，填写“true”表示返回已经完成的任务；“false”表示只返回未完成的任务；不填写表示不按完成状态过滤',
-        )
-        .optional(),
-      created_from: z
-        .string()
-        .describe('任务创建的起始时间戳（ms），闭区间，不填写默认为首个任务的创建时间戳')
-        .optional(),
-      created_to: z
-        .string()
-        .describe('任务创建的结束时间戳（ms），闭区间，不填写默认为最后创建任务的创建时间戳')
-        .optional(),
-      user_id_type: z.string().describe('用户ID类型').optional(),
-    }),
+    params: z
+      .object({
+        page_size: z.number().describe('每页返回的任务数量').optional(),
+        page_token: z
+          .string()
+          .describe(
+            '分页标记，第一次请求不填，表示从头开始遍历；分页查询结果还有更多项时会同时返回新的 page_token，下次遍历可采用该 page_token 获取查询结果',
+          )
+          .optional(),
+        completed: z
+          .boolean()
+          .describe(
+            '只查看特定完成状态的任务，填写“true”表示返回已经完成的任务；“false”表示只返回未完成的任务；不填写表示不按完成状态过滤',
+          )
+          .optional(),
+        created_from: z
+          .string()
+          .describe('任务创建的起始时间戳（ms），闭区间，不填写默认为首个任务的创建时间戳')
+          .optional(),
+        created_to: z
+          .string()
+          .describe('任务创建的结束时间戳（ms），闭区间，不填写默认为最后创建任务的创建时间戳')
+          .optional(),
+        user_id_type: z.string().describe('用户ID类型').optional(),
+      })
+      .optional(),
     path: z.object({ tasklist_guid: z.string().describe('要获取任务的清单全局唯一ID') }),
     useUAT: z.boolean().describe('使用用户身份请求, 否则使用应用身份').optional(),
   },
