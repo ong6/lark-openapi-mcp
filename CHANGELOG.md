@@ -1,3 +1,14 @@
+# 0.5.0
+- Feat: 使用Login登录会自动用浏览器打开登录链接，且login不在会判断是否已经登录，再次登录会直接用新的token覆盖旧的token
+- Fix: SSE/Streamable 模式下未开启oauth错误需要鉴权流程的问题
+- Chore：优化鉴权失败的文案，和 keytar 不可用时的文案
+- Chore: 同步最新Open API, 移除了Helpdesk部分不可用的API
+
+- Feat: Using Login to log in will automatically open the login link in the browser, and if login is not present, it will check whether you have already logged in. Logging in again will directly overwrite the old token with a new one.
+- Fix: The issue where the unopened oauth error in SSE/Streamable mode requires an authentication process.
+- Chore: Optimize the copy for authentication failure and the copy when keytar is unavailable.
+- Chore: Sync the latest Open API.
+
 # 0.4.1
 Fix: 开放平台开发文档检索 MCP 错误需要鉴权流程的问题
 Fix: Fixed authentication process issue in Open Platform Development Documentation Retrieval MCP 
