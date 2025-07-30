@@ -95,11 +95,11 @@ export class LarkAuthHandlerLocal extends LarkAuthHandler {
     return newToken;
   }
 
-  async reAuthorize(accessToken?: string) {
+  async reAuthorize(accessToken?: string, ignoreCheck: boolean = false) {
     const localAccessToken = await authStore.getLocalAccessToken(this.options.appId);
     const { valid } = await isTokenValid(localAccessToken);
 
-    if (accessToken === localAccessToken || !localAccessToken || !valid) {
+    if (ignoreCheck || accessToken === localAccessToken || !localAccessToken || !valid) {
       const scope = this.options.scope?.join(' ');
       logger.info(`[LarkAuthHandlerLocal] reAuthorize: Registering client`);
       await authStore.registerClient({

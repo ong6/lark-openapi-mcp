@@ -57,7 +57,7 @@ export class LoginHandler {
       });
       authHandler.setupRoutes();
 
-      const result = await authHandler.reAuthorize();
+      const result = await authHandler.reAuthorize(undefined, true);
 
       if (result.authorizeUrl) {
         console.log('📱 Please open the following URL in your browser to complete the login:');
