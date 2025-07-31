@@ -34,7 +34,10 @@ export class StorageManager {
       this.ensureStorageDir();
       this.isInitializedStorageSuccess = true;
     } catch (error) {
-      logger.error(`[StorageManager] Failed to initialize: ${error}`);
+      logger.warn(`[StorageManager] Failed to initialize: ${error}`);
+      logger.warn(
+        '[StorageManager] ⚠️ Builtin User Access Token Store will be disabled. but you can still use it with memory store',
+      );
       this.isInitializedStorageSuccess = false;
     }
   }
@@ -49,7 +52,7 @@ export class StorageManager {
       }
       this.encryptionUtil = new EncryptionUtil(key);
     } catch (error) {
-      logger.error(`[StorageManager] Failed to initialize encryption: ${error}`);
+      logger.warn(`[StorageManager] Failed to initialize encryption: ${error}`);
       throw error;
     }
   }
@@ -84,7 +87,9 @@ export class StorageManager {
       return data ? JSON.parse(this.decrypt(data)) : { tokens: {}, clients: {} };
     } catch (error) {
       logger.error(`[StorageManager] Failed to load storage data: ${error}`);
-      logger.error('[StorageManager] ⚠️ Builtin User Access Token Store will be disabled. but you can still use it without local storage');
+      logger.error(
+        '[StorageManager] ⚠️ Builtin User Access Token Store will be disabled. but you can still use it with memory store',
+      );
       return { tokens: {}, clients: {} };
     }
   }

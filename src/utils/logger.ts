@@ -88,6 +88,7 @@ export class Logger {
     if (this.level < LogLevel.WARN) {
       return;
     }
+    console.error(`[WARN] ${message}`);
     this.log(`[WARN] ${message}`);
   };
 
@@ -95,7 +96,7 @@ export class Logger {
     if (this.level < LogLevel.ERROR) {
       return;
     }
-    console.error(message);
+    console.error(`[ERROR] ${message}`);
     this.log(`[ERROR]  ${message}`);
   };
 }

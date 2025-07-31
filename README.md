@@ -6,7 +6,11 @@
 
 English | [中文](./README_ZH.md)
 
-[Developer Documentation Retrieval MCP](./README_RECALL.md) | [Official Document](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/mcp_integration/mcp_introduction)
+[Developer Documentation Retrieval MCP](./docs/recall-mcp/README.md)
+
+[Official Document](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/mcp_integration/mcp_introduction)
+
+[Trouble Shooting](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/mcp_integration/use_cases)
 
 > **⚠️ Beta Version Notice**: This tool is currently in Beta stage. Features and APIs may change, so please stay updated with version releases.
 
@@ -392,7 +396,7 @@ This command is used to clear locally stored user access tokens. If the `--app-i
       lark-mcp mcp -a <your_app_id> -s <your_app_secret> -m stdio
       ```
 
-    2. **SSE mode**: Provides an HTTP interface based on Server-Sent Events, suitable for scenarios where local execution is not possible.
+    2. **SSE mode (Deprecated)**: Provides an HTTP interface based on Server-Sent Events, suitable for scenarios where local execution is not possible.
       
       ```bash
       # Default listens only on localhost
@@ -414,28 +418,44 @@ This command is used to clear locally stored user access tokens. If the `--app-i
 ## FAQ
 
 - **Issue**: Unable to connect to Feishu/Lark API
+
   **Solution**: Check your network connection and ensure your APP_ID and APP_SECRET are correct. Verify that you can access the Feishu/Lark Open Platform API; you may need to configure a proxy.
 
 - **Issue**: Error when using user_access_token
+
   **Solution**: Check if the token has expired. user_access_token usually has a validity period of 2 hours and needs to be refreshed periodically. You can implement an automatic token refresh mechanism.
 
 - **Issue**: Unable to call certain APIs after starting the MCP service, with insufficient permissions errors
+
   **Solution**: Check if your application has obtained the corresponding API permissions. Some APIs require additional high-level permissions, which can be configured in the [Developer Console](https://open.feishu.cn/app). Ensure that permissions have been approved.
 
 - **Issue**: Image or file upload/download related API calls fail
+
   **Solution**: The current version does not support file and image upload/download functionality. These APIs will be supported in future versions.
 
 - **Issue**: Command line displays garbled characters in Windows environment
+
   **Solution**: Change the command line encoding to UTF-8 by executing `chcp 65001` in the command prompt. If using PowerShell, you may need to change the terminal font or PowerShell configuration.
 
 - **Issue**: Permission errors during installation
+
   **Solution**: On macOS/Linux, use `sudo npm install -g @larksuiteoapi/lark-mcp` for installation, or modify the permissions of the npm global installation path. Windows users can try running the command prompt as administrator.
 
 - **Issue**: Token limit exceeded after starting the MCP service
-  **Solution**: Try using `-t` to reduce the number of enabled APIs, or use a model that supports larger tokens (such as claude3.7).
 
-- **Issue**: Unable to connect or receive messages in SSE mode
+  **Solution**: Try using `-t` to reduce the number of enabled APIs, or use a model that supports larger tokens.
+
+- **Issue**: Unable to connect or receive messages in SSE/Stream mode
+
   **Solution**: Check if the port is already in use and try changing to a different port. Ensure that the client is correctly connected to the SSE endpoint and is handling the event stream.
+
+- **Issue**: Linux environment startup error [StorageManager] Failed to initialize: xxx
+
+  **Solution**: This does not affect scenarios where user_access_token is manually passed or not used. StorageManager uses keytar for encrypted storage of user_access_token. Please ensure libsecret is installed in the Linux environment:
+
+    - Debian/Ubuntu: `sudo apt-get install libsecret-1-dev`
+    - Red Hat-based: `sudo yum install libsecret-devel`
+    - Arch Linux: `sudo pacman -S libsecret`
 
 ## Related Links
 
@@ -448,4 +468,4 @@ This command is used to clear locally stored user access tokens. If the `--app-i
 
 ## Feedback
 
-Issues are welcome to help improve this tool. If you have any questions or suggestions, please raise them in the GitHub repository. 
+Issues are welcome to help improve this tool. If you have any questions or suggestions, please raise them in the GitHub repository.

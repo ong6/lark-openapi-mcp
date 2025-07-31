@@ -4,9 +4,13 @@
 [![npm downloads](https://img.shields.io/npm/dm/@larksuiteoapi/lark-mcp.svg)](https://www.npmjs.com/package/@larksuiteoapi/lark-mcp)
 [![Node.js Version](https://img.shields.io/node/v/@larksuiteoapi/lark-mcp.svg)](https://nodejs.org/)
 
-中文 | [English](./README.md)
+中文 | [English](./README.md) 
 
-[开发文档检索 MCP](./README_RECALL_ZH.md) | [官方文档](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/mcp_integration/mcp_introduction)
+[开发文档检索 MCP](./docs/recall-mcp/README_ZH.md) 
+
+[官方文档](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/mcp_integration/mcp_introduction)
+
+[常见问题](https://open.feishu.cn/document/uAjLw4CM/ukTMukTMukTM/mcp_integration/use_cases)
 
 > **⚠️ Beta版本提示**：当前工具处于Beta版本阶段，功能和API可能会有变更，请密切关注版本更新。
 
@@ -399,7 +403,7 @@ lark-mcp mcp -a <your_app_id> -s <your_app_secret> -t im.v1.message.create,im.v1
       lark-mcp mcp -a <your_app_id> -s <your_app_secret> -m stdio
       ```
 
-    2. **SSE模式**：提供基于Server-Sent Events的HTTP接口，适用于不能在本地运行的场景
+    2. **SSE模式(废弃)**：提供基于Server-Sent Events的HTTP接口，适用于不能在本地运行的场景
       
       ```bash
       # 默认只监听localhost
@@ -421,28 +425,45 @@ lark-mcp mcp -a <your_app_id> -s <your_app_secret> -t im.v1.message.create,im.v1
 ## 常见问题
 
 - **问题**: 无法连接到飞书/Lark API
+
   **解决方案**: 请检查您的网络连接，并确保APP_ID和APP_SECRET正确。检查是否能正常访问飞书开放平台API，可能需要配置代理。
 
 - **问题**: 使用user_access_token报错
+
   **解决方案**: 检查token是否过期，user_access_token有效期通常为2小时，需要定期刷新。您可以实现token自动刷新机制。
 
 - **问题**: 启动MCP服务后无法调用某些API, 调用提示权限不足
+
   **解决方案**: 检查您的应用是否已获得相应API的权限，部分API需要额外申请高级权限, 可在[开发者后台](https://open.feishu.cn/app)中进行配置。确保权限已被审批通过。
 
 - **问题**: 图片或文件上传/下载相关API调用失败
+
   **解决方案**: 当前版本暂不支持文件和图片的上传下载功能，此类API将在后续版本中支持。
 
 - **问题**: Windows环境下命令行显示乱码
+
   **解决方案**: 将命令行编码更改为UTF-8，在命令提示符中执行`chcp 65001`。如使用PowerShell，可能需要更改终端字体或PowerShell配置。
 
 - **问题**: 安装时遇到权限错误
+
   **解决方案**: 在macOS/Linux上使用`sudo npm install -g @larksuiteoapi/lark-mcp`进行安装，或修改npm全局安装路径的权限。Windows用户可尝试以管理员身份运行命令提示符。
 
 - **问题**: 启动MCP服务后提示token超过上限
-  **解决方案**: 尝试使用 -t 减少启用的API数量，或使用支持更大token的模型（如claude3.7）
 
-- **问题**: SSE模式下无法连接或接收消息
-  **解决方案**: 检查端口是否被占用，尝试更换端口。确保客户端正确连接到SSE端点并处理事件流。
+  **解决方案**: 尝试使用 -t 减少启用的API数量，或使用支持更大token的模型
+
+- **问题**: SSE/Streamable模式下无法连接或接收消息
+
+  **解决方案**: 检查端口是否被占用，尝试更换端口。确保客户端正确连接到SSE/Streamable端点并处理事件流。
+
+
+- **问题**: Linux 环境启动报错 [StorageManager] Failed to initialize: xxx
+
+  **解决方案**: 不影响手动传入 user_access_token 使用或者不使用 user_access_token 的场景。 StorageManager 使用了 keytar 加密存储了 user_access_token, 请确保在Linux环境下安装了libsecret
+
+    - Debian/Ubuntu: `sudo apt-get install libsecret-1-dev`
+    - Red Hat-based: `sudo yum install libsecret-devel`
+    - Arch Linux: `sudo pacman -S libsecret`
 
 ## 相关链接
 
