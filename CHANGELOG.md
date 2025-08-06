@@ -1,3 +1,8 @@
+# 0.5.1
+- Fix: 修复login再次登录的时候没有正确唤起授权
+
+- Fix: Resolved the issue where the authorization process was not properly triggered during re-login.
+
 # 0.5.0
 - Feat: 使用Login登录会自动用浏览器打开登录链接，且login不在会判断是否已经登录，再次登录会直接用新的token覆盖旧的token
 - Fix: SSE/Streamable 模式下未开启oauth错误需要鉴权流程的问题
