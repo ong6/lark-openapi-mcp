@@ -4,11 +4,11 @@
 [![npm downloads](https://img.shields.io/npm/dm/@larksuiteoapi/lark-mcp.svg)](https://www.npmjs.com/package/@larksuiteoapi/lark-mcp)
 [![Node.js Version](https://img.shields.io/node/v/@larksuiteoapi/lark-mcp.svg)](https://nodejs.org/)
 
-English | [中文](./README_RECALL_ZH.md)
+English | [中文](./README_ZH.md)
 
 > **⚠️ Beta Version Notice**: This tool is currently in Beta. Features and APIs may change, so please pay close attention to version updates.
 
-This is the Feishu/Lark official Open Platform Developer Documentation Retrieval MCP (Model Context Protocol) tool, designed to help users quickly find the documentation they need after entering their requirements. It can also be used with [Feishu/Lark OpenAPI MCP](./README_ZH.md) to enable AI assistants to run automated scenarios.
+This is the Feishu/Lark official Open Platform Developer Documentation Retrieval MCP (Model Context Protocol) tool, designed to help users quickly find the documentation they need after entering their requirements. It can also be used with [Feishu/Lark OpenAPI MCP](../../README.md) to enable AI assistants to run automated scenarios.
 
 > The scope of documentation retrieval covers all developer guides, tutorials, server-side APIs, and client-side APIs under the [Developer Documentation](https://open.feishu.cn/document/home/index) or [Lark Developer Documentation](https://open.larksuite.com/document/home/index), helping users quickly find the corresponding OpenAPI or other developer documentation. It does not search "Lark Docs" documents.
 
@@ -69,7 +69,7 @@ To integrate Lark features in AI tools such as Trae, Cursor or Claude, you can i
 
 [![Install MCP Server](https://cursor.com/deeplink/mcp-install-light.svg)](https://cursor.com/install-mcp?name=lark_open_doc_search&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsYXJrc3VpdGVvYXBpL2xhcmstbWNwIiwicmVjYWxsLWRldmVsb3Blci1kb2N1bWVudHMiXX0=)
 
-[![Install MCP Server](./assets/trae-cn.svg)](trae-cn://trae.ai-ide/mcp-import?source=lark&type=stdio&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsYXJrc3VpdGVvYXBpL2xhcmstbWNwIiwicmVjYWxsLWRldmVsb3Blci1kb2N1bWVudHMiXX0=)  [![Install MCP Server](./assets/trae.svg)](trae-cn://trae.ai-ide/mcp-import?source=lark&type=stdio&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsYXJrc3VpdGVvYXBpL2xhcmstbWNwIiwicmVjYWxsLWRldmVsb3Blci1kb2N1bWVudHMiXX0=)
+[![Install MCP Server](../../assets/trae-cn.svg)](trae-cn://trae.ai-ide/mcp-import?source=lark&type=stdio&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsYXJrc3VpdGVvYXBpL2xhcmstbWNwIiwicmVjYWxsLWRldmVsb3Blci1kb2N1bWVudHMiXX0=)  [![Install MCP Server](../../assets/trae.svg)](trae://trae.ai-ide/mcp-import?source=lark&type=stdio&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBsYXJrc3VpdGVvYXBpL2xhcmstbWNwIiwicmVjYWxsLWRldmVsb3Blci1kb2N1bWVudHMiXX0=)
 
 or you can add the following to your configuration file:
 
