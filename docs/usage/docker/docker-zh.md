@@ -40,7 +40,7 @@ docker run --rm -it lark-mcp:latest whoami
       "command": "docker",
       "args": [
         "run", "--rm", "-i",
-        "-v", "lark_mcp_data:/home/node/.local/share/lark-mcp",
+        "-v", "lark_mcp_data:/home/node/.local/share",
         "lark-mcp:latest", "mcp",
         "-a", "your_app_id",
         "-s", "your_app_secret"
@@ -57,7 +57,7 @@ docker run --rm -it lark-mcp:latest whoami
 ```bash
 docker run --rm -it \
   -p 3000:3000 \
-  -v lark_mcp_data:/home/node/.local/share/lark-mcp \
+  -v lark_mcp_data:/home/node/.local/share \
   lark-mcp:latest mcp -a <your_app_id> -s <your_app_secret> -m streamable --host 0.0.0.0 -p 3000
 ```
 
@@ -73,25 +73,10 @@ docker run --rm -it \
 }
 ```
 
-### 用户身份配置（OAuth）
+### 用户身份配置（user_access_token）
 
-如需使用用户身份访问个人数据，在Docker环境中目前仅支持 stdio 模式：
+> ⚠️ **重要提示**：在Docker环境中，暂不支持 OAuth，请手动传入 user_access_token 进行用户身份验证。
 
-> ⚠️ **重要提示**：在Docker环境中，streamable 模式暂不支持 OAuth，请使用 stdio 模式进行用户身份验证。
-
-#### stdio 模式 + OAuth
-
-stdio模式需要先进行OAuth登录：
-
-1. **预先登录获取用户令牌**：
-```bash
-docker run --rm -it \
-  -p 3000:3000 \
-  -v lark_mcp_data:/home/node/.local/share/lark-mcp \
-  lark-mcp:latest login -a <your_app_id> -s <your_app_secret> --host 0.0.0.0
-```
-
-2. **MCP客户端配置**：
 ```json
 {
   "mcpServers": {
@@ -99,11 +84,12 @@ docker run --rm -it \
       "command": "docker",
       "args": [
         "run", "--rm", "-i",
-        "-v", "lark_mcp_data:/home/node/.local/share/lark-mcp",
+        "-v", "lark_mcp_data:/home/node/.local/share",
         "lark-mcp:latest", "mcp",
         "-a", "your_app_id",
         "-s", "your_app_secret",
-        "--oauth", "--token-mode", "user_access_token"
+        "-u", "your_user_access_token",
+         "--token-mode", "user_access_token"
       ]
     }
   }

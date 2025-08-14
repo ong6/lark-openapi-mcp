@@ -40,7 +40,7 @@ If using the default stdio mode, add the following to your MCP client (e.g., Cur
       "command": "docker",
       "args": [
         "run", "--rm", "-i",
-        "-v", "lark_mcp_data:/home/node/.local/share/lark-mcp",
+        "-v", "lark_mcp_data:/home/node/.local/share",
         "lark-mcp:latest", "mcp",
         "-a", "your_app_id",
         "-s", "your_app_secret"
@@ -57,7 +57,7 @@ If using streamable (HTTP) mode, first start the container:
 ```bash
 docker run --rm -it \
   -p 3000:3000 \
-  -v lark_mcp_data:/home/node/.local/share/lark-mcp \
+  -v lark_mcp_data:/home/node/.local/share \
   lark-mcp:latest mcp -a <your_app_id> -s <your_app_secret> -m streamable --host 0.0.0.0 -p 3000
 ```
 
@@ -73,25 +73,13 @@ Then add the following to your MCP client configuration file:
 }
 ```
 
-### User Identity Configuration (OAuth)
+### User Identity Configuration (user_access_token)
 
-To access personal data using user identity, currently only stdio mode is supported in Docker environment:
 
-> ⚠️ **Important Note**: In Docker environment, streamable mode does not yet support OAuth. Please use stdio mode for user authentication.
+> ⚠️ **Important Note**: In Docker environment, OAuth mode does not support yet. Please  use -u for user authentication.
 
-#### stdio Mode + OAuth
 
-stdio mode requires OAuth login first:
-
-1. **Pre-login to obtain user token**:
-```bash
-docker run --rm -it \
-  -p 3000:3000 \
-  -v lark_mcp_data:/home/node/.local/share/lark-mcp \
-  lark-mcp:latest login -a <your_app_id> -s <your_app_secret> --host 0.0.0.0
-```
-
-2. **MCP client configuration**:
+1. **MCP client configuration**:
 ```json
 {
   "mcpServers": {
@@ -99,11 +87,12 @@ docker run --rm -it \
       "command": "docker",
       "args": [
         "run", "--rm", "-i",
-        "-v", "lark_mcp_data:/home/node/.local/share/lark-mcp",
+        "-v", "lark_mcp_data:/home/node/.local/share",
         "lark-mcp:latest", "mcp",
         "-a", "your_app_id",
         "-s", "your_app_secret",
-        "--oauth", "--token-mode", "user_access_token"
+        "-u", "your_user_access_token",
+        "--token-mode", "user_access_token"
       ]
     }
   }
